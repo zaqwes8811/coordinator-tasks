@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication 
+  xmlns:fx="http://ns.adobe.com/mxml/2009"
+  xmlns:s="library://ns.adobe.com/flex/spark"
+  xmlns:mx="library://ns.adobe.com/flex/mx"
+  creationComplete="init()">
+
+<!-- -->
+<fx:Script>
+  <![CDATA[
+    import SQLiteAPITrial;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import system.data.maps.MultiValueMap;
+	import system.data.collections.ArrayCollection;
+	// Свойства
+    private var _sqlTrial:SQLiteAPITrial;
+	private var _TableName:String = "TestTable";
+	private var _headersArray:Array;
+	  // массив заголовков столбцов
+
+    // при инициализации подписываемя на сообщения
+	private function init() : void {
+	  // операции при нажатии
+	  CreateButton.addEventListener(MouseEvent.CLICK, onCreateButtonClick);
+	  ReadButton.addEventListener( MouseEvent.CLICK, onReadButtonClick );
+	  UpdateButton.addEventListener( MouseEvent.CLICK, onUpdateButtonClick );
+	    // нужно бы удалить из списка слушателей
+	  
+	  // создаем тестовую обертку для базы данных
+	  _sqlTrial = new SQLiteAPITrial();	
+	  
+	  // открываем базу данных
+	  _sqlTrial.openDB();
+	  _sqlTrial.createTable();
+	  _headersArray = new Array();
+	  _headersArray.push( "TimePoint" );  // TEXT
+	  _headersArray.push( "TextContent" );  // TEXT
+	}	
+	/// /// ///
+	///  пока тут, нужно научится передаввать ссылки на компаненты
+    /// onEvents
+	private function onCreateButtonClick(e:Event) : void 
+	{
+	  
+	  // define the SQL text
+	  var valArray:Array = new Array();
+	  valArray.push("Bobo");
+	  valArray.push("Aro");
+	  for ( var i:int = 0; i < valArray.length; i++ ) {
+	    var sql:String =
+		"INSERT INTO " + _TableName + 
+		" (TimePoint, TextContent) " +
+        "VALUES ('" + valArray[i] + "', 'firts')";
+	  _sqlTrial.TestInsert( sql );
+	  }
+	}
+	
+	//
+	private function onReadButtonClick(e:Event) : void {
+	  _sqlTrial.TestSelect(_headersArray[0]);
+	  //_sqlTrial.select(_headersArray[1]);
+	}
+	
+	//
+	private function onUpdateButtonClick(e:Event) : void {
+		_sqlTrial.TestUpdate(_headersArray[0]);
+	}
+  ]]>
+</fx:Script>
+
+<!-- -->
+<mx:VBox>
+  <!-- Buttons -->
+  <mx:Button id="CreateButton" label="Новое"/>
+  <mx:Button id="ReadButton" label="Посмотреть"/>
+  <mx:Button id="UpdateButton" label="Обновить"/>
+  <mx:Button id="DeleteButton" label="Обновить"/>
+</mx:VBox>
+
+<!-- -->
+</s:WindowedApplication>

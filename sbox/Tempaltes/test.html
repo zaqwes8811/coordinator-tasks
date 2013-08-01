@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Позиционирование</title>
+  <style type="text/css"> 
+   #leftcol {
+    position: relative; /* Относительное позиционирование */
+    float: left; /* Совмещение колонок по горизонтали */
+    width: 400px; /* Ширина слоя */
+    background: #800000; /* Цвет фона */
+    color: white; /* Цвет текста */
+   }
+   #rightcol {
+    position: relative; /* Относительное позиционирование */
+    float: left; /* Совмещение колонок по горизонтали */
+    left: -50px; /* Сдвиг слоя влево */
+    top: 50px; /* Смещение слоя вниз */
+    width: 120px; /* Ширина слоя */
+    background: #e0e0e0; /* Цвет фона */
+    border: solid 1px black; /* Параметры рамки */
+   }
+   #leftcol P {
+    padding: 10px; /* Поля вокруг текста */
+    padding-right: 50px; /* Значение поля справа */
+    margin: 0; /* Обнуляем значения отступов */
+   }
+   #rightcol P {
+    padding: 10px; /* Поля вокруг текста */
+    padding-top: 0 /* Значение поля сверху */
+   }
+  </style>
+ </head>
+ <body>
+  <div id="leftcol">
+   <p>Левая колонка </p>
+  </div>
+  <div id="rightcol">
+   <p>Правая колонка</p>
+  </div>
+ </body>
+</html>

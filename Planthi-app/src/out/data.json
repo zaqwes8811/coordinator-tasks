@@ -1,0 +1,96 @@
+{
+    "project": {},
+    "files": {
+        "app\\js\\month_engine.js": {
+            "name": "app\\js\\month_engine.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "app\\js\\sqlite_access.js": {
+            "name": "app\\js\\sqlite_access.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {},
+    "classitems": [
+        {
+            "file": "app\\js\\month_engine.js",
+            "line": 6,
+            "description": "thinks : может нумерацию всего сделать с нуля\n  сумма по модулю прох. через ноль, нумерация массивов с нуля, \n    многовато ошибок на границах",
+            "class": ""
+        },
+        {
+            "file": "app\\js\\month_engine.js",
+            "line": 65,
+            "description": "создает и стилизует сетку с месяцами",
+            "class": ""
+        },
+        {
+            "file": "app\\js\\month_engine.js",
+            "line": 109,
+            "description": "abs.: заполнение календаря при нажатии вверх",
+            "class": ""
+        },
+        {
+            "file": "app\\js\\month_engine.js",
+            "line": 188,
+            "description": "получить число дней в месяце с учетом висок. годов",
+            "class": ""
+        },
+        {
+            "file": "app\\js\\month_engine.js",
+            "line": 202,
+            "description": "получить день недели с вики. Нумерация с нуля",
+            "class": ""
+        },
+        {
+            "file": "app\\js\\month_engine.js",
+            "line": 225,
+            "description": "вроде бы можно вызвать через обработчик верхнего уровня DOM",
+            "class": ""
+        },
+        {
+            "file": "app\\js\\month_engine.js",
+            "line": 228,
+            "description": "My method description.  Like other pieces of your comment blocks, \nthis can span multiple lines.",
+            "itemtype": "method",
+            "name": "onClickCell",
+            "params": [
+                {
+                    "name": "foo",
+                    "description": "Argument 1",
+                    "type": "Event"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "app\\js\\month_engine.js",
+            "line": 244,
+            "description": "можно сказать, что конструктор интерфейса",
+            "class": ""
+        },
+        {
+            "file": "app\\js\\month_engine.js",
+            "line": 259,
+            "class": ""
+        },
+        {
+            "file": "app\\js\\month_engine.js",
+            "line": 274,
+            "class": ""
+        },
+        {
+            "file": "app\\js\\sqlite_access.js",
+            "line": 2,
+            "description": "Интерфейс к базе данных\n\tПри отладке используем совойства html5 по хранению\n\t\tданных не стороне клиента. Отлаживаем в chrome\n\tДля настольного приложения\n\t? здесь нет стогого контроля типов, поэтому полиморфизм уже по умолчанию\n\t\tи похоже целесообразнее наследовать реализацию\n\tпереписывать все равно придется\n\t\tно в класс завернуть нужно бы, чтобы потом тупо поменять \n\t\tв созданнии название конструкора. лучше функции присоединить к объекту\n\t\t\n\tТаблицы будут две\n\t\tОсновная база данных\n\t\tСостояние программы",
+            "class": ""
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+<!-- 
+	1. Zoom  
+	2.
+-->
+<html>
+    <head>
+        <script language="javascript" type="text/javascript"  src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+        <script language="javascript" type="text/javascript" src="http://localhost/arbor/lib/arbor.js" ></script>
+        <script language="javascript" type="text/javascript" src="http://localhost/arbor/demos/_/graphics.js" ></script>
+        <script language="javascript" type="text/javascript" src="http://localhost/arbor/demos/halfviz/src/renderer.js" ></script>
+    </head>
+    <body>
+      <canvas id="viewport" width="800" height="600"></canvas>
+      <script language="javascript" type="text/javascript">
+          var sys = arbor.ParticleSystem(100, 400,1);
+          sys.parameters({gravity:true});
+          sys.renderer = Renderer("#viewport") ;
+          var animals = sys.addNode('Animals',{'color':'red','shape':'dot','label':'Animals'});
+		  
+			var dog = sys.addNode('dog',{'color':'green','shape':'dot','label':'dog'});
+			var cat = sys.addNode('cat',{'color':'blue','shape':'dot','label':'cat'});
+
+	sys.addEdge(animals, dog);
+	sys.addEdge(animals, cat);
+      </script>
+    </body>
+</html>
