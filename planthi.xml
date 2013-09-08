@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <body>
 	
 	Fail : промах по платформе
 	Fail : планирование 
 	Do : тестирование через jUnit в air приложении
-	Issue :
+	Issue : 
 	Ref :
 	Learn :
 	Think : как быть с локализацией и интернационализацией?
