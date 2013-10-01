@@ -1,0 +1,6 @@
+*.pyc
+obj
+bin
+*.class
+out
+node_modules
