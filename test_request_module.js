@@ -48,6 +48,8 @@ IssuesAccessor.prototype.createIssue = function () {
     headers: {'content-type': 'application/x-www-form-urlencoded'},
     body: require('querystring').stringify(payload)
   };
+  
+  console.log('body : ');
   request(options, function(error, response, body){
       if (!error && response.statusCode == 200){
           console.log('body : ' + body)
