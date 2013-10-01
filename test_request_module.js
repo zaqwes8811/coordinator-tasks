@@ -1,4 +1,8 @@
-
+// http://wiki.eclipse.org/VJET/NodeJS
+// http://marketplace.eclipse.org/content/vjet-javascript-ide#.Ukscm4Zhg69
+// http://mwebhack.blogspot.ru/2012/07/setting-up-vjet-as-your-eclipse-nodejs.html
+// http://jonathan-whywecanthavenicethings.blogspot.in/2011/08/war-of-worlds.html ни одна ссылка не была активной
+//   но некоторая информация может пригодится
 function IssuesAccessor()  {
   this.username_ = 'zaqwes';
   this.password_ = 'a3fs4gd5h';
@@ -50,12 +54,10 @@ IssuesAccessor.prototype.createIssue = function () {
   };
   
   var request = require('request');
-  console.log('body : ');
   request.post(options, function(error, response, body){
       if (!error && response.statusCode == 200){
           console.log('body : ' + body)
-      }
-      else{
+      } else {
           console.log('Code : ' + response.statusCode)
           console.log('error : ' + error)
           console.log('body : ' + body)
@@ -78,6 +80,14 @@ IssuesAccessor.prototype.getDataFromJsonUrl = function (url, options) {
 function run() {
   var accessor = new IssuesAccessor();
   accessor.createIssue();
+}
+
+function UrlFetchAppFake()  {
+  this.username_ = 'zaqwes';
+  this.password_ = 'a3fs4gd5h';
+  //this.headers = {
+  //  "Authorization": "Basic " + Utilities.base64Encode(this.username_ + ":" + this.password_)
+  //};
 }
 
 run()
