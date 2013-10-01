@@ -3,6 +3,9 @@
 // http://mwebhack.blogspot.ru/2012/07/setting-up-vjet-as-your-eclipse-nodejs.html
 // http://jonathan-whywecanthavenicethings.blogspot.in/2011/08/war-of-worlds.html ни одна ссылка не была активной
 //   но некоторая информация может пригодится
+
+//http://www.tomotaro1065.com/nodeclipse/
+
 function IssuesAccessor()  {
   this.username_ = 'zaqwes';
   this.password_ = 'a3fs4gd5h';
