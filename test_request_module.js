@@ -2,9 +2,9 @@
 function IssuesAccessor()  {
   this.username_ = 'zaqwes';
   this.password_ = 'a3fs4gd5h';
-  this.headers = {
-    "Authorization": "Basic " + Utilities.base64Encode(this.username_ + ":" + this.password_)
-  };
+  //this.headers = {
+  //  "Authorization": "Basic " + Utilities.base64Encode(this.username_ + ":" + this.password_)
+  //};
 }
 
 // Create issues
@@ -43,14 +43,15 @@ IssuesAccessor.prototype.createIssue = function () {
     auth: {
       user: this.username_,
       pass: this.password_,
-      sendImmediately: false
+      sendImmediately: true
     },
     headers: {'content-type': 'application/x-www-form-urlencoded'},
     body: require('querystring').stringify(payload)
   };
   
+  var request = require('request');
   console.log('body : ');
-  request(options, function(error, response, body){
+  request.post(options, function(error, response, body){
       if (!error && response.statusCode == 200){
           console.log('body : ' + body)
       }
@@ -78,3 +79,5 @@ function run() {
   var accessor = new IssuesAccessor();
   accessor.createIssue();
 }
+
+run()
