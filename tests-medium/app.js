@@ -20,10 +20,11 @@ function run(done) {
   
   var repo_slug = 'decoder-reed-solomon';
   var payload = {
-      limit: 0,
-      start: 0
+      limit: 2,
+      start: 1
   };
-  var issuesUrlTemplate = 'https://bitbucket.org/api/1.0/repositories/zaqwes/'+repo_slug+'/issues/';
+  var pathToRepo = 'https://bitbucket.org/api/1.0/repositories/zaqwes/'+repo_slug;
+  var issuesUrlTemplate = pathToRepo+'/issues/';
   var accessor = new Accessor(issuesUrlTemplate, username, password);
   
   accessor.makeBaseAuthGet(done, payload);
