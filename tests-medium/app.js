@@ -6,17 +6,13 @@
 
 //http://www.tomotaro1065.com/nodeclipse/
 
+
+IssuesAccessor = require('./issues-controller');
+
 function run() {
   var accessor = new IssuesAccessor();
   accessor.createIssue();
 }
 
-function UrlFetchAppFake()  {
-  this.username_ = 'zaqwes';
-  this.password_ = 'a3fs4gd5h';
-  //this.headers = {
-  //  "Authorization": "Basic " + Utilities.base64Encode(this.username_ + ":" + this.password_)
-  //};
-}
 
 //run();
