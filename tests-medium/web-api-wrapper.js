@@ -1,6 +1,10 @@
 
 console.log('hello');
 
-var sub = require('./sub-module-test.js');
+var MyConstructor = require('./sub-module-test.js').MyConstructor;
 
-var tmp = new sub.MyConstructor("");
+var tmp = new MyConstructor();
+
+var MyConstructor2 = require('./sub-module-test.js').MyConstructor2;
+
+var tmp = new MyConstructor2();
