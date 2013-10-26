@@ -9,3 +9,7 @@ function extend(Child, Parent) {
     Child.prototype.constructor = Child;
     Child.superclass = Parent.prototype;
 }
+
+
+//@NoGAS
+exports.extend = extend;

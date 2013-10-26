@@ -6,6 +6,7 @@
 var Accessor = require('./web-api-wrapper');
 
 function IssuesAccessor(accessor, pathToRepo)  {
+  //var tmp;  // private!
   this.accessor_ = accessor;
   this.pathToRepo_ = pathToRepo;
 }

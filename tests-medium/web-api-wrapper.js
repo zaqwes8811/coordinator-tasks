@@ -1,12 +1,17 @@
 
 // http://phrogz.net/JS/classes/OOPinJS2.html
+// http://javascript.ru/tutorial/object/inheritance
 //@NoGAS
 var request = require('request');
+var BaseAccessor = require('./interfaces/io.js').BaseAccessor;
+var extend = require('./util_local.js').extend;
 
 function Accessor(username, password)  {
   this.username_ = username;
   this.password_ = password;
 }
+
+extend(Accessor, BaseAccessor);
 
 Accessor.prototype.makeBaseAuthGet = function (url, done, payload) {
 	var options = {

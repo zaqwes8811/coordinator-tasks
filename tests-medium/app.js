@@ -12,6 +12,7 @@ var Accessor = require('./web-api-wrapper').Accessor;
 
 function done(error, response, body) {
   var issues = JSON.parse(body)['issues'];
+  console.log(issues)
   
   // Запускаем цепочку переливки
 }
