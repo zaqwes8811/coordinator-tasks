@@ -16,38 +16,8 @@ var ip = '172.16.1.3';//'127.0.0.1';
 var host = 'http://'+ip;
 var passwordUrl = "http://"+ip+"/cgi-bin/ajx_passwd.cgi";
 
-function Accessor(host, username, password)  {
-  this.url_ = host;
-  this.username_ = username;
-  this.password_ = password;
-}
 
-Accessor.prototype.makeBaseAuthGet = function (action) {
-  var request = require('request');
-  request(this.url_, action).auth(this.username_, this.password_, false);
-}
 
-Accessor.prototype.makeNoAuthGet = function (action) {
-  var request = require('request');
-  request(this.url_, action);
-}
-
-// Create issues
-Accessor.prototype.post = function (payload, action) {
-  var options = {
-    uri: this.url_,
-    auth: {
-      user: this.username_,
-      pass: this.password_,
-      sendImmediately: true
-    },
-    headers: {'content-type': 'application/x-www-form-urlencoded'},
-    body: require('querystring').stringify(payload)
-  };
-  
-  var request = require('request');
-  request.post(options, action);
-}
 
 function testNoAuthCase(done){
   var testCallback = function (error, response, body) {
