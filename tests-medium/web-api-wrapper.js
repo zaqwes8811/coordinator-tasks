@@ -8,14 +8,15 @@ function Accessor(host, username, password)  {
 Accessor.prototype.makeBaseAuthGet = function (action, payload) {
 	var request = require('request');
 	var options = {
-	    url: this.url_,
+	    url: this.url_+'?'+require('querystring').stringify(payload),
+	    //qs: require('querystring').stringify(payload),  // No work
 	    auth: {
 	      user: this.username_,
 	      pass: this.password_,
 	      sendImmediately: true
-	    },
-	    body: require('querystring').stringify(payload)
+	    }  
 	};
+	console.log(options);
 	request(options, action);
 };
 
