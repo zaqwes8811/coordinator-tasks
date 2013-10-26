@@ -1,14 +1,13 @@
 
-function Accessor(host, username, password)  {
-  this.url_ = host;
+function Accessor(username, password)  {
   this.username_ = username;
   this.password_ = password;
 }
 
-Accessor.prototype.makeBaseAuthGet = function (action, payload) {
+Accessor.prototype.makeBaseAuthGet = function (url, done, payload) {
 	var request = require('request');
 	var options = {
-	    url: this.url_+'?'+require('querystring').stringify(payload),
+	    url: url+'?'+require('querystring').stringify(payload),
 	    //qs: require('querystring').stringify(payload),  // No work
 	    auth: {
 	      user: this.username_,
@@ -16,8 +15,7 @@ Accessor.prototype.makeBaseAuthGet = function (action, payload) {
 	      sendImmediately: true
 	    }  
 	};
-	console.log(options);
-	request(options, action);
+	request(options, done);
 };
 
 Accessor.prototype.makeNoAuthGet = function (action) {

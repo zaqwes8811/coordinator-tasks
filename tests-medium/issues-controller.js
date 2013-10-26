@@ -5,8 +5,9 @@
 
 var Accessor = require('./web-api-wrapper');
 
-function IssuesAccessor(accessor)  {
+function IssuesAccessor(accessor, pathToRepo)  {
   this.accessor_ = accessor;
+  this.pathToRepo_ = pathToRepo;
 }
 
 // Create issues
@@ -42,9 +43,15 @@ IssuesAccessor.prototype.createIssue = function () {
   });
 };
 
-IssuesAccessor.prototype.getData = function () {
-  var request = require('request');
-  request.post('http://some.server.com/').auth('username', 'password', false);
+IssuesAccessor.prototype.getPkgIssues = function (idxFirst, pageSize, done) {
+  if (pageSize > 50) 
+    pageSize = 50;
+  var payload = {
+      limit: pageSize,
+      start: idxFirst
+  };
+  var url = this.pathToRepo_+'/issues/';
+  this.accessor_.makeBaseAuthGet(url, done, payload);
 };
 
 IssuesAccessor.prototype.getDataFromJsonUrl = function (url, options) {

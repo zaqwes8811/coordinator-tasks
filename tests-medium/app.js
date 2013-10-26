@@ -7,29 +7,27 @@
 //http://www.tomotaro1065.com/nodeclipse/
 
 
-var IssuesAccessor = require('./issues-controller');
+var IssuesAccessor = require('./issues-controller').IssuesAccessor;
 var Accessor = require('./web-api-wrapper').Accessor;
 
 function done(error, response, body) {
-  console.log(JSON.parse(body));
+  var issues = JSON.parse(body)['issues'];
+  
+  // Запускаем цепочку переливки
 }
 
 function run(done) {
   var username = 'zaqwes';
   var password = 'a3fs4gd5h';
   
-  var repo_slug = 'decoder-reed-solomon';
-  var payload = {
-      limit: 2,
-      start: 1
-  };
-  var pathToRepo = 'https://bitbucket.org/api/1.0/repositories/zaqwes/'+repo_slug;
-  var issuesUrlTemplate = pathToRepo+'/issues/';
-  var accessor = new Accessor(issuesUrlTemplate, username, password);
+  //var repo_slug = 'decoder-reed-solomon';
+  var repo_slug = "controller-transmitters-rtos";
   
-  accessor.makeBaseAuthGet(done, payload);
-  
-  //accessor.createIssue();
+  var pathToRepo = 'https://bitbucket.org/api/1.0/repositories/gangsofmart/'+repo_slug;
+  var accessor = new Accessor(username, password);
+
+  issuesAccessor = new IssuesAccessor(accessor, pathToRepo);
+  issuesAccessor.getPkgIssues(1, 100, done);
 }
 
 run(done);
