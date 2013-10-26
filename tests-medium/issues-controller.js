@@ -5,25 +5,19 @@
 
 var Accessor = require('./web-api-wrapper');
 
-function IssuesAccessor()  {
-  this.username_ = 'zaqwes';
-  this.password_ = 'a3fs4gd5h';
+function IssuesAccessor(accessor)  {
+  this.accessor_ = accessor;
 }
 
 // Create issues
 IssuesAccessor.prototype.createIssue = function () {
-  var repo_slug = 'test-compression';
-  
   var payload = {
-     "title" : "Hello from node.js",
-     "content" : "value for field two",
-     "status": "new",
+    "title" : "Hello from node.js",
+    "content" : "value for field two",
+    "status": "new",
     "priority": 'trivial',
     'kind': 'bug'
    };
-
- 
-  var issuesUrlTemplate = 'https://bitbucket.org/api/1.0/repositories/gangsofmart/'+repo_slug+'/issues/';
   
   var options = {
     uri: issuesUrlTemplate,

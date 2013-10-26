@@ -7,12 +7,29 @@
 //http://www.tomotaro1065.com/nodeclipse/
 
 
-IssuesAccessor = require('./issues-controller');
+var IssuesAccessor = require('./issues-controller');
+var Accessor = require('./web-api-wrapper').Accessor;
 
-function run() {
-  var accessor = new IssuesAccessor();
-  accessor.createIssue();
+function done(error, response, body) {
+  console.log(JSON.parse(body));
 }
 
+function run(done) {
+  var username = 'zaqwes';
+  var password = 'a3fs4gd5h';
+  
+  var repo_slug = 'decoder-reed-solomon';
+  var issuesUrlTemplate = 'https://bitbucket.org/api/1.0/repositories/zaqwes/'+repo_slug+'/issues/';
+  var accessor = new Accessor(issuesUrlTemplate, username, password);
+  var payload = {
+      limit: 1,
+      start: 1
+  };
+  accessor.makeBaseAuthGet(done, payload);
+  
+  //accessor.createIssue();
+}
 
-//run();
+run(done);
+
+

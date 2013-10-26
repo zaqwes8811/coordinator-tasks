@@ -5,9 +5,18 @@ function Accessor(host, username, password)  {
   this.password_ = password;
 }
 
-Accessor.prototype.makeBaseAuthGet = function (action) {
+Accessor.prototype.makeBaseAuthGet = function (action, payload) {
 	var request = require('request');
-	request(this.url_, action).auth(this.username_, this.password_, false);
+	var options = {
+	    url: this.url_,
+	    auth: {
+	      user: this.username_,
+	      pass: this.password_,
+	      sendImmediately: true
+	    },
+	    body: require('querystring').stringify(payload)
+	};
+	request(options, action);
 };
 
 Accessor.prototype.makeNoAuthGet = function (action) {
@@ -15,7 +24,6 @@ Accessor.prototype.makeNoAuthGet = function (action) {
   request(this.url_, action);
 };
 
-// Create issues
 Accessor.prototype.post = function (payload, action) {
   var options = {
     uri: this.url_,

@@ -16,9 +16,6 @@ var ip = '172.16.1.3';//'127.0.0.1';
 var host = 'http://'+ip;
 var passwordUrl = "http://"+ip+"/cgi-bin/ajx_passwd.cgi";
 
-
-
-
 function testNoAuthCase(done){
   var testCallback = function (error, response, body) {
     if (!error) {
