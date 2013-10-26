@@ -3,4 +3,4 @@ obj
 bin
 *.class
 out
-node_modules
+nodejs-forge/node_modules
