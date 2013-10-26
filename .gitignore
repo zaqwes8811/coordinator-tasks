@@ -3,4 +3,4 @@ obj
 bin
 *.class
 out
-nodejs-forge/node_modules
+tests-medium/node_modules
