@@ -3,11 +3,11 @@
 // http://mwebhack.blogspot.ru/2012/07/setting-up-vjet-as-your-eclipse-nodejs.html
 // http://jonathan-whywecanthavenicethings.blogspot.in/2011/08/war-of-worlds.html ни одна ссылка не была активной
 //   но некоторая информация может пригодится
-
 //http://www.tomotaro1065.com/nodeclipse/
 
-
+//@NoGAS
 var IssuesAccessor = require('./issues-controller').IssuesAccessor;
+//@NoGAS
 var Accessor = require('./web-api-wrapper').Accessor;
 
 function done(error, response, body) {

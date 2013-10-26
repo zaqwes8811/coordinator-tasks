@@ -1,11 +1,14 @@
 
+// http://phrogz.net/JS/classes/OOPinJS2.html
+//@NoGAS
+var request = require('request');
+
 function Accessor(username, password)  {
   this.username_ = username;
   this.password_ = password;
 }
 
 Accessor.prototype.makeBaseAuthGet = function (url, done, payload) {
-	var request = require('request');
 	var options = {
 	    url: url+'?'+require('querystring').stringify(payload),
 	    //qs: require('querystring').stringify(payload),  // No work
@@ -19,7 +22,6 @@ Accessor.prototype.makeBaseAuthGet = function (url, done, payload) {
 };
 
 Accessor.prototype.makeNoAuthGet = function (action) {
-  var request = require('request');
   request(this.url_, action);
 };
 
@@ -34,11 +36,10 @@ Accessor.prototype.post = function (payload, action) {
     headers: {'content-type': 'application/x-www-form-urlencoded'},
     body: require('querystring').stringify(payload)
   };
-  
-  var request = require('request');
   request.post(options, action);
 };
 
 
+//@NoGAS
 module.exports = {'Accessor': Accessor};
 
