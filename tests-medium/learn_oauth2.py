@@ -68,7 +68,8 @@ def retrieve_all_files(service):
             files = service.files().list(**param).execute()
 
             result.extend(files['items'])
-            print json.files['items']
+            for at in files['items']:
+                print at['title']
             page_token = files.get('nextPageToken')
             if not page_token:
                 break
@@ -84,7 +85,7 @@ if __name__ == '__main__':
     retrieve_all_files(drive_service)
 
 
-def hided():
+def upload_file():
     # Insert a file
     media_body = MediaFileUpload('bigfile.zip', mimetype='application/octet-stream', chunksize=1024 * 256,
                                  resumable=True)
