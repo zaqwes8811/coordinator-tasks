@@ -7,6 +7,14 @@ __author__ = 'кей'
 
 # https://developers.google.com/apps-script/import-export#import_projects!!!
 
+'''
+from oauth2client import gce
+
+credentials = gce.AppAssertionCredentials(OAUTH_SCOPE)
+http = credentials.authorize(httplib2.Http())
+'''
+
+
 import httplib2
 import json
 import time
@@ -46,7 +54,7 @@ def build_gdrive_bridge():
     # Create an httplib2.Http object and authorize it with our credentials
     http = httplib2.Http()
     http = credentials.authorize(http)
-    http = credentials.authorize(http)
+    #http = credentials.authorize(http)
 
     drive_service = build('drive', 'v2', http=http)
     return drive_service, http
@@ -100,3 +108,4 @@ if __name__ == '__main__':
         for project_file in data['files']:
             print project_file['name']
             print project_file['source']
+            # https://developers.google.com/api-client-library/python/ !!
