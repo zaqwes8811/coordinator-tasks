@@ -26,11 +26,21 @@ REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
 
 # Run through the OAuth flow and retrieve credentials
 flow = OAuth2WebServerFlow(CLIENT_ID, CLIENT_SECRET, OAUTH_SCOPE, REDIRECT_URI)
+
+# Нужно открыть в браузере!
+# Далее
 authorize_url = flow.step1_get_authorize_url()
 print 'Go to the following link in your browser: ' + authorize_url
+
+# Ввод кода авторизации
 code = raw_input('Enter verification code: ').strip()
 credentials = flow.step2_exchange(code)
 
 # Create an httplib2.Http object and authorize it with our credentials
 http = httplib2.Http()
 http = credentials.authorize(http)
+http = credentials.authorize(http)
+
+drive_service = build('drive', 'v2', http=http)
+
+# Как понял можно работать с файлами!
