@@ -52,15 +52,17 @@ def build_gdrive_bridge():
     return drive_service, http
 
 
-def retrieve_all_files(service, http_):
+def retrieve_all_files(service):
     """Retrieve a list of File resources.
 
-  Args:
-    service: Drive API service instance.
-  Returns:
-    List of File resources.
-  """
-    result = []
+      Args:
+        service: Drive API service instance.
+      Returns:
+        List of File resources.
+    """
+    SCRIPT_MIME_TYPE = 'application/vnd.google-apps.script'
+    SCRIPT_MIME_TYPE_KEY = 'application/vnd.google-apps.script+json'
+    result = {}
     page_token = None
     while True:
         try:
@@ -69,12 +71,10 @@ def retrieve_all_files(service, http_):
                 param['pageToken'] = page_token
             files = service.files().list(**param).execute()
 
-            result.extend(files['items'])
             for at in files['items']:
-                if at['mimeType'] == 'application/vnd.google-apps.script':
-                    print at['mimeType'], at['title']
-                    export_url = at['exportLinks']['application/vnd.google-apps.script+json']
-                    print http_.request(export_url)
+                if at['mimeType'] == SCRIPT_MIME_TYPE:
+                    # Берем только проекты на чистом JS. Пока. Скрипты могут быть и в SpreadSheets!
+                    result[at['title']] = at['exportLinks'][SCRIPT_MIME_TYPE_KEY]
 
             page_token = files.get('nextPageToken')
             if not page_token:
@@ -88,4 +88,15 @@ def retrieve_all_files(service, http_):
 if __name__ == '__main__':
     # Как понял можно работать с файлами!
     drive_service, http = build_gdrive_bridge()
-    retrieve_all_files(drive_service, http)
+
+    # Можно получать данные из сервиса
+    projects = retrieve_all_files(drive_service)
+
+    # Загружаем файлы
+    for project_name in projects:
+        export_url = projects[project_name]
+        resp, content = http.request(export_url)
+        data = json.loads(content)
+        for project_file in data['files']:
+            print project_file['name']
+            print project_file['source']
