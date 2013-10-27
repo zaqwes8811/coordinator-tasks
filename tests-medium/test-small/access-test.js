@@ -1,8 +1,10 @@
 // Авторизованный доступ и неавторизованный
-var assert = require('chai').assert
+var assert = require('chai').assert;
 var expect = require('chai').expect;
 var _ = require('underscore');
 var qs = require('querystring');
+var suite = require('mocha/lib/suite');
+var test = require('mocha/lib/test');
 
 // Код запросов по http - это как бы фреймворк, запускающий код, поэтому это отдельный класс,
 //   которому передаются функции done
@@ -105,7 +107,8 @@ function testPassBack(done) {
   new Accessor(passwordUrl, login, newPassword).post(payload, actionOnSuccessChangePassword);
 }
 
-    
+  
+/*
 suite('Base access', function() {
   //@Note(base access)
   test('no auth', function(done) {testNoAuthCase(done);});
@@ -118,6 +121,24 @@ suite('Base access', function() {
   test('change password: Password back source', function(done) {testPassBack(done);});
   test('change password: Read by source', function(done) {testAuthCase(done);});
   //@Note(sequence important)
-})
+});
+*/
 
+var assert = require("assert")
+describe('Array', function(){
+  describe('#indexOf()', function(){
+    it('should return -1 when the value is not present', function(){
+      assert.equal(-1, [1,2,3].indexOf(5));
+      assert.equal(-1, [1,2,3].indexOf(0));
+    });
+  });
+});
+
+describe('User', function(){
+  describe('#save()', function(){
+    it('should save without error', function(done){
+        done();
+    });
+  });
+});
 
