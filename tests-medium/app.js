@@ -9,10 +9,16 @@
 var IssuesAccessor = require('./issues-controller').IssuesAccessor;
 //@NoGAS
 var Accessor = require('./web-api-wrapper').Accessor;
+//@NoGAS
+var _ = require('underscore');
 
 function done(error, response, body) {
   var issues = JSON.parse(body)['issues'];
-  console.log(issues)
+  
+  _.each(issues, function(value, key) {
+    // Доступный id - нужны для извлечения комментариев
+    console.log(value['local_id']);
+  });
   
   // Запускаем цепочку переливки
 }
@@ -22,13 +28,13 @@ function run(done) {
   var password = 'a3fs4gd5h';
   
   //var repo_slug = 'decoder-reed-solomon';
-  var repo_slug = "controller-transmitters-rtos";
+  var repo_slug = "controller-transmitters-bugtracker-read-only";
   
   var pathToRepo = 'https://bitbucket.org/api/1.0/repositories/gangsofmart/'+repo_slug;
   var accessor = new Accessor(username, password);
 
   issuesAccessor = new IssuesAccessor(accessor, pathToRepo);
-  issuesAccessor.getPkgIssues(1, 100, done);
+  issuesAccessor.getPkgIssues(0, 3, done);
 }
 
 run(done);
