@@ -5,6 +5,8 @@
 # !http://stackoverflow.com/questions/14286402/google-drive-python-api-resumable-upload-error-401-after-2-hours/14320908#14320908
 __author__ = 'кей'
 
+# https://developers.google.com/apps-script/import-export#import_projects!!!
+
 import httplib2
 import json
 import time
@@ -47,10 +49,10 @@ def build_gdrive_bridge():
     http = credentials.authorize(http)
 
     drive_service = build('drive', 'v2', http=http)
-    return drive_service
+    return drive_service, http
 
 
-def retrieve_all_files(service):
+def retrieve_all_files(service, http_):
     """Retrieve a list of File resources.
 
   Args:
@@ -69,7 +71,11 @@ def retrieve_all_files(service):
 
             result.extend(files['items'])
             for at in files['items']:
-                print at['title']
+                if at['mimeType'] == 'application/vnd.google-apps.script':
+                    print at['mimeType'], at['title']
+                    export_url = at['exportLinks']['application/vnd.google-apps.script+json']
+                    print http_.request(export_url)
+
             page_token = files.get('nextPageToken')
             if not page_token:
                 break
@@ -81,41 +87,5 @@ def retrieve_all_files(service):
 
 if __name__ == '__main__':
     # Как понял можно работать с файлами!
-    drive_service = build_gdrive_bridge()
-    retrieve_all_files(drive_service)
-
-
-def upload_file():
-    # Insert a file
-    media_body = MediaFileUpload('bigfile.zip', mimetype='application/octet-stream', chunksize=1024 * 256,
-                                 resumable=True)
-    body = {
-        'title': 'bigfile.zip',
-        'description': 'Big File',
-        'mimeType': 'application/octet-stream'
-    }
-
-    retries = 0
-    request = drive_service.files().insert(body=body, media_body=media_body)
-    response = None
-    while response is None:
-        try:
-            print http.request.credentials.access_token
-            status, response = request.next_chunk()
-            if status:
-                print "Uploaded %.2f%%" % (status.progress() * 100)
-                retries = 0
-        except errors.HttpError, e:
-            if e.resp.status == 404:
-                print "Error 404! Aborting."
-                exit()
-            else:
-                if retries > 10:
-                    print "Retries limit exceeded! Aborting."
-                    exit()
-                else:
-                    retries += 1
-                    time.sleep(2 ** retries)
-                    print "Error (%d)... retrying." % e.resp.status
-                    continue
-    print "Upload Complete!"
+    drive_service, http = build_gdrive_bridge()
+    retrieve_all_files(drive_service, http)
