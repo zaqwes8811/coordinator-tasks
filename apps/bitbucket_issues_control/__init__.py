@@ -1,6 +1,9 @@
 # coding: utf-8
 """
   Проблемы с python2.6 - VerifiedHTTPSConnection instance has no attribute '_tunnel_host'
+
+  info:
+  http://www.jetbrains.com/pycharm/quickstart/appengine_guide.html
 """
 __author__ = 'кей'
 
