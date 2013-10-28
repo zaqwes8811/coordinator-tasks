@@ -1,5 +1,12 @@
+# coding: utf-8
 """
 Fail: read it https://developers.google.com/appengine/docs/python/gettingstartedpython27/devenvironment
+
+ide - https://developers.google.com/eclipse/docs/running_and_debugging_2_0
+https://developers.google.com/appengine/articles/eclipse !!
+
+Сервисы на gae
+https://developers.google.com/api-client-library/python/guide/google_app_engine
 """
 
 import webapp2
