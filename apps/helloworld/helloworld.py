@@ -8,6 +8,4 @@ class MainPage(webapp2.RequestHandler):
         self.response.write('Hello, World!')
 
 
-application = webapp2.WSGIApplication([
-    ('/', MainPage),
-], debug=True)
+application = webapp2.WSGIApplication([('/', MainPage),], debug=True)
