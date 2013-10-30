@@ -26,16 +26,16 @@
       <file leaf-file-name="app.yaml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/guestbook/app.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="17" selection-start="218" selection-end="218" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="340">
+            <state line="10" column="32" selection-start="160" selection-end="160" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="442">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="guestbook.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="guestbook.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/guestbook/guestbook.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="18" selection-start="376" selection-end="376" vertical-scroll-proportion="0.53125" vertical-offset="136" max-vertical-offset="544">
+            <state line="17" column="0" selection-start="316" selection-end="316" vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="544">
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -43,19 +43,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.yaml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/apps/guestbook/index.yaml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="19" selection-start="91" selection-end="91" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/guestbook/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="5" selection-start="37" selection-end="37" vertical-scroll-proportion="-1.9615384" vertical-offset="0" max-vertical-offset="221">
+            <state line="6" column="8" selection-start="115" selection-end="115" vertical-scroll-proportion="0.2849162" vertical-offset="0" max-vertical-offset="358">
               <folding />
             </state>
           </provider>
@@ -82,10 +73,11 @@
         <option value="$PROJECT_DIR$/apps/helloworld/index.html" />
         <option value="$PROJECT_DIR$/apps/helloworld/helloworld.py" />
         <option value="$PROJECT_DIR$/apps/helloworld/app.yaml" />
-        <option value="$PROJECT_DIR$/apps/guestbook/app.yaml" />
         <option value="$PROJECT_DIR$/apps/guestbook/index.yaml" />
-        <option value="$PROJECT_DIR$/apps/guestbook/index.html" />
         <option value="$PROJECT_DIR$/apps/guestbook/guestbook.py" />
+        <option value="$PROJECT_DIR$/apps/guestbook/stylesheets/main.css" />
+        <option value="$PROJECT_DIR$/apps/guestbook/index.html" />
+        <option value="$PROJECT_DIR$/apps/guestbook/app.yaml" />
       </list>
     </option>
   </component>
@@ -458,33 +450,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/guestbook/app.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="17" selection-start="218" selection-end="218" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="340">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/apps/guestbook/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="5" selection-start="37" selection-end="37" vertical-scroll-proportion="-1.9615384" vertical-offset="0" max-vertical-offset="221">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apps/guestbook/index.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="19" selection-start="91" selection-end="91" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187">
+        <state line="5" column="19" selection-start="91" selection-end="91" vertical-scroll-proportion="0.22135417" vertical-offset="0" max-vertical-offset="384">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/apps/guestbook/guestbook.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="18" selection-start="376" selection-end="376" vertical-scroll-proportion="0.53125" vertical-offset="136" max-vertical-offset="544">
+        <state line="17" column="0" selection-start="316" selection-end="316" vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="544">
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/guestbook/app.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="32" selection-start="160" selection-end="160" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="442">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/guestbook/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="8" selection-start="115" selection-end="115" vertical-scroll-proportion="0.2849162" vertical-offset="0" max-vertical-offset="358">
+          <folding />
         </state>
       </provider>
     </entry>

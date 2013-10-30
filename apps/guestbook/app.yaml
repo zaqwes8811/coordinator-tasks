@@ -5,8 +5,14 @@ api_version: 1
 threadsafe: true
 
 handlers:
+- url: /css
+  static_dir: css
+
+# Обрабатывает оставшиеся адреса
 - url: /.*
   script: guestbook.application
+
+
 
 libraries:
 - name: webapp2
