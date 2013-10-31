@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html data-ng-app="">
 <head>
     <link type="text/css" rel="stylesheet" href="css/main.css" />
   </head>
+<body>
+  Name:
+  <br />
+  <input type="text" data-ng-model="name" />{{ name }}
 
-  <body>
-hello
-
+  <!-- Всегда здесь -->
   <script src="js/angular.min.js"></script>
   </body>
 </html>
