@@ -8,6 +8,9 @@ handlers:
 - url: /css
   static_dir: css
 
+- url: /js
+  static_dir: js
+
 # Обрабатывает оставшиеся адреса
 - url: /.*
   script: guestbook.application
