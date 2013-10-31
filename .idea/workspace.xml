@@ -32,19 +32,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="guestbook.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="guestbook.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/guestbook/guestbook.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="0" selection-start="316" selection-end="316" vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="544">
+            <state line="24" column="39" selection-start="562" selection-end="562" vertical-scroll-proportion="0.43589744" vertical-offset="0" max-vertical-offset="585">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/guestbook/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="44" selection-start="189" selection-end="189" vertical-scroll-proportion="0.24329159" vertical-offset="0" max-vertical-offset="559">
+            <state line="4" column="45" selection-start="156" selection-end="156" vertical-scroll-proportion="-2.6153846" vertical-offset="0" max-vertical-offset="357">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="controllers.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/apps/guestbook/js/controllers.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="3" selection-start="414" selection-end="414" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="289">
               <folding />
             </state>
           </provider>
@@ -60,7 +69,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/google_api_test/__init__.py" />
         <option value="$PROJECT_DIR$/learn_oauth2.py" />
         <option value="$PROJECT_DIR$/web-api-wrapper.js" />
         <option value="$PROJECT_DIR$/bitbucket_issues_control/__init__.py" />
@@ -72,9 +80,10 @@
         <option value="$PROJECT_DIR$/apps/helloworld/helloworld.py" />
         <option value="$PROJECT_DIR$/apps/helloworld/app.yaml" />
         <option value="$PROJECT_DIR$/apps/guestbook/index.yaml" />
-        <option value="$PROJECT_DIR$/apps/guestbook/guestbook.py" />
         <option value="$PROJECT_DIR$/apps/guestbook/stylesheets/main.css" />
         <option value="$PROJECT_DIR$/apps/guestbook/app.yaml" />
+        <option value="$PROJECT_DIR$/apps/guestbook/js/controllers.js" />
+        <option value="$PROJECT_DIR$/apps/guestbook/guestbook.py" />
         <option value="$PROJECT_DIR$/apps/guestbook/index.html" />
       </list>
     </option>
@@ -176,6 +185,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="guestbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tests-medium" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="coordinator-tasks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="apps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="guestbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -466,13 +497,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/guestbook/guestbook.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="0" selection-start="316" selection-end="316" vertical-scroll-proportion="0.0" vertical-offset="160" max-vertical-offset="544">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/apps/guestbook/app.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="15" column="31" selection-start="232" selection-end="232" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
@@ -480,9 +504,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/apps/guestbook/js/controllers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="3" selection-start="414" selection-end="414" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="289">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/apps/guestbook/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="44" selection-start="189" selection-end="189" vertical-scroll-proportion="0.24329159" vertical-offset="0" max-vertical-offset="559">
+        <state line="4" column="45" selection-start="156" selection-end="156" vertical-scroll-proportion="-2.6153846" vertical-offset="0" max-vertical-offset="357">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/apps/guestbook/guestbook.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="39" selection-start="562" selection-end="562" vertical-scroll-proportion="0.43589744" vertical-offset="0" max-vertical-offset="585">
           <folding />
         </state>
       </provider>
