@@ -5,11 +5,12 @@
     <script src="js/angular.min.js"></script>
   </head>
 <body>
-  Name:
-  <br />
-  <input type="text" data-ng-model="name" />{{ name }}
-
-  <!-- Всегда здесь -->
+    <div class="container" data-ng-init="names=['I', 'She', 'He']">
+        <h3>Loop with the ng-repeat</h3>
+        <ul>
+            <li data-ng-repeat="name in names">{{ name }}</li>
+        </ul>
+    </div>
 
   </body>
 </html>

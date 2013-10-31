@@ -32,19 +32,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="guestbook.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="guestbook.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/apps/guestbook/guestbook.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="39" selection-start="562" selection-end="562" vertical-scroll-proportion="0.43589744" vertical-offset="0" max-vertical-offset="585">
+            <state line="24" column="39" selection-start="562" selection-end="562" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="408">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/apps/guestbook/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="45" selection-start="156" selection-end="156" vertical-scroll-proportion="-2.6153846" vertical-offset="0" max-vertical-offset="357">
+            <state line="10" column="57" selection-start="353" selection-end="353" vertical-scroll-proportion="0.3041145" vertical-offset="0" max-vertical-offset="559">
               <folding />
             </state>
           </provider>
@@ -511,16 +511,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/guestbook/index.html">
+    <entry file="file://$PROJECT_DIR$/apps/guestbook/guestbook.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="45" selection-start="156" selection-end="156" vertical-scroll-proportion="-2.6153846" vertical-offset="0" max-vertical-offset="357">
+        <state line="24" column="39" selection-start="562" selection-end="562" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="408">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/apps/guestbook/guestbook.py">
+    <entry file="file://$PROJECT_DIR$/apps/guestbook/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="39" selection-start="562" selection-end="562" vertical-scroll-proportion="0.43589744" vertical-offset="0" max-vertical-offset="585">
+        <state line="10" column="57" selection-start="353" selection-end="353" vertical-scroll-proportion="0.3041145" vertical-offset="0" max-vertical-offset="559">
           <folding />
         </state>
       </provider>
