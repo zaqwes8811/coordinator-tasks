@@ -1,5 +1,6 @@
 import junit.framework.TestCase;
 import org.eclipse.egit.github.core.Issue;
+import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -24,6 +25,10 @@ import java.util.*;
 public class MainTest extends TestCase{
     private final  String USER_NAME = "zaqwes8811";
     private final  String ASDF = "a3fs4gd5h";
+
+    static void print(Object arg) {
+        System.out.println(arg);
+    }
 
     private GitHubClient createAuthClient() {
         // Basic authentication
@@ -53,8 +58,10 @@ public class MainTest extends TestCase{
         Repository repo = service.getRepository(USER_NAME, "in-the-vicinity-cc");
         System.out.println(repo.getName());
 
+        Map<String, String> filter = new HashMap<String, String>();
+        filter.put(IssueService.FILTER_LABELS, "V8 VM");
         IssueService issueService = new IssueService(createAuthClient());
-        PageIterator<Issue> pageIssues = issueService.pageIssues(repo);
+        PageIterator<Issue> pageIssues = issueService.pageIssues(repo, filter);
 
         // За раз читаем всю страницу
         List<Issue> issues = new ArrayList<Issue>();
@@ -65,10 +72,16 @@ public class MainTest extends TestCase{
 
         // Все проблемы прочитаны
         for (final Issue issue: issues) {
-
+            Collection<Label> labels = issue.getLabels();
+            print(issue.getTitle());
+            print("  "+labels);
         }
     }
 
+    @Test
+    public void testCreateIssue() throws Exception {
+
+    }
 
     // Failed
     //Map<String, String> filterData = new HashMap<String, String>();
