@@ -1,6 +1,8 @@
 import junit.framework.TestCase;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.client.RequestException;
+import org.eclipse.egit.github.core.service.GitHubService;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.junit.Test;
@@ -15,14 +17,25 @@ import org.junit.Test;
  * To change this template use File | Settings | File Templates.
  */
 public class MainTest extends TestCase{
-    private final  String userName = "zaqwes8811";
+    private final  String USER_NAME = "zaqwes8811";
+    private final  String ASDF = "a3fs4gd5h";
+
+    private GitHubClient createAuthClient() {
+        // Basic authentication
+        GitHubClient client = new GitHubClient();
+        client.setCredentials(USER_NAME, ASDF);
+        return client;
+    }
     @Test
     public void testMultiply() throws Exception {
-        RepositoryService service = new RepositoryService();
-        for (Repository repo : service.getRepositories(userName)) {
+        RepositoryService service = new RepositoryService(createAuthClient());
+        for (Repository repo : service.getRepositories(USER_NAME)) {
             System.out.println(repo.getName());
             try {
-                System.out.println(new IssueService().getIssue(repo, 1).getAssignee());
+                // Интерфейс не работает
+                IssueService issueService = new IssueService();
+                System.out.println(issueService.getIssue(repo, 1).getAssignee());
+                break;
             } catch (RequestException e) {
                 System.out.println("No issues");
             }
