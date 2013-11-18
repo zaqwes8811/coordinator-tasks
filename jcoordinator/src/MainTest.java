@@ -10,6 +10,7 @@ import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.junit.Test;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,9 +58,11 @@ public class MainTest extends TestCase{
 
         IssueService issueService = new IssueService(createAuthClient());
         PageIterator<Issue> pageIssues = issueService.pageIssues(repo);
+
+        // За раз читаем всю страницу
         while(pageIssues.hasNext()) {
-            Object element = pageIssues.next();
-            System.out.print(element + " ");
+            Collection<Issue> element = pageIssues.next();
+            System.out.print(element);
         }
     }
 
