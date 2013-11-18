@@ -7,6 +7,9 @@ import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 // http://stackoverflow.com/questions/11326045/github-java-api-search-repos
 
 /**
@@ -44,8 +47,11 @@ public class MainTest extends TestCase{
 
     @Test
     public void testIssuesAccess() throws Exception {
-        // Так а куда передать чей репозиторий?
-        //IssueService issueService = new IssueService();
-        //issueService.getIssues();
+        RepositoryService service = new RepositoryService(createAuthClient());
+        Map<String, String> filterData = new HashMap<String, String>();
+        filterData.put(RepositoryService.FIELD_NAME, "slap");
+        for (Repository repo : service.getRepositories(filterData)) {
+            System.out.println(repo.getName());
+        }
     }
 }

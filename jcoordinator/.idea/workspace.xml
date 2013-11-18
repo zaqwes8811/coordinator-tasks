@@ -4,9 +4,9 @@
     <list default="true" id="9387560a-48a7-477c-958d-45d5b6e34649" name="Default" comment="" />
     <ignored path="jcoordinator.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/fragment.java" changelist="9387560a-48a7-477c-958d-45d5b6e34649" time="1384786735527" ignored="false" />
-    <file path="/Dummy.txt" changelist="9387560a-48a7-477c-958d-45d5b6e34649" time="1384786735527" ignored="false" />
-    <file path="/MainTest.java" changelist="9387560a-48a7-477c-958d-45d5b6e34649" time="1384790402794" ignored="false" />
+    <file path="/fragment.java" changelist="9387560a-48a7-477c-958d-45d5b6e34649" time="1384791366668" ignored="false" />
+    <file path="/Dummy.txt" changelist="9387560a-48a7-477c-958d-45d5b6e34649" time="1384791371449" ignored="false" />
+    <file path="/MainTest.java" changelist="9387560a-48a7-477c-958d-45d5b6e34649" time="1384791275430" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,9 +77,10 @@
       <file leaf-file-name="MainTest.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MainTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="0" selection-start="1042" selection-end="1042" vertical-scroll-proportion="0.6553288">
+            <state line="54" column="8" selection-start="2041" selection-end="2041" vertical-scroll-proportion="0.69161">
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1833#1849#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -199,7 +200,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.All in CommandLine">
+  <component name="RunManager" selected="JUnit.MainTest.testIssuesAccess">
     <configuration default="false" name="Main" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -252,14 +253,14 @@
       <patterns />
       <method />
     </configuration>
-    <configuration default="false" name="All in CommandLine" type="JUnit" factoryName="JUnit">
+    <configuration default="false" name="MainTest.testIssuesAccess" type="JUnit" factoryName="JUnit">
       <module name="CommandLine" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" value="" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
+      <option name="MAIN_CLASS_NAME" value="MainTest" />
+      <option name="METHOD_NAME" value="testIssuesAccess" />
+      <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="" />
@@ -276,7 +277,7 @@
     </configuration>
     <list size="2">
       <item index="0" class="java.lang.String" itemvalue="Application.Main" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.All in CommandLine" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.MainTest.testIssuesAccess" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -429,9 +430,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MainTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="0" selection-start="1042" selection-end="1042" vertical-scroll-proportion="0.6553288">
+        <state line="54" column="8" selection-start="2041" selection-end="2041" vertical-scroll-proportion="0.69161">
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1833#1849#0" expanded="true" />
           </folding>
         </state>
       </provider>
