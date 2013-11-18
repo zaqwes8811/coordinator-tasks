@@ -1,6 +1,9 @@
 import junit.framework.TestCase;
+import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
+import org.eclipse.egit.github.core.RepositoryIssue;
 import org.eclipse.egit.github.core.client.GitHubClient;
+import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.client.RequestException;
 import org.eclipse.egit.github.core.service.GitHubService;
 import org.eclipse.egit.github.core.service.IssueService;
@@ -8,6 +11,7 @@ import org.eclipse.egit.github.core.service.RepositoryService;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 // http://stackoverflow.com/questions/11326045/github-java-api-search-repos
@@ -48,10 +52,19 @@ public class MainTest extends TestCase{
     @Test
     public void testIssuesAccess() throws Exception {
         RepositoryService service = new RepositoryService(createAuthClient());
-        Map<String, String> filterData = new HashMap<String, String>();
-        filterData.put(RepositoryService.FIELD_NAME, "slap");
-        for (Repository repo : service.getRepositories(filterData)) {
-            System.out.println(repo.getName());
+        Repository repo = service.getRepository(USER_NAME, "in-the-vicinity-cc");
+        System.out.println(repo.getName());
+
+        IssueService issueService = new IssueService(createAuthClient());
+        PageIterator<Issue> pageIssues = issueService.pageIssues(repo);
+        while(pageIssues.hasNext()) {
+            Object element = pageIssues.next();
+            System.out.print(element + " ");
         }
     }
+
+
+    // Failed
+    //Map<String, String> filterData = new HashMap<String, String>();
+    //filterData.put(RepositoryService.FIELD_NAME, "slap");
 }
