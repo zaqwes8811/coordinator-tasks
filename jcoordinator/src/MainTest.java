@@ -10,10 +10,7 @@ import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.junit.Test;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 // http://stackoverflow.com/questions/11326045/github-java-api-search-repos
 
@@ -60,9 +57,15 @@ public class MainTest extends TestCase{
         PageIterator<Issue> pageIssues = issueService.pageIssues(repo);
 
         // За раз читаем всю страницу
+        List<Issue> issues = new ArrayList<Issue>();
         while(pageIssues.hasNext()) {
-            Collection<Issue> element = pageIssues.next();
-            System.out.print(element);
+            Collection<Issue> page = pageIssues.next();
+            issues.addAll(page);
+        }
+
+        // Все проблемы прочитаны
+        for (final Issue issue: issues) {
+
         }
     }
 
