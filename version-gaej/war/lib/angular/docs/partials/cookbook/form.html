@@ -49,7 +49,7 @@ allow a user to enter data.</p>
     function FormController($scope) {
       var user = $scope.user = {
         name: 'John Smith',
-        address:{line1: '123 Main St.', city:'Anytown', state:'AA', zip:'12345'},
+        address:{line1: '123 external_services.GithubBaseAuth St.', city:'Anytown', state:'AA', zip:'12345'},
         contacts:[{type:'phone', value:'1(234) 555-1212'}]
       };
       $scope.state = /^\w\w$/;

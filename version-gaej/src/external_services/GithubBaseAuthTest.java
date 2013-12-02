@@ -1,3 +1,5 @@
+package external_services;
+
 import junit.framework.TestCase;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Label;
@@ -14,7 +16,7 @@ import java.util.*;
 // http://stackoverflow.com/questions/11326045/github-java-api-search-repos
 
 
-public class MainTest extends TestCase {
+public class GithubBaseAuthTest extends TestCase {
     private final  String USER_NAME = "zaqwes8811";
     private final  String ASDF = "a3fs4gd5h";
 
@@ -79,7 +81,4 @@ public class MainTest extends TestCase {
     public void testOAth20Github() throws Exception {
 
     }
-    // Failed
-    //Map<String, String> filterData = new HashMap<String, String>();
-    //filterData.put(RepositoryService.FIELD_NAME, "slap");
 }
