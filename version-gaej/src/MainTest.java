@@ -13,13 +13,7 @@ import java.util.*;
 
 // http://stackoverflow.com/questions/11326045/github-java-api-search-repos
 
-/**
- * Created with IntelliJ IDEA.
- * User: zaqwes_user
- * Date: 18.11.13
- * Time: 18:58
- * To change this template use File | Settings | File Templates.
- */
+
 public class MainTest extends TestCase {
     private final  String USER_NAME = "zaqwes8811";
     private final  String ASDF = "a3fs4gd5h";
