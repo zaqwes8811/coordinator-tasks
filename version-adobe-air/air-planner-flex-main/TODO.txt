@@ -1,0 +1,28 @@
+﻿Сперва сделать типа платформы, чтобы можно было 
+  пользуясь ее функциями лепить приложения
+  
+  
+thinks :
+  Понятия :
+	активное окно - 
+	нулевой ключ - ..xx00 - xx - дата с точностью до минут в формате
+	  20/10-01-12 16:12 -> 100121612yy
+
+
+/* 
+	  var map:MultiValueMap = new MultiValueMap();
+	  
+      map.put("key1" , "value1");
+      map.put("key1" , "value2");
+	  map.put("key1" , "value1");
+	    // похоже как добалял так лежать и будут
+		// т.е. не упорадочиваются при добавлении
+	  
+      map.put("key2" , "value3");
+	  map.put("key1" , "value1");
+      
+      trace( map ); trace( map.get("key1") );
+	  var arr:ArrayCollection = map.get("key1");
+	  var arrStd:Array = arr.toArray();
+
+	  // trace(arrStd.lentgh);*/

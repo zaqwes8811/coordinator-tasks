@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication 
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+    xmlns:mx="library://ns.adobe.com/flex/mx"	
+	xmlns:MyComp="mxml_src.*" 
+	creationComplete="init()">
+	
+<!-- for Air -->
+
+  <!-- Specify the ActionScript file that contains the function. -->
+	<fx:Script>
+    <![CDATA[
+	import as_src.PIView;
+	import flash.events.MouseEvent;
+	import flash.events.Event;
+	import mx.containers.GridItem;
+	import mx.containers.GridRow;
+	import mx.controls.Button;
+	import mx.skins.halo.ButtonSkin;
+    import spark.components.HGroup;
+			
+	
+			
+	// Свойства
+    private var _piv:PIView = new PIView();
+
+	// при инициализации подписываемя на сообщения
+	private function init() : void {
+		// операции при нажатии
+		//op.CreateButton.addEventListener(MouseEvent.CLICK, _piv.onCreate);
+		//op.ReadButton.addEventListener(MouseEvent.CLICK, _piv.onRead);
+		//op.UpdateButton.addEventListener(MouseEvent.CLICK, _piv.onUpdate);
+		//_piv.getPanelAtrLink( op, ap, cp );  // передача панелей интерфейса
+	}
+	
+	]]>
+	</fx:Script>
+	
+	<fx:Style>
+        @namespace s "library://ns.adobe.com/flex/spark";  
+        @namespace mx "library://ns.adobe.com/flex/mx";
+        .gradientBackground2  { 
+            fontStyle: italic;
+            fontSize: 10;
+		borderStyle: applicationControlBar; 
+		  fillColors: #FF0000, #0000ff; 
+		  fillAlphas: 0.7, 0.7; 
+		  highlightAlphas: 0, 0; 
+		}
+    </fx:Style>
+	<fx:Style>
+		.gradientBackground {}
+	</fx:Style>
+ 
+<!-- Горизонтальная на три элемента-->
+<mx:Grid id="MainGrid">
+  <mx:GridRow>
+    <mx:GridItem>
+		
+	<!-- Сетка -->
+	<fx:Script>
+    <![CDATA[ 
+		private var upLabel:String = "Вверх";  // пока не удалось передать компаненту
+	
+	]]>
+	</fx:Script>
+    <mx:VBox verticalGap="0">
+		<mx:Button width="100%" id="upButton" label= "В будущее" horizontalCenter="0"
+			click="onUp()" />
+		
+		<!-- сетка создаваемая статически, но заполняемая динамически -->
+        <mx:Grid creationComplete="initGrid()" id="myGrid" horizontalGap="0" verticalGap="0"/> 
+		
+        <mx:Button id="downButton" label="В прошлое"  horizontalCenter="0" width="100%" 
+			 click="onDown()" />
+		
+        <!-- Панель с ключем и операций с данными по ключу - ->	
+		<MyComp:OperatingPanel styleName="gradientBackground2" id="op" /> -->
+	</mx:VBox>
+	
+	<!-- engine -->
+	<fx:Script>
+    <![CDATA[ 
+	// import - довольно долгая операция
+	//import flash.events.MouseEvent;
+	//import flash.events.Event;
+	//import mx.containers.GridItem;
+	//import mx.containers.GridRow;
+	//import mx.controls.Button;
+		
+	private var arrarr:Array = new Array();
+		// массив кнопок для получения быстрого доступа к ним
+		
+	// Константы
+	private var NUM_ROWS:int = 9;  // число недель
+	private var NUM_DAYS:int = 7;  // число недель
+	
+	// создает кнопки
+	private function initGrid() : void	{
+		//trace(downButton.setStyle("fillAlphas", [1.0, 0.4]));
+        //trace(downButton.setStyle("fillColors", ["haloBlue", "haloGreen"]));
+		// заполнение сетки датами
+		for (var i:int = 0; i < NUM_ROWS; i++ ) {
+			// создаем новый ряд
+			var gr:GridRow = new GridRow();
+			var ar:Array = new Array();
+			// заполнение ячейки 
+			for (var j:int = 0; j < NUM_DAYS; j++) {
+				var gr_item:GridItem = new GridItem();
+				
+				// настройка кнопки
+				var gr_cell:Button = new Button();
+				gr_cell.addEventListener(MouseEvent.CLICK, onButtonClick);
+				gr_cell.label = ((i*7+j)%31+1).toString();
+				gr_cell.width = 35;	gr_cell.height = 25;
+				
+				// добавляем кнопку в управляющий массив
+				ar.push(gr_cell);
+				
+				// упаковка кнопки в элемент
+			    gr_item.addElement( gr_cell );
+			  
+			    // добавляем элемент в ряд
+			    gr.addElement( gr_item );
+			}
+			arrarr.push(ar);
+			  
+			// теперь вставляем ряд в сетку
+			myGrid.addElement( gr );
+		}
+		
+		// заполняем карту кнопок цветом
+		fillMonthColor();
+	}
+		
+	///
+	private function onButtonClick(e:Event) : void	{
+		// выводим код нажатия клавиши
+		var itemText:String = e.currentTarget.label
+		if( itemText.length == 1 ) {
+			itemText = "0"+itemText;
+		}
+
+		// Доращиваем до полного ключа 
+		itemText = "1203"+itemText+"1234";
+
+		// Показываем итоговый ключ
+		trace(itemText);
+	}
+	
+	// нажатие кнопкт вниз
+	private function onUp() : void {
+		// сдвигаем - пока в предположении, что все месяцы по 31 дню
+		for (var i:int = 0; i < NUM_ROWS; i++ ) {
+			for (var j:int = 0; j < NUM_DAYS; j++) {
+				var labelStr:String = arrarr[i][j].label;
+				//arrarr[i][j]
+				var labelInt:int = int(labelStr);
+				arrarr[i][j].label = ((labelInt+7-1) % 31 +1).toString();
+			}
+		}
+
+		// заполняем цветом
+		fillMonthColor();
+		
+		//  проверка на перескок
+		toSkip(true);
+	}
+	
+	// нажатие кнопкт вверх
+	private function onDown() : void {
+		
+		// сдвигаем - пока в предположении, что все месяцы по 31 дню
+		for (var i:int = 0; i < NUM_ROWS; i++ ) {
+			for (var j:int = 0; j < NUM_DAYS; j++) {
+				var labelStr:String = arrarr[i][j].label;
+				//arrarr[i][j]
+				var labelInt:int = int(labelStr);
+				arrarr[i][j].label = ((labelInt-7-1+31) % 31+1).toString();
+			}
+		}
+
+		// порядок важен
+		// заполняем цветом
+		fillMonthColor();
+		
+		//  проверка на перескок
+		toSkip(false);
+	}
+	
+	// раскрашивает месяца в разные цвета
+	// одновременно можно увидеть максимум три месяца
+	//private var month:int = 0;  // 0 - заполняем первый месяц 1 - 2, 2 - 3
+	private var colorArray:Array = new Array("red", "blue", "green");
+	private function fillMonthColor() : void{
+		// перебираем элементы
+		var month:int = 0;  // 0 - заполняем первый месяц 1 - 2, 2 - 3
+
+		//
+		for (var i:int = 0; i < NUM_ROWS; i++ ) {
+			for (var j:int = 0; j < NUM_DAYS; j++) {
+				
+				// читаме надпись на элементе и переводим в целое число
+				var labelInt:int = int( arrarr[i][j].label );
+				
+				// исходя из этого числа заполнчем цветом
+				if (labelInt == 1) { 
+					if ( j+i != 0 )  // первый нужно отбросить
+						//month = 0;
+						month++;
+				}
+				if(month == 0){
+					arrarr[i][j].setStyle("fillColors", [colorArray[0], "haloOrange"]);
+				}
+				if(month == 1){
+					arrarr[i][j].setStyle("fillColors", [colorArray[1], "haloOrange"]);
+				}
+				if(month == 2){
+					arrarr[i][j].setStyle("fillColors", [colorArray[2], "haloOrange"]);
+					
+				}
+				arrarr[i][j].setStyle("skin", ButtonSkin);
+			}
+		}  // for (var i:..
+		month = 0;
+		
+		// сдвигаем массив цветов, если нужно
+	}
+	
+	// проверка перескока
+	//  || arrarr[NUM_ROWS-1][j].label == "1" 
+	public function toSkip(up:Boolean) : void {
+		for (var j:int = 0; j < NUM_DAYS; j++) {
+			if(up){
+				if (arrarr[0][j].label == "1") {
+					var bufBegin:String = colorArray[0];
+					colorArray[0] = colorArray[1];
+					colorArray[1] = colorArray[2];
+					colorArray[2] = bufBegin;
+					break;
+				}
+			}
+			else {
+				if (arrarr[NUM_ROWS-1][j].label == "1") {
+					var bufEnd:String = colorArray[2];
+					colorArray[2] = colorArray[1];
+					colorArray[1] = colorArray[0];
+					colorArray[0] = bufEnd;
+					break;
+				}	
+			}
+		}  // for (va..
+		trace(colorArray);
+	}
+	]]>
+	</fx:Script>
+	
+	
+    </mx:GridItem>
+  </mx:GridRow>
+  <!-- Панель атрибутов сообщения и контента - ->
+  <mx:GridRow>
+	<!- - Содержание заметки - ->
+	<mx:GridItem> 
+		<mx:HBox>
+      <MyComp:ContentPanel id="cp"/>
+	<!- - Панель с атрибутами - ->
+      <MyComp:AttributesPanel id="ap"/>
+	  </mx:HBox>
+    </mx:GridItem>
+  </mx:GridRow>
+  -->
+</mx:Grid> 
+
+<!-- for Air -->
+</s:WindowedApplication>
