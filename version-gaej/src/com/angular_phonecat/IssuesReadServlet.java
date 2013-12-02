@@ -7,7 +7,7 @@ import java.io.IOException;
 
 
 @SuppressWarnings("serial")
-public class Gae_java_templateServlet extends HttpServlet {
+public class IssuesReadServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		resp.setContentType("text/plain");

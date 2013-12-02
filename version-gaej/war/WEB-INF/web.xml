@@ -6,7 +6,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
 		<servlet-name>Gae_java_template</servlet-name>
-		<servlet-class>com.angular_phonecat.Gae_java_templateServlet</servlet-class>
+		<servlet-class>com.angular_phonecat.IssuesReadServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Gae_java_template</servlet-name>
