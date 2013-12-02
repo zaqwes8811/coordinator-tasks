@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="slf4j-api-1.6.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../third_party/java/oathX/org.apache.oltu.oauth2.client-0.31-bin/org.apache.oltu.oauth2.client-0.31/lib/slf4j-api-1.6.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../third_party/java/oathX/org.apache.oltu.oauth2.client-0.31-bin/org.apache.oltu.oauth2.client-0.31/lib/org.apache.oltu.oauth2.common-0.31.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../third_party/java/oathX/org.apache.oltu.oauth2.client-0.31-bin/org.apache.oltu.oauth2.client-0.31/lib/org.apache.oltu.oauth2.client-0.31.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../third_party/java/oathX/org.apache.oltu.oauth2.client-0.31-bin/org.apache.oltu.oauth2.client-0.31/lib/jettison-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../third_party/java/oathX/org.apache.oltu.oauth2.client-0.31-bin/org.apache.oltu.oauth2.client-0.31/lib/commons-codec-1.8.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
