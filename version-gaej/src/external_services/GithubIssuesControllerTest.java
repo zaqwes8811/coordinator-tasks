@@ -1,18 +1,16 @@
 package external_services;
 
 import junit.framework.TestCase;
-import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.client.RequestException;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.List;
 
 public class GithubIssuesControllerTest extends TestCase {
+  //@DummyTest
   @Test
   public void testMultiply() throws Exception {
     RepositoryService service = new RepositoryService(new GithubBaseAuth().createBasicAuthClient());
@@ -24,31 +22,19 @@ public class GithubIssuesControllerTest extends TestCase {
       } catch (RequestException e) {
         // 404 например
       }
+      break;
     }
   }
 
+  //@DummyTest
   @Test
-  public void testIssuesAccess() throws Exception {
-    RepositoryService service = new RepositoryService(new GithubBaseAuth().createBasicAuthClient());
-    Repository repo = service.getRepository(GithubBaseAuth.USER_NAME, "in-the-vicinity-cc");
+  public void testGetTitlesClosedIn() throws Exception {
+    String repoName = "in-the-vicinity-cc";
+    GithubIssuesController controller =
+        new GithubIssuesController(
+            new GithubBaseAuth().createBasicAuthClient(), "V8 VM");
 
-    Map<String, String> filter = new HashMap<String, String>();
-    filter.put(IssueService.FILTER_LABELS, "V8 VM");
-    IssueService issueService = new IssueService(new GithubBaseAuth().createBasicAuthClient());
-    PageIterator<Issue> pageIssues = issueService.pageIssues(repo, filter);
-
-    // За раз читаем всю страницу
-    List<Issue> issues = new ArrayList<Issue>();
-    while(pageIssues.hasNext()) {
-      Collection<Issue> page = pageIssues.next();
-      issues.addAll(page);
-    }
-
-    // Все проблемы прочитаны
-    for (final Issue issue: issues) {
-      Collection<Label> labels = issue.getLabels();
-      assertEquals(false, issue.getTitle().equals(null));
-      assertEquals(false, labels.equals(null));
-    }
+    List<String> titles = controller.getTitlesClosedIn(repoName);
+    assertEquals(false, titles.isEmpty());
   }
 }
