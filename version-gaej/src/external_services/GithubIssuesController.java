@@ -1,5 +1,6 @@
 package external_services;
 
+import com.google.common.cache.Cache;
 import org.eclipse.egit.github.core.Issue;
 import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.PageIterator;
@@ -7,25 +8,27 @@ import org.eclipse.egit.github.core.service.IssueService;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 // About:
 //   Работает с issues конкретного, в данном случае, Github-багтрекера.
 public class GithubIssuesController {
   private final IssueService SERVICE_;
   private final Repository REPOSITORY_;
+  private final Cache<String, Integer> COUNT_CACHE_;
 
-  GithubIssuesController(IssueService issueService, Repository repo) {
+  GithubIssuesController(
+      IssueService issueService,
+      Repository repo,
+      Cache<String, Integer> countCache) {
     SERVICE_ = issueService;
     REPOSITORY_ = repo;
+    COUNT_CACHE_ = countCache;
   }
 
-  public List<String> getTitlesOfClosed(String labelsFilter) throws IOException {
-    // Make request filter.
-    Map<String, String> filter = new HashMap<String, String>();
-    filter.put(IssueService.FILTER_LABELS, labelsFilter);
-    filter.put(IssueService.FILTER_STATE, IssueService.STATE_CLOSED);
-
-
+  public List<String> getFiltered(Map<String, String> filter)
+      throws IOException {
     PageIterator<Issue> pageIssues = SERVICE_.pageIssues(REPOSITORY_, filter);
 
     // За раз читаем всю страницу
@@ -55,7 +58,25 @@ public class GithubIssuesController {
     return issues;
   }
 
-  public int getCountNote() {
-    return 0;
+  // Troubles:
+  //   При любый операциях возникают проблемы целостности инвариантов.
+  //   Если кешировать, то будет проблемы следующего рода.
+  //     - в время итерация были добавлены проблемы, или же удалены.
+  //
+  // Constraints:
+  //   Can get only note.
+  //
+  // Solution:
+  //   Значение будет кешироваться, и учитывая его будет рассматриваться замороженная система
+  //     на время пока значение не будет вытолкнуто из кеша.
+  public Integer getCountNote() throws ExecutionException {
+    String key = "count_issues";
+    return COUNT_CACHE_.get(key, new Callable<Integer>() {
+      @Override
+      public Integer call() throws Exception {
+        List<Issue> issues = getAll();
+        return issues.size();
+      }
+    });
   }
 }
