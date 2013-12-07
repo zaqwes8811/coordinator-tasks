@@ -33,7 +33,7 @@ public class GithubRepoIssuesControllerTest extends TestCase {
     IssueService issueService = new IssueService(client);
 
     Cache<String, Integer> countCache = CacheBuilder.newBuilder()
-        .maximumSize(1)
+        .maximumSize(2)
         .expireAfterAccess(10, TimeUnit.SECONDS)
         .build();
 

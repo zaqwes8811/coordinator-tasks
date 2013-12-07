@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 public class GithubRepoIssuesController {
   private final IssueService service_;
   private final Repository repository_;
-  private final Cache<String, Integer> COUNT_CACHE_;
+  private final Cache<String, Integer> countCache_;
   private final Cache<Integer, Issue> issueCache_;
 
   GithubRepoIssuesController(
@@ -26,7 +26,7 @@ public class GithubRepoIssuesController {
       Cache<Integer, Issue> issuesCache) {
     service_ = issueService;
     repository_ = repo;
-    COUNT_CACHE_ = countCache;
+    countCache_ = countCache;
     issueCache_ = issuesCache;
   }
 
@@ -104,7 +104,7 @@ public class GithubRepoIssuesController {
   //     на время пока значение не будет вытолкнуто из кеша.
   public Integer getCountNote() throws ExecutionException {
     String key = "count_issues";
-    return COUNT_CACHE_.get(key, new Callable<Integer>() {
+    return countCache_.get(key, new Callable<Integer>() {
       @Override
       public Integer call() throws Exception {
         List<Issue> issues = getAllDirect();
