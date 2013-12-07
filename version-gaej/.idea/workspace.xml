@@ -8,7 +8,7 @@
     <file path="/Dummy.txt" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386433014739" ignored="false" />
     <file path="/GithubBaseAuth.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386005557673" ignored="false" />
     <file path="/GithubBaseAuthTest.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386005629841" ignored="false" />
-    <file path="/GithubIssuesController.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386435882756" ignored="false" />
+    <file path="/GithubIssuesController.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386435953377" ignored="false" />
     <file path="$PROJECT_DIR$/war/WEB-INF/web.xml" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386006081379" ignored="false" />
     <file path="/GithubIssuesControllerTest.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386435842594" ignored="false" />
     <file path="/UseGuavaCacheTest.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386342382470" ignored="false" />
@@ -84,10 +84,10 @@
       <file leaf-file-name="GithubIssuesController.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/external_services/GithubIssuesController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="50" selection-start="795" selection-end="795" vertical-scroll-proportion="0.4473684">
+            <state line="51" column="33" selection-start="1590" selection-end="1590" vertical-scroll-proportion="0.48872182">
               <folding>
-                <element signature="e#2480#2651#0" expanded="true" />
-                <element signature="e#2644#2645#0" expanded="true" />
+                <element signature="e#2486#2663#0" expanded="true" />
+                <element signature="e#2656#2657#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -416,7 +416,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24959481" sideWeight="0.66270787" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33729216" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33729216" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32897863" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -511,8 +511,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="26" column="27" selection-start="942" selection-end="942" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#2480#2651#0" expanded="true" />
-            <element signature="e#2644#2645#0" expanded="true" />
+            <element signature="e#2486#2663#0" expanded="true" />
+            <element signature="e#2656#2657#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -544,8 +544,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="26" column="27" selection-start="942" selection-end="942" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#2480#2651#0" expanded="true" />
-            <element signature="e#2644#2645#0" expanded="true" />
+            <element signature="e#2486#2663#0" expanded="true" />
+            <element signature="e#2656#2657#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -608,10 +608,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/external_services/GithubIssuesController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="50" selection-start="795" selection-end="795" vertical-scroll-proportion="0.4473684">
+        <state line="51" column="33" selection-start="1590" selection-end="1590" vertical-scroll-proportion="0.48872182">
           <folding>
-            <element signature="e#2480#2651#0" expanded="true" />
-            <element signature="e#2644#2645#0" expanded="true" />
+            <element signature="e#2486#2663#0" expanded="true" />
+            <element signature="e#2656#2657#0" expanded="true" />
           </folding>
         </state>
       </provider>

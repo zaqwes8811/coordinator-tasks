@@ -54,7 +54,7 @@ public class GithubIssuesControllerTest extends TestCase {
   public void testGetAllIssues() throws Exception {
     GithubIssuesController controller = build();
 
-    List<Issue> issues = controller.getAll();
+    List<Issue> issues = controller.getAllDirect();
     assertFalse(issues.isEmpty());
 
     // Можно проверить, что индексы все.

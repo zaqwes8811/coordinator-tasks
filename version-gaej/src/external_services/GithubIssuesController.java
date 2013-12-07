@@ -49,7 +49,7 @@ public class GithubIssuesController {
     return result;
   }
 
-  public List<Issue> getAll() throws IOException {
+  public List<Issue> getAllDirect() throws IOException {
     PageIterator<Issue> issuesIterator = SERVICE_.pageIssues(REPOSITORY_);
 
     // За раз читаем всю страницу
@@ -77,7 +77,7 @@ public class GithubIssuesController {
     return COUNT_CACHE_.get(key, new Callable<Integer>() {
       @Override
       public Integer call() throws Exception {
-        List<Issue> issues = getAll();
+        List<Issue> issues = getAllDirect();
         return issues.size();
       }
     });
