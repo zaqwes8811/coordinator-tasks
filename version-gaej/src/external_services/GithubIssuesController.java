@@ -15,23 +15,21 @@ import java.util.*;
 //   Работает с issues конкретного, в данном случае, Github-багтрекера.
 public class GithubIssuesController {
   private final GitHubClient CLIENT_;
-
-  // TODO: Похоже за раз можно фильтровать только по одной метке
-  private final String FILTER_LABEL_;
-  GithubIssuesController(GitHubClient client, String filterLabel) {
+  private final String REPO_NAME_;
+  GithubIssuesController(GitHubClient client, String repoName) {
     CLIENT_ = client;
-    FILTER_LABEL_ = filterLabel;
+    REPO_NAME_ = repoName;
   }
 
-  public List<String> getTitlesClosedIn(String repoName) throws IOException {
+  public List<String> getTitlesClosedIn(String labelsFilter) throws IOException {
     // Make request filter.
     Map<String, String> filter = new HashMap<String, String>();
-    filter.put(IssueService.FILTER_LABELS, FILTER_LABEL_);
+    filter.put(IssueService.FILTER_LABELS, labelsFilter);
     filter.put(IssueService.FILTER_STATE, IssueService.STATE_CLOSED);
 
     // Real work with service.
     RepositoryService service = new RepositoryService(CLIENT_);
-    Repository repo = service.getRepository(GithubBaseAuth.USER_NAME, repoName);
+    Repository repo = service.getRepository(GithubBaseAuth.USER_NAME, REPO_NAME_);
 
     IssueService issueService = new IssueService(CLIENT_);
     PageIterator<Issue> pageIssues = issueService.pageIssues(repo, filter);
@@ -49,5 +47,22 @@ public class GithubIssuesController {
       result.add(issue.getTitle());
     }
     return result;
+  }
+
+  public List<Issue> getAllIssues() throws IOException {
+    // Real work with service.
+    RepositoryService service = new RepositoryService(CLIENT_);
+    Repository repo = service.getRepository(GithubBaseAuth.USER_NAME, REPO_NAME_);
+
+    IssueService issueService = new IssueService(CLIENT_);
+    PageIterator<Issue> issuesIterator = issueService.pageIssues(repo);
+
+    // За раз читаем всю страницу
+    List<Issue> issues = new ArrayList<Issue>();
+    while(issuesIterator.hasNext()) {
+      Collection<Issue> page = issuesIterator.next();
+      issues.addAll(page);
+    }
+    return issues;
   }
 }
