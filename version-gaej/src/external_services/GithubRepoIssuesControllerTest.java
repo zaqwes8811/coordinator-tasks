@@ -8,17 +8,23 @@ import org.eclipse.egit.github.core.Repository;
 import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.BlockJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
-public class GithubIssuesControllerTest extends TestCase {
+@RunWith(value = BlockJUnit4ClassRunner.class)
+public class GithubRepoIssuesControllerTest extends TestCase {
   private final String REPO_NAME_ = "coordinator-tasks";
 
-  private GithubIssuesController build() throws IOException {
+  private GithubRepoIssuesController build() throws IOException {
     // Real work with service.
     GitHubClient client =  new GithubBaseAuth().createBasicAuthClient();
     RepositoryService service = new RepositoryService(client);
@@ -33,14 +39,14 @@ public class GithubIssuesControllerTest extends TestCase {
         .maximumSize(1000)
         .build();
 
-    GithubIssuesController controller =
-        new GithubIssuesController(issueService, repo, countCache, issuesCache);
+    GithubRepoIssuesController controller =
+        new GithubRepoIssuesController(issueService, repo, countCache, issuesCache);
     return controller;
   }
 
   @Test
   public void testGetTitlesClosedIn() throws Exception {
-    GithubIssuesController controller = build();
+    GithubRepoIssuesController controller = build();
 
     // Make request filter.
     Map<String, String> filter = new HashMap<String, String>();
@@ -52,7 +58,7 @@ public class GithubIssuesControllerTest extends TestCase {
 
   @Test
   public void testGetAllIssues() throws Exception {
-    GithubIssuesController controller = build();
+    GithubRepoIssuesController controller = build();
 
     List<Issue> issues = controller.getAllDirect();
     assertFalse(issues.isEmpty());
@@ -62,11 +68,28 @@ public class GithubIssuesControllerTest extends TestCase {
 
   @Test
   public void testGetCountNote() throws Exception {
-    GithubIssuesController controller = build();
+    GithubRepoIssuesController controller = build();
 
     Integer count = controller.getCountNote();
     assertFalse(count.equals(0));
     count = controller.getCountNote();
     assertFalse(count.equals(0));
   }
+
+  @Test
+  public void testGetIssue() throws Exception {
+    GithubRepoIssuesController controller = build();
+
+    Issue count = controller.getIssue(1);
+    assertFalse(count.equals(0));
+    count = controller.getIssue(1);
+    assertFalse(count.equals(0));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetIssueZero() throws IOException, ExecutionException {
+    GithubRepoIssuesController controller = build();
+    Issue count = controller.getIssue(0);
+  }
+
 }

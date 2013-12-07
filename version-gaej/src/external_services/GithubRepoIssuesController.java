@@ -13,26 +13,26 @@ import java.util.concurrent.ExecutionException;
 
 // About:
 //   Работает с issues конкретного, в данном случае, Github-багтрекера.
-public class GithubIssuesController {
-  private final IssueService SERVICE_;
-  private final Repository REPOSITORY_;
+public class GithubRepoIssuesController {
+  private final IssueService service_;
+  private final Repository repository_;
   private final Cache<String, Integer> COUNT_CACHE_;
-  private final Cache<Integer, Issue> ISSUES_CACHE_;
+  private final Cache<Integer, Issue> issueCache_;
 
-  GithubIssuesController(
+  GithubRepoIssuesController(
       IssueService issueService,
       Repository repo,
       Cache<String, Integer> countCache,
       Cache<Integer, Issue> issuesCache) {
-    SERVICE_ = issueService;
-    REPOSITORY_ = repo;
+    service_ = issueService;
+    repository_ = repo;
     COUNT_CACHE_ = countCache;
-    ISSUES_CACHE_ = issuesCache;
+    issueCache_ = issuesCache;
   }
 
   public List<String> getFiltered(Map<String, String> filter)
       throws IOException {
-    PageIterator<Issue> pageIssues = SERVICE_.pageIssues(REPOSITORY_, filter);
+    PageIterator<Issue> pageIssues = service_.pageIssues(repository_, filter);
 
     // За раз читаем всю страницу
     List<Issue> issues = new ArrayList<Issue>();
@@ -49,8 +49,20 @@ public class GithubIssuesController {
     return result;
   }
 
+  public Issue getIssue(final Integer number) throws ExecutionException {
+    if (number <= 0 || number > getCountNote())
+      throw new IllegalArgumentException();
+
+    return issueCache_.get(number, new Callable<Issue>() {
+       @Override
+       public Issue call() throws Exception {
+         return service_.getIssue(repository_, number);
+       }
+    });
+  }
+
   public List<Issue> getAllDirect() throws IOException {
-    PageIterator<Issue> issuesIterator = SERVICE_.pageIssues(REPOSITORY_);
+    PageIterator<Issue> issuesIterator = service_.pageIssues(repository_);
 
     // За раз читаем всю страницу
     List<Issue> issues = new ArrayList<Issue>();
