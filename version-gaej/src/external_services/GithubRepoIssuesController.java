@@ -55,7 +55,9 @@ public class GithubRepoIssuesController {
   // Troubles:
   //   Очень долго даже для 20 задач.
   public List<Issue> getAll() throws ExecutionException {
+    // Возможно перезагружает кеш
     Integer countNow = getCountNote();
+
     List<Issue> issues = new ArrayList<Issue>();
     for (Integer i = 0+1; i < countNow+1; i++) {
       issues.add(getIssue(i));
@@ -106,7 +108,13 @@ public class GithubRepoIssuesController {
       @Override
       public Integer call() throws Exception {
         List<Issue> issues = getAllDirect();
+
         // Похоже придется их вставить в кеш!
+        // TODO: Не очень хорошо, но иначе очень медленно!
+        for (Issue issue: issues) {
+          issueCache_.put(issue.getNumber(), issue);
+        }
+
         return issues.size();
       }
     });

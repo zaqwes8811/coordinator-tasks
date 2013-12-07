@@ -12,8 +12,8 @@
     <file path="$PROJECT_DIR$/war/WEB-INF/web.xml" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386006081379" ignored="false" />
     <file path="/GithubIssuesControllerTest.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386437536549" ignored="false" />
     <file path="/UseGuavaCacheTest.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386342382470" ignored="false" />
-    <file path="/GithubRepoIssuesController.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386438230459" ignored="false" />
-    <file path="/GithubRepoIssuesControllerTest.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386438090520" ignored="false" />
+    <file path="/GithubRepoIssuesController.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386438674146" ignored="false" />
+    <file path="/GithubRepoIssuesControllerTest.java" changelist="d9988190-1e26-412c-a90b-b3378f4f218a" time="1386438598085" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,13 +75,13 @@
       <file leaf-file-name="GithubRepoIssuesController.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/external_services/GithubRepoIssuesController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="108" column="45" selection-start="3433" selection-end="3433" vertical-scroll-proportion="0.68045115">
+            <state line="112" column="58" selection-start="3528" selection-end="3528" vertical-scroll-proportion="0.58458644">
               <folding>
-                <element signature="e#1808#1815#0" expanded="true" />
-                <element signature="e#2160#2317#0" expanded="true" />
-                <element signature="e#2310#2311#0" expanded="true" />
-                <element signature="e#3254#3477#0" expanded="true" />
-                <element signature="e#3470#3471#0" expanded="true" />
+                <element signature="e#1843#1850#0" expanded="true" />
+                <element signature="e#2195#2352#0" expanded="true" />
+                <element signature="e#2345#2346#0" expanded="true" />
+                <element signature="e#3289#3672#0" expanded="true" />
+                <element signature="e#3665#3666#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -90,7 +90,7 @@
       <file leaf-file-name="GithubRepoIssuesControllerTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/external_services/GithubRepoIssuesControllerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="113" column="12" selection-start="3682" selection-end="3682" vertical-scroll-proportion="0.0">
+            <state line="38" column="27" selection-start="1470" selection-end="1470" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -507,11 +507,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="26" column="27" selection-start="942" selection-end="942" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#1808#1815#0" expanded="true" />
-            <element signature="e#2160#2317#0" expanded="true" />
-            <element signature="e#2310#2311#0" expanded="true" />
-            <element signature="e#3254#3477#0" expanded="true" />
-            <element signature="e#3470#3471#0" expanded="true" />
+            <element signature="e#1843#1850#0" expanded="true" />
+            <element signature="e#2195#2352#0" expanded="true" />
+            <element signature="e#2345#2346#0" expanded="true" />
+            <element signature="e#3289#3672#0" expanded="true" />
+            <element signature="e#3665#3666#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -543,11 +543,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="26" column="27" selection-start="942" selection-end="942" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#1808#1815#0" expanded="true" />
-            <element signature="e#2160#2317#0" expanded="true" />
-            <element signature="e#2310#2311#0" expanded="true" />
-            <element signature="e#3254#3477#0" expanded="true" />
-            <element signature="e#3470#3471#0" expanded="true" />
+            <element signature="e#1843#1850#0" expanded="true" />
+            <element signature="e#2195#2352#0" expanded="true" />
+            <element signature="e#2345#2346#0" expanded="true" />
+            <element signature="e#3289#3672#0" expanded="true" />
+            <element signature="e#3665#3666#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -603,20 +603,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/external_services/GithubRepoIssuesControllerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="113" column="12" selection-start="3682" selection-end="3682" vertical-scroll-proportion="0.0">
+        <state line="38" column="27" selection-start="1470" selection-end="1470" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/external_services/GithubRepoIssuesController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="108" column="45" selection-start="3433" selection-end="3433" vertical-scroll-proportion="0.68045115">
+        <state line="112" column="58" selection-start="3528" selection-end="3528" vertical-scroll-proportion="0.58458644">
           <folding>
-            <element signature="e#1808#1815#0" expanded="true" />
-            <element signature="e#2160#2317#0" expanded="true" />
-            <element signature="e#2310#2311#0" expanded="true" />
-            <element signature="e#3254#3477#0" expanded="true" />
-            <element signature="e#3470#3471#0" expanded="true" />
+            <element signature="e#1843#1850#0" expanded="true" />
+            <element signature="e#2195#2352#0" expanded="true" />
+            <element signature="e#2345#2346#0" expanded="true" />
+            <element signature="e#3289#3672#0" expanded="true" />
+            <element signature="e#3665#3666#0" expanded="true" />
           </folding>
         </state>
       </provider>
