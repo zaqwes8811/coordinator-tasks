@@ -1,0 +1,6 @@
+﻿adl (-profile desktop -nodebug) <fname>.xml - Запуск без установки
+
+adt -certificate -cn SelfSigned 1024-RSA sampleCert.pfx samplePassword
+
+adt -package -storetype pkcs12 -keystore sampleCert.pfx HelloWorld.air AIRHelloWorld.xml AIRHelloWorld.html AIRAliases.js
+

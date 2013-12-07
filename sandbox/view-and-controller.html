@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app>
+<head>
+    <script src="angular.min.js"></script>
+    <script>
+        function SimpleController($scope) {
+            $scope.customers = [
+                {name: 'Dave Jones' , city: 'Phoenix'},
+                {name: 'Jane Riley' , city: 'Atlanta'},
+                {name: 'Heedy Wahlin' , city: 'Chandler'},
+                {name: 'Thomas Winter' , city: 'Seattle'}
+            ];
+        }
+    </script>
+</head>
+<body>
+<div class="container" ng-controller="SimpleController">
+    <h3>Adding a Sim. Cont.</h3>
+    <br/>
+    Name:
+    <input type="text" ng-model="name" />
+    <br/>
+    <ul>
+        <li ng-repeat="cust in customers | filter:name">
+            {{ cust.name }} - {{ cust.city }}
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

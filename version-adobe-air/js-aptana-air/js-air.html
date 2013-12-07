@@ -1,0 +1,56 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset="utf-8" >
+	<title>Хохохо</title>
+
+	<!-- ����� -->
+	<link rel="stylesheet" type="text/css" href="sample.css">
+
+	<!-- ����������� jquery -->
+	<script type='text/javascript' src='lib/jquery/jquery-1.3.2.min.js'></script>
+	
+	<script type="text/javascript" src="lib/air/AIRAliases.js"></script>
+	
+	<!-- ���� ������� -->
+	<script type="text/javascript">
+		$(document).ready(function(){
+	
+		$(".accordion h3:first").addClass("active");
+		$(".accordion p:not(:first)").hide();
+
+		$(".accordion h3").click(function(){
+			$(this).next("p").slideToggle("slow")
+			.siblings("p:visible").slideUp("high");
+			$(this).toggleClass("active");
+			$(this).siblings("h3").removeClass("active");
+		});
+	});
+	</script>
+	<script type="text/javascript">
+		function displaymessage() {	alert("Hello World!"); }
+	</script>
+	
+</head>
+
+<!-- Само тело документа -->
+<body>
+<div class="accordion">
+	<h3>Question One Sample Text</h3>
+	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi malesuada, ante at feugiat tincidunt, enim massa gravida metus, commodo lacinia massa diam vel eros. Proin eget urna. Nunc fringilla neque vitae odio. Vivamus vitae ligula.</p>
+	<h3>This is Question Two</h3>
+	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi malesuada, ante at feugiat tincidunt, enim massa gravida metus, commodo lacinia massa diam vel eros. Proin eget urna. Nunc fringilla neque vitae odio. Vivamus vitae ligula.</p>
+	<h3>Another Questio here</h3>
+	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi malesuada, ante at feugiat tincidunt, enim massa gravida metus, commodo lacinia massa diam vel eros. Proin eget urna. Nunc fringilla neque vitae odio. Vivamus vitae ligula.</p>
+	<h3>Sample heading</h3>
+	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi malesuada, ante at feugiat tincidunt, enim massa gravida metus, commodo lacinia massa diam vel eros. Proin eget urna. Nunc fringilla neque vitae odio. Vivamus vitae ligula.</p>
+	<h3>Sample Question Heading</h3>
+	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi malesuada, ante at feugiat tincidunt, enim massa gravida metus, commodo lacinia massa diam vel eros. Proin eget urna. Nunc fringilla neque vitae odio. Vivamus vitae ligula.</p>
+</div>
+
+<!-- Controls -->
+<p style="text-align: center"><button name="subj" onclick="javascript:displaymessage()" >Кнопка</button> </p>
+
+</body>
+</html>
