@@ -1,12 +1,9 @@
 package external_services;
 
 import org.eclipse.egit.github.core.Issue;
-import org.eclipse.egit.github.core.Label;
 import org.eclipse.egit.github.core.Repository;
-import org.eclipse.egit.github.core.client.GitHubClient;
 import org.eclipse.egit.github.core.client.PageIterator;
 import org.eclipse.egit.github.core.service.IssueService;
-import org.eclipse.egit.github.core.service.RepositoryService;
 
 import java.io.IOException;
 import java.util.*;
@@ -14,25 +11,22 @@ import java.util.*;
 // About:
 //   Работает с issues конкретного, в данном случае, Github-багтрекера.
 public class GithubIssuesController {
-  private final GitHubClient CLIENT_;
-  private final String REPO_NAME_;
-  GithubIssuesController(GitHubClient client, String repoName) {
-    CLIENT_ = client;
-    REPO_NAME_ = repoName;
+  private final IssueService SERVICE_;
+  private final Repository REPOSITORY_;
+
+  GithubIssuesController(IssueService issueService, Repository repo) {
+    SERVICE_ = issueService;
+    REPOSITORY_ = repo;
   }
 
-  public List<String> getTitlesClosedIn(String labelsFilter) throws IOException {
+  public List<String> getTitlesOfClosed(String labelsFilter) throws IOException {
     // Make request filter.
     Map<String, String> filter = new HashMap<String, String>();
     filter.put(IssueService.FILTER_LABELS, labelsFilter);
     filter.put(IssueService.FILTER_STATE, IssueService.STATE_CLOSED);
 
-    // Real work with service.
-    RepositoryService service = new RepositoryService(CLIENT_);
-    Repository repo = service.getRepository(GithubBaseAuth.USER_NAME, REPO_NAME_);
 
-    IssueService issueService = new IssueService(CLIENT_);
-    PageIterator<Issue> pageIssues = issueService.pageIssues(repo, filter);
+    PageIterator<Issue> pageIssues = SERVICE_.pageIssues(REPOSITORY_, filter);
 
     // За раз читаем всю страницу
     List<Issue> issues = new ArrayList<Issue>();
@@ -49,13 +43,8 @@ public class GithubIssuesController {
     return result;
   }
 
-  public List<Issue> getAllIssues() throws IOException {
-    // Real work with service.
-    RepositoryService service = new RepositoryService(CLIENT_);
-    Repository repo = service.getRepository(GithubBaseAuth.USER_NAME, REPO_NAME_);
-
-    IssueService issueService = new IssueService(CLIENT_);
-    PageIterator<Issue> issuesIterator = issueService.pageIssues(repo);
+  public List<Issue> getAll() throws IOException {
+    PageIterator<Issue> issuesIterator = SERVICE_.pageIssues(REPOSITORY_);
 
     // За раз читаем всю страницу
     List<Issue> issues = new ArrayList<Issue>();
@@ -64,5 +53,9 @@ public class GithubIssuesController {
       issues.addAll(page);
     }
     return issues;
+  }
+
+  public int getCountNote() {
+    return 0;
   }
 }
