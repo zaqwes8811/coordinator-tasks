@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(value = BlockJUnit4ClassRunner.class)
 public class GithubRepoIssuesControllerTest extends TestCase {
@@ -33,10 +34,12 @@ public class GithubRepoIssuesControllerTest extends TestCase {
 
     Cache<String, Integer> countCache = CacheBuilder.newBuilder()
         .maximumSize(1000)
+        .expireAfterAccess(1, TimeUnit.SECONDS)
         .build();
 
     Cache<Integer, Issue> issuesCache = CacheBuilder.newBuilder()
         .maximumSize(1000)
+        .expireAfterAccess(1, TimeUnit.SECONDS)
         .build();
 
     GithubRepoIssuesController controller =
@@ -86,10 +89,27 @@ public class GithubRepoIssuesControllerTest extends TestCase {
     assertFalse(count.equals(0));
   }
 
+  @Test
+  public void testGetIssueWithDelay() throws Exception {
+    GithubRepoIssuesController controller = build();
+
+    Issue count = controller.getIssue(1);
+    assertFalse(count.equals(0));
+
+    //Thread.sleep(2000);
+    count = controller.getIssue(1);
+    assertFalse(count.equals(0));
+  }
+
   @Test(expected = IllegalArgumentException.class)
   public void testGetIssueZero() throws IOException, ExecutionException {
     GithubRepoIssuesController controller = build();
     Issue count = controller.getIssue(0);
   }
 
+  @Test
+  public void testGetAll() throws IOException, ExecutionException {
+    GithubRepoIssuesController controller = build();
+    controller.getAll();
+  }
 }

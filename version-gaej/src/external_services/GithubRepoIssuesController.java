@@ -49,6 +49,22 @@ public class GithubRepoIssuesController {
     return result;
   }
 
+  // Constraints:
+  //   Опять же это снимок системы.
+  //
+  // Troubles:
+  //   Очень долго даже для 20 задач.
+  public List<Issue> getAll() throws ExecutionException {
+    Integer countNow = getCountNote();
+    List<Issue> issues = new ArrayList<Issue>();
+    for (Integer i = 0+1; i < countNow+1; i++) {
+      issues.add(getIssue(i));
+    }
+    return issues;
+  }
+
+  // Args:
+  //   number > 0
   public Issue getIssue(final Integer number) throws ExecutionException {
     if (number <= 0 || number > getCountNote())
       throw new IllegalArgumentException();
@@ -90,6 +106,7 @@ public class GithubRepoIssuesController {
       @Override
       public Integer call() throws Exception {
         List<Issue> issues = getAllDirect();
+        // Похоже придется их вставить в кеш!
         return issues.size();
       }
     });
