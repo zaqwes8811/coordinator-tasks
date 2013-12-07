@@ -10,6 +10,7 @@ import org.eclipse.egit.github.core.service.IssueService;
 import org.eclipse.egit.github.core.service.RepositoryService;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,7 @@ import java.util.Map;
 public class GithubIssuesControllerTest extends TestCase {
   private final String REPO_NAME_ = "coordinator-tasks";
 
-  @Test
-  public void testGetTitlesClosedIn() throws Exception {
+  private GithubIssuesController build() throws IOException {
     // Real work with service.
     GitHubClient client =  new GithubBaseAuth().createBasicAuthClient();
     RepositoryService service = new RepositoryService(client);
@@ -29,8 +29,18 @@ public class GithubIssuesControllerTest extends TestCase {
         .maximumSize(1000)
         .build();
 
+    Cache<Integer, Issue> issuesCache = CacheBuilder.newBuilder()
+        .maximumSize(1000)
+        .build();
+
     GithubIssuesController controller =
-        new GithubIssuesController(issueService, repo, countCache);
+        new GithubIssuesController(issueService, repo, countCache, issuesCache);
+    return controller;
+  }
+
+  @Test
+  public void testGetTitlesClosedIn() throws Exception {
+    GithubIssuesController controller = build();
 
     // Make request filter.
     Map<String, String> filter = new HashMap<String, String>();
@@ -42,18 +52,7 @@ public class GithubIssuesControllerTest extends TestCase {
 
   @Test
   public void testGetAllIssues() throws Exception {
-    // Real work with service.
-    GitHubClient client =  new GithubBaseAuth().createBasicAuthClient();
-    RepositoryService service = new RepositoryService(client);
-    Repository repo = service.getRepository(GithubBaseAuth.USER_NAME, REPO_NAME_);
-    IssueService issueService = new IssueService(client);
-
-    Cache<String, Integer> countCache = CacheBuilder.newBuilder()
-        .maximumSize(1000)
-        .build();
-
-    GithubIssuesController controller =
-        new GithubIssuesController(issueService, repo, countCache);
+    GithubIssuesController controller = build();
 
     List<Issue> issues = controller.getAll();
     assertFalse(issues.isEmpty());
@@ -63,18 +62,7 @@ public class GithubIssuesControllerTest extends TestCase {
 
   @Test
   public void testGetCountNote() throws Exception {
-    // Real work with service.
-    GitHubClient client =  new GithubBaseAuth().createBasicAuthClient();
-    RepositoryService service = new RepositoryService(client);
-    Repository repo = service.getRepository(GithubBaseAuth.USER_NAME, REPO_NAME_);
-    IssueService issueService = new IssueService(client);
-
-    Cache<String, Integer> countCache = CacheBuilder.newBuilder()
-        .maximumSize(1000)
-        .build();
-
-    GithubIssuesController controller =
-        new GithubIssuesController(issueService, repo, countCache);
+    GithubIssuesController controller = build();
 
     Integer count = controller.getCountNote();
     assertFalse(count.equals(0));

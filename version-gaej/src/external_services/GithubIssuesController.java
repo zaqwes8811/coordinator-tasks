@@ -17,14 +17,17 @@ public class GithubIssuesController {
   private final IssueService SERVICE_;
   private final Repository REPOSITORY_;
   private final Cache<String, Integer> COUNT_CACHE_;
+  private final Cache<Integer, Issue> ISSUES_CACHE_;
 
   GithubIssuesController(
       IssueService issueService,
       Repository repo,
-      Cache<String, Integer> countCache) {
+      Cache<String, Integer> countCache,
+      Cache<Integer, Issue> issuesCache) {
     SERVICE_ = issueService;
     REPOSITORY_ = repo;
     COUNT_CACHE_ = countCache;
+    ISSUES_CACHE_ = issuesCache;
   }
 
   public List<String> getFiltered(Map<String, String> filter)
