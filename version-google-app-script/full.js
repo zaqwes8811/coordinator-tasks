@@ -1,5 +1,5 @@
 
-function IssuesAccessor()  {
+function BitbucketIssuesAccessor()  {
   this.username_ = 'zaqwes';
   this.password_ = 'a3fs4gd5h';
   this.headers = {
@@ -8,7 +8,7 @@ function IssuesAccessor()  {
 }
 
 // Create issues
-IssuesAccessor.prototype.createIssue = function () {
+BitbucketIssuesAccessor.prototype.createIssue = function () {
   var accountname = 'zaqwes';
   var repo_slug = 'test-compression';
   
@@ -39,7 +39,7 @@ IssuesAccessor.prototype.createIssue = function () {
   var date = getDataFromJsonUrl(issuesUrlTemplate, options);
 }
 
-IssuesAccessor.prototype.getDataFromJsonUrl = function (url, options) {
+BitbucketIssuesAccessor.prototype.getDataFromJsonUrl = function (url, options) {
   var response = UrlFetchApp.fetch(url, options);
   var json = response.getContentText();
   var data = JSON.parse(json);
@@ -47,7 +47,7 @@ IssuesAccessor.prototype.getDataFromJsonUrl = function (url, options) {
 }
 
 // Extract issues
-IssuesAccessor.prototype.getTransmitterServiceIssues = function () {
+BitbucketIssuesAccessor.prototype.getTransmitterServiceIssues = function () {
   var repoName = 'controller-transmitter';
   var records = getBitbucketRepoIssues(repoName);
   printList(records);
@@ -55,7 +55,7 @@ IssuesAccessor.prototype.getTransmitterServiceIssues = function () {
 
 
 // Note: Только для Bitbucket.org
-IssuesAccessor.prototype.getBitbucketRepoIssues = function (repoName) {
+BitbucketIssuesAccessor.prototype.getBitbucketRepoIssues = function (repoName) {
   var issuesUrlTemplate = 'https://bitbucket.org/api/1.0/repositories/gangsofmart/'+repoName+'/issues/';
   var options = getBitbucketReadAccessOptions();
 
