@@ -21,3 +21,6 @@ HEADERS  += mainwindow.h
 FORMS    += mainwindow.ui
 
 INCLUDEPATH += ../../src
+
+OTHER_FILES += \
+    ../domain/forge.txt
