@@ -14,6 +14,11 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+private slots:
+    void slotButtonClicked(bool checked) {
+
+    }
     
 private:
     Ui::MainWindow *ui;
