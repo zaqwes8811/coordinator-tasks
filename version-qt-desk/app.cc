@@ -23,6 +23,7 @@ using namespace Loki;
 namespace {
 const string gTableName = "tasks";
 
+class dal::TaskLifetimeQueries;
 class Task {
  
 public:
@@ -30,6 +31,7 @@ public:
   static const int kInActiveKey = -1;
   
 private:
+  friend class dal::TaskLifetimeQueries;  // только он меняет первичный ключ
   // Уникальный для каждой задачи
   int primary_key_;  // нужно какое-то не активное
   
@@ -81,7 +83,7 @@ public:
       "IF NOT EXISTS "+ // v9.1 >=
       table_name_ +
       "(" \
-      "id SERIAL PRIMARY KEY NOT NULL," \
+      "id SERIAL PRIMARY KEY NOT NULL," \  // сделать чтобы было >0
       "task_name  TEXT NOT NULL, " \
       "priority INT NOT NULL);";
     
@@ -120,7 +122,7 @@ public:
       result R( W.exec( sql ));
       W.commit();
       
-      /* List down all the records */
+      // Узнаем что за ключ получили
       int current_id = Task::kInActiveKey;
       for (result::const_iterator c = R.begin(); c != R.end(); ++c) {
 	current_id = c[0].as<int>();
