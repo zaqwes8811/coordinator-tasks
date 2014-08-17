@@ -21,8 +21,40 @@
 #include <pqxx/pqxx> 
 
 // App
-#include "version-qt-desk/dal.h"
-#include "version-qt-desk/domain.h"
+#include "version-qt-desk/storage_access.h"
+#include "version-qt-desk/entities.h"
+
+void do_something(pqxx::connection& C)
+{
+  using namespace std;
+
+  using namespace Loki;
+  using namespace dal;
+  using namespace psql_space;
+  using namespace domain;
+
+  const string kTableName = "task_fake_entity";
+
+  /// Tasks
+  TaskTableQueries q(kTableName);
+  q.createTable(C);
+
+  // Если не создано, то нет смысла
+  // а если не создасться? Тут похоже все равно.
+  ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::dropTable, ByRef(C));
+
+  // Create records
+  TaskLifetimeQueries q_insert(kTableName);
+  Task t;
+  q_insert.store(t, C);
+  assert(t.get_primary_key() != Task::kInActiveKey);
+  q_insert.store(t, C);
+
+  /// Tags
+
+  /// View
+  q.printTable(C);
+}
 
 int main() {
   using namespace std;
@@ -33,40 +65,17 @@ int main() {
   using namespace domain;
 
   try {
-  // construction is safe? 
     connection C("dbname=mydb user=postgres password=postgres hostaddr=127.0.0.1 port=5432");
     {
-      // DANGER: Рефакторинг мог быть не эквивалентным, но в api сказано, что закрывает только откр. соед.
       if (!C.is_open()) {
-	//guard.Dismiss();  // not need it
 	throw runtime_error("Can't open database");
       }
       
       ScopeGuard guard = MakeObjGuard(C, &connection::disconnect);
-      
-      /// Work
-      {
-	const string kTableName = "task_fake_entity";
-	TaskTableQueries q(kTableName);
-	q.createTable(C);
-	
-	// Если не создано, то нет смысла
-	ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::dropTable, ByRef(C));  // а если не создасться? Тут похоже все равно.
-	
-	/// Create records
-	TaskLifetimeQueries q_insert(kTableName);
-	Task t;
-	q_insert.store(t, C);
-	assert(t.get_primary_key() != Task::kInActiveKey);
-	q_insert.store(t, C);
-	
-	/// View
-	q.printTable(C);
-      }
+      do_something(C);
     }
-
-    // POINT - disconnected
     assert(!C.is_open());
+
   } catch (const pqxx::undefined_table& e) {
     // Нет таблицы
     cerr << typeid(e).name() << endl << e.what() << endl;

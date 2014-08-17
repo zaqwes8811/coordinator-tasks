@@ -1,5 +1,5 @@
 
-#include "dal.h"
+#include "version-qt-desk/storage_access.h"
 
 // C
 #include <cassert>
@@ -8,8 +8,7 @@
 #include <iostream>
 
 // App
-#include "version-qt-desk/dal.h"
-#include "version-qt-desk/domain.h"
+#include "version-qt-desk/entities.h"
 
 namespace dal {
 using std::string;
@@ -59,7 +58,7 @@ domain::Task& TaskLifetimeQueries::store(domain::Task& task, connection& C) cons
     // Insert
     string sql =
       "INSERT INTO " + table_name_ + " (task_name, priority) " \
-    "VALUES ('Paul', 32) RETURNING id; ";
+        "VALUES ('"+task.get_task_name()+"', 32) RETURNING id; ";
 
     work W(C);
     result R( W.exec( sql ));
