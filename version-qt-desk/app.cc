@@ -26,7 +26,8 @@ const string gTableName = "tasks";
 class Task {
  
 public:
-  
+  Task() : primary_key_(kInActiveKey) { }
+  static const int kInActiveKey = -1;
   
 private:
   // Уникальный для каждой задачи
@@ -100,31 +101,46 @@ private:
 // TODO: Может DI какой сделать, или все равно?
 class TaskLifetimeQueries {
 public:
+  explicit TaskLifetimeQueries(const string& table_name) : table_name_(table_name) {}
   void persist(const Task& task) const {
     
   }
   
   // Назначет id!
-  Task& store(Task& task) const { 
-    	
-    /*
+  Task& store(Task& task, connection& C) const { 
+    // нужно получить id
+    // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
     {
       // Insert
-      // http://stackoverflow.com/questions/7718585/set-auto-increment-primary-key-in-postgresql
-      //string sql = "INSERT INTO COMPANY (ID, NAME, AGE, ADDRESS, SALARY) " \
-      //"VALUES (1, 'Paul', 32, 'Calif', 200000.00); ";
+      string sql = 
+	"INSERT INTO " + table_name_ + " (task_name, priority) " \
+	  "VALUES ('Paul', 32) RETURNING id; ";
       
-      string sql = "INSERT INTO " + gTableName + " (NAME, AGE, ADDRESS, SALARY) " \
-      "VALUES ('Paul', 32, 'Calif', 200000.00); " \
-      "VALUES ('Djudy', 32, 'Calif', 900000.00); ";
+      work W(C);
+      result R( W.exec( sql ));
+      W.commit();
       
-      run_transaction(sql, C);
+      /* List down all the records */
+      int current_id = Task::kInActiveKey;
+      for (result::const_iterator c = R.begin(); c != R.end(); ++c) {
+	current_id = c[0].as<int>();
+	break;
+      }
+      
+      assert(current_id != Task::kInActiveKey);
+      
+      //task
     }
-    */
     return task; 
   }
   
   //void removeById(int id);
+
+private:
+  TaskLifetimeQueries(const TaskLifetimeQueries&);
+  TaskLifetimeQueries& operator=(const TaskLifetimeQueries&);
+  
+  const string table_name_;
 };
 
 }  // namespace..
@@ -149,8 +165,15 @@ int main() {
 	const string kTableName = "task_fake_entity";
 	TaskTableQueries q(kTableName);
 	q.createTable(C);
+	
 	// Если не создано, то нет смысла
 	ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop_task_table, ByRef(C));  // а если не создасться? Тут похоже все равно.
+	
+	/// Create records
+	TaskLifetimeQueries q_insert(kTableName);
+	Task t;
+	q_insert.store(t, C);
+	q_insert.store(t, C);
 	
 	/// View
 	/* Create a non-transactional object. */
@@ -162,9 +185,7 @@ int main() {
 	
 	/* List down all the records */
 	for (result::const_iterator c = R.begin(); c != R.end(); ++c) {
-	  cout << "ID = " << c[0].as<int>() << endl;
-	  cout << "Name = " << c[1].as<string>() << endl;
-	  cout << "Priority = " << c[2].as<int>() << endl;
+	  cout << "ID = " << c[0].as<int>() << " Name = " << c[1].as<string>() << " Priority = " << c[2].as<int>() << endl;
 	}
 	
 	
