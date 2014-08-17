@@ -13,15 +13,20 @@ _3RDPARTY=../3rdparty
 # -std=c++11 -pg
 QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated 
 
-SOURCES += app.cc 
+SOURCES += app.cc \ 
+    dal.cc
 #\
 #  ../../third_party/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
 #  ../launcher.cc
 
-INCLUDEPATH += $$BOOST $$_3RDPARTY/loki-0.1.7/include
+INCLUDEPATH += $$BOOST $$_3RDPARTY/loki-0.1.7/include ../
 #../../third_party/gmock-1.6.0/fused-src/
 
 LIBS += -lpthread -lrt -ltbb -lpq -lpqxx
 
 OBJECTS_DIR = obj
+
+HEADERS += \
+    dal.h \
+    domain.h
 
