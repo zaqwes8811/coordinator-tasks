@@ -51,13 +51,13 @@ private:
 
 namespace dal {
 // можно было использовать ссылку и ByRef()
-void rm_table(connection* C, const string& table_name) 
+void rm_table(connection& C, const string& table_name) 
 {
   // Если таблицы нет, то просто ничего не происходит.
   string sql = string("drop table " + table_name + ";");
   
   // создаем транзакционный объект
-  work W(*C);
+  work W(C);
   
   // Exec
   W.exec(sql);
@@ -75,28 +75,20 @@ class TaskTableQueries {
 public:
   TaskTableQueries(const string& name) : table_name_(name) { }
   
-  void create_task_table(connection& C) {
-    // TODO: create only if not exist - с исключением не катит.
-    // TODO: а кто вообще создает таблицы? Всегда ли пользователь?
-    //
-    // TODO: как безболезненной сделать изменение схемы хранения? Как делать рефакторинг?
+  void createTable(connection& C) {
     string sql = string("CREATE TABLE ") +  
-      // http://stackoverflow.com/questions/1766046/postgresql-create-table-if-not-exists
       "IF NOT EXISTS "+ // v9.1 >=
       table_name_ +
       "(" \
-      // http://www.tutorialspoint.com/postgresql/postgresql_using_autoincrement.htm
-      //"ID INT PRIMARY KEY NOT NULL," \  // own control
-      "ID SERIAL PRIMARY KEY NOT NULL," \
+      "id SERIAL PRIMARY KEY NOT NULL," \
       "task_name  TEXT NOT NULL, " \
       "priority INT NOT NULL);";
     
-    // создаем транзакционный объект
     run_transaction(sql, C);
   }
 
   void drop_task_table(connection& C) {
-    rm_table(&C, table_name_);
+    rm_table(C, table_name_);
   }
   
 private:
@@ -113,7 +105,7 @@ public:
   }
   
   // Назначет id!
-  Task& create(Task& task) const { 
+  Task& store(Task& task) const { 
     	
     /*
     {
@@ -154,9 +146,26 @@ int main() {
       
       /// Work
       {
-	TaskTableQueries q("task_fake_entity");
-	ScopeGuard table = MakeObjGuard(q, &TaskTableQueries::drop_task_table, ByRef(C));  // а если не создасться? Тут похоже все равно.
+	const string kTableName = "task_fake_entity";
+	TaskTableQueries q(kTableName);
+	q.createTable(C);
+	// Если не создано, то нет смысла
+	ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop_task_table, ByRef(C));  // а если не создасться? Тут похоже все равно.
 	
+	/// View
+	/* Create a non-transactional object. */
+	nontransaction N(C);
+	
+	/* Execute SQL query */
+	string sql = "SELECT * from " + kTableName + ";";
+	result R( N.exec( sql ));
+	
+	/* List down all the records */
+	for (result::const_iterator c = R.begin(); c != R.end(); ++c) {
+	  cout << "ID = " << c[0].as<int>() << endl;
+	  cout << "Name = " << c[1].as<string>() << endl;
+	  cout << "Priority = " << c[2].as<int>() << endl;
+	}
 	
 	
 	// Лучше здесь - раз дошли до сюда, то таблица создана
