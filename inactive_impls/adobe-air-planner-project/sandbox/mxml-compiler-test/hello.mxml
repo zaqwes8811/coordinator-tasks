@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- usingas/ASOneFile.mxml -->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml">
+  <mx:Panel title="My Application" paddingTop="10" paddingBottom="10"
+     paddingLeft="10" paddingRight="10">
+     <mx:HBox>
+        <mx:Label text="Temperature in Fahrenheit:"/>
+        <mx:TextInput id="fahrenheit" width="120"/>
+        <mx:Button label="Convert"
+           click="celsius.text=String(Math.round((Number(fahrenheit.text)-32)/1.8 * 10)/10);"/>
+        <mx:Label text="Temperature in Celsius:"/>
+     <mx:Label id="celsius" width="120" fontSize="24"/>
+     </mx:HBox>
+  </mx:Panel>
+</mx:Application>
