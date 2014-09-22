@@ -1,11 +1,16 @@
 // Хрень с пространствами имен. 
 // http://rsdn.ru/forum/cpp/2141920.all
 // Проблема в циклической зависимости
-
 #include <typeinfo>
 
-// C
-#include <cassert>
+#include "top/config.h"
+
+#include "canary/storage_access.h"
+#include "canary/entities.h"
+
+#include <loki/ScopeGuard.h>
+#include <pqxx/pqxx> 
+#include <gtest/gtest.h>
 
 // C++
 #include <iostream>
@@ -14,15 +19,10 @@
 #include <vector>
 #include <stdexcept>
 
-// 3rdparty::Common
-#include <loki/ScopeGuard.h>
+// C
+#include <cassert>
 
-// 3rdparty::Special
-#include <pqxx/pqxx> 
-
-// App
-#include "version-qt-desk/storage_access.h"
-#include "version-qt-desk/entities.h"
+namespace {
 
 void do_something(pqxx::connection& C)
 {
@@ -56,7 +56,7 @@ void do_something(pqxx::connection& C)
   q.printTable(C);
 }
 
-int main() {
+TEST(postgres, all) {
   using namespace std;
   using namespace pqxx;
   using namespace Loki;
@@ -89,7 +89,7 @@ int main() {
     cerr << "UNCATCHED" << endl;
     cerr << typeid(e).name() << endl;
     cerr << e.what() << std::endl;
-    return 1;
   }
-  return 0;
 }
+
+}  // namespace
