@@ -46,7 +46,7 @@ void do_something(pqxx::connection& C)
   TaskLifetimeQueries q_insert(kTableName);
   Task t;
   q_insert.store(t, C);
-  assert(t.get_primary_key() != Task::kInActiveKey);
+  assert(t.get_primary_key() != entities_states::kInActiveKey);
   q_insert.store(t, C);
 
   // Tags
@@ -56,17 +56,20 @@ void do_something(pqxx::connection& C)
 }
 
 TEST(postgres, all) {
-  try {
-    connection C("dbname=mydb user=postgres password=postgres hostaddr=127.0.0.1 port=5432");
-    {
-      if (!C.is_open()) {
-        throw runtime_error("Can't open database");
-      }
-      
-      ScopeGuard guard = MakeObjGuard(C, &connection::disconnect);
-      do_something(C);
+  connection C("dbname=mydb user=postgres password=postgres hostaddr=127.0.0.1 port=5432");
+  {
+    if (!C.is_open()) {
+      throw runtime_error("Can't open database");
     }
-    assert(!C.is_open());
+    
+    ScopeGuard guard = MakeObjGuard(C, &connection::disconnect);
+    EXPECT_NO_THROW(do_something(C));
+  }
+  assert(!C.is_open());
+}
+
+TEST(postgres, error_codes) {
+  try {
 
   } catch (const pqxx::undefined_table& e) {
     // Нет таблицы

@@ -1,6 +1,10 @@
 #ifndef DOMAIN_H
 #define DOMAIN_H
 
+// FIXME: BAD!! верхний уровень знает о нижнем
+// возможно можно сделать класс на соседнем уровне?
+#include "canary/storage_access.h"  
+
 //#include <boost/noncopyable.hpp>
 
 #include <set>
@@ -9,19 +13,23 @@
 namespace domain {
 const std::string gTableName = "tasks";
 
-class Task {
-
-public:
-  Task() : primary_key_(kInActiveKey) { }
+struct entities_states {
   static const int kInActiveKey = -1;
+};
+
+// раз обрабатываем пачкой, то наверное нужны метки
+// updated, to delete, ...
+class Task {
+public:
+  Task() : primary_key_(entities_states::kInActiveKey) { }
 
   int get_primary_key() const { return primary_key_; }
   std::string get_task_name() const { return task_name_; }
   int get_priority() const { return priority_; }
 
 private:
-  void set_primary_key_(int val) { primary_key_ = val; }
   friend class dal::TaskLifetimeQueries;  // только он меняет первичный ключ
+  void set_primary_key_(int val) { primary_key_ = val; }
   // Уникальный для каждой задачи
   int primary_key_;  // нужно какое-то не активное
 
@@ -46,7 +54,6 @@ private:
 // TODO: Как быть при обновлении имени или цвета? Возможно нужно хранить shared_ptrs не на константу.
 class Tag {
 public:
-  static const int kInActiveKey = -1;
   Tag(const std::string& name) : primary_key_(), name_(name) { }
 
 private:

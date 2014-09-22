@@ -52,31 +52,34 @@ void TaskTableQueries::dropTable(connection& C) {
   psql_space::rm_table(C, table_name_);
 }
 
-Task& TaskLifetimeQueries::store(Task& task, connection& C) const {
+void TaskLifetimeQueries::store(Task& task, connection& C) const {
   // нужно получить id
   // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
-  {
-    // Insert
-    string sql =
-      "INSERT INTO " + table_name_ + " (task_name, priority) " \
-        "VALUES ('"+task.get_task_name()+"', 32) RETURNING id; ";
+  //{
+  // Insert
+  string sql =
+    "INSERT INTO " + table_name_ + " (task_name, priority) " \
+      "VALUES ('"+task.get_task_name()+"', 32) RETURNING id; ";
 
-    work W(C);
-    result R( W.exec( sql ));
-    W.commit();
+  work W(C);
+  result R( W.exec( sql ));
+  W.commit();
 
-    // Узнаем что за ключ получили
-    int current_id = domain::Task::kInActiveKey;
-    for (result::const_iterator c = R.begin(); c != R.end(); ++c) {
-      current_id = c[0].as<int>();
-      break;
-    }
+  // Узнаем что за ключ получили
+  int current_id = domain::entities_states::kInActiveKey;
 
-    assert(current_id != domain::Task::kInActiveKey);
-
-    task.set_primary_key_(current_id);
+  assert(R.size() == 1);  // вставили один элемент
+  
+  for (result::const_iterator c = R.begin(); c != R.end(); ++c) {
+    current_id = c[0].as<int>();
+    break;
   }
-  return task;
+
+  assert(current_id != domain::entities_states::kInActiveKey);
+
+  task.set_primary_key_(current_id);
+  //}
+  //return task;
 }
 }
 

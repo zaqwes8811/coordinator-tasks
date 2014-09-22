@@ -1,11 +1,13 @@
 #ifndef DAL_H
 #define DAL_H
 
-// C++
-#include <string>
 
 // 3rdparty
 #include <pqxx/pqxx>
+#include <boost/noncopyable.hpp>
+
+// C++
+#include <string>
 
 namespace domain {
   // http://msdn.microsoft.com/en-us/library/0e5kx78b.aspx
@@ -13,7 +15,7 @@ namespace domain {
 }
 
 namespace dal {
-class TaskTableQueries {
+class TaskTableQueries : public boost::noncopyable {
 public:
   TaskTableQueries(const std::string& name) : table_name_(name) { }
   void createTable(pqxx::connection& C);
@@ -30,19 +32,20 @@ private:
 
 // Делать один репозиторий не советуют
 // TODO: Может DI какой сделать, или все равно?
-class TaskLifetimeQueries {
+class TaskLifetimeQueries : public boost::noncopyable {
 public:
   explicit TaskLifetimeQueries(const std::string& table_name) : table_name_(table_name) {}
   void persist(const domain::Task& task) const { }
 
   // Назначет id!
-  domain::Task& store(domain::Task& task, pqxx::connection& C) const;
+  //domain::Task& 
+  void store(domain::Task& task, pqxx::connection& C) const;
 
   //void removeById(int id);
 
 private:
-  TaskLifetimeQueries(const TaskLifetimeQueries&);
-  TaskLifetimeQueries& operator=(const TaskLifetimeQueries&);
+  //TaskLifetimeQueries(const TaskLifetimeQueries&);
+  //TaskLifetimeQueries& operator=(const TaskLifetimeQueries&);
 
   const std::string table_name_;
 };
