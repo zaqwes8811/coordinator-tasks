@@ -1,6 +1,8 @@
 #ifndef DOMAIN_H
 #define DOMAIN_H
 
+//#include <boost/noncopyable.hpp>
+
 #include <set>
 #include <string>
 

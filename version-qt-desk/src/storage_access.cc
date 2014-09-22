@@ -19,6 +19,8 @@ using pqxx::work;
 using pqxx::result;
 using pqxx::nontransaction;
 
+using domain::Task;
+
 void TaskTableQueries::printTable(connection& C) const {
   /* Create a non-transactional object. */
   nontransaction N(C);
@@ -39,9 +41,9 @@ void TaskTableQueries::createTable(connection& C) {
     table_name_ +
     "(" \
     // сделать чтобы было >0
-    "id SERIAL PRIMARY KEY NOT NULL," \
-    "task_name  TEXT NOT NULL, " \
-    "priority INT NOT NULL);";
+    "id         SERIAL PRIMARY KEY NOT NULL," \
+    "task_name  TEXT               NOT NULL, " \
+    "priority   INT                NOT NULL);";
 
   psql_space::run_transaction(sql, C);
 }
@@ -50,7 +52,7 @@ void TaskTableQueries::dropTable(connection& C) {
   psql_space::rm_table(C, table_name_);
 }
 
-domain::Task& TaskLifetimeQueries::store(domain::Task& task, connection& C) const {
+Task& TaskLifetimeQueries::store(Task& task, connection& C) const {
   // нужно получить id
   // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
   {
@@ -77,6 +79,7 @@ domain::Task& TaskLifetimeQueries::store(domain::Task& task, connection& C) cons
   return task;
 }
 }
+
 namespace psql_space {
 using std::string;
 using pqxx::connection;

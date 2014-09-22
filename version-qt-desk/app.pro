@@ -16,6 +16,7 @@ QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated
 SOURCES += \
     ./src/pq_dal_test.cc \  
     ./src/storage_access.cc \
+    ./src/model_test.cc \
     $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
     launcher.cc
 
