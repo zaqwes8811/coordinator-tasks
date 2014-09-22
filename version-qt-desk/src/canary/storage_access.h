@@ -39,7 +39,7 @@ public:
 
   // Назначет id!
   //domain::Task& 
-  void store(domain::Task& task, pqxx::connection& C) const;
+  void store(domain::Task& task, pqxx::connection& C) /*const*/;  // logical non-const
 
   //void removeById(int id);
 

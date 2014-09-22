@@ -15,16 +15,22 @@ const std::string gTableName = "tasks";
 
 struct entities_states {
   static const int kInActiveKey = -1;
+  static const int kDefaulPriority = 0;
 };
 
 // раз обрабатываем пачкой, то наверное нужны метки
 // updated, to delete, ...
 class Task {
 public:
-  Task() : primary_key_(entities_states::kInActiveKey) { }
+  Task() 
+    : primary_key_(entities_states::kInActiveKey)
+    , priority_(entities_states::kDefaulPriority) { }
 
   int get_primary_key() const { return primary_key_; }
+
+  // лучше по значению
   std::string get_task_name() const { return task_name_; }
+  
   int get_priority() const { return priority_; }
 
 private:
@@ -48,6 +54,11 @@ private:
 
   // TODO: нужно как-то сохранять со связями
   //std::set<std::string> tags_;  // TODO: сделать связь, но пока не нужно
+
+  // действия
+  //bool update;  // вообще это плохо - это портить консистентность
+  //bool to_delete;  // удалять ничего не нужно по сути-то 
+  //bool is_done;  // work was done
 };
 
 // TODO: должны быть уникальные по имени и при создании это нужно контролировать.

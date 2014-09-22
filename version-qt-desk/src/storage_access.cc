@@ -36,14 +36,15 @@ void TaskTableQueries::printTable(connection& C) const {
 }
 
 void TaskTableQueries::createTable(connection& C) {
-  string sql = string("CREATE TABLE ") +
+  string sql(
+    "CREATE TABLE " \
     "IF NOT EXISTS "+ // v9.1 >=
     table_name_ +
     "(" \
     // сделать чтобы было >0
     "id         SERIAL PRIMARY KEY NOT NULL," \
     "task_name  TEXT               NOT NULL, " \
-    "priority   INT                NOT NULL);";
+    "priority   INT                NOT NULL);");
 
   psql_space::run_transaction(sql, C);
 }
@@ -52,7 +53,7 @@ void TaskTableQueries::dropTable(connection& C) {
   psql_space::rm_table(C, table_name_);
 }
 
-void TaskLifetimeQueries::store(Task& task, connection& C) const {
+void TaskLifetimeQueries::store(Task& task, connection& C) /*const*/ {
   // нужно получить id
   // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
   //{
