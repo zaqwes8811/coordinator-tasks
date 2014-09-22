@@ -9,8 +9,6 @@
 // C
 #include <cassert>
 
-
-
 namespace dal {
 using std::string;
 using std::cout;

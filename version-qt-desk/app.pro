@@ -14,7 +14,7 @@ LOCAL_3RDPARTY=../3rdparty
 QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated 
 
 SOURCES += \
-    ./src/pq_test.cc \  
+    ./src/pq_dal_test.cc \  
     ./src/storage_access.cc \
     $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
     launcher.cc

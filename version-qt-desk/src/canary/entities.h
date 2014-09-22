@@ -45,7 +45,7 @@ private:
 class Tag {
 public:
   static const int kInActiveKey = -1;
-  Tag(const std::string& name) : name_(name), primary_key_() { }
+  Tag(const std::string& name) : primary_key_(), name_(name) { }
 
 private:
   int primary_key_;

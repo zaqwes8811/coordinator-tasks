@@ -23,19 +23,18 @@
 #include <cassert>
 
 namespace {
+using namespace dal;
+using namespace domain;
+using namespace Loki;
+using namespace pqxx;
+using namespace psql_space;
+using namespace std;
 
 void do_something(pqxx::connection& C)
 {
-  using namespace std;
-
-  using namespace Loki;
-  using namespace dal;
-  using namespace psql_space;
-  using namespace domain;
-
   const string kTableName = "task_fake_entity";
 
-  /// Tasks
+  // Tasks
   TaskTableQueries q(kTableName);
   q.createTable(C);
 
@@ -50,25 +49,18 @@ void do_something(pqxx::connection& C)
   assert(t.get_primary_key() != Task::kInActiveKey);
   q_insert.store(t, C);
 
-  /// Tags
+  // Tags
 
-  /// View
+  // View
   q.printTable(C);
 }
 
 TEST(postgres, all) {
-  using namespace std;
-  using namespace pqxx;
-  using namespace Loki;
-  using namespace dal;
-  using namespace psql_space;
-  using namespace domain;
-
   try {
     connection C("dbname=mydb user=postgres password=postgres hostaddr=127.0.0.1 port=5432");
     {
       if (!C.is_open()) {
-	throw runtime_error("Can't open database");
+        throw runtime_error("Can't open database");
       }
       
       ScopeGuard guard = MakeObjGuard(C, &connection::disconnect);
