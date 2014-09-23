@@ -11,6 +11,9 @@
 // Operation composition... Done - boost::bind, own make troubles if work with shared ptrs
 // vector<weak_ptrs>... и с bind будут проблемы - нужно как-то распаковывать элементы
 //
+// Summary:
+//   Without boost fp looks like shit!!
+//
 //#define BOOST_BIND_ENABLE_STDCALL
 //#define BOOST_BIND_ENABLE_FASTCALL   // win only
 
