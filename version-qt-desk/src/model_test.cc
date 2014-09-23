@@ -249,7 +249,7 @@ TEST(Model, Create) {
       q_insert.persist(model, C);
 
       // не должно быть пустышек
-      boost::function1<bool, shared_ptr<TaskEntity> > p =  
+      boost::function1<bool, Model::value_type> p =  
         bind(
           bind(equal_to<int>(), _1, EntitiesStates::kInActiveKey), 
           bind(mem_fn(&TaskEntity::get_primary_key), _1)) ;
