@@ -30,24 +30,25 @@ struct EntitiesStates {
 //
 // TODO: нужно как-то сохранять со связями
 //std::set<std::string> labels_;  // TODO: сделать связь, но пока не нужно
+//   weak_ptr<...>  - не должен владеть
 //
 // действия
 //bool update;  // вообще это плохо - это портить консистентность
 //bool to_delete;  // удалять ничего не нужно по сути-то 
 //bool is_done;  // work was done
 //void initialize()  // bad, but
-//explicit Task(std::string& name) :
-class Task {
+//explicit TaskEntity(std::string& name) :
+class TaskEntity {
 public:
   // http://stackoverflow.com/questions/308276/c-call-constructor-from-constructor
-  Task() 
+  TaskEntity() 
     : primary_key_(EntitiesStates::kInActiveKey)
     , priority_(EntitiesStates::kDefaulPriority) { }
 
   int get_primary_key() const { return primary_key_; }
 
-  static boost::shared_ptr<Task> create(std::string& task_name) {
-    boost::shared_ptr<Task> tmp = boost::make_shared<Task>(Task());
+  static boost::shared_ptr<TaskEntity> create(std::string& task_name) {
+    boost::shared_ptr<TaskEntity> tmp = boost::make_shared<TaskEntity>(TaskEntity());
     tmp->task_name_ = task_name;
     return tmp;
   }

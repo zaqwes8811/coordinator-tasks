@@ -44,9 +44,9 @@ void do_something(pqxx::connection& C)
 
   // Create records
   TaskLifetimeQueries q_insert(kTableName);
-  Task t;
+  TaskEntity t;
   q_insert.store(t, C);
-  assert(t.get_primary_key() != entities_states::kInActiveKey);
+  assert(t.get_primary_key() != EntitiesStates::kInActiveKey);
   q_insert.store(t, C);
 
   // Tags

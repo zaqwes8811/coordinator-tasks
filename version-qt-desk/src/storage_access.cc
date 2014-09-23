@@ -19,7 +19,7 @@ using pqxx::work;
 using pqxx::result;
 using pqxx::nontransaction;
 
-using domain::Task;
+using domain::TaskEntity;
 
 void TaskTableQueries::printTable(connection& C) const {
   /* Create a non-transactional object. */
@@ -53,7 +53,7 @@ void TaskTableQueries::dropTable(connection& C) {
   psql_space::rm_table(C, table_name_);
 }
 
-void TaskLifetimeQueries::store(Task& task, connection& C) /*const*/ {
+void TaskLifetimeQueries::store(TaskEntity& task, connection& C) /*const*/ {
   // нужно получить id
   // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
   //{
@@ -67,7 +67,7 @@ void TaskLifetimeQueries::store(Task& task, connection& C) /*const*/ {
   W.commit();
 
   // Узнаем что за ключ получили
-  int current_id = domain::entities_states::kInActiveKey;
+  int current_id = domain::EntitiesStates::kInActiveKey;
 
   assert(R.size() == 1);  // вставили один элемент
   
@@ -76,7 +76,7 @@ void TaskLifetimeQueries::store(Task& task, connection& C) /*const*/ {
     break;
   }
 
-  assert(current_id != domain::entities_states::kInActiveKey);
+  assert(current_id != domain::EntitiesStates::kInActiveKey);
 
   task.set_primary_key_(current_id);
   //}

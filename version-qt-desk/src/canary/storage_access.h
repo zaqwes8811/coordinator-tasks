@@ -11,7 +11,7 @@
 
 namespace domain {
   // http://msdn.microsoft.com/en-us/library/0e5kx78b.aspx
-  class Task;  // Forward reference; no definition
+  class TaskEntity;  // Forward reference; no definition
 }
 
 namespace dal {
@@ -35,11 +35,11 @@ private:
 class TaskLifetimeQueries : public boost::noncopyable {
 public:
   explicit TaskLifetimeQueries(const std::string& table_name) : table_name_(table_name) {}
-  void persist(const domain::Task& task) const { }
+  void persist(const domain::TaskEntity& task) const { }
 
   // Назначет id!
-  //domain::Task& 
-  void store(domain::Task& task, pqxx::connection& C) /*const*/;  // logical non-const
+  //domain::TaskEntity& 
+  void store(domain::TaskEntity& task, pqxx::connection& C) /*const*/;  // logical non-const
 
   //void removeById(int id);
 
