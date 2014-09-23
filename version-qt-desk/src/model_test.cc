@@ -6,6 +6,9 @@
 // nested http://www.boost.org/doc/libs/1_56_0/libs/bind/bind.html#nested_binds
 //
 // без boost функциональное программировать для stl какое-то неполноценное
+//
+// Save partial predicatd... Done
+//
 //#define BOOST_BIND_ENABLE_STDCALL
 //#define BOOST_BIND_ENABLE_FASTCALL   // win only
 
@@ -15,6 +18,7 @@
 #include "canary/storage_access.h"
 #include "visuality/view.h"
 
+#include <adobe/algorithm/find.hpp>  // удобно если работа с целым контейнером, иначе лучше std
 #include <boost/bind.hpp>
 #include <boost/bind/make_adaptable.hpp>
 #include <boost/make_shared.hpp>
@@ -24,6 +28,8 @@
 #include <gtest/gtest.h>
 #include <loki/ScopeGuard.h>
 #include <pqxx/pqxx> 
+#include <boost/function.hpp>
+//#include <boost/tr1/functional.hpp>
 
 #include <algorithm>
 #include <cassert>
@@ -61,6 +67,28 @@ template <class OP1, class OP2>
 inline compose_f_gx_t<OP1, OP2>
 compose_f_gx(const OP1& o1, const OP2& o2) {
   return compose_f_gx_t<OP1, OP2>(o1, o2);
+}
+
+template <class OP1>
+class store_t
+  : std::unary_function<typename OP1::argument_type, typename OP1::result_type> 
+  {
+private:
+  OP1 op1;
+
+public:
+  explicit store_t(const OP1& o1) : op1(o1) { }
+
+  typename OP1::result_type operator()(const typename OP1::argument_type& x) const {  //
+    typename OP1::result_type tmp = op1(x);
+    return tmp;
+  }
+};
+
+template <class OP1> 
+inline store_t<OP1>
+store(const OP1& o1) {
+  return store_t<OP1>(o1);
 }
 
 // создается лишний класс
@@ -170,6 +198,17 @@ TEST(Model, BaseCase) {
   assert(0 == query.at(0).lock()->get_priority());
 }
 
+template <typename Auto>
+struct auto_cont {
+  Auto a;
+  explicit auto_cont(Auto& _a) : a(_a) {}
+  Auto get() const { return a; }
+};
+
+template <typename A> 
+auto_cont<A> inline get_a(A& a) {
+  return auto_cont<A>(a);
+}
 
 TEST(Model, Create) {
   typedef vector<shared_ptr<TaskEntity> > Model;
@@ -204,12 +243,15 @@ TEST(Model, Create) {
       q_insert.persist(model, C);
 
       // не должно быть пустышек
-      // http://boost.2283326.n4.nabble.com/using-bind-with-find-if-td3344403.html
-      Model::iterator it = find_if(model.begin(), model.end(), 
-        std::not1(boost::make_adaptable<bool, shared_ptr<TaskEntity> >(
-            bind(
-              bind(equal_to<int>(), _1, EntitiesStates::kInActiveKey), 
-              bind(&TaskEntity::get_primary_key, _1)))));
+      boost::function1<bool, shared_ptr<TaskEntity> > p =  
+        bind(
+          bind(equal_to<int>(), _1, EntitiesStates::kInActiveKey), 
+          bind(&TaskEntity::get_primary_key, _1)) ;
+
+      //boost::function1<bool, shared_ptr<TaskEntity> > 
+      p = std::not1(boost::make_adaptable<bool, shared_ptr<TaskEntity> >(p));
+
+      Model::iterator it = adobe::find_if(model, p);
 
       assert(it == model.end());  // все сохранили и исключение не выскочило
 
