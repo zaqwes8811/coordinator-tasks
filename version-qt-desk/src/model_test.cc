@@ -252,14 +252,15 @@ TEST(Model, Create) {
       boost::function1<bool, shared_ptr<TaskEntity> > p =  
         bind(
           bind(equal_to<int>(), _1, EntitiesStates::kInActiveKey), 
-          bind(&TaskEntity::get_primary_key, _1)) ;
+          bind(mem_fn(&TaskEntity::get_primary_key), _1)) ;
 
       //boost::function1<bool, shared_ptr<TaskEntity> > 
-      p = std::not1(boost::make_adaptable<bool, shared_ptr<TaskEntity> >(p));
+      //p = std::not1(boost::make_adaptable<bool, shared_ptr<TaskEntity> >(p));
+      //p = bind(not1<>(), _1);  // not это не то
 
       Model::iterator it = adobe::find_if(model, p);
 
-      assert(it == model.end());  // все сохранили и исключение не выскочило
+      EXPECT_EQ(it, model.end());  // все сохранили и исключение не выскочило
 
       // View
       q.printTable(C);
