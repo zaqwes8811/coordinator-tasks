@@ -12,7 +12,8 @@ ASL=/home/zaqwes/work/third_party/asl_1.0.43
 LOCAL_3RDPARTY=../3rdparty
 
 # -std=c++11 -pg
-QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated
+QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated 
+# -stdlib=libc++  # http://stackoverflow.com/questions/19774778/when-is-it-necessary-to-use-use-the-flag-stdlib-libstdc
 # -std=c++11
 
 SOURCES += \

@@ -16,6 +16,14 @@
 //
 //#define BOOST_BIND_ENABLE_STDCALL
 //#define BOOST_BIND_ENABLE_FASTCALL   // win only
+//
+// Details:
+//
+//boost::function1<bool, shared_ptr<TaskEntity> > 
+//p = std::not1(boost::make_adaptable<bool, shared_ptr<TaskEntity> >(p));
+//p = bind(not1<>(), _1);  // not это не то
+//
+// если сложные выборки, то возможно лучше обычный цикл - см. Мейсера
 
 #include "top/config.h"
 
@@ -39,8 +47,8 @@
 #include <algorithm>
 #include <cassert>
 #include <functional>
-#include <vector>
 #include <stdexcept>
+#include <vector>
 
 namespace dirty {
 using namespace domain;
@@ -103,6 +111,18 @@ struct is_saved {
     return true;
   }
 };
+
+template <typename Auto>
+struct auto_cont {
+  Auto a;
+  explicit auto_cont(Auto& _a) : a(_a) {}
+  Auto get() const { return a; }
+};
+
+template <typename A> 
+auto_cont<A> inline get_a(A& a) {
+  return auto_cont<A>(a);
+}
 }
 
 namespace stolen {
@@ -198,22 +218,13 @@ TEST(Model, BaseCase) {
   model.push_back(make_shared<TaskEntity>(TaskEntity()));
 
   // only tmp!!! maybe weak? - тогда копия не владеет, хотя и работать не очень удобно
+  // weak_ptr - неожиданно влядеет
   vector<weak_ptr<TaskEntity> > query(model.size());  // слабый похоже не сработает
   copy(model.begin(), model.end(), query.begin());  // работает со слабым
 
+  for_each(model.begin(), model.end(), bind(&TaskEntity::get_primary_key, _1));
+
   assert(0 == query.at(0).lock()->get_priority());
-}
-
-template <typename Auto>
-struct auto_cont {
-  Auto a;
-  explicit auto_cont(Auto& _a) : a(_a) {}
-  Auto get() const { return a; }
-};
-
-template <typename A> 
-auto_cont<A> inline get_a(A& a) {
-  return auto_cont<A>(a);
 }
 
 TEST(Model, Create) {
@@ -252,11 +263,7 @@ TEST(Model, Create) {
       boost::function1<bool, Model::value_type> p =  
         bind(
           bind(equal_to<int>(), _1, EntitiesStates::kInActiveKey), 
-          bind(mem_fn(&TaskEntity::get_primary_key), _1)) ;
-
-      //boost::function1<bool, shared_ptr<TaskEntity> > 
-      //p = std::not1(boost::make_adaptable<bool, shared_ptr<TaskEntity> >(p));
-      //p = bind(not1<>(), _1);  // not это не то
+          bind(&TaskEntity::get_primary_key, _1)) ;
 
       Model::iterator it = adobe::find_if(model, p);
 
