@@ -7,7 +7,9 @@
 //
 // без boost функциональное программировать для stl какое-то неполноценное
 //
-// Save partial predicatd... Done
+// Save partial predicatd... Done - boost::functionI
+// Operation composition... Done - boost::bind, own make troubles if work with shared ptrs
+// vector<weak_ptrs>... и с bind будут проблемы - нужно как-то распаковывать элементы
 //
 //#define BOOST_BIND_ENABLE_STDCALL
 //#define BOOST_BIND_ENABLE_FASTCALL   // win only
@@ -21,6 +23,7 @@
 #include <adobe/algorithm/find.hpp>  // удобно если работа с целым контейнером, иначе лучше std
 #include <boost/bind.hpp>
 #include <boost/bind/make_adaptable.hpp>
+#include <boost/function.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/mem_fn.hpp>
 #include <boost/shared_ptr.hpp>
@@ -28,7 +31,6 @@
 #include <gtest/gtest.h>
 #include <loki/ScopeGuard.h>
 #include <pqxx/pqxx> 
-#include <boost/function.hpp>
 //#include <boost/tr1/functional.hpp>
 
 #include <algorithm>
@@ -40,6 +42,7 @@
 namespace dirty {
 using namespace domain;
 
+// TROUBLES: при работе с shared_ptrs
 template <class OP1, class OP2
   //, typename R
 >
