@@ -1,20 +1,57 @@
+// сперва создаем в ОЗУ, только потом сохраняем
+//
+//
 #include "top/config.h"
 
 #include "canary/entities.h"
+#include "canary/storage_access.h"
+#include "visuality/view.h"
 
-#include <gtest/gtest.h>
-#include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+#include <gtest/gtest.h>
+#include <loki/ScopeGuard.h>
+#include <pqxx/pqxx> 
 
-#include <vector>
 #include <algorithm>
 #include <cassert>
+#include <vector>
 
 namespace {
 using namespace domain;
 using namespace std;
 using namespace boost;
+using namespace view;
+
+struct Ref {
+
+};
+
+ostream& operator<<(ostream& o, TaskEntity& a) {
+  o << "Id: " << a.get_primary_key() << " TaskName: " << a.get_task_name() << endl;
+  return o;
+}
+
+template <class T>
+class _ActionSmart {
+public:
+  explicit _ActionSmart(std::ostream* o_) : o(o_) { }
+  void operator()(const boost::shared_ptr<T>& elem) const {
+    *o << *elem;// << ", ";
+  }
+  std::ostream* const o;
+};
+
+template <class T>
+ostream& operator<<(ostream& o, const vector<shared_ptr<T> >& a) 
+{
+  std::for_each(a.begin(), a.end(), 
+      //view::ActionSmart<T>(&o));  // FIXME: не видит. 
+      _ActionSmart<T>(&o));
+  o << std::endl;
+  return o;
+}
 
 const char* events[] = {
   "A weak_ptr can only be created from a shared_ptr,",
@@ -23,7 +60,7 @@ const char* events[] = {
   "it would go out of scope at the end of the constructor, ",
   "and all weak_ptr instances would instantly expire."};
 
-const char* labels[] = {"v8", "fake"};
+//const char* labels[] = {"v8", "fake"};
 
 vector<shared_ptr<TaskEntity> > build_fake_model() {
   vector<shared_ptr<TaskEntity> > model;  
@@ -52,8 +89,13 @@ TEST(Model, BaseCase) {
 }
 
 TEST(Model, Create) {
+  // load from store
   vector<shared_ptr<TaskEntity> > model(build_fake_model());
+  
+  // view unsaved
+  cout << model;  
 
+  // save
 }
 
 }

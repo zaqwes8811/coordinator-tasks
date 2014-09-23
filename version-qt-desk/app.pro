@@ -24,7 +24,8 @@ INCLUDEPATH += \
   $$BOOST \
   $$LOCAL_3RDPARTY/loki-0.1.7/include \
   $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/ \
-  ./src
+  src \
+  /home/zaqwes/work/research_toolboxes/in-the-vicinity-cc/toolbox
   
 # -ltbb
 LIBS += -lpthread -lrt  -lpq -lpqxx
