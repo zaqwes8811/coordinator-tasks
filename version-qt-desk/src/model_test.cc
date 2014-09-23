@@ -191,7 +191,7 @@ ostream& operator<<(ostream& o, const vector<shared_ptr<T> >& a)
 
 const char* events[] = {
   "A weak_ptr can only be created from a shared_ptr,",
-  "and at object construction time no shared_ptr to the object exists yet. ",
+  "and at object construction time no shared_ptr to",
   "Even if you could create a temporary shared_ptr to this, ",
   "it would go out of scope at the end of the constructor, ",
   "and all weak_ptr instances would instantly expire."};
@@ -211,15 +211,20 @@ vector<shared_ptr<TaskEntity> > build_fake_model() {
 }
 
 TEST(Model, BaseCase) {
+  typedef vector<shared_ptr<TaskEntity> > Model;
+  typedef vector<weak_ptr<TaskEntity> > ModelWeakSlice;
+
   // пока храним все в памяти - активные только
   // ссылки не должны утечь, но как удалять из хранилища?
-  vector<shared_ptr<TaskEntity> > model;  
+  Model model;  
 
-  model.push_back(make_shared<TaskEntity>(TaskEntity()));
+  model.push_back(
+    make_shared<Model::value_type::element_type>(
+      Model::value_type::element_type()));
 
   // only tmp!!! maybe weak? - тогда копия не владеет, хотя и работать не очень удобно
   // weak_ptr - неожиданно влядеет
-  vector<weak_ptr<TaskEntity> > query(model.size());  // слабый похоже не сработает
+  ModelWeakSlice query(model.size());  // слабый похоже не сработает
   copy(model.begin(), model.end(), query.begin());  // работает со слабым
 
   for_each(model.begin(), model.end(), bind(&TaskEntity::get_primary_key, _1));
@@ -230,7 +235,7 @@ TEST(Model, BaseCase) {
 TEST(Model, Create) {
   typedef vector<shared_ptr<TaskEntity> > Model;
   // load from store
-  vector<shared_ptr<TaskEntity> > model(build_fake_model());
+  Model model(build_fake_model());
   
   // view unsaved
   cout << model;  
@@ -240,9 +245,7 @@ TEST(Model, Create) {
   {
     using app::kTableName;
 
-    if (!C.is_open()) {
-      throw runtime_error("Can't open database");
-    }
+    EXPECT_TRUE(C.is_open());
     
     ScopeGuard conn_guard = MakeObjGuard(C, &connection::disconnect);
 
@@ -273,7 +276,7 @@ TEST(Model, Create) {
       q.printTable(C);
     }
   }
-  assert(!C.is_open());
+  EXPECT_FALSE(C.is_open());
 
 }
 
