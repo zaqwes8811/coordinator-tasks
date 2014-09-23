@@ -6,6 +6,8 @@
 #include "canary/storage_access.h"  
 
 //#include <boost/noncopyable.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 #include <set>
 #include <string>
@@ -13,52 +15,60 @@
 namespace domain {
 const std::string gTableName = "tasks";
 
-struct entities_states {
+struct EntitiesStates {
   static const int kInActiveKey = -1;
   static const int kDefaulPriority = 0;
 };
 
 // раз обрабатываем пачкой, то наверное нужны метки
 // updated, to delete, ...
+// Feature - пока нет
+// Origin est.
+// Current est.
+// Elapsed
+// Remain
+//
+// TODO: нужно как-то сохранять со связями
+//std::set<std::string> labels_;  // TODO: сделать связь, но пока не нужно
+//
+// действия
+//bool update;  // вообще это плохо - это портить консистентность
+//bool to_delete;  // удалять ничего не нужно по сути-то 
+//bool is_done;  // work was done
+//void initialize()  // bad, but
+//explicit Task(std::string& name) :
 class Task {
 public:
+  // http://stackoverflow.com/questions/308276/c-call-constructor-from-constructor
   Task() 
-    : primary_key_(entities_states::kInActiveKey)
-    , priority_(entities_states::kDefaulPriority) { }
+    : primary_key_(EntitiesStates::kInActiveKey)
+    , priority_(EntitiesStates::kDefaulPriority) { }
 
   int get_primary_key() const { return primary_key_; }
 
+  static boost::shared_ptr<Task> create(std::string& task_name) {
+    boost::shared_ptr<Task> tmp = boost::make_shared<Task>(Task());
+    tmp->task_name_ = task_name;
+    return tmp;
+  }
+
   // лучше по значению
   std::string get_task_name() const { return task_name_; }
+  void set_task_name(std::string& value) { task_name_ = value; }
   
   int get_priority() const { return priority_; }
 
 private:
   friend class dal::TaskLifetimeQueries;  // только он меняет первичный ключ
-  void set_primary_key_(int val) { primary_key_ = val; }
-  // Уникальный для каждой задачи
-  int primary_key_;  // нужно какое-то не активное
 
-  // Джоел первая.
-  // Feature - пока нет
+  void set_primary_key_(int val) { primary_key_ = val; }
+  int primary_key_;  // нужно какое-то не активное
+  
   // Task name
   std::string task_name_;
 
   // Priority
   int priority_;
-
-  // Origin est.
-  // Current est.
-  // Elapsed
-  // Remain
-
-  // TODO: нужно как-то сохранять со связями
-  //std::set<std::string> tags_;  // TODO: сделать связь, но пока не нужно
-
-  // действия
-  //bool update;  // вообще это плохо - это портить консистентность
-  //bool to_delete;  // удалять ничего не нужно по сути-то 
-  //bool is_done;  // work was done
 };
 
 // TODO: должны быть уникальные по имени и при создании это нужно контролировать.
