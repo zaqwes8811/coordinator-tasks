@@ -13,6 +13,7 @@ namespace dal {
 using std::string;
 using std::cout;
 using std::endl;
+using namespace boost;
 
 using pqxx::connection;
 using pqxx::work;
@@ -35,6 +36,8 @@ void TaskTableQueries::printTable(connection& C) const {
   }
 }
 
+
+
 void TaskTableQueries::createTable(connection& C) {
   string sql(
     "CREATE TABLE " \
@@ -53,17 +56,30 @@ void TaskTableQueries::dropTable(connection& C) {
   psql_space::rm_table(C, table_name_);
 }
 
+/// Lifetime
+void TaskLifetimeQueries::persist(
+      const std::vector<boost::shared_ptr<domain::TaskEntity> >& tasks, 
+      pqxx::connection& C) 
+  { 
+  // FIXME: должно ли быть все атомарное
+
+  // Разбиваем на операции
+  // save partion - no saved
+
+  // update
+}
+
 void TaskLifetimeQueries::store(TaskEntity& task, connection& C) /*const*/ {
   // нужно получить id
   // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
   //{
   // Insert
-  string sql =
-    "INSERT INTO " + table_name_ + " (task_name, priority) " \
-      "VALUES ('"+task.get_task_name()+"', 32) RETURNING id; ";
+  string sql(
+      "INSERT INTO " + table_name_ + " (task_name, priority) " \
+      "VALUES ('"+task.get_task_name()+"', 32) RETURNING id; ");
 
   work W(C);
-  result R( W.exec( sql ));
+  result R( W.exec( sql ));  // похоже нельзя выполнить два запроса
   W.commit();
 
   // Узнаем что за ключ получили

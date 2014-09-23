@@ -32,8 +32,8 @@ using namespace std;
 
 void do_something(pqxx::connection& C)
 {
-  const string kTableName = "task_fake_entity";
-
+  using app::kTableName;
+  
   // Tasks
   TaskTableQueries q(kTableName);
   q.createTable(C);
@@ -56,7 +56,7 @@ void do_something(pqxx::connection& C)
 }
 
 TEST(postgres, all) {
-  connection C("dbname=mydb user=postgres password=postgres hostaddr=127.0.0.1 port=5432");
+  connection C(app::kConnection);
   {
     if (!C.is_open()) {
       throw runtime_error("Can't open database");

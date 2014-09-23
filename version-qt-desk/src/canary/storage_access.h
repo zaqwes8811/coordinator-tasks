@@ -3,11 +3,13 @@
 
 
 // 3rdparty
-#include <pqxx/pqxx>
 #include <boost/noncopyable.hpp>
+#include <boost/shared_ptr.hpp>
+#include <pqxx/pqxx>
 
 // C++
 #include <string>
+#include <vector>
 
 namespace domain {
   // http://msdn.microsoft.com/en-us/library/0e5kx78b.aspx
@@ -35,7 +37,9 @@ private:
 class TaskLifetimeQueries : public boost::noncopyable {
 public:
   explicit TaskLifetimeQueries(const std::string& table_name) : table_name_(table_name) {}
-  void persist(const domain::TaskEntity& task) const { }
+  void persist(
+      const std::vector<boost::shared_ptr<domain::TaskEntity> >& tasks, 
+      pqxx::connection& C);  // const;  // no logic const.
 
   // Назначет id!
   //domain::TaskEntity& 

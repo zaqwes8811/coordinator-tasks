@@ -11,7 +11,8 @@ BOOST=/home/zaqwes/work/third_party/boost_1_55_0
 LOCAL_3RDPARTY=../3rdparty
 
 # -std=c++11 -pg
-QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated 
+QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated
+# -std=c++11
 
 SOURCES += \
     ./src/pq_dal_test.cc \  
