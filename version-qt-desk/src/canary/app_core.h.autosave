@@ -12,7 +12,6 @@ namespace app_core
 class AppCore
    : boost::noncopyable {
 public:
-  //explicit
     AppCore(
             domain::Model _model,
             boost::shared_ptr<pq_dal::PQConnectionPool> _pool)
@@ -25,12 +24,22 @@ public:
   // добавлять все равно буду скорее всего по-одному
   void append(domain::Model::value_type e);
 
+  //
+  void save();
+
   static AppCore* heapCreate(
       boost::shared_ptr<pq_dal::PQConnectionPool>);
 
   bool clear;  // удаляем ли созданное, нужно для тестирования
 
   ~AppCore();
+
+  // persist filters:
+  void load_all();
+  void load_active();
+
+  // render filters:
+
 private:
   domain::Model model_;
   bool miss_;  // кеш устарел
