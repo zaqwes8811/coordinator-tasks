@@ -7,7 +7,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 
-namespace busi
+namespace app_core
 {
 class AppCore
    : boost::noncopyable {
@@ -22,7 +22,7 @@ public:
     }
 
   // наверное лучше сразу сохранить
-  //void append(Model::value_type e) { }
+  void append(domain::Model::value_type e);
 
   static AppCore* heapCreate(boost::shared_ptr<pq_dal::PQConnectionPool>);
 

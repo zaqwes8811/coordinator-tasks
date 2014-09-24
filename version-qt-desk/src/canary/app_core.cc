@@ -2,7 +2,7 @@
 
 #include "canary/app_core.h"
 
-namespace busi {
+namespace app_core {
 using namespace pq_dal;
 using namespace domain;
 
@@ -25,6 +25,25 @@ AppCore::~AppCore() {
   if (clear) {
     TaskTableQueries q(app::kTaskTableName);
     q.drop(*(pool_->get()));
+  }
+}
+
+void AppCore::append(Model::value_type e) {
+  // FIXME: может лучше исключение?
+  assert(e->get_primary_key() == EntitiesStates::kInActiveKey);
+
+  try {
+    // даже если исключение брошено при
+    //   сохранении, а элемент добавлен, то можно потом сохр.
+    // но! лучше сохранить! так мы копим несохраненные данные!
+    //
+    // add to container
+
+    // persist full container
+
+  } catch (...) {
+
+    throw;
   }
 }
 }

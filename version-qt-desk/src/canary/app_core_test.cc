@@ -12,7 +12,7 @@
 
 namespace {
 using pq_dal::PQConnectionPool;
-using busi::AppCore;
+using app_core::AppCore;
 using namespace boost;
 
 TEST(AppCore, Create) {
