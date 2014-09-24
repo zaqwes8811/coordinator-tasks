@@ -27,7 +27,7 @@ using namespace pq_dal;
 using namespace domain;
 using namespace Loki;
 using namespace pqxx;
-using namespace psql_space;
+using namespace pq_lower_level;
 using namespace std;
 
 void do_something(pqxx::connection& C)

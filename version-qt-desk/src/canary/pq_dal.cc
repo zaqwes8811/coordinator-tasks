@@ -57,11 +57,11 @@ void TaskTableQueries::createIfNotExist(connection& C) {
     "task_name  TEXT               NOT NULL, " \
     "priority   INT                NOT NULL);");
 
-  psql_space::run_transaction(sql, C);
+  pq_lower_level::run_transaction(sql, C);
 }
 
 void TaskTableQueries::drop(connection& C) {
-  psql_space::rm_table(C, table_name_);
+  pq_lower_level::rm_table(C, table_name_);
 }
 
 void TaskLifetimeQueries::persist(
@@ -123,7 +123,7 @@ domain::Model TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
 
 }  // ns
 
-namespace psql_space {
+namespace pq_lower_level {
 using std::string;
 using pqxx::connection;
 using pqxx::work;

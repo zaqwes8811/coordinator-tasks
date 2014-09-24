@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-namespace psql_space {
+namespace pq_lower_level {
 // можно было использовать ссылку и ByRef()
 void rm_table(pqxx::connection& C, const std::string& table_name);
 void run_transaction(const std::string& sql, /*const*/ pqxx::connection& C);
