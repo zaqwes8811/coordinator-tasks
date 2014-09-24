@@ -24,7 +24,8 @@ SOURCES += \
     src/canary/entities.cc \
     src/entities_test.cc \
     src/_trash/_trash.cc \
-    src/canary/lower_level.cc
+    src/canary/lower_level.cc \
+    src/app_core_test.cc
 
 INCLUDEPATH += \
   $$BOOST \

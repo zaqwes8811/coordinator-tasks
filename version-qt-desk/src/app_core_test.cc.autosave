@@ -1,0 +1,9 @@
+#include "top/config.h"
+
+#include"canary/entities.h"
+
+#include <gtest/gtest.h>
+
+namespace {
+
+}

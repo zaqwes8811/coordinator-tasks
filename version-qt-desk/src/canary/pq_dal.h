@@ -28,10 +28,7 @@ public:
   explicit TaskLifetimeQueries(const std::string& table_name) : table_name_(table_name) {}
 
   // by value
-  // const;  // no logic const.
-  void persist(
-      std::vector<boost::shared_ptr<domain::TaskEntity> > tasks,
-      pqxx::connection& C);
+  void persist(domain::Model tasks, pqxx::connection& C);
 
   // Назначет id!
   // logical non-const
