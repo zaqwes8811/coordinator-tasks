@@ -46,7 +46,8 @@ LIBS += -lpthread -lrt  -lpq -lpqxx -L/home/zaqwes/work/third_party/boost_1_55_0
 HEADERS += \
     src/canary/app_types.h \
     src/canary/lower_level.h \
-    src/canary/busi.h
+    src/canary/busi.h \
+    src/canary/render.h
 
 OTHER_FILES += \
     forge.txt

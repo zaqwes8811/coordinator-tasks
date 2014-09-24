@@ -29,7 +29,8 @@
 
 #include "canary/entities.h"
 #include "canary/pq_dal.h"
-#include "visuality/view.h"
+//#include "visuality/view.h"
+#include "canary/render.h"
 
 #include <adobe/algorithm/find.hpp>  // удобно если работа с целым контейнером, иначе лучше std
 #include <boost/bind.hpp>
@@ -57,37 +58,16 @@ using namespace domain;
 using namespace Loki;
 using namespace pqxx;
 using namespace pq_lower_level;
-using namespace std;
-using namespace view;
+//using namespace std;
 
-struct Ref {
+using std::vector;
+using std::string;
+using std::cout;
+using std::equal_to;
+using renders::operator <<;
 
-};
-
-ostream& operator<<(ostream& o, TaskEntity& a) {
-  o << "Id: " << a.get_primary_key() << " TaskName: " << a.get_task_name() << endl;
-  return o;
-}
-
-template <class T>
-class _ActionSmart {
-public:
-  explicit _ActionSmart(std::ostream* o_) : o(o_) { }
-  void operator()(const boost::shared_ptr<T>& elem) const {
-    *o << *elem;// << ", ";
-  }
-  std::ostream* const o;
-};
-
-template <class T>
-ostream& operator<<(ostream& o, const vector<shared_ptr<T> >& a) 
-{
-  std::for_each(a.begin(), a.end(), 
-      //view::ActionSmart<T>(&o));  // FIXME: не видит. 
-      _ActionSmart<T>(&o));
-  o << std::endl;
-  return o;
-}
+//using namespace view;
+//using namespace renders;
 
 const char* events[] = {
   "A weak_ptr can only be created from a shared_ptr,",

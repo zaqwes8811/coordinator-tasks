@@ -12,11 +12,6 @@
 
 //
 #include "Common/Compat.h"
-//#include "Common/TestUtils.h"
-//#include "Common/Init.h"
-//#include "Common/PageArenaAllocator.h"
-
-//#include <Common/compat-c.h>  // why separeated?
 #include <Common/Logger.h>
 #include <Common/Error.h>
 
