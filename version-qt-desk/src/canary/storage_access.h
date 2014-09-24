@@ -1,7 +1,7 @@
 #ifndef DAL_H
 #define DAL_H
 
-#include "canary/app_types.h"
+//#include "canary/app_types.h"
 #include "canary/entities.h"
 
 // 3rdparty
@@ -20,6 +20,8 @@ namespace domain {
 }*/
 
 namespace pq_dal {
+using namespace domain;
+
 class TaskTableQueries : public boost::noncopyable {
 public:
   TaskTableQueries(const std::string& name) : table_name_(name) { }
@@ -43,7 +45,7 @@ public:
 
   // by value
   void persist(
-      domain::Model tasks,
+      std::vector<boost::shared_ptr<domain::TaskEntity> > tasks,
       pqxx::connection& C);  // const;  // no logic const.
 
   // Назначет id!

@@ -17,11 +17,12 @@ QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated
 # -std=c++11
 
 SOURCES += \
-  ./src/pq_dal_test.cc \  
+  src/pq_dal_test.cc \
   src/pq_dal.cc \
-  ./src/model_test.cc \
+  src/models_test.cc \
   $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
-  launcher.cc
+  launcher.cc \
+    src/models.cc
 
 INCLUDEPATH += \
   $$BOOST \

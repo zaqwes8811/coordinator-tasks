@@ -28,6 +28,7 @@
 #include "top/config.h"
 
 #include "canary/entities.h"
+
 #include "canary/storage_access.h"
 #include "visuality/view.h"
 
@@ -152,7 +153,7 @@ smart2ptr_t<T> smart2ptr(T op)
 
 namespace {
 using namespace boost;
-using namespace dal;
+using namespace pq_dal;
 using namespace domain;
 using namespace Loki;
 using namespace pqxx;

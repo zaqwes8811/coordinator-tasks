@@ -1,13 +1,12 @@
-#ifndef DOMAIN_H
-#define DOMAIN_H
+#ifndef DOMAIN_H_
+#define DOMAIN_H_
 
 // FIXME: BAD!! верхний уровень знает о нижнем
 // возможно можно сделать класс на соседнем уровне?
-#include "canary/storage_access.h"  
+//#include "canary/storage_access.h"
 
 //#include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
 
 #include <set>
 #include <string>
@@ -48,11 +47,7 @@ public:
 
   int get_primary_key() const { return primary_key_; }
 
-  static boost::shared_ptr<TaskEntity> create(std::string& task_name) {
-    boost::shared_ptr<TaskEntity> tmp = boost::make_shared<TaskEntity>(TaskEntity());
-    tmp->task_name_ = task_name;
-    return tmp;
-  }
+  static boost::shared_ptr<TaskEntity> create(std::string& task_name);
 
   // лучше по значению
   std::string get_task_name() const { return task_name_; }
@@ -76,7 +71,7 @@ private:
   int priority_;
 };
 
-typedef std::vector<boost::shared_ptr<TaskEntity> > Model;
+typedef std::vector<boost::shared_ptr<domain::TaskEntity> > Model;
 
 // TODO: должны быть уникальные по имени и при создании это нужно контролировать.
 // TODO: Как быть при обновлении имени или цвета? Возможно нужно хранить shared_ptrs не на константу.
