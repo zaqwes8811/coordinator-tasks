@@ -6,3 +6,4 @@ out
 tests-medium/node_modules
 *~*
 *.o
+*.autosave
