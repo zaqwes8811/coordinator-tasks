@@ -58,6 +58,7 @@ void TaskLifetimeQueries::persist(
       pqxx::connection& C) 
   { 
   // FIXME: должно ли быть все атомарное
+  //Model::iterator it = partion
 
   // Разбиваем на операции
   // save partion - no saved

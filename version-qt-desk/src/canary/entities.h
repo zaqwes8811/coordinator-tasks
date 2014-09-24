@@ -3,10 +3,6 @@
 
 // FIXME: BAD!! верхний уровень знает о нижнем
 // возможно можно сделать класс на соседнем уровне?
-//#include "canary/storage_access.h"
-//#include "canary/dal_bridge.h"
-
-//#include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <set>
@@ -63,23 +59,14 @@ public:
 private:
   friend class pq_dal::TaskLifetimeQueries;  // только он меняет первичный ключ
 
-  /*template <typename U>
-  friend void bridge::set_id(boost::shared_ptr<U> e, int key);
-
-  template <typename X>
-  friend void bridge::set_id_value(X& e, int key);*/
-
   void set_primary_key_(int val) { primary_key_ = val; }
 
   int primary_key_;  // нужно какое-то не активное
-  
-  // Task name
   std::string task_name_;
-
-  // Priority
   int priority_;
 };
 
+// set лучше, но до сохранения индекс может быть не уникальным
 typedef std::vector<boost::shared_ptr<domain::TaskEntity> > Model;
 
 // TODO: должны быть уникальные по имени и при создании это нужно контролировать.
@@ -91,8 +78,18 @@ public:
 private:
   int primary_key_;
   std::string name_;
-
   std::string color_;
+};
+
+class AppCore {
+public:
+
+  // наверное лучше сразу сохранить
+  //void append(Model::value_type e) { }
+
+  static AppCore* heapCreate();
+private:
+  Model model_;
 };
 
 }  // namespace..

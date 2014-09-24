@@ -17,4 +17,8 @@ boost::shared_ptr<TaskEntity> TaskEntity::create(std::string& task_name) {
 }
 
 
+AppCore* AppCore::heapCreate() {
+  //
+}
+
 }  // namespace
