@@ -10,7 +10,27 @@
 #include <string>
 #include <vector>
 
+namespace psql_space {
+// можно было использовать ссылку и ByRef()
+void rm_table(pqxx::connection& C, const std::string& table_name);
+void run_transaction(const std::string& sql, /*const*/ pqxx::connection& C);
+}
+
+
 namespace pq_dal {
+class PQConnectionPool : public boost::noncopyable {
+public:
+  explicit PQConnectionPool(const std::string& conn_info);
+  ~PQConnectionPool();
+
+  // non-const
+  boost::shared_ptr<pqxx::connection> get()
+  { return conn_; }
+private:
+  boost::shared_ptr<pqxx::connection> conn_;
+};
+
+
 class TaskTableQueries : public boost::noncopyable {
 public:
   TaskTableQueries(const std::string& name) : table_name_(name) { }
@@ -41,10 +61,5 @@ private:
 };
 }  // ns
 
-namespace psql_space {
-// можно было использовать ссылку и ByRef()
-void rm_table(pqxx::connection& C, const std::string& table_name);
-void run_transaction(const std::string& sql, /*const*/ pqxx::connection& C);
-}
 
 #endif // DAL_H

@@ -1,7 +1,7 @@
 #ifndef DOMAIN_H_
 #define DOMAIN_H_
 
-#include "canary/lower_level.h"
+//#include "canary/pq_dal.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
@@ -82,33 +82,6 @@ private:
   std::string name_;
   std::string color_;
 };
-
-class AppCore
-   : boost::noncopyable {
-public:
-  //explicit
-    AppCore(
-            Model _model,
-            boost::shared_ptr<lower_level::PQConnectionPool> _pool)
-        : clear(false), miss_(true), pool_(_pool) {
-        model_ = (_model);  // assign
-        miss_ = false;  // последние данные загружены
-    }
-
-  // наверное лучше сразу сохранить
-  //void append(Model::value_type e) { }
-
-  static AppCore* heapCreate(boost::shared_ptr<lower_level::PQConnectionPool>);
-
-  bool clear;  // удаляем ли созданное, нужно для тестирования
-
-  ~AppCore();
-private:
-  Model model_;
-  bool miss_;  // кеш устарел
-  boost::shared_ptr<lower_level::PQConnectionPool> pool_;
-};
-
 }  // namespace..
 
 #endif // DOMAIN_H

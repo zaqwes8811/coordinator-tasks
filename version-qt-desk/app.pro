@@ -17,16 +17,15 @@ QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated
 # -std=c++11
 
 SOURCES += \
-    src/pq_dal_test.cc \
+    src/canary/pq_dal_test.cc \
     src/canary/pq_dal.cc \
     $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
     launcher.cc \
     src/canary/entities.cc \
-    src/entities_test.cc \
+    src/canary/entities_test.cc \
     src/_trash/_trash.cc \
-    src/canary/lower_level.cc \
-    src/app_core_test.cc \
-    src/canary/busi.cc
+    src/canary/busi.cc \
+    src/canary/busi_test.cc
 
 INCLUDEPATH += \
   $$BOOST \
