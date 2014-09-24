@@ -29,8 +29,7 @@
 
 #include "canary/entities.h"
 #include "canary/pq_dal.h"
-//#include "visuality/view.h"
-#include "canary/render.h"
+#include "canary/renders.h"
 
 #include <adobe/algorithm/find.hpp>  // удобно если работа с целым контейнером, иначе лучше std
 #include <boost/bind.hpp>
@@ -58,7 +57,6 @@ using namespace domain;
 using namespace Loki;
 using namespace pqxx;
 using namespace pq_lower_level;
-//using namespace std;
 
 using std::vector;
 using std::string;
@@ -66,8 +64,6 @@ using std::cout;
 using std::equal_to;
 using renders::operator <<;
 
-//using namespace view;
-//using namespace renders;
 
 const char* events[] = {
   "A weak_ptr can only be created from a shared_ptr,",

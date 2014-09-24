@@ -10,12 +10,7 @@
 #include <algorithm>
 
 namespace renders {
-std::ostream& operator<<(std::ostream& o, domain::TaskEntity& a) {
-  o << "Id: " << a.get_primary_key()
-    << " TaskName: " << a.get_task_name()
-    << std::endl;
-  return o;
-}
+std::ostream& operator<<(std::ostream& o, domain::TaskEntity& a);
 
 template <class T>
 class _ActionSmart {

@@ -1,9 +1,8 @@
 #include "top/config.h"
 
 #include "canary/entities.h"
-#include "canary/lower_level.h"
 #include "canary/pq_dal.h"  // BAD!! too low level
-#include "canary/busi.h"
+#include "canary/app_core.h"
 
 #include <gtest/gtest.h>
 #include <boost/shared_ptr.hpp>

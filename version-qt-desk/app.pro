@@ -24,12 +24,13 @@ SOURCES += \
     src/canary/entities.cc \
     src/canary/entities_test.cc \
     src/_trash/_trash.cc \
-    src/canary/busi.cc \
-    src/canary/busi_test.cc \
     src/htable_adapt_test.cc \
     ../../../work-analyse/hypertable/src/cc/Common/Error.cc \
     ../../../work-analyse/hypertable/src/cc/Common/Logger.cc \
-    ../../../work-analyse/hypertable/src/cc/Common/String.cc
+    ../../../work-analyse/hypertable/src/cc/Common/String.cc \
+    src/canary/app_core.cc \
+    src/canary/app_core_test.cc \
+    src/canary/renders.cc
 
 INCLUDEPATH += \
   $$BOOST \
@@ -47,7 +48,7 @@ HEADERS += \
     src/canary/app_types.h \
     src/canary/lower_level.h \
     src/canary/busi.h \
-    src/canary/render.h
+    src/canary/renders.h
 
 OTHER_FILES += \
     forge.txt
