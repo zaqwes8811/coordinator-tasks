@@ -49,13 +49,14 @@ public:
 
   int get_primary_key() const { return primary_key_; }
 
-  static boost::shared_ptr<TaskEntity> create(std::string& task_name);
+  static boost::shared_ptr<TaskEntity> create(const std::string& task_name);
 
   // лучше по значению
   std::string get_task_name() const { return task_name_; }
-  void set_task_name(std::string& value) { task_name_ = value; }
+  void set_task_name(const std::string& value) { task_name_ = value; }
   
   int get_priority() const { return priority_; }
+  void set_priority(const int val) { priority_ = val; }
 
 private:
   friend class pq_dal::TaskLifetimeQueries;  // только он меняет первичный ключ
@@ -85,8 +86,14 @@ private:
 class AppCore
    : boost::noncopyable {
 public:
-  explicit AppCore(boost::shared_ptr<lower_level::PQConnectionPool> _pool)
-        : clear(false), miss_(true), pool_(_pool) {}
+  //explicit
+    AppCore(
+            Model _model,
+            boost::shared_ptr<lower_level::PQConnectionPool> _pool)
+        : clear(false), miss_(true), pool_(_pool) {
+        model_ = (_model);  // assign
+        miss_ = false;  // последние данные загружены
+    }
 
   // наверное лучше сразу сохранить
   //void append(Model::value_type e) { }

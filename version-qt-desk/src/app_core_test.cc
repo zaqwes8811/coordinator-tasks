@@ -18,5 +18,7 @@ TEST(AppCore, Create) {
   // make_shared получает по копии - проблема с некопируемыми объектами
   shared_ptr<PQConnectionPool> pool(
         new PQConnectionPool(app::kConnection));
+
+  std::auto_ptr<AppCore> app(AppCore::heapCreate(pool));
 }
 }  // namespace

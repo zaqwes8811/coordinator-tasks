@@ -25,7 +25,8 @@ SOURCES += \
     src/entities_test.cc \
     src/_trash/_trash.cc \
     src/canary/lower_level.cc \
-    src/app_core_test.cc
+    src/app_core_test.cc \
+    src/canary/busi.cc
 
 INCLUDEPATH += \
   $$BOOST \
@@ -40,7 +41,11 @@ LIBS += -lpthread -lrt  -lpq -lpqxx
 
 HEADERS += \
     src/canary/app_types.h \
-    src/canary/lower_level.h
+    src/canary/lower_level.h \
+    src/canary/busi.h
+
+OTHER_FILES += \
+    forge.txt
 
 
 

@@ -90,5 +90,25 @@ void TaskLifetimeQueries::store(TaskEntity& task, connection& conn) {
   assert(new_id != domain::EntitiesStates::kInActiveKey);
   task.set_primary_key_(new_id);
 }
+
+domain::Model TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
+  work w(conn);
+  string sql("SELECT * from " + table_name_ + ";");
+  result r( w.exec( sql ));
+  w.commit();
+
+  Model model;
+  for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
+    Model::value_type elem = TaskEntity::create("");
+        //Model::value_type::element_type::create(string());
+    elem->set_primary_key_(c[0].as<int>());
+    elem->set_task_name(c[1].as<string>());
+    elem->set_priority(c[2].as<int>());
+    model.push_back(elem);
+  }
+
+  return model;
+}
+
 }
 

@@ -11,7 +11,7 @@
 namespace domain {
 using namespace pq_dal;
 
-boost::shared_ptr<TaskEntity> TaskEntity::create(std::string& task_name) {
+boost::shared_ptr<TaskEntity> TaskEntity::create(const std::string& task_name) {
   boost::shared_ptr<TaskEntity> tmp = boost::make_shared<TaskEntity>(TaskEntity());
   tmp->task_name_ = task_name;
   return tmp;
@@ -26,9 +26,11 @@ AppCore* AppCore::heapCreate(
   q.createIfNotExist(*(pool->get()));
 
   // get tasks
+  TaskLifetimeQueries q_live(app::kTaskTableName);
+  Model model(q_live.get_all(*(pool->get())));
 
   // build
-  return new AppCore(pool);
+  return new AppCore(model, pool);
 }
 
 AppCore::~AppCore() {
