@@ -4,6 +4,7 @@
 // FIXME: BAD!! верхний уровень знает о нижнем
 // возможно можно сделать класс на соседнем уровне?
 //#include "canary/storage_access.h"
+//#include "canary/dal_bridge.h"
 
 //#include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
@@ -11,6 +12,10 @@
 #include <set>
 #include <string>
 #include <vector>
+
+namespace pq_dal {
+    class TaskLifetimeQueries;
+}
 
 namespace domain {
 const std::string gTableName = "tasks";
@@ -56,12 +61,16 @@ public:
   int get_priority() const { return priority_; }
 
 private:
-  //friend class pq_dal::TaskLifetimeQueries;  // только он меняет первичный ключ
+  friend class pq_dal::TaskLifetimeQueries;  // только он меняет первичный ключ
 
-public:
+  /*template <typename U>
+  friend void bridge::set_id(boost::shared_ptr<U> e, int key);
+
+  template <typename X>
+  friend void bridge::set_id_value(X& e, int key);*/
+
   void set_primary_key_(int val) { primary_key_ = val; }
 
-private:
   int primary_key_;  // нужно какое-то не активное
   
   // Task name

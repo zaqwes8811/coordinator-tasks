@@ -5,7 +5,7 @@
 
 #include "top/config.h"
 
-#include "canary/storage_access.h"
+#include "canary/pq_dal.h"
 #include "canary/entities.h"
 
 #include <loki/ScopeGuard.h>

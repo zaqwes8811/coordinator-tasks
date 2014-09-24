@@ -1,38 +1,22 @@
 #ifndef DAL_H
 #define DAL_H
 
-//#include "canary/app_types.h"
 #include "canary/entities.h"
 
-// 3rdparty
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 #include <pqxx/pqxx>
 
-// C++
 #include <string>
 #include <vector>
 
-/*
-namespace domain {
-// http://msdn.microsoft.com/en-us/library/0e5kx78b.aspx
-//class TaskEntity;  // Forward reference; no definition
-}*/
-
 namespace pq_dal {
-using namespace domain;
-
 class TaskTableQueries : public boost::noncopyable {
 public:
   TaskTableQueries(const std::string& name) : table_name_(name) { }
   void createTable(pqxx::connection& C);
   void dropTable(pqxx::connection& C);
-
-  // http://stackoverflow.com/questions/17064297/overloading-operator-multiple-parameters
-  //ostream& operator <<
-
   void printTable(pqxx::connection& C) const;
-
 private:
   const std::string table_name_;
 };
@@ -44,20 +28,15 @@ public:
   explicit TaskLifetimeQueries(const std::string& table_name) : table_name_(table_name) {}
 
   // by value
+  // const;  // no logic const.
   void persist(
       std::vector<boost::shared_ptr<domain::TaskEntity> > tasks,
-      pqxx::connection& C);  // const;  // no logic const.
+      pqxx::connection& C);
 
   // Назначет id!
-  //domain::TaskEntity& 
-  void store(domain::TaskEntity& task, pqxx::connection& C) /*const*/;  // logical non-const
-
-  //void removeById(int id);  // по сути не нужно
-
+  // logical non-const
+  void store(domain::TaskEntity& task, pqxx::connection& C);
 private:
-  //TaskLifetimeQueries(const TaskLifetimeQueries&);
-  //TaskLifetimeQueries& operator=(const TaskLifetimeQueries&);
-
   const std::string table_name_;
 };
 }  // ns

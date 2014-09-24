@@ -17,12 +17,14 @@ QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated
 # -std=c++11
 
 SOURCES += \
-  src/pq_dal_test.cc \
-  src/pq_dal.cc \
-  src/models_test.cc \
-  $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
-  launcher.cc \
-    src/models.cc
+    src/pq_dal_test.cc \
+    src/canary/pq_dal.cc \
+    $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
+    launcher.cc \
+    src/canary/entities.cc \
+    src/entities_test.cc \
+    src/_trash/_trash.cc \
+    src/canary/lower_level.cc
 
 INCLUDEPATH += \
   $$BOOST \
@@ -36,7 +38,8 @@ INCLUDEPATH += \
 LIBS += -lpthread -lrt  -lpq -lpqxx
 
 HEADERS += \
-    src/canary/app_types.h
+    src/canary/app_types.h \
+    src/canary/lower_level.h
 
 
 
