@@ -12,6 +12,10 @@ class PQConnectionPool : public boost::noncopyable {
 public:
   explicit PQConnectionPool(const std::string& conn_info);
   ~PQConnectionPool();
+
+  // non-const
+  boost::shared_ptr<pqxx::connection> get()
+  { return conn_; }
 private:
   boost::shared_ptr<pqxx::connection> conn_;
 };

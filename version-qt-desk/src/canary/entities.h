@@ -1,16 +1,17 @@
 #ifndef DOMAIN_H_
 #define DOMAIN_H_
 
-// FIXME: BAD!! верхний уровень знает о нижнем
-// возможно можно сделать класс на соседнем уровне?
+#include "canary/lower_level.h"
+
 #include <boost/shared_ptr.hpp>
+#include <boost/noncopyable.hpp>
 
 #include <set>
 #include <string>
 #include <vector>
 
 namespace pq_dal {
-    class TaskLifetimeQueries;
+    class TaskLifetimeQueries;  // lower level?
 }
 
 namespace domain {
@@ -81,15 +82,24 @@ private:
   std::string color_;
 };
 
-class AppCore {
+class AppCore
+   : boost::noncopyable {
 public:
+  explicit AppCore(boost::shared_ptr<lower_level::PQConnectionPool> _pool)
+        : clear(false), miss_(true), pool_(_pool) {}
 
   // наверное лучше сразу сохранить
   //void append(Model::value_type e) { }
 
-  static AppCore* heapCreate();
+  static AppCore* heapCreate(boost::shared_ptr<lower_level::PQConnectionPool>);
+
+  bool clear;  // удаляем ли созданное, нужно для тестирования
+
+  ~AppCore();
 private:
   Model model_;
+  bool miss_;  // кеш устарел
+  boost::shared_ptr<lower_level::PQConnectionPool> pool_;
 };
 
 }  // namespace..

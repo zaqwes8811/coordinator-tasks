@@ -90,5 +90,10 @@ void TaskLifetimeQueries::store(TaskEntity& task, connection& conn) {
   assert(new_id != domain::EntitiesStates::kInActiveKey);
   task.set_primary_key_(new_id);
 }
+
+domain::Model TaskLifetimeQueries::get_all(pqxx::connection& C) const {
+
+}
+
 }
 

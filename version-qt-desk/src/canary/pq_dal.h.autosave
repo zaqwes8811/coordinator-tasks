@@ -30,7 +30,7 @@ public:
   // by value
   void persist(domain::Model tasks, pqxx::connection& C);
 
-  domain::Model get_active(pqxx::connection& C) const;
+  domain::Model get_all(pqxx::connection& C) const;
   // get_all
 
   // Назначет id!

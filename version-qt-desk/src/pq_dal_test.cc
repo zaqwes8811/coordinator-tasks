@@ -32,18 +32,18 @@ using namespace std;
 
 void do_something(pqxx::connection& C)
 {
-  using app::kTableName;
+  using app::kTaskTableName;
   
   // Tasks
-  TaskTableQueries q(kTableName);
-  q.createTable(C);
+  TaskTableQueries q(kTaskTableName);
+  q.createIfNotExist(C);
 
   // Если не создано, то нет смысла
   // а если не создасться? Тут похоже все равно.
-  ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::dropTable, ByRef(C));
+  ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop, ByRef(C));
 
   // Create records
-  TaskLifetimeQueries q_insert(kTableName);
+  TaskLifetimeQueries q_insert(kTaskTableName);
   TaskEntity t;
   q_insert.store(t, C);
   assert(t.get_primary_key() != EntitiesStates::kInActiveKey);
@@ -52,7 +52,7 @@ void do_something(pqxx::connection& C)
   // Tags
 
   // View
-  q.printTable(C);
+  q.print(C);
 }
 
 TEST(postgres, all) {
