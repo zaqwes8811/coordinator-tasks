@@ -23,7 +23,7 @@
 #include <cassert>
 
 namespace {
-using namespace dal;
+using namespace pq_dal;
 using namespace domain;
 using namespace Loki;
 using namespace pqxx;

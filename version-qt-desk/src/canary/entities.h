@@ -11,6 +11,7 @@
 
 #include <set>
 #include <string>
+#include <vector>
 
 namespace domain {
 const std::string gTableName = "tasks";
@@ -60,9 +61,12 @@ public:
   int get_priority() const { return priority_; }
 
 private:
-  friend class dal::TaskLifetimeQueries;  // только он меняет первичный ключ
+  //friend class pq_dal::TaskLifetimeQueries;  // только он меняет первичный ключ
 
+public:
   void set_primary_key_(int val) { primary_key_ = val; }
+
+private:
   int primary_key_;  // нужно какое-то не активное
   
   // Task name
@@ -71,6 +75,8 @@ private:
   // Priority
   int priority_;
 };
+
+typedef std::vector<boost::shared_ptr<TaskEntity> > Model;
 
 // TODO: должны быть уникальные по имени и при создании это нужно контролировать.
 // TODO: Как быть при обновлении имени или цвета? Возможно нужно хранить shared_ptrs не на константу.

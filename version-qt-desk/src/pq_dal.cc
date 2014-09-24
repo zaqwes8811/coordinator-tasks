@@ -1,5 +1,6 @@
 #include "top/config.h"
 
+
 #include "canary/storage_access.h"
 #include "canary/entities.h"
 
@@ -9,7 +10,7 @@
 // C
 #include <cassert>
 
-namespace dal {
+namespace pq_dal {
 using std::string;
 using std::cout;
 using std::endl;
@@ -58,7 +59,7 @@ void TaskTableQueries::dropTable(connection& C) {
 
 /// Lifetime
 void TaskLifetimeQueries::persist(
-      const std::vector<boost::shared_ptr<domain::TaskEntity> >& tasks, 
+      std::vector<boost::shared_ptr<domain::TaskEntity> > tasks,
       pqxx::connection& C) 
   { 
   // FIXME: должно ли быть все атомарное

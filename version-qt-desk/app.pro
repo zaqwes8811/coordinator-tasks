@@ -18,7 +18,7 @@ QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated
 
 SOURCES += \
   ./src/pq_dal_test.cc \  
-  ./src/storage_access.cc \
+  src/pq_dal.cc \
   ./src/model_test.cc \
   $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
   launcher.cc
@@ -33,6 +33,9 @@ INCLUDEPATH += \
   
 # -ltbb
 LIBS += -lpthread -lrt  -lpq -lpqxx
+
+HEADERS += \
+    src/canary/app_types.h
 
 
 

@@ -1,6 +1,8 @@
 #ifndef DAL_H
 #define DAL_H
 
+#include "canary/app_types.h"
+#include "canary/entities.h"
 
 // 3rdparty
 #include <boost/noncopyable.hpp>
@@ -11,12 +13,13 @@
 #include <string>
 #include <vector>
 
+/*
 namespace domain {
-  // http://msdn.microsoft.com/en-us/library/0e5kx78b.aspx
-  class TaskEntity;  // Forward reference; no definition
-}
+// http://msdn.microsoft.com/en-us/library/0e5kx78b.aspx
+//class TaskEntity;  // Forward reference; no definition
+}*/
 
-namespace dal {
+namespace pq_dal {
 class TaskTableQueries : public boost::noncopyable {
 public:
   TaskTableQueries(const std::string& name) : table_name_(name) { }
@@ -37,15 +40,17 @@ private:
 class TaskLifetimeQueries : public boost::noncopyable {
 public:
   explicit TaskLifetimeQueries(const std::string& table_name) : table_name_(table_name) {}
+
+  // by value
   void persist(
-      const std::vector<boost::shared_ptr<domain::TaskEntity> >& tasks, 
+      domain::Model tasks,
       pqxx::connection& C);  // const;  // no logic const.
 
   // Назначет id!
   //domain::TaskEntity& 
   void store(domain::TaskEntity& task, pqxx::connection& C) /*const*/;  // logical non-const
 
-  //void removeById(int id);
+  //void removeById(int id);  // по сути не нужно
 
 private:
   //TaskLifetimeQueries(const TaskLifetimeQueries&);
