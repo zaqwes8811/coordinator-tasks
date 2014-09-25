@@ -9,17 +9,17 @@ CONFIG -= qt
 OBJECTS_DIR = obj
 
 # Try clarify messages
+# http://stackoverflow.com/questions/13198712/trouble-building-tests-with-google-test-clang-and-libc
+# похоже бинарно стандартная либа не совместима с gcc, и поэтому в рунтайме программа падает
 # clang - Seg. fault on runtime
-#TARGET_EXT = .bc
-#QMAKE_EXT_OBJ = .bc
-#QMAKE_CXXFLAGS += -emit-llvm
-#QMAKE_CXX = clang++
+#TARGET_EXT = .bc QMAKE_EXT_OBJ = .bc QMAKE_CXXFLAGS += -emit-llvm QMAKE_CXX = clang++
 #QMAKE_CC = clang
 #QMAKE_LINK = clang++
 #QMAKE_LINK_SHLIB = clang++
 #QMAKE_LIB = llvm-ld -link-as-library -o
 #QMAKE_RUN_CXX = $(CXX) $(CXXFLAGS) $(INCPATH) -c $src -o $obj
 #QMAKE_RUN_CC = $(CC) $(CCFLAGS) $(INCPATH) -c $src -o $obj
+#QMAKE_CXXFLAGS += -stdlib=libc++
 
 BOOST=/home/zaqwes/work/third_party/boost_1_55_0
 ASL=/home/zaqwes/work/third_party/asl_1.0.43
@@ -56,7 +56,7 @@ INCLUDEPATH += \
   /home/zaqwes/work/work-analyse/hypertable/src/cc
   
 # -ltbb
-LIBS += -lpthread -lrt  -lpq -lpqxx -L/home/zaqwes/work/third_party/boost_1_55_0/stage/lib  -lboost_system
+LIBS += -lpthread -lrt -lpq -lpqxx -L/home/zaqwes/work/third_party/boost_1_55_0/stage/lib  -lboost_system
 
 HEADERS += \
     src/canary/app_types.h \
