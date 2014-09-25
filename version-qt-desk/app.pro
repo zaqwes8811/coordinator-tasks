@@ -47,7 +47,9 @@ SOURCES += \
     ../../../work-analyse/hypertable/src/cc/Common/String.cc \
     src/canary/app_core.cc \
     src/canary/app_core_test.cc \
-    src/canary/renders.cc
+    src/test_help_data.cc \
+    src/canary/renders.cc \
+    src/canary/filters.cc
 
 INCLUDEPATH += \
   $$BOOST \
@@ -65,7 +67,9 @@ HEADERS += \
     src/canary/app_types.h \
     src/canary/lower_level.h \
     src/canary/busi.h \
-    src/canary/renders.h
+    src/canary/renders.h \
+    src/test_help_data.h \
+    src/canary/filters.h
 
 OTHER_FILES += \
     forge.txt

@@ -2,6 +2,7 @@
 
 #include "canary/pq_dal.h"
 #include "canary/entities.h"
+#include "canary/filters.h"
 
 #include <boost/bind.hpp>
 #include <boost/bind/make_adaptable.hpp>
@@ -13,21 +14,6 @@
 
 #include <iostream>
 #include <cassert>
-
-namespace predicats {
-// add check non saved
-using boost::bind;
-using std::equal_to;
-using domain::EntitiesStates;
-using domain::TaskEntity;
-//using boost::bind::_1;
-
-boost::function1<bool, domain::Model::value_type> get_check_non_saved() {
-  return bind(
-      bind(equal_to<int>(), _1, EntitiesStates::kInActiveKey),
-      bind(&TaskEntity::get_primary_key, _1)) ;
-}
-}
 
 namespace pq_dal {
 using namespace boost;
@@ -89,7 +75,7 @@ void TaskLifetimeQueries::persist(
       pqxx::connection& C) 
   { 
   // FIXME: должно ли быть все атомарное
-  Model::iterator it = stable_partition(tasks.begin(), tasks.begin(), predicats::get_check_non_saved());
+  Model::iterator it = stable_partition(tasks.begin(), tasks.begin(), filters::get_check_non_saved());
 
   // Разбиваем на операции
   // save partion - no saved
@@ -164,13 +150,8 @@ void rm_table(connection& conn, const string& table_name)
 
 void run_transaction(const string& sql, /*const*/ connection& C)
 {
-  //std::cout << "befor w";
   work W(C);
-
-  //std::cout << "befor exec";
   W.exec(sql);
-
-  //std::cout << "befor commit\n";
   W.commit();
 }
 }  // ns

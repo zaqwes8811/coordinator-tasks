@@ -30,6 +30,8 @@
 #include "canary/entities.h"
 #include "canary/pq_dal.h"
 #include "canary/renders.h"
+#include "test_help_data.h"
+#include "canary/filters.h"
 
 #include <adobe/algorithm/find.hpp>  // удобно если работа с целым контейнером, иначе лучше std
 #include <boost/bind.hpp>
@@ -57,6 +59,8 @@ using namespace domain;
 using namespace Loki;
 using namespace pqxx;
 using namespace pq_lower_level;
+using namespace test_help_data;
+using domain::Model;
 
 using std::vector;
 using std::string;
@@ -64,30 +68,7 @@ using std::cout;
 using std::equal_to;
 using renders::operator <<;
 
-
-const char* events[] = {
-  "A weak_ptr can only be created from a shared_ptr,",
-  "and at object construction time no shared_ptr to",
-  "Even if you could create a temporary shared_ptr to this, ",
-  "it would go out of scope at the end of the constructor, ",
-  "and all weak_ptr instances would instantly expire."};
-
-//const char* labels[] = {"v8", "fake"};
-
-vector<shared_ptr<TaskEntity> > build_fake_model() {
-  vector<shared_ptr<TaskEntity> > model;  
-
-  for (int i = 0; i < 5; ++i) {
-    string message(events[i]);
-    shared_ptr<TaskEntity> tmp = TaskEntity::create(message);
-    model.push_back(tmp);
-  }
-
-  return model;
-}
-
-TEST(Model, BaseCase) {
-  typedef vector<shared_ptr<TaskEntity> > Model;
+TEST(ModelTest, BaseCase) {
   typedef vector<weak_ptr<TaskEntity> > ModelWeakSlice;
 
   // пока храним все в памяти - активные только
@@ -108,8 +89,7 @@ TEST(Model, BaseCase) {
   assert(0 == query.at(0).lock()->get_priority());
 }
 
-TEST(Model, Create) {
-  typedef vector<shared_ptr<TaskEntity> > Model;
+TEST(ModelTest, Create) {
   // load from store
   Model model(build_fake_model());
   
@@ -135,16 +115,9 @@ TEST(Model, Create) {
     {
       // Create records
       TaskLifetimeQueries q_insert(kTaskTableName);
-
       q_insert.persist(model, C);
 
-      // не должно быть пустышек
-      boost::function1<bool, Model::value_type> p =  
-        bind(
-          bind(equal_to<int>(), _1, EntitiesStates::kInActiveKey), 
-          bind(&TaskEntity::get_primary_key, _1)) ;
-
-      Model::iterator it = adobe::find_if(model, p);
+      Model::iterator it = adobe::find_if(model, filters::get_check_non_saved());
 
       //EXPECT_EQ(it, model.end());  // все сохранили и исключение не выскочило
 
