@@ -89,7 +89,7 @@ void TaskLifetimeQueries::persist(
       pqxx::connection& C) 
   { 
   // FIXME: должно ли быть все атомарное
-  //Model::iterator it = partion
+  Model::iterator it = stable_partition(tasks.begin(), tasks.begin(), predicats::get_check_non_saved());
 
   // Разбиваем на операции
   // save partion - no saved
@@ -164,8 +164,13 @@ void rm_table(connection& conn, const string& table_name)
 
 void run_transaction(const string& sql, /*const*/ connection& C)
 {
+  //std::cout << "befor w";
   work W(C);
+
+  //std::cout << "befor exec";
   W.exec(sql);
+
+  //std::cout << "befor commit\n";
   W.commit();
 }
 }  // ns

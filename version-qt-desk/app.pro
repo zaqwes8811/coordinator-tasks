@@ -9,6 +9,7 @@ CONFIG -= qt
 OBJECTS_DIR = obj
 
 # Try clarify messages
+# http://channel9.msdn.com/Events/GoingNative/GoingNative-2012/Clang-Defending-C-from-Murphy-s-Million-Monkeys
 # http://stackoverflow.com/questions/13198712/trouble-building-tests-with-google-test-clang-and-libc
 # похоже бинарно стандартная либа не совместима с gcc, и поэтому в рунтайме программа падает
 # clang - Seg. fault on runtime
