@@ -20,7 +20,7 @@ OBJECTS_DIR = obj
 #QMAKE_LIB = llvm-ld -link-as-library -o
 #QMAKE_RUN_CXX = $(CXX) $(CXXFLAGS) $(INCPATH) -c $src -o $obj
 #QMAKE_RUN_CC = $(CC) $(CCFLAGS) $(INCPATH) -c $src -o $obj
-#QMAKE_CXXFLAGS += -stdlib=libc++
+QMAKE_CXXFLAGS += -stdlib=libstdc++
 #
 # https://www.ics.com/blog/introduction-clang#.VCPWDlSjLec - программа хотя бы запустилась, но все равно упала
 
@@ -28,8 +28,8 @@ BOOST=/home/zaqwes/work/third_party/boost_1_55_0
 ASL=/home/zaqwes/work/third_party/asl_1.0.43
 LOCAL_3RDPARTY=../3rdparty
 
-# -std=c++11 -pg
-QMAKE_CXXFLAGS += -O2  -Wall -Wno-deprecated 
+# -std=c++11 -pg -O2 -Wno-deprecated
+QMAKE_CXXFLAGS += -Wall
 # -stdlib=libc++  # http://stackoverflow.com/questions/19774778/when-is-it-necessary-to-use-use-the-flag-stdlib-libstdc
 QMAKE_CXXFLAGS += -std=c++11  # пока что, но вообще не хотелось бы
 
@@ -42,9 +42,9 @@ SOURCES += \
     src/canary/entities_test.cc \
     src/_trash/_trash.cc \
     src/htable_adapt_test.cc \
-    ../../../work-analyse/hypertable/src/cc/Common/Error.cc \
-    ../../../work-analyse/hypertable/src/cc/Common/Logger.cc \
-    ../../../work-analyse/hypertable/src/cc/Common/String.cc \
+    #../../../work-analyse/hypertable/src/cc/Common/Error.cc \
+    #../../../work-analyse/hypertable/src/cc/Common/Logger.cc \
+    #../../../work-analyse/hypertable/src/cc/Common/String.cc \
     src/canary/app_core.cc \
     src/canary/app_core_test.cc \
     src/test_help_data.cc \
