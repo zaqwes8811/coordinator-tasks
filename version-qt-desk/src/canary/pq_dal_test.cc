@@ -36,7 +36,9 @@ void do_something(pqxx::connection& C)
   
   // Tasks
   TaskTableQueries q(kTaskTableName);
-  q.createIfNotExist(C);
+  q.createIfNotExist(C);  // clang segfault
+
+  cout << "create table\n";
 
   // Если не создано, то нет смысла
   // а если не создасться? Тут похоже все равно.
@@ -57,6 +59,7 @@ void do_something(pqxx::connection& C)
 
 TEST(postgres, all) {
   connection C(app::kConnection);
+  cout << "conn" << endl;
   {
     if (!C.is_open()) {
       throw runtime_error("Can't open database");

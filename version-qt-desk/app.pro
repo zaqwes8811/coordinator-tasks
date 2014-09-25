@@ -20,6 +20,8 @@ OBJECTS_DIR = obj
 #QMAKE_RUN_CXX = $(CXX) $(CXXFLAGS) $(INCPATH) -c $src -o $obj
 #QMAKE_RUN_CC = $(CC) $(CCFLAGS) $(INCPATH) -c $src -o $obj
 #QMAKE_CXXFLAGS += -stdlib=libc++
+#
+# https://www.ics.com/blog/introduction-clang#.VCPWDlSjLec - программа хотя бы запустилась, но все равно упала
 
 BOOST=/home/zaqwes/work/third_party/boost_1_55_0
 ASL=/home/zaqwes/work/third_party/asl_1.0.43
