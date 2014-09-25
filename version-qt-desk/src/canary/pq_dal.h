@@ -45,7 +45,8 @@ private:
 // TODO: Может DI какой сделать, или все равно?
 class TaskLifetimeQueries : public boost::noncopyable {
 public:
-  explicit TaskLifetimeQueries(const std::string& table_name) : table_name_(table_name) {}
+  explicit TaskLifetimeQueries(const std::string& table_name)
+        : table_name_(table_name) {}
 
   // by value
   void persist(domain::Model tasks, pqxx::connection& C);

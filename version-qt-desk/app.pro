@@ -1,4 +1,5 @@
 # http://stackoverflow.com/questions/2580934/how-to-specify-different-debug-release-output-directories-in-qmake-pro-file
+# http://qt-project.org/forums/viewthread/17516
 
 TARGET = a.app
 TEMPLATE = app
@@ -6,6 +7,19 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 OBJECTS_DIR = obj
+
+# Try clarify messages
+# clang - Seg. fault on runtime
+#TARGET_EXT = .bc
+#QMAKE_EXT_OBJ = .bc
+#QMAKE_CXXFLAGS += -emit-llvm
+#QMAKE_CXX = clang++
+#QMAKE_CC = clang
+#QMAKE_LINK = clang++
+#QMAKE_LINK_SHLIB = clang++
+#QMAKE_LIB = llvm-ld -link-as-library -o
+#QMAKE_RUN_CXX = $(CXX) $(CXXFLAGS) $(INCPATH) -c $src -o $obj
+#QMAKE_RUN_CC = $(CC) $(CCFLAGS) $(INCPATH) -c $src -o $obj
 
 BOOST=/home/zaqwes/work/third_party/boost_1_55_0
 ASL=/home/zaqwes/work/third_party/asl_1.0.43

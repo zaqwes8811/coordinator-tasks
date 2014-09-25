@@ -3,11 +3,31 @@
 #include "canary/pq_dal.h"
 #include "canary/entities.h"
 
-// C++
-#include <iostream>
+#include <boost/bind.hpp>
+#include <boost/bind/make_adaptable.hpp>
+#include <boost/function.hpp>
+#include <boost/make_shared.hpp>
+#include <boost/mem_fn.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/weak_ptr.hpp>
 
-// C
+#include <iostream>
 #include <cassert>
+
+namespace predicats {
+// add check non saved
+using boost::bind;
+using std::equal_to;
+using domain::EntitiesStates;
+using domain::TaskEntity;
+//using boost::bind::_1;
+
+boost::function1<bool, domain::Model::value_type> get_check_non_saved() {
+  return bind(
+      bind(equal_to<int>(), _1, EntitiesStates::kInActiveKey),
+      bind(&TaskEntity::get_primary_key, _1)) ;
+}
+}
 
 namespace pq_dal {
 using namespace boost;
