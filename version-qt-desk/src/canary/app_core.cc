@@ -1,10 +1,13 @@
 #include "top/config.h"
 
 #include "canary/app_core.h"
+#include <loki/ScopeGuard.h>
 
 namespace app_core {
 using namespace pq_dal;
 using namespace domain;
+using Loki::ScopeGuard;
+using Loki::MakeObjGuard;
 
 AppCore* AppCore::heapCreate(
     boost::shared_ptr<pq_dal::PQConnectionPool> pool)
@@ -19,6 +22,11 @@ AppCore* AppCore::heapCreate(
 
   // build
   return new AppCore(model, pool);
+}
+
+void AppCore::draw_task_store(std::ostream& o) const {
+  TaskTableQueries q(app::kTaskTableName);
+  q.print(o, *(pool_->get()));
 }
 
 AppCore::~AppCore() {
@@ -42,9 +50,14 @@ void AppCore::append(Model::value_type e) {
     //   но лучше работать с
     //
     // add to container
+    ScopeGuard _ = MakeObjGuard(model_, &Model::pop_back);
+    model_.push_back(e);
 
     // persist full container
+    TaskLifetimeQueries q(app::kTaskTableName);
+    q.persist(model_, *(pool_->get()));
 
+    _.Dismiss();
   } catch (...) {
 
     throw;

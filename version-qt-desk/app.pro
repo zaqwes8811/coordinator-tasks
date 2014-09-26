@@ -34,8 +34,6 @@ QMAKE_CXXFLAGS += -Wall
 #QMAKE_CXXFLAGS += -std=c++11  # пока что, но вообще не хотелось бы
 
 SOURCES += \
-    src/canary/pq_dal_test.cc \
-    src/canary/pq_dal.cc \
     $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
     launcher.cc \
     src/canary/entities.cc \
@@ -49,7 +47,9 @@ SOURCES += \
     src/canary/app_core_test.cc \
     src/test_help_data.cc \
     src/canary/renders.cc \
-    src/canary/filters.cc
+    src/canary/filters.cc \
+    src/canary/pq_queries.cc \
+    src/canary/pq_queries_test.cc
 
 INCLUDEPATH += \
   $$BOOST \
@@ -69,7 +69,8 @@ HEADERS += \
     src/canary/busi.h \
     src/canary/renders.h \
     src/test_help_data.h \
-    src/canary/filters.h
+    src/canary/filters.h \
+    src/canary/pq_queries.h
 
 OTHER_FILES += \
     forge.txt

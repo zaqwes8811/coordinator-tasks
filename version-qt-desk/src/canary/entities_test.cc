@@ -28,7 +28,7 @@
 #include "top/config.h"
 
 #include "canary/entities.h"
-#include "canary/pq_dal.h"
+#include "canary/pq_queries.h"
 #include "canary/renders.h"
 #include "test_help_data.h"
 #include "canary/filters.h"
@@ -122,7 +122,7 @@ TEST(ModelTest, Create) {
       //EXPECT_EQ(it, model.end());  // все сохранили и исключение не выскочило
 
       // View
-      q.print(C);
+      q.print(cout, C);
     }
   }
   EXPECT_FALSE(C.is_open());

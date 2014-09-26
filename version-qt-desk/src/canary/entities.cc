@@ -1,7 +1,7 @@
 #include "top/config.h"
 
 #include "canary/entities.h"
-#include "canary/pq_dal.h"
+#include "canary/pq_queries.h"
 
 #include <boost/make_shared.hpp>
 

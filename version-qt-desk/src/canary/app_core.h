@@ -2,7 +2,8 @@
 #define BUSI_H
 
 #include "canary/entities.h"
-#include "canary/pq_dal.h"
+#include "canary/pq_queries.h"
+#include "canary/renders.h"
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
@@ -41,6 +42,11 @@ public:
   // render filters:
 
 private:
+  template <typename U>
+  friend void renders::render_task_store(std::ostream& o, const U& a);
+
+  void draw_task_store(std::ostream& o) const;
+
   domain::Model model_;
   bool miss_;  // кеш устарел
   boost::shared_ptr<pq_dal::PQConnectionPool> pool_;

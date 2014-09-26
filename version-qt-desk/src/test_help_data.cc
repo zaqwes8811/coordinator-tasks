@@ -9,6 +9,7 @@ using std::string;
 using namespace boost;
 using namespace domain;
 
+// FIXME: на русском тоже нужно!! и это может стать проблемой
 const char* events[] = {
   "A weak_ptr can only be created from a shared_ptr,",
   "and at object construction time no shared_ptr to",
