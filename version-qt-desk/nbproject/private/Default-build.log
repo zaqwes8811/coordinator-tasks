@@ -1,0 +1,18 @@
+Scanning dependencies of target gtest
+[  8%] Building CXX object CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o
+Linking CXX shared library libgtest.so
+[  8%] Built target gtest
+Scanning dependencies of target a.app
+[ 16%] Building CXX object CMakeFiles/a.app.dir/launcher.cc.o
+[ 25%] Building CXX object CMakeFiles/a.app.dir/src/canary/app_core.cc.o
+[ 33%] Building CXX object CMakeFiles/a.app.dir/src/canary/app_core_test.cc.o
+[ 41%] Building CXX object CMakeFiles/a.app.dir/src/canary/entities_test.cc.o
+[ 50%] Building CXX object CMakeFiles/a.app.dir/src/canary/pq_queries.cc.o
+[ 58%] Building CXX object CMakeFiles/a.app.dir/src/canary/entities.cc.o
+[ 66%] Building CXX object CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o
+[ 75%] Building CXX object CMakeFiles/a.app.dir/src/canary/filters.cc.o
+[ 83%] Building CXX object CMakeFiles/a.app.dir/src/canary/renders.cc.o
+[ 91%] Building CXX object CMakeFiles/a.app.dir/src/test_help_data.cc.o
+[100%] Building CXX object CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o
+Linking CXX executable a.app
+[100%] Built target a.app

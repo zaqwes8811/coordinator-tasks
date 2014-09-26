@@ -7,3 +7,4 @@ tests-medium/node_modules
 *~*
 *.o
 *.autosave
+/version-qt-desk/build/

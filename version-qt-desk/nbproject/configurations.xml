@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="fused-src"
+                   displayName="fused-src"
+                   projectFiles="true"
+                   root="../3rdparty/gmock-1.6.0/fused-src">
+      <logicalFolder name="gmock" displayName="gmock" projectFiles="true">
+        <itemPath>../3rdparty/gmock-1.6.0/fused-src/gmock/gmock.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="gtest" displayName="gtest" projectFiles="true">
+        <itemPath>../3rdparty/gmock-1.6.0/fused-src/gtest/gtest.h</itemPath>
+      </logicalFolder>
+      <itemPath>../3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc</itemPath>
+    </logicalFolder>
+    <df root="." name="0">
+      <df name="src">
+        <df name="canary">
+          <in>app_core.cc</in>
+          <in>app_core_test.cc</in>
+          <in>entities.cc</in>
+          <in>entities_test.cc</in>
+          <in>filters.cc</in>
+          <in>pq_queries.cc</in>
+          <in>pq_queries_test.cc</in>
+          <in>renders.cc</in>
+        </df>
+        <in>htable_adapt_test.cc</in>
+        <in>test_help_data.cc</in>
+      </df>
+      <in>launcher.cc</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>CMakeLists.txt</itemPath>
+      <itemPath>build/Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>build/Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-fPIC"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>build</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>build/a.app</executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>../../../third_party/boost_1_55_0</pElem>
+              <pElem>../../../third_party/asl_1.0.43</pElem>
+              <pElem>../3rdparty/gmock-1.6.0/fused-src</pElem>
+              <pElem>../3rdparty/loki-0.1.7/include</pElem>
+              <pElem>src</pElem>
+              <pElem>build</pElem>
+            </incDir>
+          </ccTool>
+        </makeTool>
+      </makefileType>
+      <item path="../3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc"
+            ex="false"
+            tool="1"
+            flavor2="0">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <folder path="fused-src">
+        <ccTool>
+          <preprocessorList>
+            <Elem>gtest_EXPORTS</Elem>
+          </preprocessorList>
+        </ccTool>
+      </folder>
+      <item path="launcher.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/canary/app_core.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/canary/app_core_test.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/canary/entities.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/canary/entities_test.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/canary/filters.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/canary/pq_queries.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/canary/pq_queries_test.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/canary/renders.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/htable_adapt_test.cc" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/test_help_data.cc" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

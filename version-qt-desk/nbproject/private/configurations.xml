@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="build">
+        <df name="CMakeFiles">
+          <df name="a.app.dir">
+            <df name="src">
+              <df name="canary">
+              </df>
+            </df>
+          </df>
+          <df name="CMakeTmp">
+          </df>
+          <df name="CompilerIdC">
+            <in>CMakeCCompilerId.c</in>
+          </df>
+          <df name="CompilerIdCXX">
+            <in>CMakeCXXCompilerId.cpp</in>
+          </df>
+          <df name="gtest.dir">
+            <df name="home">
+              <df name="zaqwes">
+                <df name="work">
+                  <df name="apps">
+                    <df name="coordinator-tasks">
+                      <df name="3rdparty">
+                        <df name="gmock-1.6.0">
+                          <df name="fused-src">
+                          </df>
+                        </df>
+                      </df>
+                    </df>
+                  </df>
+                </df>
+              </df>
+            </df>
+          </df>
+        </df>
+      </df>
+      <df name="hide">
+      </df>
+      <df name="research">
+        <df name="pyside">
+        </df>
+        <in>db_access_apps.cc</in>
+        <in>stl_queries_apps.cc</in>
+      </df>
+      <df name="src">
+        <df name="_trash">
+          <in>_trash.cc</in>
+        </df>
+        <df name="canary">
+          <in>app_core.cc</in>
+          <in>app_core.h</in>
+          <in>app_core_test.cc</in>
+          <in>app_types.h</in>
+          <in>entities.cc</in>
+          <in>entities.h</in>
+          <in>entities_test.cc</in>
+          <in>error_handling.h</in>
+          <in>filters.cc</in>
+          <in>filters.h</in>
+          <in>pq_queries.cc</in>
+          <in>pq_queries.h</in>
+          <in>pq_queries_test.cc</in>
+          <in>renders.cc</in>
+          <in>renders.h</in>
+        </df>
+        <df name="top">
+          <in>config.h</in>
+        </df>
+        <in>htable_adapt_test.cc</in>
+        <in>test_help_data.cc</in>
+        <in>test_help_data.h</in>
+      </df>
+      <df name="view_sln">
+        <df name="coordinator_sln">
+          <in>main.cpp</in>
+          <in>mainwindow.cpp</in>
+          <in>mainwindow.h</in>
+        </df>
+        <df name="qt-space">
+          <df name="coordinator-build-desktop-Qt_4_8_2_in_PATH__System__Release">
+          </df>
+        </df>
+      </df>
+      <in>launcher.cc</in>
+    </df>
+  </logicalFolder>
+  <projectmakefile>build/Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>2</platform>
+      </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>build</rundir>
+        <buildfirst>false</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>

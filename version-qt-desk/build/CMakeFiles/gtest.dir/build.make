@@ -56,15 +56,15 @@ CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.
 CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o: /home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc
 
 CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc > CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc > CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.i
 
 CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc -o CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc -o CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.s
 
 CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o.requires:
 .PHONY : CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o.requires

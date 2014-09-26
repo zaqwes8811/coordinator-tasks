@@ -1,1 +1,1 @@
-/usr/bin/c++  -fPIC    -shared -Wl,-soname,libgtest.so -o libgtest.so CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o 
+/usr/bin/g++  -fPIC -g3 -gdwarf-2   -shared -Wl,-soname,libgtest.so -o libgtest.so CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o 

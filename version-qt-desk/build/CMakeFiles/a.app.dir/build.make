@@ -56,15 +56,15 @@ CMakeFiles/a.app.dir/launcher.cc.o: CMakeFiles/a.app.dir/flags.make
 CMakeFiles/a.app.dir/launcher.cc.o: ../launcher.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/launcher.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/launcher.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/launcher.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/launcher.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/launcher.cc
 
 CMakeFiles/a.app.dir/launcher.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/launcher.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/launcher.cc > CMakeFiles/a.app.dir/launcher.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/launcher.cc > CMakeFiles/a.app.dir/launcher.cc.i
 
 CMakeFiles/a.app.dir/launcher.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/launcher.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/launcher.cc -o CMakeFiles/a.app.dir/launcher.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/launcher.cc -o CMakeFiles/a.app.dir/launcher.cc.s
 
 CMakeFiles/a.app.dir/launcher.cc.o.requires:
 .PHONY : CMakeFiles/a.app.dir/launcher.cc.o.requires
@@ -79,15 +79,15 @@ CMakeFiles/a.app.dir/src/canary/app_core.cc.o: CMakeFiles/a.app.dir/flags.make
 CMakeFiles/a.app.dir/src/canary/app_core.cc.o: ../src/canary/app_core.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/canary/app_core.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/app_core.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/app_core.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core.cc
 
 CMakeFiles/a.app.dir/src/canary/app_core.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/canary/app_core.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core.cc > CMakeFiles/a.app.dir/src/canary/app_core.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core.cc > CMakeFiles/a.app.dir/src/canary/app_core.cc.i
 
 CMakeFiles/a.app.dir/src/canary/app_core.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/canary/app_core.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core.cc -o CMakeFiles/a.app.dir/src/canary/app_core.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core.cc -o CMakeFiles/a.app.dir/src/canary/app_core.cc.s
 
 CMakeFiles/a.app.dir/src/canary/app_core.cc.o.requires:
 .PHONY : CMakeFiles/a.app.dir/src/canary/app_core.cc.o.requires
@@ -102,15 +102,15 @@ CMakeFiles/a.app.dir/src/canary/app_core_test.cc.o: CMakeFiles/a.app.dir/flags.m
 CMakeFiles/a.app.dir/src/canary/app_core_test.cc.o: ../src/canary/app_core_test.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/canary/app_core_test.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/app_core_test.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core_test.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/app_core_test.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core_test.cc
 
 CMakeFiles/a.app.dir/src/canary/app_core_test.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/canary/app_core_test.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core_test.cc > CMakeFiles/a.app.dir/src/canary/app_core_test.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core_test.cc > CMakeFiles/a.app.dir/src/canary/app_core_test.cc.i
 
 CMakeFiles/a.app.dir/src/canary/app_core_test.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/canary/app_core_test.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core_test.cc -o CMakeFiles/a.app.dir/src/canary/app_core_test.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core_test.cc -o CMakeFiles/a.app.dir/src/canary/app_core_test.cc.s
 
 CMakeFiles/a.app.dir/src/canary/app_core_test.cc.o.requires:
 .PHONY : CMakeFiles/a.app.dir/src/canary/app_core_test.cc.o.requires
@@ -125,15 +125,15 @@ CMakeFiles/a.app.dir/src/canary/entities_test.cc.o: CMakeFiles/a.app.dir/flags.m
 CMakeFiles/a.app.dir/src/canary/entities_test.cc.o: ../src/canary/entities_test.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/canary/entities_test.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/entities_test.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities_test.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/entities_test.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities_test.cc
 
 CMakeFiles/a.app.dir/src/canary/entities_test.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/canary/entities_test.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities_test.cc > CMakeFiles/a.app.dir/src/canary/entities_test.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities_test.cc > CMakeFiles/a.app.dir/src/canary/entities_test.cc.i
 
 CMakeFiles/a.app.dir/src/canary/entities_test.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/canary/entities_test.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities_test.cc -o CMakeFiles/a.app.dir/src/canary/entities_test.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities_test.cc -o CMakeFiles/a.app.dir/src/canary/entities_test.cc.s
 
 CMakeFiles/a.app.dir/src/canary/entities_test.cc.o.requires:
 .PHONY : CMakeFiles/a.app.dir/src/canary/entities_test.cc.o.requires
@@ -148,15 +148,15 @@ CMakeFiles/a.app.dir/src/canary/pq_queries.cc.o: CMakeFiles/a.app.dir/flags.make
 CMakeFiles/a.app.dir/src/canary/pq_queries.cc.o: ../src/canary/pq_queries.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/canary/pq_queries.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/pq_queries.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/pq_queries.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries.cc
 
 CMakeFiles/a.app.dir/src/canary/pq_queries.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/canary/pq_queries.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries.cc > CMakeFiles/a.app.dir/src/canary/pq_queries.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries.cc > CMakeFiles/a.app.dir/src/canary/pq_queries.cc.i
 
 CMakeFiles/a.app.dir/src/canary/pq_queries.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/canary/pq_queries.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries.cc -o CMakeFiles/a.app.dir/src/canary/pq_queries.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries.cc -o CMakeFiles/a.app.dir/src/canary/pq_queries.cc.s
 
 CMakeFiles/a.app.dir/src/canary/pq_queries.cc.o.requires:
 .PHONY : CMakeFiles/a.app.dir/src/canary/pq_queries.cc.o.requires
@@ -171,15 +171,15 @@ CMakeFiles/a.app.dir/src/canary/entities.cc.o: CMakeFiles/a.app.dir/flags.make
 CMakeFiles/a.app.dir/src/canary/entities.cc.o: ../src/canary/entities.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/canary/entities.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/entities.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/entities.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities.cc
 
 CMakeFiles/a.app.dir/src/canary/entities.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/canary/entities.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities.cc > CMakeFiles/a.app.dir/src/canary/entities.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities.cc > CMakeFiles/a.app.dir/src/canary/entities.cc.i
 
 CMakeFiles/a.app.dir/src/canary/entities.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/canary/entities.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities.cc -o CMakeFiles/a.app.dir/src/canary/entities.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/entities.cc -o CMakeFiles/a.app.dir/src/canary/entities.cc.s
 
 CMakeFiles/a.app.dir/src/canary/entities.cc.o.requires:
 .PHONY : CMakeFiles/a.app.dir/src/canary/entities.cc.o.requires
@@ -194,15 +194,15 @@ CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o: CMakeFiles/a.app.dir/flags
 CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o: ../src/canary/pq_queries_test.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries_test.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries_test.cc
 
 CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries_test.cc > CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries_test.cc > CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.i
 
 CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries_test.cc -o CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries_test.cc -o CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.s
 
 CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o.requires:
 .PHONY : CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o.requires
@@ -217,15 +217,15 @@ CMakeFiles/a.app.dir/src/canary/filters.cc.o: CMakeFiles/a.app.dir/flags.make
 CMakeFiles/a.app.dir/src/canary/filters.cc.o: ../src/canary/filters.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_8)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/canary/filters.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/filters.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/filters.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/filters.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/filters.cc
 
 CMakeFiles/a.app.dir/src/canary/filters.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/canary/filters.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/filters.cc > CMakeFiles/a.app.dir/src/canary/filters.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/filters.cc > CMakeFiles/a.app.dir/src/canary/filters.cc.i
 
 CMakeFiles/a.app.dir/src/canary/filters.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/canary/filters.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/filters.cc -o CMakeFiles/a.app.dir/src/canary/filters.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/filters.cc -o CMakeFiles/a.app.dir/src/canary/filters.cc.s
 
 CMakeFiles/a.app.dir/src/canary/filters.cc.o.requires:
 .PHONY : CMakeFiles/a.app.dir/src/canary/filters.cc.o.requires
@@ -240,15 +240,15 @@ CMakeFiles/a.app.dir/src/canary/renders.cc.o: CMakeFiles/a.app.dir/flags.make
 CMakeFiles/a.app.dir/src/canary/renders.cc.o: ../src/canary/renders.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/canary/renders.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/renders.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/renders.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/canary/renders.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/renders.cc
 
 CMakeFiles/a.app.dir/src/canary/renders.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/canary/renders.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/renders.cc > CMakeFiles/a.app.dir/src/canary/renders.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/renders.cc > CMakeFiles/a.app.dir/src/canary/renders.cc.i
 
 CMakeFiles/a.app.dir/src/canary/renders.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/canary/renders.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/renders.cc -o CMakeFiles/a.app.dir/src/canary/renders.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/renders.cc -o CMakeFiles/a.app.dir/src/canary/renders.cc.s
 
 CMakeFiles/a.app.dir/src/canary/renders.cc.o.requires:
 .PHONY : CMakeFiles/a.app.dir/src/canary/renders.cc.o.requires
@@ -263,15 +263,15 @@ CMakeFiles/a.app.dir/src/test_help_data.cc.o: CMakeFiles/a.app.dir/flags.make
 CMakeFiles/a.app.dir/src/test_help_data.cc.o: ../src/test_help_data.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_10)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/test_help_data.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/test_help_data.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/test_help_data.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/test_help_data.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/test_help_data.cc
 
 CMakeFiles/a.app.dir/src/test_help_data.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/test_help_data.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/test_help_data.cc > CMakeFiles/a.app.dir/src/test_help_data.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/test_help_data.cc > CMakeFiles/a.app.dir/src/test_help_data.cc.i
 
 CMakeFiles/a.app.dir/src/test_help_data.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/test_help_data.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/test_help_data.cc -o CMakeFiles/a.app.dir/src/test_help_data.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/test_help_data.cc -o CMakeFiles/a.app.dir/src/test_help_data.cc.s
 
 CMakeFiles/a.app.dir/src/test_help_data.cc.o.requires:
 .PHONY : CMakeFiles/a.app.dir/src/test_help_data.cc.o.requires
@@ -286,15 +286,15 @@ CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o: CMakeFiles/a.app.dir/flags.make
 CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o: ../src/htable_adapt_test.cc
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_11)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/htable_adapt_test.cc
+	/usr/bin/g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/htable_adapt_test.cc
 
 CMakeFiles/a.app.dir/src/htable_adapt_test.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/htable_adapt_test.cc.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/htable_adapt_test.cc > CMakeFiles/a.app.dir/src/htable_adapt_test.cc.i
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/htable_adapt_test.cc > CMakeFiles/a.app.dir/src/htable_adapt_test.cc.i
 
 CMakeFiles/a.app.dir/src/htable_adapt_test.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/htable_adapt_test.cc.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/htable_adapt_test.cc -o CMakeFiles/a.app.dir/src/htable_adapt_test.cc.s
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/htable_adapt_test.cc -o CMakeFiles/a.app.dir/src/htable_adapt_test.cc.s
 
 CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o.requires:
 .PHONY : CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o.requires
