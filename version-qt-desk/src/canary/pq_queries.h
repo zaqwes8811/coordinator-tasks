@@ -46,22 +46,29 @@ private:
 class TaskLifetimeQueries : public boost::noncopyable {
 public:
   explicit TaskLifetimeQueries(const std::string& table_name)
-        : table_name_(table_name) {}
+        : task_table_name_(table_name) {}
 
+  // FIXME: как то объединить create, update, etc. в persist
+
+  // Назначет id!! очень важно! объекты уникальные
+  // Создает, если еще не был создан, либо обновляет всю запись
   // by value
   // На групповую вставку могут быть ограничения, но в данной задаче
   //   пока не нужно, если не нужно будет что-то куда-то автоматически переливать.
-  void persist(domain::TasksMirror tasks, pqxx::connection& C);
-  void persist(domain::TasksMirror::value_type task, pqxx::connection& C);
+  void create(domain::TasksMirror::value_type::element_type& task, pqxx::connection& C);
+  void create(domain::TasksMirror::value_type task, pqxx::connection& C);
+
+  // Пока что только создает новые
+  void create(domain::TasksMirror tasks, pqxx::connection& C);
+
+  // FIXME: с умными указателями возникают проблемы с константростью!
+  void update(domain::TasksMirror::value_type e);
+
 
   domain::TasksMirror get_all(pqxx::connection& C) const;
   // get_all
-
-  // Назначет id!
-  // logical non-const
-  void persist(domain::TaskEntity& task, pqxx::connection& C);
 private:
-  const std::string table_name_;
+  const std::string task_table_name_;
 };
 }  // ns
 

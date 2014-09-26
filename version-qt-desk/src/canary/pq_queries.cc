@@ -39,6 +39,7 @@ using pqxx::result;
 using pqxx::nontransaction;
 using domain::TaskEntity;
 using domain::TasksMirror;
+using domain::EntitiesStates;
 
 PQConnectionPool::PQConnectionPool(const std::string& conn_info)
   : conn_(new pqxx::connection(conn_info)) {
@@ -82,11 +83,21 @@ void TaskTableQueries::drop(connection& C) {
   pq_lower_level::rm_table(C, table_name_);
 }
 
-void TaskLifetimeQueries::persist(domain::TasksMirror::value_type task, pqxx::connection& C) {
-  persist(*task, C);
+void TaskLifetimeQueries::update(domain::TasksMirror::value_type e) {
+  assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
+  string sql(
+  "UPDATE "
+        + task_table_name_ + " SET "
+       // + "temp_lo = " + temp_lo
+        //+ "temp_hi = " + temp_lo
+        + " WHERE ID = '2003-07-03';");
 }
 
-void TaskLifetimeQueries::persist(
+void TaskLifetimeQueries::create(domain::TasksMirror::value_type task, pqxx::connection& C) {
+  create(*task, C);
+}
+
+void TaskLifetimeQueries::create(
       TasksMirror tasks,
       pqxx::connection& conn)
   { 
@@ -99,7 +110,7 @@ void TaskLifetimeQueries::persist(
   if (it != tasks.begin()) {
     assert(std::distance(tasks.begin(), it) < 100);
 
-    string sql("INSERT INTO " + table_name_ + " (task_name, priority) VALUES");
+    string sql("INSERT INTO " + task_table_name_ + " (task_name, priority) VALUES");
     for (TasksMirror::const_iterator at = tasks.begin(); ;) {
       sql += "('"
         + (*at)->get_task_name()  // будут проблемы с юникодом
@@ -140,11 +151,12 @@ void TaskLifetimeQueries::persist(
   // update
 }
 
-void TaskLifetimeQueries::persist(TaskEntity& e, connection& conn) {
+void TaskLifetimeQueries::create(
+    domain::TasksMirror::value_type::element_type& e, connection& conn) {
   // нужно получить id
   // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
   string sql(
-      "INSERT INTO " + table_name_ + " (task_name, priority) " \
+      "INSERT INTO " + task_table_name_ + " (task_name, priority) " \
         "VALUES ('"
         + e.get_task_name()+"', "
         + common::to_string(e.get_priority()) + ") RETURNING id; ");
@@ -169,7 +181,7 @@ void TaskLifetimeQueries::persist(TaskEntity& e, connection& conn) {
 
 domain::TasksMirror TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
   work w(conn);
-  string sql("SELECT * from " + table_name_ + ";");
+  string sql("SELECT * from " + task_table_name_ + ";");
   result r( w.exec( sql ));
   w.commit();
 

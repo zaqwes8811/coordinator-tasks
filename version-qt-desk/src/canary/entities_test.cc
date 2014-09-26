@@ -115,7 +115,7 @@ TEST(ModelTest, Create) {
     {
       // Create records
       TaskLifetimeQueries q_insert(kTaskTableName);
-      q_insert.persist(model, C);
+      q_insert.create(model, C);
 
       TasksMirror::iterator it = adobe::find_if(model, filters::get_check_non_saved());
 

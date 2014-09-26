@@ -4,6 +4,7 @@
 #include "canary/entities.h"
 #include "canary/pq_queries.h"
 #include "canary/renders.h"
+#include "canary/app_types.h"
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
@@ -13,13 +14,9 @@ namespace app_core
 class AppCore
    : boost::noncopyable {
 public:
-    AppCore(
-            domain::TasksMirror _model,
+    AppCore(domain::TasksMirror _model,
             boost::shared_ptr<pq_dal::PQConnectionPool> _pool)
-        : miss_(true), pool_(_pool) {
-        model_ = (_model);  // assign
-        miss_ = false;  // последние данные загружены
-    }
+        : tasks_table_name_(app::kTaskTableName), model_(_model), miss_(false), pool_(_pool) {  }
 
   // наверное лучше сразу сохранить
   // добавлять все равно буду скорее всего по-одному
@@ -48,6 +45,8 @@ private:
   friend void renders::render_task_store(std::ostream& o, const U& a);
 
   void draw_task_store(std::ostream& o) const;
+
+  std::string tasks_table_name_;
 
   domain::TasksMirror model_;
   bool miss_;  // кеш устарел

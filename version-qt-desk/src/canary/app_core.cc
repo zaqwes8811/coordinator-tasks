@@ -15,6 +15,7 @@ using Loki::MakeObjGuard;
 AppCore* AppCore::heapCreate(
     boost::shared_ptr<pq_dal::PQConnectionPool> pool)
   {
+  // FIXME: дублирование. как быть с именем таблицы?
   // create tables
   TaskTableQueries q(app::kTaskTableName);
   q.createIfNotExist(*(pool->get()));
@@ -28,20 +29,21 @@ AppCore* AppCore::heapCreate(
 }
 
 void AppCore::draw_task_store(std::ostream& o) const {
-  TaskTableQueries q(app::kTaskTableName);
+  TaskTableQueries q(tasks_table_name_);
   q.print(o, *(pool_->get()));
 }
 
 AppCore::~AppCore() { }
 
 void AppCore::clear_store() {
-  TaskTableQueries q(app::kTaskTableName);
+  TaskTableQueries q(tasks_table_name_);
   q.drop(*(pool_->get()));
 }
 
 void AppCore::update(TasksMirror::value_type e) {
   assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
   assert(model_.end() != adobe::find_if(model_, filters::get_check_contained(e->get_primary_key())));
+
 
 }
 
@@ -63,10 +65,10 @@ void AppCore::append(TasksMirror::value_type e) {
     model_.push_back(e);
 
     // persist full container
-    TaskLifetimeQueries q(app::kTaskTableName);
+    TaskLifetimeQueries q(tasks_table_name_);
 
     // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
-    q.persist(e, *(pool_->get()));
+    q.create(e, *(pool_->get()));
 
     _.Dismiss();
   } catch (...) {
