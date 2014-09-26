@@ -60,7 +60,7 @@ using namespace Loki;
 using namespace pqxx;
 using namespace pq_lower_level;
 using namespace test_help_data;
-using domain::Model;
+using domain::TasksMirror;
 
 using std::vector;
 using std::string;
@@ -73,11 +73,11 @@ TEST(ModelTest, BaseCase) {
 
   // пока храним все в памяти - активные только
   // ссылки не должны утечь, но как удалять из хранилища?
-  Model model;  
+  TasksMirror model;
 
   model.push_back(
-    make_shared<Model::value_type::element_type>(
-      Model::value_type::element_type()));
+    make_shared<TasksMirror::value_type::element_type>(
+      TasksMirror::value_type::element_type()));
 
   // only tmp!!! maybe weak? - тогда копия не владеет, хотя и работать не очень удобно
   // weak_ptr - неожиданно влядеет
@@ -91,7 +91,7 @@ TEST(ModelTest, BaseCase) {
 
 TEST(ModelTest, Create) {
   // load from store
-  Model model(build_fake_model());
+  TasksMirror model(build_fake_model());
   
   // view unsaved
   cout << model;  
@@ -117,7 +117,7 @@ TEST(ModelTest, Create) {
       TaskLifetimeQueries q_insert(kTaskTableName);
       q_insert.persist(model, C);
 
-      Model::iterator it = adobe::find_if(model, filters::get_check_non_saved());
+      TasksMirror::iterator it = adobe::find_if(model, filters::get_check_non_saved());
 
       //EXPECT_EQ(it, model.end());  // все сохранили и исключение не выскочило
 

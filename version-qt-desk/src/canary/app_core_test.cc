@@ -18,7 +18,7 @@
 namespace {
 using pq_dal::PQConnectionPool;
 using app_core::AppCore;
-using domain::Model;
+using domain::TasksMirror;
 using namespace boost;
 using std::cout;
 using ::renders::render_task_store;
@@ -32,7 +32,7 @@ TEST(AppCore, Create) {
     std::auto_ptr<AppCore> app_ptr(AppCore::heapCreate(pool));
 
     // добавляем записи
-    Model data = test_help_data::build_fake_model();
+    TasksMirror data = test_help_data::build_fake_model();
 
     // как добавить пачкой?
     std::for_each(data.begin(), data.end(), bind(&AppCore::append, ref(*app_ptr), _1));
@@ -49,4 +49,13 @@ TEST(AppCore, Create) {
   pq_dal::TaskTableQueries q(app::kTaskTableName);
   EXPECT_THROW(q.print(cout, *(pool->get())), pqxx::undefined_table);
 }
+
+TEST(AppCore, UpdatePriority) {
+
+}
+
+TEST(AppCore, SelectionByPriority) {
+
+}
+
 }  // namespace

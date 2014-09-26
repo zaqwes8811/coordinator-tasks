@@ -8,7 +8,8 @@
 namespace filters
 {
 
-boost::function1<bool, domain::Model::value_type> get_check_non_saved();
+boost::function1<bool, domain::TasksMirror::value_type> get_check_non_saved();
+boost::function1<bool, domain::TasksMirror::value_type> get_check_contained(const int id);
 }
 
 #endif // FILTERS_H

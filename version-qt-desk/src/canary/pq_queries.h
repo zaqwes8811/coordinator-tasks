@@ -51,14 +51,15 @@ public:
   // by value
   // На групповую вставку могут быть ограничения, но в данной задаче
   //   пока не нужно, если не нужно будет что-то куда-то автоматически переливать.
-  void persist(domain::Model tasks, pqxx::connection& C);
+  void persist(domain::TasksMirror tasks, pqxx::connection& C);
+  void persist(domain::TasksMirror::value_type task, pqxx::connection& C);
 
-  domain::Model get_all(pqxx::connection& C) const;
+  domain::TasksMirror get_all(pqxx::connection& C) const;
   // get_all
 
   // Назначет id!
   // logical non-const
-  void store(domain::TaskEntity& task, pqxx::connection& C);
+  void persist(domain::TaskEntity& task, pqxx::connection& C);
 private:
   const std::string table_name_;
 };

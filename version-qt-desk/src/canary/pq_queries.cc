@@ -38,7 +38,7 @@ using pqxx::work;
 using pqxx::result;
 using pqxx::nontransaction;
 using domain::TaskEntity;
-using domain::Model;
+using domain::TasksMirror;
 
 PQConnectionPool::PQConnectionPool(const std::string& conn_info)
   : conn_(new pqxx::connection(conn_info)) {
@@ -82,21 +82,25 @@ void TaskTableQueries::drop(connection& C) {
   pq_lower_level::rm_table(C, table_name_);
 }
 
+void TaskLifetimeQueries::persist(domain::TasksMirror::value_type task, pqxx::connection& C) {
+  persist(*task, C);
+}
+
 void TaskLifetimeQueries::persist(
-      Model tasks,
+      TasksMirror tasks,
       pqxx::connection& conn)
   { 
 
 
 
   // FIXME: должно ли быть все атомарное
-  Model::iterator it = adobe::stable_partition(tasks, filters::get_check_non_saved());
+  TasksMirror::iterator it = adobe::stable_partition(tasks, filters::get_check_non_saved());
 
   if (it != tasks.begin()) {
     assert(std::distance(tasks.begin(), it) < 100);
 
     string sql("INSERT INTO " + table_name_ + " (task_name, priority) VALUES");
-    for (Model::const_iterator at = tasks.begin(); ;) {
+    for (TasksMirror::const_iterator at = tasks.begin(); ;) {
       sql += "('"
         + (*at)->get_task_name()  // будут проблемы с юникодом
         + "', "  
@@ -136,7 +140,7 @@ void TaskLifetimeQueries::persist(
   // update
 }
 
-void TaskLifetimeQueries::store(TaskEntity& task, connection& conn) {
+void TaskLifetimeQueries::persist(TaskEntity& task, connection& conn) {
   // нужно получить id
   // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
   string sql(
@@ -161,15 +165,15 @@ void TaskLifetimeQueries::store(TaskEntity& task, connection& conn) {
   task.set_primary_key_(new_id);
 }
 
-domain::Model TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
+domain::TasksMirror TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
   work w(conn);
   string sql("SELECT * from " + table_name_ + ";");
   result r( w.exec( sql ));
   w.commit();
 
-  Model model;
+  TasksMirror model;
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
-    Model::value_type elem = TaskEntity::create("");
+    TasksMirror::value_type elem = TaskEntity::create("");
         //Model::value_type::element_type::create(string());
     elem->set_primary_key_(c[0].as<int>());
     elem->set_task_name(c[1].as<string>());

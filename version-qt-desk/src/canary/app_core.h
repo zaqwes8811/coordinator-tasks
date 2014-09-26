@@ -14,7 +14,7 @@ class AppCore
    : boost::noncopyable {
 public:
     AppCore(
-            domain::Model _model,
+            domain::TasksMirror _model,
             boost::shared_ptr<pq_dal::PQConnectionPool> _pool)
         : clear(false), miss_(true), pool_(_pool) {
         model_ = (_model);  // assign
@@ -23,10 +23,12 @@ public:
 
   // наверное лучше сразу сохранить
   // добавлять все равно буду скорее всего по-одному
-  void append(domain::Model::value_type e);
+  void append(domain::TasksMirror::value_type e);
 
-  //
-  void save();
+  // элемент был сохранен и есть в mirror
+  void update(domain::TasksMirror::value_type e);
+
+  //void save_all();
 
   static AppCore* heapCreate(
       boost::shared_ptr<pq_dal::PQConnectionPool>);
@@ -47,7 +49,7 @@ private:
 
   void draw_task_store(std::ostream& o) const;
 
-  domain::Model model_;
+  domain::TasksMirror model_;
   bool miss_;  // кеш устарел
   boost::shared_ptr<pq_dal::PQConnectionPool> pool_;
 };

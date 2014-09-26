@@ -1,6 +1,9 @@
 #include "top/config.h"
 
 #include "canary/app_core.h"
+#include "canary/filters.h"
+
+#include <adobe/algorithm/find.hpp>
 #include <loki/ScopeGuard.h>
 
 namespace app_core {
@@ -18,7 +21,7 @@ AppCore* AppCore::heapCreate(
 
   // get tasks
   TaskLifetimeQueries q_live(app::kTaskTableName);
-  Model model(q_live.get_all(*(pool->get())));
+  TasksMirror model(q_live.get_all(*(pool->get())));
 
   // build
   return new AppCore(model, pool);
@@ -36,7 +39,13 @@ AppCore::~AppCore() {
   }
 }
 
-void AppCore::append(Model::value_type e) {
+void AppCore::update(TasksMirror::value_type e) {
+  assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
+  assert(model_.end() != adobe::find_if(model_, filters::get_check_contained(e->get_primary_key())));
+
+}
+
+void AppCore::append(TasksMirror::value_type e) {
   // FIXME: может лучше исключение?
   assert(e->get_primary_key() == EntitiesStates::kInActiveKey);
 
@@ -50,12 +59,14 @@ void AppCore::append(Model::value_type e) {
     //   но лучше работать с
     //
     // add to container
-    ScopeGuard _ = MakeObjGuard(model_, &Model::pop_back);
+    ScopeGuard _ = MakeObjGuard(model_, &TasksMirror::pop_back);
     model_.push_back(e);
 
     // persist full container
     TaskLifetimeQueries q(app::kTaskTableName);
-    q.persist(model_, *(pool_->get()));
+
+    // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
+    q.persist(e, *(pool_->get()));
 
     _.Dismiss();
   } catch (...) {
