@@ -99,14 +99,14 @@ TEST(ModelTest, Create) {
   // save
   connection C(app::kConnection);
   {
-    using app::kTaskTableName;
+    using app::kTaskTableNameRef;
 
     EXPECT_TRUE(C.is_open());
     
     ScopeGuard conn_guard = MakeObjGuard(C, &connection::disconnect);
 
     // Tasks
-    TaskTableQueries q(kTaskTableName);
+    TaskTableQueries q(kTaskTableNameRef);
     q.createIfNotExist(C);
     // Если не создано, то нет смысла
     // а если не создасться? Тут похоже все равно.
@@ -114,7 +114,7 @@ TEST(ModelTest, Create) {
     
     {
       // Create records
-      TaskLifetimeQueries q_insert(kTaskTableName);
+      TaskLifetimeQueries q_insert(kTaskTableNameRef);
       q_insert.create(model, C);
 
       TasksMirror::iterator it = adobe::find_if(model, filters::get_check_non_saved());

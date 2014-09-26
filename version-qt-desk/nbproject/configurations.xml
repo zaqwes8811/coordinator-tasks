@@ -77,8 +77,6 @@
             ex="false"
             tool="1"
             flavor2="0">
-        <ccTool flags="0">
-        </ccTool>
       </item>
       <folder path="fused-src">
         <ccTool>

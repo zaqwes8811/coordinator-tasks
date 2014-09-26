@@ -17,11 +17,11 @@ AppCore* AppCore::heapCreate(
   {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
-  TaskTableQueries q(app::kTaskTableName);
+  TaskTableQueries q(app::kTaskTableNameRef);
   q.createIfNotExist(*(pool->get()));
 
   // get tasks
-  TaskLifetimeQueries q_live(app::kTaskTableName);
+  TaskLifetimeQueries q_live(app::kTaskTableNameRef);
   TasksMirror model(q_live.get_all(*(pool->get())));
 
   // build

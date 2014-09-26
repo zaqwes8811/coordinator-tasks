@@ -33,10 +33,10 @@ using namespace std;
 
 void do_something(pqxx::connection& C)
 {
-  using app::kTaskTableName;
+  using app::kTaskTableNameRef;
   
   // Tasks
-  TaskTableQueries q(kTaskTableName);
+  TaskTableQueries q(kTaskTableNameRef);
   q.createIfNotExist(C);  // clang segfault
 
   cout << "create table\n";
@@ -46,7 +46,7 @@ void do_something(pqxx::connection& C)
   ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop, ByRef(C));
 
   // Create records
-  TaskLifetimeQueries q_insert(kTaskTableName);
+  TaskLifetimeQueries q_insert(kTaskTableNameRef);
   TaskEntity t;
   q_insert.create(t, C);
   assert(t.get_primary_key() != EntitiesStates::kInActiveKey);

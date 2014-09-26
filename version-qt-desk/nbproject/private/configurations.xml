@@ -2,6 +2,8 @@
 <configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
+      <df name="_qt">
+      </df>
       <df name="build">
         <df name="CMakeFiles">
           <df name="a.app.dir">
@@ -37,8 +39,6 @@
             </df>
           </df>
         </df>
-      </df>
-      <df name="hide">
       </df>
       <df name="research">
         <df name="pyside">

@@ -16,7 +16,7 @@ class AppCore
 public:
     AppCore(domain::TasksMirror _model,
             boost::shared_ptr<pq_dal::PQConnectionPool> _pool)
-        : tasks_table_name_(app::kTaskTableName), model_(_model), miss_(false), pool_(_pool) {  }
+        : tasks_table_name_(app::kTaskTableNameRef), model_(_model), miss_(false), pool_(_pool) {  }
 
   // наверное лучше сразу сохранить
   // добавлять все равно буду скорее всего по-одному
