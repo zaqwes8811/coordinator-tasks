@@ -1,0 +1,1 @@
+/home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles/a.app.dir

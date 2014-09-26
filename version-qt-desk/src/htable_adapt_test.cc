@@ -11,12 +11,12 @@
 //#define G_USE_BOOST
 
 //
-#include "Common/Compat.h"
-#include <Common/Logger.h>
-#include <Common/Error.h>
+//#include "Common/Compat.h"
+//#include <Common/Logger.h>
+//#include <Common/Error.h>
 
 
-using namespace ::Hypertable;  // нужно для макросов
+//using namespace ::Hypertable;  // нужно для макросов
 TEST(HTTest, Assert) {
   //HT_ASSERT(false);
 }
