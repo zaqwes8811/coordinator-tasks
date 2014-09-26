@@ -8,6 +8,8 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o"
   "CMakeFiles/a.app.dir/src/canary/filters.cc.o"
   "CMakeFiles/a.app.dir/src/canary/renders.cc.o"
+  "CMakeFiles/a.app.dir/src/test_help_data.cc.o"
+  "CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o"
   "a.app.pdb"
   "a.app"
 )

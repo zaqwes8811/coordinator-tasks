@@ -114,6 +114,43 @@ a.app/fast:
 	$(MAKE) -f CMakeFiles/a.app.dir/build.make CMakeFiles/a.app.dir/build
 .PHONY : a.app/fast
 
+#=============================================================================
+# Target rules for targets named gtest
+
+# Build rule for target.
+gtest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gtest
+.PHONY : gtest
+
+# fast build rule for target.
+gtest/fast:
+	$(MAKE) -f CMakeFiles/gtest.dir/build.make CMakeFiles/gtest.dir/build
+.PHONY : gtest/fast
+
+home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.o: home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o
+.PHONY : home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.o
+
+# target to build an object file
+home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o:
+	$(MAKE) -f CMakeFiles/gtest.dir/build.make CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o
+.PHONY : home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.o
+
+home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.i: home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.i
+.PHONY : home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.i
+
+# target to preprocess a source file
+home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.i:
+	$(MAKE) -f CMakeFiles/gtest.dir/build.make CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.i
+.PHONY : home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.i
+
+home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.s: home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.s
+.PHONY : home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.s
+
+# target to generate assembly for a file
+home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.s:
+	$(MAKE) -f CMakeFiles/gtest.dir/build.make CMakeFiles/gtest.dir/home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.s
+.PHONY : home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc.s
+
 launcher.o: launcher.cc.o
 .PHONY : launcher.o
 
@@ -330,6 +367,54 @@ src/canary/renders.cc.s:
 	$(MAKE) -f CMakeFiles/a.app.dir/build.make CMakeFiles/a.app.dir/src/canary/renders.cc.s
 .PHONY : src/canary/renders.cc.s
 
+src/htable_adapt_test.o: src/htable_adapt_test.cc.o
+.PHONY : src/htable_adapt_test.o
+
+# target to build an object file
+src/htable_adapt_test.cc.o:
+	$(MAKE) -f CMakeFiles/a.app.dir/build.make CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o
+.PHONY : src/htable_adapt_test.cc.o
+
+src/htable_adapt_test.i: src/htable_adapt_test.cc.i
+.PHONY : src/htable_adapt_test.i
+
+# target to preprocess a source file
+src/htable_adapt_test.cc.i:
+	$(MAKE) -f CMakeFiles/a.app.dir/build.make CMakeFiles/a.app.dir/src/htable_adapt_test.cc.i
+.PHONY : src/htable_adapt_test.cc.i
+
+src/htable_adapt_test.s: src/htable_adapt_test.cc.s
+.PHONY : src/htable_adapt_test.s
+
+# target to generate assembly for a file
+src/htable_adapt_test.cc.s:
+	$(MAKE) -f CMakeFiles/a.app.dir/build.make CMakeFiles/a.app.dir/src/htable_adapt_test.cc.s
+.PHONY : src/htable_adapt_test.cc.s
+
+src/test_help_data.o: src/test_help_data.cc.o
+.PHONY : src/test_help_data.o
+
+# target to build an object file
+src/test_help_data.cc.o:
+	$(MAKE) -f CMakeFiles/a.app.dir/build.make CMakeFiles/a.app.dir/src/test_help_data.cc.o
+.PHONY : src/test_help_data.cc.o
+
+src/test_help_data.i: src/test_help_data.cc.i
+.PHONY : src/test_help_data.i
+
+# target to preprocess a source file
+src/test_help_data.cc.i:
+	$(MAKE) -f CMakeFiles/a.app.dir/build.make CMakeFiles/a.app.dir/src/test_help_data.cc.i
+.PHONY : src/test_help_data.cc.i
+
+src/test_help_data.s: src/test_help_data.cc.s
+.PHONY : src/test_help_data.s
+
+# target to generate assembly for a file
+src/test_help_data.cc.s:
+	$(MAKE) -f CMakeFiles/a.app.dir/build.make CMakeFiles/a.app.dir/src/test_help_data.cc.s
+.PHONY : src/test_help_data.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -338,7 +423,11 @@ help:
 	@echo "... depend"
 	@echo "... a.app"
 	@echo "... edit_cache"
+	@echo "... gtest"
 	@echo "... rebuild_cache"
+	@echo "... home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.o"
+	@echo "... home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.i"
+	@echo "... home/zaqwes/work/apps/coordinator-tasks/3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.s"
 	@echo "... launcher.o"
 	@echo "... launcher.i"
 	@echo "... launcher.s"
@@ -366,6 +455,12 @@ help:
 	@echo "... src/canary/renders.o"
 	@echo "... src/canary/renders.i"
 	@echo "... src/canary/renders.s"
+	@echo "... src/htable_adapt_test.o"
+	@echo "... src/htable_adapt_test.i"
+	@echo "... src/htable_adapt_test.s"
+	@echo "... src/test_help_data.o"
+	@echo "... src/test_help_data.i"
+	@echo "... src/test_help_data.s"
 .PHONY : help
 
 

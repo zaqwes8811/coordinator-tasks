@@ -1,5 +1,7 @@
 # http://www.zaita.com/2013/06/a-simple-and-reusable-cmake-file/
 #
+# на clang воообще наплевать!
+#
 cmake_minimum_required(VERSION 2.8.4)
 project(version_qt_desk)
 
@@ -7,9 +9,12 @@ set(LOCAL_3RD_PARTY "${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty")
 set(_3RD_PARYT "${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/gmock-1.6.0/fused-src")
 set(TARGET_APP a.app)
 
+set(GLOB_3RD_PARTY, "/home/zaqwes/work/third_party")
+
 set(BOOST_, "/home/zaqwes/work/third_party/boost_1_55_0")
 set(ASL_, "/home/zaqwes/work/third_party/asl_1.0.43")  # doesn't work
 
+#include_directories("${GLOB_3RD_PARTY}/boost_1_55_0")
 include_directories("/home/zaqwes/work/third_party/boost_1_55_0")
 include_directories("/home/zaqwes/work/third_party/asl_1.0.43")
 #include_directories(${ASL_})  #"/home/zaqwes/work/third_party/asl_1.0.43")

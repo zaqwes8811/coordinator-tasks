@@ -259,6 +259,52 @@ CMakeFiles/a.app.dir/src/canary/renders.cc.o.provides: CMakeFiles/a.app.dir/src/
 
 CMakeFiles/a.app.dir/src/canary/renders.cc.o.provides.build: CMakeFiles/a.app.dir/src/canary/renders.cc.o
 
+CMakeFiles/a.app.dir/src/test_help_data.cc.o: CMakeFiles/a.app.dir/flags.make
+CMakeFiles/a.app.dir/src/test_help_data.cc.o: ../src/test_help_data.cc
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_10)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/test_help_data.cc.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/test_help_data.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/test_help_data.cc
+
+CMakeFiles/a.app.dir/src/test_help_data.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/test_help_data.cc.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/test_help_data.cc > CMakeFiles/a.app.dir/src/test_help_data.cc.i
+
+CMakeFiles/a.app.dir/src/test_help_data.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/test_help_data.cc.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/test_help_data.cc -o CMakeFiles/a.app.dir/src/test_help_data.cc.s
+
+CMakeFiles/a.app.dir/src/test_help_data.cc.o.requires:
+.PHONY : CMakeFiles/a.app.dir/src/test_help_data.cc.o.requires
+
+CMakeFiles/a.app.dir/src/test_help_data.cc.o.provides: CMakeFiles/a.app.dir/src/test_help_data.cc.o.requires
+	$(MAKE) -f CMakeFiles/a.app.dir/build.make CMakeFiles/a.app.dir/src/test_help_data.cc.o.provides.build
+.PHONY : CMakeFiles/a.app.dir/src/test_help_data.cc.o.provides
+
+CMakeFiles/a.app.dir/src/test_help_data.cc.o.provides.build: CMakeFiles/a.app.dir/src/test_help_data.cc.o
+
+CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o: CMakeFiles/a.app.dir/flags.make
+CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o: ../src/htable_adapt_test.cc
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/build/CMakeFiles $(CMAKE_PROGRESS_11)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o -c /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/htable_adapt_test.cc
+
+CMakeFiles/a.app.dir/src/htable_adapt_test.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/a.app.dir/src/htable_adapt_test.cc.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/htable_adapt_test.cc > CMakeFiles/a.app.dir/src/htable_adapt_test.cc.i
+
+CMakeFiles/a.app.dir/src/htable_adapt_test.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/a.app.dir/src/htable_adapt_test.cc.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/htable_adapt_test.cc -o CMakeFiles/a.app.dir/src/htable_adapt_test.cc.s
+
+CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o.requires:
+.PHONY : CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o.requires
+
+CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o.provides: CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o.requires
+	$(MAKE) -f CMakeFiles/a.app.dir/build.make CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o.provides.build
+.PHONY : CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o.provides
+
+CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o.provides.build: CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o
+
 # Object files for target a.app
 a_app_OBJECTS = \
 "CMakeFiles/a.app.dir/launcher.cc.o" \
@@ -269,7 +315,9 @@ a_app_OBJECTS = \
 "CMakeFiles/a.app.dir/src/canary/entities.cc.o" \
 "CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o" \
 "CMakeFiles/a.app.dir/src/canary/filters.cc.o" \
-"CMakeFiles/a.app.dir/src/canary/renders.cc.o"
+"CMakeFiles/a.app.dir/src/canary/renders.cc.o" \
+"CMakeFiles/a.app.dir/src/test_help_data.cc.o" \
+"CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o"
 
 # External object files for target a.app
 a_app_EXTERNAL_OBJECTS =
@@ -283,7 +331,10 @@ a.app: CMakeFiles/a.app.dir/src/canary/entities.cc.o
 a.app: CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o
 a.app: CMakeFiles/a.app.dir/src/canary/filters.cc.o
 a.app: CMakeFiles/a.app.dir/src/canary/renders.cc.o
+a.app: CMakeFiles/a.app.dir/src/test_help_data.cc.o
+a.app: CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o
 a.app: CMakeFiles/a.app.dir/build.make
+a.app: libgtest.so
 a.app: CMakeFiles/a.app.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable a.app"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/a.app.dir/link.txt --verbose=$(VERBOSE)
@@ -301,6 +352,8 @@ CMakeFiles/a.app.dir/requires: CMakeFiles/a.app.dir/src/canary/entities.cc.o.req
 CMakeFiles/a.app.dir/requires: CMakeFiles/a.app.dir/src/canary/pq_queries_test.cc.o.requires
 CMakeFiles/a.app.dir/requires: CMakeFiles/a.app.dir/src/canary/filters.cc.o.requires
 CMakeFiles/a.app.dir/requires: CMakeFiles/a.app.dir/src/canary/renders.cc.o.requires
+CMakeFiles/a.app.dir/requires: CMakeFiles/a.app.dir/src/test_help_data.cc.o.requires
+CMakeFiles/a.app.dir/requires: CMakeFiles/a.app.dir/src/htable_adapt_test.cc.o.requires
 .PHONY : CMakeFiles/a.app.dir/requires
 
 CMakeFiles/a.app.dir/clean:

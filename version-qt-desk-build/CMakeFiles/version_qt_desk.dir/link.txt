@@ -1,1 +1,0 @@
-/usr/bin/c++       CMakeFiles/version_qt_desk.dir/launcher.cc.o  -o version_qt_desk -rdynamic 
