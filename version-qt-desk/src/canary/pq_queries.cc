@@ -77,6 +77,7 @@ void TaskTableQueries::createIfNotExist(connection& C) {
     "priority   INT                NOT NULL);");
 
   pq_lower_level::run_transaction(sql, C);
+  //pq_lower
 }
 
 void TaskTableQueries::drop(connection& C) {

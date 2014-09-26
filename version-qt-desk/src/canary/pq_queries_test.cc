@@ -7,6 +7,7 @@
 
 #include "canary/pq_queries.h"
 #include "canary/entities.h"
+//#include "anary/entities.h"
 
 #include <loki/ScopeGuard.h>
 #include <pqxx/pqxx> 
