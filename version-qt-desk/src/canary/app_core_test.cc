@@ -24,6 +24,8 @@ TEST(AppCore, Create) {
     std::auto_ptr<AppCore> app(AppCore::heapCreate(pool));
     app->clear = true;
 
+    // добавляем записи
+
   }
 
   pq_dal::TaskTableQueries q(app::kTaskTableName);

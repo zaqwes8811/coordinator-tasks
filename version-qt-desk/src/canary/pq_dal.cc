@@ -14,6 +14,16 @@
 
 #include <iostream>
 #include <cassert>
+#include <sstream>
+
+namespace common {
+template <typename T>
+std::string to_string(T const& value) {
+  std::stringstream sstr;
+  sstr << value;
+  return sstr.str();
+}
+}
 
 namespace pq_dal {
 using namespace boost;
@@ -72,10 +82,26 @@ void TaskTableQueries::drop(connection& C) {
 
 void TaskLifetimeQueries::persist(
       Model tasks,
-      pqxx::connection& C) 
+      pqxx::connection& conn)
   { 
   // FIXME: должно ли быть все атомарное
   Model::iterator it = stable_partition(tasks.begin(), tasks.begin(), filters::get_check_non_saved());
+
+  if (it != tasks.begin()) {
+    string sql("INSERT INTO " + table_name_ + " (task_name, priority) ");
+    for (Model::const_iterator at = tasks.begin(); at != it; ++at) {
+      sql += "VALUES ('"
+        + (*at)->get_task_name()  // будут проблемы с юникодом
+        + "', "  
+        + common::to_string((*at)->get_priority())
+        + ")";
+    }
+
+    sql += " RETURNING id;";
+
+    // make query
+    pq_lower_level::run_transaction(sql, conn);
+  }
 
   // Разбиваем на операции
   // save partion - no saved

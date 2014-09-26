@@ -20,7 +20,7 @@ OBJECTS_DIR = obj
 #QMAKE_LIB = llvm-ld -link-as-library -o
 #QMAKE_RUN_CXX = $(CXX) $(CXXFLAGS) $(INCPATH) -c $src -o $obj
 #QMAKE_RUN_CC = $(CC) $(CCFLAGS) $(INCPATH) -c $src -o $obj
-QMAKE_CXXFLAGS += -stdlib=libstdc++
+#QMAKE_CXXFLAGS += -stdlib=libstdc++  # here malloc.c failed but don't help
 #
 # https://www.ics.com/blog/introduction-clang#.VCPWDlSjLec - программа хотя бы запустилась, но все равно упала
 
@@ -31,7 +31,7 @@ LOCAL_3RDPARTY=../3rdparty
 # -std=c++11 -pg -O2 -Wno-deprecated
 QMAKE_CXXFLAGS += -Wall
 # -stdlib=libc++  # http://stackoverflow.com/questions/19774778/when-is-it-necessary-to-use-use-the-flag-stdlib-libstdc
-QMAKE_CXXFLAGS += -std=c++11  # пока что, но вообще не хотелось бы
+#QMAKE_CXXFLAGS += -std=c++11  # пока что, но вообще не хотелось бы
 
 SOURCES += \
     src/canary/pq_dal_test.cc \
