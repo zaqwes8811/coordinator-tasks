@@ -30,7 +30,6 @@ TEST(AppCore, Create) {
         new PQConnectionPool(app::kConnection));
   {
     std::auto_ptr<AppCore> app_ptr(AppCore::heapCreate(pool));
-    app_ptr->clear = true;
 
     // добавляем записи
     Model data = test_help_data::build_fake_model();
@@ -38,6 +37,12 @@ TEST(AppCore, Create) {
     // как добавить пачкой?
     std::for_each(data.begin(), data.end(), bind(&AppCore::append, ref(*app_ptr), _1));
 
+    renders::render_task_store<AppCore>(cout, *(app_ptr.get()));
+  }
+
+  {
+    std::auto_ptr<AppCore> app_ptr(AppCore::heapCreate(pool));
+    app_ptr->clear = true;
     renders::render_task_store<AppCore>(cout, *(app_ptr.get()));
   }
 
