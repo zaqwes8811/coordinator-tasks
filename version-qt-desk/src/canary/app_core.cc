@@ -32,11 +32,11 @@ void AppCore::draw_task_store(std::ostream& o) const {
   q.print(o, *(pool_->get()));
 }
 
-AppCore::~AppCore() {
-  if (clear) {
-    TaskTableQueries q(app::kTaskTableName);
-    q.drop(*(pool_->get()));
-  }
+AppCore::~AppCore() { }
+
+void AppCore::clear_store() {
+  TaskTableQueries q(app::kTaskTableName);
+  q.drop(*(pool_->get()));
 }
 
 void AppCore::update(TasksMirror::value_type e) {

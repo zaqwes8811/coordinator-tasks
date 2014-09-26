@@ -16,7 +16,7 @@ public:
     AppCore(
             domain::TasksMirror _model,
             boost::shared_ptr<pq_dal::PQConnectionPool> _pool)
-        : clear(false), miss_(true), pool_(_pool) {
+        : miss_(true), pool_(_pool) {
         model_ = (_model);  // assign
         miss_ = false;  // последние данные загружены
     }
@@ -33,9 +33,9 @@ public:
   static AppCore* heapCreate(
       boost::shared_ptr<pq_dal::PQConnectionPool>);
 
-  bool clear;  // удаляем ли созданное, нужно для тестирования
-
   ~AppCore();
+
+  void clear_store();
 
   // persist filters:
   void load_all();

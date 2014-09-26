@@ -140,12 +140,14 @@ void TaskLifetimeQueries::persist(
   // update
 }
 
-void TaskLifetimeQueries::persist(TaskEntity& task, connection& conn) {
+void TaskLifetimeQueries::persist(TaskEntity& e, connection& conn) {
   // нужно получить id
   // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
   string sql(
       "INSERT INTO " + table_name_ + " (task_name, priority) " \
-      "VALUES ('"+task.get_task_name()+"', 32) RETURNING id; ");
+        "VALUES ('"
+        + e.get_task_name()+"', "
+        + common::to_string(e.get_priority()) + ") RETURNING id; ");
 
   work w(conn);
   result r( w.exec( sql ));  // похоже нельзя выполнить два запроса
@@ -162,7 +164,7 @@ void TaskLifetimeQueries::persist(TaskEntity& task, connection& conn) {
   }
 
   assert(new_id != domain::EntitiesStates::kInActiveKey);
-  task.set_primary_key_(new_id);
+  e.set_primary_key_(new_id);
 }
 
 domain::TasksMirror TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
