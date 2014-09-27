@@ -89,9 +89,9 @@ void TaskLifetimeQueries::update(domain::TasksMirror::value_type e) {
   string sql(
   "UPDATE "
         + task_table_name_ + " SET "
-       // + "temp_lo = " + temp_lo
-        //+ "temp_hi = " + temp_lo
-        + " WHERE ID = '2003-07-03';");
+        + "task_name = " + e->get_task_name()
+        + "priority = " + common::to_string(e->get_priority())
+        + " WHERE id = " + common::to_string(e->get_primary_key()) + ";");
 }
 
 void TaskLifetimeQueries::create(domain::TasksMirror::value_type task, pqxx::connection& C) {
