@@ -13,8 +13,7 @@
             <file>file:/home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries.cc</file>
             <file>file:/home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/pq_queries.h</file>
             <file>file:/home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core.cc</file>
-            <file>file:/home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/launcher.cc</file>
-            <file>file:/home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core.h</file>
+            <file>file:/home/zaqwes/work/apps/coordinator-tasks/version-qt-desk/src/canary/app_core_test.cc</file>
         </group>
     </open-files>
 </project-private>

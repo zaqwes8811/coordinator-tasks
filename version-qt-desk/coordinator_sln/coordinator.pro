@@ -12,15 +12,14 @@ TARGET = coordinator
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    ../src/model/models.cc
+SOURCES += \
+  main.cpp\
+  mainwindow.cpp
+
+#SOURCES += ../src/model/models.cc
 
 HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
 
-INCLUDEPATH += ../../src
-
-OTHER_FILES += \
-    ../domain/forge.txt
+#INCLUDEPATH += ../../src
