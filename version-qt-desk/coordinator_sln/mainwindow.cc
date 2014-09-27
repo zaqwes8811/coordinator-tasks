@@ -8,7 +8,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+StartTest::StartTest(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
   setCentralWidget(tableWidget);
 }
 
-MainWindow::~MainWindow()
+StartTest::~StartTest()
 {
     delete ui;
 }

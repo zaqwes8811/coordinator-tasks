@@ -13,8 +13,9 @@ TEMPLATE = app
 
 
 SOURCES += \
-  main.cpp\
-  mainwindow.cpp
+    trash.cc \
+    mainwindow.cc \
+    main.cc
 
 #SOURCES += ../src/model/models.cc
 

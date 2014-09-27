@@ -1,11 +1,12 @@
-
 # http://stackoverflow.com/questions/23407727/is-it-possible-to-horizontally-add-a-qtablewidget-to-a-layout
 
 import sys, os, random
-#from PyQt4 import QtCore, QtGui
+# from PyQt4 import QtCore, QtGui
 from PySide import QtCore, QtGui
+
 StudentNames = []
 StudentScores = []
+
 
 class StartTest(QtGui.QMainWindow):
     def __init__(self, questions, parent=None):
@@ -50,6 +51,7 @@ class StartTest(QtGui.QMainWindow):
         if index < self.stack.count() - 1:
             self.stack.setCurrentIndex(index + 1)
 
+
 class Question(QtGui.QWidget):
     def __init__(self, question, parent=None):
         super(Question, self).__init__(parent)
@@ -60,6 +62,7 @@ class Question(QtGui.QWidget):
         form.addRow(self.question, self.answer)
         form.addRow(self.submit)
 
+
 if __name__ == '__main__':
     User = ''
     app = QtGui.QApplication([])
@@ -68,7 +71,7 @@ if __name__ == '__main__':
         'What is 45+10?',
         'What is 28+47?',
         'What is 22+13?',
-        ]
+    ]
     window = StartTest(questions)
     window.show()
     # window.showFullScreen()

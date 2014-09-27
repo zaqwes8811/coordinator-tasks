@@ -1,18 +1,34 @@
-// UI:
-// http://qt-project.org/doc/qt-4.8/qtablewidget.html#details
-//
-// Model:
-//
-// Store:
 
-#include <QApplication>
-#include <QLabel>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QTableWidget>
+/*
+window->setWindowTitle("Enter Your Age");
 
-// App
-//#include "mainwindow.h"
+QPushButton* button = new QPushButton("Quit");
+QObject::connect(button, SIGNAL(clicked()), &app, SLOT(quit()));
+
+QTableWidget* tableWidget = new QTableWidget(window);
+tableWidget->setRowCount(10);
+tableWidget->setColumnCount(5);
+
+QHBoxLayout *layout = new QHBoxLayout;
+layout->addWidget(button);
+layout->addWidget(tableWidget);
+*/
+
+/*
+
+int main(int argc, char** argv)
+{
+ QApplication app(argc, argv);
+ QWidget wid;
+ QPushButton *button = new QPushButton(&wid);
+ button->setMinimumWidth(68);
+ button->setMinimumHeight(60);
+ QVBoxLayout *layout = new QVBoxLayout(&wid);
+ layout->addWidget(button);
+ wid.show();
+ return app.exec();
+}
+*/
 
 // How add widget
 // http://stackoverflow.com/questions/17989231/how-to-add-buttons-to-a-main-window-in-qt
@@ -66,48 +82,5 @@ tableWidget::~tableWidget()
 {
     // No need to delete any object it has got a parent which is properly deleted.
 
-}
-*/
-
-int main(int argc, char *argv[])
-{
-  QApplication app(argc, argv);
-
-  QWidget *window = new QWidget;
-  window->setWindowTitle("Enter Your Age");
-
-  QPushButton* button = new QPushButton("Quit");
-  QObject::connect(button, SIGNAL(clicked()), &app, SLOT(quit()));
-
-  QTableWidget* tableWidget = new QTableWidget(window);
-  tableWidget->setRowCount(10);
-  tableWidget->setColumnCount(5);
-
-  QHBoxLayout *layout = new QHBoxLayout;
-  layout->addWidget(button);
-  layout->addWidget(tableWidget);
-  window->show();
-
-
-
-  // Пакуем вид и передаем модели
-  // Patterns: Observer and Mediator
-
-  return app.exec();
-}
-
-/*
-
-int main(int argc, char** argv)
-{
- QApplication app(argc, argv);
- QWidget wid;
- QPushButton *button = new QPushButton(&wid);
- button->setMinimumWidth(68);
- button->setMinimumHeight(60);
- QVBoxLayout *layout = new QVBoxLayout(&wid);
- layout->addWidget(button);
- wid.show();
- return app.exec();
 }
 */
