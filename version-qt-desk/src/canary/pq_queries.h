@@ -62,7 +62,7 @@ public:
   void create(domain::TasksMirror tasks, pqxx::connection& C);
 
   // FIXME: с умными указателями возникают проблемы с константростью!
-  void update(domain::TasksMirror::value_type e);
+  void update(domain::TasksMirror::value_type e, pqxx::connection& C);
 
 
   domain::TasksMirror get_all(pqxx::connection& C) const;

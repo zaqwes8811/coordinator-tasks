@@ -55,7 +55,7 @@ PQConnectionPool::~PQConnectionPool() {
 
 void TaskTableQueries::print(std::ostream& o, connection& conn) const {
   nontransaction no_tr_w(conn);
-  string sql("SELECT * from " + table_name_ + ";");
+  string sql("SELECT * from " + table_name_ + " order by id;");
   result r( no_tr_w.exec( sql ));
 
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
@@ -84,14 +84,18 @@ void TaskTableQueries::drop(connection& C) {
   pq_lower_level::rm_table(C, table_name_);
 }
 
-void TaskLifetimeQueries::update(domain::TasksMirror::value_type e) {
+void TaskLifetimeQueries::update(domain::TasksMirror::value_type e, pqxx::connection& C) {
   assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
   string sql(
   "UPDATE "
         + task_table_name_ + " SET "
-        + "task_name = " + e->get_task_name()
-        + "priority = " + common::to_string(e->get_priority())
+        + "task_name = '" + e->get_task_name()
+        + "', priority = " + common::to_string(e->get_priority())
         + " WHERE id = " + common::to_string(e->get_primary_key()) + ";");
+  
+  work w(C);
+  w.exec(sql);
+  w.commit();
 }
 
 void TaskLifetimeQueries::create(domain::TasksMirror::value_type task, pqxx::connection& C) {

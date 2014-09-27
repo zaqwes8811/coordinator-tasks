@@ -65,10 +65,12 @@ TEST(AppCore, UpdatePriority) {
     // добавляем записи
     TasksMirror data = test_help_data::build_fake_model();
     adobe::for_each(data, bind(&AppCore::append, ref(*app_ptr), _1));
-    renders::render_task_store(cout, *(app_ptr.get()));
+    renders::render_task_store(cout, *app_ptr);
 
     // Change priority
-
+    data[0]->set_priority(10);
+    app_ptr->update(data[0]);
+    renders::render_task_store(cout, *app_ptr);
   }
 
   pq_dal::TaskTableQueries q(app::kTaskTableNameRef);

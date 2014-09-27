@@ -45,7 +45,7 @@ void AppCore::update(TasksMirror::value_type e) {
   assert(model_.end() != adobe::find_if(model_, filters::get_check_contained(e->get_primary_key())));
 
   TaskLifetimeQueries q(tasks_table_name_);
-  q.update(e);
+  q.update(e, *(pool_->get()));
 }
 
 void AppCore::append(TasksMirror::value_type e) {
