@@ -21,14 +21,10 @@ public:
     ~StartTest();
 
 private slots:
-    void slotButtonClicked(bool checked) {
-
-    }
+    void slotButtonClicked(bool checked);
 
  private:
-    void update() {
-
-    }
+    void update();
     
 private:
     Ui::MainWindow *ui;

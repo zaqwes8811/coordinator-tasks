@@ -59,3 +59,11 @@ StartTest::~StartTest()
 {
     delete ui;
 }
+
+void StartTest::slotButtonClicked(bool checked) {
+
+}
+
+void StartTest::update() {
+
+}

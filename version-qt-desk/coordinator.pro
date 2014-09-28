@@ -30,7 +30,8 @@ SOURCES += \
   src/canary/filters.cc \
   src/canary/pq_queries.cc
 
-HEADERS  += src/view/mainwindow.h
+HEADERS  += src/view/mainwindow.h \
+    src/canary/isolation.h
 
 FORMS    += src/view/mainwindow.ui
 
