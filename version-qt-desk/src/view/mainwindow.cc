@@ -9,8 +9,8 @@
 #include <QTableWidget>
 #include <QVBoxLayout>
 
-QList<QString> StudentNames;
-QList<int> StudentScores;
+static QList<QString> s_student_names_;
+static QList<int> s_student_scores_;
 
 StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
     QMainWindow(parent),
@@ -21,13 +21,13 @@ StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
   ui->setupUi(this);
 
   // fill lists
-  StudentNames.append("Ig0");
-  StudentNames.append("Ig1");
-  StudentNames.append("Ig2");
+  s_student_names_.append("Ig0");
+  s_student_names_.append("Ig1");
+  s_student_names_.append("Ig2");
 
-  StudentScores.append(int(0));
-  StudentScores.append(int(0));
-  StudentScores.append(int(0));
+  s_student_scores_.append(int(0));
+  s_student_scores_.append(int(0));
+  s_student_scores_.append(int(0));
 
   // table
   QWidget* centralWidget = new QWidget(this);
@@ -37,11 +37,11 @@ StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
   scoreTable_ = new QTableWidget(this);
   scoreTable_->setRowCount(8);
   scoreTable_->setColumnCount(1);
-  scoreTable_->setVerticalHeaderLabels(StudentNames);
+  scoreTable_->setVerticalHeaderLabels(s_student_names_);
   //scoreTable_->setHorizontalHeaderLabels(QStringList(1, "Scores"));
   {
     int pos = 0;
-    QListIterator<int> i(StudentScores);
+    QListIterator<int> i(s_student_scores_);
     while (i.hasNext()) {
         QTableWidgetItem* item = new QTableWidgetItem(QString::number(i.next()));
         scoreTable_->setItem(pos, 0, item);
@@ -50,6 +50,7 @@ StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
   }
 
   QPushButton* submit = new QPushButton("Action", this);
+  connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotButtonClicked(bool)));
   mainLayout->addWidget(scoreTable_);
   mainLayout->addWidget(submit);
 }
