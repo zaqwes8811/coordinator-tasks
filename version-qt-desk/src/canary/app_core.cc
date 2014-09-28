@@ -42,7 +42,7 @@ void AppCore::clear_store() {
 
 void AppCore::update(TasksMirror::value_type e) {
   assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
-  assert(model_.end() != adobe::find_if(model_, filters::get_check_contained(e->get_primary_key())));
+  assert(store_mirror_.end() != adobe::find_if(store_mirror_, filters::get_check_contained(e->get_primary_key())));
 
   TaskLifetimeQueries q(tasks_table_name_);
   q.update(e, *(pool_->get()));
@@ -62,7 +62,9 @@ void AppCore::append(TasksMirror::value_type e) {
     //   но лучше работать с
     //
     // add to container
-    ScopeGuard _ = MakeObjGuard(model_, &TasksMirror::pop_back);
+    ScopeGuard _ = MakeObjGuard(store_mirror_, &TasksMirror::pop_back);
+    ScopeGuard _m = MakeObjGuard(model_, &TasksMirror::pop_back);
+    store_mirror_.push_back(e);
     model_.push_back(e);
 
     // persist full container
@@ -72,9 +74,23 @@ void AppCore::append(TasksMirror::value_type e) {
     q.create(e, *(pool_->get()));
 
     _.Dismiss();
+    _m.Dismiss();
+
+    notify();
+
   } catch (...) {
 
     throw;
   }
+}
+
+AppCore::AppCore(domain::TasksMirror _model,
+        boost::shared_ptr<pq_dal::PQConnectionPool> _pool//,
+        )
+    : tasks_table_name_(app_core::kTaskTableNameRef), store_mirror_(_model), miss_(false), pool_(_pool) {  }
+
+void AppCore::notify()
+{
+  iso_->update();
 }
 }

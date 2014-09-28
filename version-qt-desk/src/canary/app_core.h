@@ -5,6 +5,7 @@
 #include "canary/pq_queries.h"
 #include "canary/renders.h"
 #include "canary/app_types.h"
+#include "canary/isolation.h"
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
@@ -13,10 +14,15 @@ namespace app_core
 {
 class AppCore
    : boost::noncopyable {
+
+  void notify();  // пока пусть побудет закрытой
 public:
     AppCore(domain::TasksMirror _model,
-            boost::shared_ptr<pq_dal::PQConnectionPool> _pool)
-        : tasks_table_name_(app_core::kTaskTableNameRef), model_(_model), miss_(false), pool_(_pool) {  }
+            boost::shared_ptr<pq_dal::PQConnectionPool> _pool);
+
+  // FIXME: да, лучше передать в конструкторе, но при конструировании возникает цикл.
+  void set_listener(boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> iso)
+  { iso_ = iso; }
 
   // наверное лучше сразу сохранить
   // добавлять все равно буду скорее всего по-одному
@@ -27,8 +33,7 @@ public:
 
   //void save_all();
 
-  static AppCore* createInHeap(
-      boost::shared_ptr<pq_dal::PQConnectionPool>);
+  static AppCore* createInHeap(boost::shared_ptr<pq_dal::PQConnectionPool>);
 
   ~AppCore();
 
@@ -40,6 +45,11 @@ public:
 
   // render filters:
 
+  // FIXME: плохо что хендлы утекают, и из-за того что указатели
+  //   shared объекты превращаются в глобальные переменные.
+  domain::TasksMirror get_current_model_data()
+  { return model_; }
+
 private:
   template <typename U>
   friend void renders::render_task_store(std::ostream& o, const U& a);
@@ -48,9 +58,14 @@ private:
 
   std::string tasks_table_name_;
 
-  domain::TasksMirror model_;
+  domain::TasksMirror store_mirror_;
   bool miss_;  // кеш устарел
+
+  domain::TasksMirror model_;  //
+
   boost::shared_ptr<pq_dal::PQConnectionPool> pool_;
+
+  boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> iso_;
 };
 }
 

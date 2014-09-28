@@ -19,7 +19,8 @@ LOCAL_3RDPARTY=../3rdparty
 SOURCES += \
   src/view/trash.cc \
   src/view/mainwindow.cc \
-  src/view/main.cc
+  src/view/main.cc \
+    src/test_help_data.cc
 
 # Business logic
 SOURCES += \
