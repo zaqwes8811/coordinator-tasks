@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTableWidget>
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +23,7 @@ private slots:
     
 private:
     Ui::MainWindow *ui;
+    QTableWidget* scoreTable_;
 };
 
 #endif // MAINWINDOW_H

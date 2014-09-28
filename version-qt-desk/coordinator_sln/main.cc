@@ -14,12 +14,26 @@
 // App
 #include "mainwindow.h"
 
+// цель - не включать заголовоки видов в модель - нужна виртуальность
+// попробую статический полиморфизм.
+template <typename View>
+class ModelListener {
+public:
+  // Не владеет
+  ModelListener(View* const view) : view_(view) { }
+
+private:
+  View* const view_;
+};
+
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
 
-
   QWidget *window = new StartTest;
+
+  ModelListener<QWidget> listener(window);
+
   window->show();
 
   // Пакуем вид и передаем модели

@@ -31,6 +31,7 @@ class StartTest(QtGui.QMainWindow):
         centralWidget = QtGui.QWidget(self)
         self.setCentralWidget(centralWidget)
         mainLayout = QtGui.QHBoxLayout(centralWidget)
+
         self.scoreTable = QtGui.QTableWidget(self)
         self.scoreTable.setRowCount(len(StudentNames))
         self.scoreTable.setColumnCount(1)
@@ -41,10 +42,13 @@ class StartTest(QtGui.QMainWindow):
             self.scoreTable.setItem(i, 0, item)
 
         mainLayout.addWidget(self.stack)
-        mainLayout.addWidget(self.scoreTable)
+        #mainLayout.addWidget(self.scoreTable)
+
+        self.i = 0
 
     def handleSubmit(self, index):
         page = self.stack.widget(index)
+
         answer = page.answer.text()
         # validate submitted answer...
         self.answers.append(answer)
