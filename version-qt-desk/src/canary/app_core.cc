@@ -12,16 +12,16 @@ using namespace domain;
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
 
-AppCore* AppCore::heapCreate(
+AppCore* AppCore::createInHeap(
     boost::shared_ptr<pq_dal::PQConnectionPool> pool)
   {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
-  TaskTableQueries q(app::kTaskTableNameRef);
+  TaskTableQueries q(app_core::kTaskTableNameRef);
   q.createIfNotExist(*(pool->get()));
 
   // get tasks
-  TaskLifetimeQueries q_live(app::kTaskTableNameRef);
+  TaskLifetimeQueries q_live(app_core::kTaskTableNameRef);
   TasksMirror model(q_live.get_all(*(pool->get())));
 
   // build

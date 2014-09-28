@@ -1,19 +1,22 @@
+#include "top/config.h"
+
+// App
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
 
 //
 #include <QPushButton>
 #include <QTableWidget>
 #include <QVBoxLayout>
 
-// App
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-
 QList<QString> StudentNames;
 QList<int> StudentScores;
 
-StartTest::StartTest(QWidget *parent) :
+StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+
+    app_ptr_(app_ptr)
 {
   ui->setupUi(this);
 

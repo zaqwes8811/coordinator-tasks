@@ -34,7 +34,7 @@ TEST(AppCore, Create) {
   shared_ptr<PQConnectionPool> pool(
         new PQConnectionPool(app::kConnection));
   {
-    std::auto_ptr<AppCore> app_ptr(AppCore::heapCreate(pool));
+    std::auto_ptr<AppCore> app_ptr(AppCore::createInHeap(pool));
 
     // добавляем записи
     TasksMirror data = test_help_data::build_fake_model();
@@ -46,7 +46,7 @@ TEST(AppCore, Create) {
   }
 
   {
-    std::auto_ptr<AppCore> app_ptr(AppCore::heapCreate(pool));
+    std::auto_ptr<AppCore> app_ptr(AppCore::createInHeap(pool));
     ScopeGuard _ = MakeObjGuard(*app_ptr, &AppCore::clear_store);
 
     //renders::render_task_store(cout, *(app_ptr.get()));
@@ -59,7 +59,7 @@ TEST(AppCore, Create) {
 TEST(AppCore, UpdatePriority) {
   shared_ptr<PQConnectionPool> pool(new PQConnectionPool(app::kConnection));
   {
-    std::auto_ptr<AppCore> app_ptr(AppCore::heapCreate(pool));
+    std::auto_ptr<AppCore> app_ptr(AppCore::createInHeap(pool));
     ScopeGuard _ = MakeObjGuard(*app_ptr, &AppCore::clear_store);
 
     // добавляем записи

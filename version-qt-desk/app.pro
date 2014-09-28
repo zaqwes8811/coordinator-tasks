@@ -35,21 +35,27 @@ QMAKE_CXXFLAGS += -Wall
 
 SOURCES += \
     $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
-    launcher.cc \
-    src/canary/entities.cc \
-    src/canary/entities_test.cc \
-    src/_trash/_trash.cc \
-    src/htable_adapt_test.cc \
+    launcher.cc
+
+SOURCES += \
+  src/canary/entities.cc \
+  src/_trash/_trash.cc \
+  src/canary/app_core.cc \
+  src/canary/renders.cc \
+  src/canary/filters.cc \
+  src/canary/pq_queries.cc
+
+SOURCES += \
+  src/test_help_data.cc \
+  src/canary/entities_test.cc \
+  src/htable_adapt_test.cc \
+  src/canary/app_core_test.cc \
+  src/canary/pq_queries_test.cc
+
+SOURCES += \
     #../../../work-analyse/hypertable/src/cc/Common/Error.cc \
     #../../../work-analyse/hypertable/src/cc/Common/Logger.cc \
     #../../../work-analyse/hypertable/src/cc/Common/String.cc \
-    src/canary/app_core.cc \
-    src/canary/app_core_test.cc \
-    src/test_help_data.cc \
-    src/canary/renders.cc \
-    src/canary/filters.cc \
-    src/canary/pq_queries.cc \
-    src/canary/pq_queries_test.cc
 
 INCLUDEPATH += \
   $$BOOST \
