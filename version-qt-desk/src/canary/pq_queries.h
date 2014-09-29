@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <cassert>
 
 namespace pq_lower_level {
 // можно было использовать ссылку и ByRef()
@@ -25,7 +26,10 @@ public:
 
   // non-const
   boost::shared_ptr<pqxx::connection> get()
-  { return conn_; }
+  {
+      assert(conn_);
+      return conn_;
+  }
 private:
   boost::shared_ptr<pqxx::connection> conn_;
 };

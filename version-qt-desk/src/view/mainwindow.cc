@@ -9,59 +9,52 @@
 #include <QPushButton>
 #include <QTableWidget>
 #include <QVBoxLayout>
+#include <QDebug>
 #include <boost/bind.hpp>
 #include <adobe/algorithm/for_each.hpp>
 
+#include <string>
+
 using app_core::AppCore;
+using domain::TasksMirror;  // not work
 
 using boost::ref;
 using boost::bind;
 
-static QList<QString> s_student_names_;
+using std::string;
+
+static QList<QString> s_column_names_;
 static QList<int> s_student_scores_;
 
 StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    app_ptr_(app_ptr)
+    app_ptr_(app_ptr),
+    entered_(false)
 {
   ui->setupUi(this);
 
   // fill lists
-  s_student_names_.append("Ig0");
-  s_student_names_.append("Ig1");
-  s_student_names_.append("Ig2");
-
-  s_student_scores_.append(int(0));
-  s_student_scores_.append(int(0));
-  s_student_scores_.append(int(0));
+  s_column_names_.append("id");
+  s_column_names_.append("name");
+  s_column_names_.append("priority");
 
   // table
   QWidget* centralWidget = new QWidget(this);
-  this->setCentralWidget(centralWidget);
+  setCentralWidget(centralWidget);
 
   scoreTable_ = new QTableWidget(this);
+  scoreTable_->setColumnCount(3);
+  scoreTable_->setHorizontalHeaderLabels(s_column_names_);
 
-  {
-    // fill table
-    scoreTable_->setRowCount(3);
-    scoreTable_->setColumnCount(3);
-    //scoreTable_->setVerticalHeaderLabels(s_student_names_);
-    scoreTable_->setHorizontalHeaderLabels(s_student_names_);
-    {
-    int pos = 0;
-    QListIterator<int> i(s_student_scores_);
-    while (i.hasNext()) {
-        QTableWidgetItem* item = new QTableWidgetItem(QString::number(i.next()));
-        scoreTable_->setItem(pos, 0, item);
-        ++pos;
-    }
-    }
-  }
-
-  QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
+  // control
   QPushButton* submit = new QPushButton("Add records", this);
   connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
+
+  connect(scoreTable_, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
+
+  // pack all
+  QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
   mainLayout->addWidget(scoreTable_);
   mainLayout->addWidget(submit);
 }
@@ -71,14 +64,72 @@ StartTest::~StartTest()
     delete ui;
 }
 
-void StartTest::slotAddRecords(bool checked) {
-    domain::TasksMirror mirror(test_help_data::build_fake_model());
+void StartTest::clearList() {
+  // есть и функция clear and clearContent
 
-    // сохраняем все
-    adobe::for_each(mirror, bind(&AppCore::append, ref(*app_ptr_), _1));
+  int count_rows = scoreTable_->rowCount();
+  for (int i = 0; i < count_rows; ++i)
+    scoreTable_->removeRow(i);
+}
+
+void StartTest::slotAddRecords(bool checked) {
+  domain::TasksMirror mirror(test_help_data::build_fake_model());
+
+  // сохраняем все
+  adobe::for_each(mirror, bind(&AppCore::append, ref(*app_ptr_), _1));
 }
 
 void StartTest::updateAction() {
- int i;
- i = 0;
+  // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
+  clearList();
+
+  TasksMirror records = app_ptr_->get_current_model_data();
+
+  {
+    // fill table
+    scoreTable_->setRowCount(records.size());
+
+    // FIXME: where save id's if need it
+    //scoreTable_->setVerticalHeaderLabels(s_student_names_);
+
+    // draw one row!!
+    // FIXME: лучше это сконнектить!! операция логически неделимая
+    //   в принципе можно и слот на изменение сделать один.
+    int pos = 0;
+    for (TasksMirror::const_iterator i=records.begin(), end=records.end();
+         i != end; ++i)
+      {
+        // id
+        QTableWidgetItem* id_item = new QTableWidgetItem;
+        int id = (*i)->get_primary_key();
+        id_item->setText(QString::number(id));
+        scoreTable_->setItem(pos, 0, id_item);
+
+        // task description
+        QTableWidgetItem* item = new QTableWidgetItem;
+        string task_name = (*i)->get_task_name();
+        item->setText(QString::fromUtf8(task_name.c_str()));
+        scoreTable_->setItem(pos, 1, item);
+
+        // priority
+        QTableWidgetItem* priority_item = new QTableWidgetItem;
+        int priority = (*i)->get_priority();
+        priority_item->setText(QString::number(priority));
+        scoreTable_->setItem(pos, 2, priority_item);
+
+        ++pos;
+    }
+  }
+}
+
+void StartTest::slotRowIsChanged(QTableWidgetItem* item)
+//  int row, int column)
+{
+  qDebug() << "changed";
+  // FIXME: проблема!! изменения любые! может зациклить
+  if (entered_) {
+    int i;
+    i = 0;
+    entered_ = false;
+  }
 }
