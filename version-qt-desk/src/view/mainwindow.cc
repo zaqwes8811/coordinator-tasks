@@ -40,13 +40,15 @@ StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
   QWidget* centralWidget = new QWidget(this);
   this->setCentralWidget(centralWidget);
 
-  QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
   scoreTable_ = new QTableWidget(this);
-  scoreTable_->setRowCount(8);
-  scoreTable_->setColumnCount(1);
-  scoreTable_->setVerticalHeaderLabels(s_student_names_);
-  //scoreTable_->setHorizontalHeaderLabels(QStringList(1, "Scores"));
+
   {
+    // fill table
+    scoreTable_->setRowCount(3);
+    scoreTable_->setColumnCount(3);
+    //scoreTable_->setVerticalHeaderLabels(s_student_names_);
+    scoreTable_->setHorizontalHeaderLabels(s_student_names_);
+    {
     int pos = 0;
     QListIterator<int> i(s_student_scores_);
     while (i.hasNext()) {
@@ -54,8 +56,10 @@ StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
         scoreTable_->setItem(pos, 0, item);
         ++pos;
     }
+    }
   }
 
+  QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
   QPushButton* submit = new QPushButton("Add records", this);
   connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
   mainLayout->addWidget(scoreTable_);
@@ -69,6 +73,8 @@ StartTest::~StartTest()
 
 void StartTest::slotAddRecords(bool checked) {
     domain::TasksMirror mirror(test_help_data::build_fake_model());
+
+    // сохраняем все
     adobe::for_each(mirror, bind(&AppCore::append, ref(*app_ptr_), _1));
 }
 

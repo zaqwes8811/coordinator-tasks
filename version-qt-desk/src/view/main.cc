@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
   QApplication app(argc, argv);
 
   shared_ptr<pq_dal::PQConnectionPool> pool(new pq_dal::PQConnectionPool(app_core::kConnection));
+  //shared_ptr
   std::auto_ptr<app_core::AppCore> a(app_core::AppCore::createInHeap(pool));
 
   // Пока очищаем хранилище
