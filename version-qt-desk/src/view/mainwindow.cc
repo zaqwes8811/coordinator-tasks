@@ -50,7 +50,8 @@ StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
   setCentralWidget(centralWidget);
 
   scoreTable_ = new QTableWidgetCheckEdited(this);
-  scoreTable_->setColumnCount(3);
+  scoreTable_->setColumnCount(1+1+1);
+  scoreTable_->setColumnHidden(0, true);  // FIXME: id's пока так
   scoreTable_->setHorizontalHeaderLabels(s_column_names_);
 
   // control
@@ -107,6 +108,9 @@ void StartTest::updateAction() {
          i != end; ++i)
       {
         // id
+        // FIXME: так лучше не хранить, но как быть? Как надежно хранить соответствие?
+        //   в объект не включить, разве что можно сделать нисходящее преобразование
+        //   хотя похоже это тоже не выход. Итого. Где хранить ключ!?
         int id = (*i)->get_primary_key();
         QTableWidgetItem* id_item = new QTableWidgetItem(QString::number(id));
         scoreTable_->setItem(pos, 0, id_item);
@@ -129,8 +133,14 @@ void StartTest::updateAction() {
 void StartTest::slotRowIsChanged(QTableWidgetItem* item)
 {
   // FIXME: проблема!! изменения любые! может зациклить
+  // FIXME: а такая вот комбинация надежно то работает?
   if (scoreTable_->edited()) {
     // поле было одновлено
-    qDebug() << "edited " << item->row();
+      qDebug() << "edited " << item->row()
+               << " id " << scoreTable_->item(item->row(), 0)->text();
+
+    // надежнее всего получить ID строки, индексу я не верю.
+    //   может через downcasting? RTTI in Qt кажется отключено
+    // http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
   }
 }

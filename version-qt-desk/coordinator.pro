@@ -48,4 +48,5 @@ LIBS += -lpq -lpqxx
 
 OTHER_FILES += \
     ReadMe.md \
-    forge.txt
+    forge.txt \
+    fail_statistic.txt
