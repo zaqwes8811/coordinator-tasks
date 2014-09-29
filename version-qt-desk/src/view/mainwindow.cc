@@ -1,3 +1,10 @@
+// selection problem:
+//  http://stackoverflow.com/questions/11816272/qtablewidget-cellactivated-signal-not-working
+//
+// How check edited state:
+//   http://www.qtcentre.org/threads/7976-How-to-know-when-a-cell-in-a-QTableWidget-has-been-edited
+//   http://qt-project.org/forums/viewthread/31372
+
 #include "top/config.h"
 
 // App
@@ -29,8 +36,7 @@ static QList<int> s_student_scores_;
 StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    app_ptr_(app_ptr),
-    entered_(false)
+    app_ptr_(app_ptr)
 {
   ui->setupUi(this);
 
@@ -43,7 +49,7 @@ StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
   QWidget* centralWidget = new QWidget(this);
   setCentralWidget(centralWidget);
 
-  scoreTable_ = new QTableWidget(this);
+  scoreTable_ = new QTableWidgetCheckEdited(this);
   scoreTable_->setColumnCount(3);
   scoreTable_->setHorizontalHeaderLabels(s_column_names_);
 
@@ -51,7 +57,8 @@ StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
   QPushButton* submit = new QPushButton("Add records", this);
   connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
 
-  connect(scoreTable_, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
+  connect(scoreTable_, SIGNAL(itemChanged(QTableWidgetItem*)),
+          this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
   // pack all
   QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
@@ -100,21 +107,18 @@ void StartTest::updateAction() {
          i != end; ++i)
       {
         // id
-        QTableWidgetItem* id_item = new QTableWidgetItem;
         int id = (*i)->get_primary_key();
-        id_item->setText(QString::number(id));
+        QTableWidgetItem* id_item = new QTableWidgetItem(QString::number(id));
         scoreTable_->setItem(pos, 0, id_item);
 
         // task description
-        QTableWidgetItem* item = new QTableWidgetItem;
         string task_name = (*i)->get_task_name();
-        item->setText(QString::fromUtf8(task_name.c_str()));
+        QTableWidgetItem* item = new QTableWidgetItem(QString::fromUtf8(task_name.c_str()));
         scoreTable_->setItem(pos, 1, item);
 
         // priority
-        QTableWidgetItem* priority_item = new QTableWidgetItem;
         int priority = (*i)->get_priority();
-        priority_item->setText(QString::number(priority));
+        QTableWidgetItem* priority_item = new QTableWidgetItem(QString::number(priority));
         scoreTable_->setItem(pos, 2, priority_item);
 
         ++pos;
@@ -123,13 +127,10 @@ void StartTest::updateAction() {
 }
 
 void StartTest::slotRowIsChanged(QTableWidgetItem* item)
-//  int row, int column)
 {
-  qDebug() << "changed";
   // FIXME: проблема!! изменения любые! может зациклить
-  if (entered_) {
-    int i;
-    i = 0;
-    entered_ = false;
+  if (scoreTable_->edited()) {
+    // поле было одновлено
+    qDebug() << "edited " << item->row();
   }
 }
