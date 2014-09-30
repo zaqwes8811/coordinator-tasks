@@ -14,6 +14,9 @@ namespace app_core
 {
 
 // FIXME: закончить реализацию
+// Есть одно но. Внутри нет быстрого поиска по id.
+//   можно сделать хэш таблицей, и наверное это правильно, т.к.
+//   это работает как кеш.
 class TaskValues {
 public:
     TaskValues()
@@ -23,6 +26,8 @@ public:
     const int id;
     const std::string description;
     const int priority;
+
+    // shared_ptr<const string> descr.
 };
 
 class AppCore
@@ -78,7 +83,13 @@ private:
 
   std::string tasks_table_name_;
 
-  domain::TasksMirror store_mirror_;
+  // FIXME: как вообще работать с кешем и базами данных.
+  //   в кешах ограниченное api!
+  //  http://en.wikipedia.org/wiki/Database_caching - есть про когерентность.
+  //
+  // But it need really?
+  //   http://stackoverflow.com/questions/548301/what-is-caching
+  domain::TasksMirror store_cache_;
   bool miss_;  // кеш устарел
 
   domain::TasksMirror model_;  //
