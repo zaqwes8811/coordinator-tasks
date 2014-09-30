@@ -98,7 +98,7 @@ void StartTest::updateAction() {
 
   {
     // fill table
-    scoreTable_->setRowCount(records.size());
+    scoreTable_->setRowCount(records.size() + app_core::kAddedBlankLines);
 
     // FIXME: where save id's if need it
     //scoreTable_->setVerticalHeaderLabels(s_student_names_);
@@ -132,6 +132,15 @@ void StartTest::updateAction() {
     }
 
     // вставляем еще несколько рядов
+    for (int i = pos; i < pos+app_core::kAddedBlankLines; ++i) {
+        QTableWidgetItem* id_item =
+            new QTableWidgetItem(QString::number(domain::EntitiesStates::kInActiveKey));
+        scoreTable_->setItem(i, 0, id_item);
+        QTableWidgetItem* item = new QTableWidgetItem;
+        scoreTable_->setItem(i, 1, item);
+        QTableWidgetItem* priority_item = new QTableWidgetItem();
+        scoreTable_->setItem(i, 2, priority_item);
+    }
   }
 }
 
