@@ -20,13 +20,13 @@ SOURCES += \
   src/view/trash.cc \
   src/view/mainwindow.cc \
   src/view/main.cc \
-    src/test_help_data.cc
+    src/test_help_data.cc \
+    src/canary/model.cc
 
 # Business logic
 SOURCES += \
   src/canary/entities.cc \
   src/_trash/_trash.cc \
-  src/canary/app_core.cc \
   src/canary/renders.cc \
   src/canary/filters.cc \
   src/canary/pq_queries.cc

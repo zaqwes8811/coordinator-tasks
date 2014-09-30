@@ -4,7 +4,7 @@
 #include "canary/entities.h"
 #include "canary/pq_queries.h"
 #include "canary/renders.h"
-#include "canary/app_types.h"
+#include "canary/model.h"
 #include "canary/isolation.h"
 
 #include <boost/noncopyable.hpp>
@@ -30,12 +30,12 @@ public:
     // shared_ptr<const string> descr.
 };
 
-class AppCore
+class Model
    : boost::noncopyable {
 
   void notify();  // пока пусть побудет закрытой
 public:
-    AppCore(domain::TasksMirror _model,
+    Model(domain::TasksMirror _model,
             boost::shared_ptr<pq_dal::PQConnectionPool> _pool);
 
   // FIXME: да, лучше передать в конструкторе, но при конструировании возникает цикл.
@@ -58,9 +58,9 @@ public:
 
   //void save_all();
 
-  static AppCore* createInHeap(boost::shared_ptr<pq_dal::PQConnectionPool>);
+  static Model* createInHeap(boost::shared_ptr<pq_dal::PQConnectionPool>);
 
-  ~AppCore();
+  ~Model();
 
   void clear_store();
 
@@ -89,6 +89,8 @@ private:
   //
   // But it need really?
   //   http://stackoverflow.com/questions/548301/what-is-caching
+  // http://stackoverflow.com/questions/2916645/implementing-model-level-caching?rq=1
+  // http://stackoverflow.com/questions/343899/how-to-cache-data-in-a-mvc-application?rq=1
   domain::TasksMirror store_cache_;
   bool miss_;  // кеш устарел
 

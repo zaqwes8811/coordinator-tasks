@@ -16,7 +16,7 @@
 #include <string>
 #include <vector>
 
-using app_core::AppCore;
+using app_core::Model;
 using domain::TasksMirror;  // not work
 
 using boost::ref;
@@ -25,7 +25,7 @@ using boost::bind;
 using std::string;
 using std::vector;
 
-StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
+ViewAndController::ViewAndController(app_core::Model* const app_ptr, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     app_ptr_(app_ptr)
@@ -59,12 +59,12 @@ StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
   mainLayout->addWidget(submit);
 }
 
-StartTest::~StartTest()
+ViewAndController::~ViewAndController()
 {
     delete ui;
 }
 
-void StartTest::insertBlankRows(const int end) {
+void ViewAndController::insertBlankRows(const int end) {
   // вставляем еще несколько рядов
   for (int i = end; i < end+app_core::kAddedBlankLines; ++i) {
       QTableWidgetItem* id_item =
@@ -77,7 +77,7 @@ void StartTest::insertBlankRows(const int end) {
   }
 }
 
-void StartTest::clearList() {
+void ViewAndController::clearList() {
   // есть и функция clear and clearContent
 
   int count_rows = scoreTable_->rowCount();
@@ -85,14 +85,14 @@ void StartTest::clearList() {
     scoreTable_->removeRow(i);
 }
 
-void StartTest::slotAddRecords(bool checked) {
+void ViewAndController::slotAddRecords(bool checked) {
   domain::TasksMirror mirror(test_help_data::build_fake_model());
 
   // сохраняем все
-  adobe::for_each(mirror, bind(&AppCore::append, ref(*app_ptr_), _1));
+  adobe::for_each(mirror, bind(&Model::append, ref(*app_ptr_), _1));
 }
 
-void StartTest::updateAction() {
+void ViewAndController::updateAction() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   clearList();
 
@@ -136,7 +136,7 @@ void StartTest::updateAction() {
   }
 }
 
-void StartTest::slotRowIsChanged(QTableWidgetItem* item)
+void ViewAndController::slotRowIsChanged(QTableWidgetItem* item)
 {
   // FIXME: проблема!! изменения любые! может зациклить
   // FIXME: а такая вот комбинация надежно то работает?

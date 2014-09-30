@@ -1,3 +1,6 @@
+// Caching
+//   http://www.postgresql.org/message-id/E16gYpD-0007KY-00@mclean.mail.mindspring.net
+
 #include "top/config.h"
 
 #include "canary/pq_queries.h"

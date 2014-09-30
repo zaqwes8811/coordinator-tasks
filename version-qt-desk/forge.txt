@@ -42,3 +42,6 @@ Impl stranges:
 
 Cases:
 - добавить запись - лучше сделать все как в гуглотаблицах - просто добавлять строки
+
+MVC
+http://javascript.ru/optimize/antimvc

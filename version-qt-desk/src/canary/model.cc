@@ -1,6 +1,6 @@
 #include "top/config.h"
 
-#include "canary/app_core.h"
+#include "canary/model.h"
 #include "canary/filters.h"
 
 #include <adobe/algorithm/find.hpp>
@@ -16,7 +16,7 @@ using Loki::MakeObjGuard;
 
 using std::cout;
 
-AppCore* AppCore::createInHeap(
+Model* Model::createInHeap(
     boost::shared_ptr<pq_dal::PQConnectionPool> pool)
   {
   // FIXME: дублирование. как быть с именем таблицы?
@@ -29,22 +29,22 @@ AppCore* AppCore::createInHeap(
   TasksMirror model(q_live.get_all(*(pool->get())));
 
   // build
-  return new AppCore(model, pool);
+  return new Model(model, pool);
 }
 
-void AppCore::draw_task_store(std::ostream& o) const {
+void Model::draw_task_store(std::ostream& o) const {
   TaskTableQueries q(tasks_table_name_);
   q.print(o, *(pool_->get()));
 }
 
-AppCore::~AppCore() { }
+Model::~Model() { }
 
-void AppCore::clear_store() {
+void Model::clear_store() {
   TaskTableQueries q(tasks_table_name_);
   q.drop(*(pool_->get()));
 }
 
-void AppCore::update(TasksMirror::value_type e) {
+void Model::update(TasksMirror::value_type e) {
   assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
   assert(store_cache_.end()
          != adobe::find_if(store_cache_,
@@ -56,7 +56,7 @@ void AppCore::update(TasksMirror::value_type e) {
   iso_->update();  // FIXME: а нужно ли?
 }
 
-void AppCore::append(TasksMirror::value_type e) {
+void Model::append(TasksMirror::value_type e) {
   // FIXME: может лучше исключение?
   assert(e->get_primary_key() == EntitiesStates::kInActiveKey);
 
@@ -92,12 +92,12 @@ void AppCore::append(TasksMirror::value_type e) {
   }
 }
 
-AppCore::AppCore(domain::TasksMirror _model,
+Model::Model(domain::TasksMirror _model,
         boost::shared_ptr<pq_dal::PQConnectionPool> _pool//,
         )
     : tasks_table_name_(app_core::kTaskTableNameRef), store_cache_(_model), miss_(false), pool_(_pool) {  }
 
-void AppCore::notify()
+void Model::notify()
 {
   iso_->update();
 }

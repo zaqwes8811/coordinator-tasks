@@ -7,9 +7,9 @@
 #include "top/config.h"
 
 #include "view/mainwindow.h"
-#include "canary/app_core.h"
+#include "canary/model.h"
 #include "canary/pq_queries.h"
-#include "canary/app_types.h"
+#include "top/app_types.h"
 #include "canary/isolation.h"
 
 #include <QApplication>
@@ -30,7 +30,7 @@ using Loki::MakeObjGuard;
 
 class ModelListenerMediator : public ModelListenerMediatorDynPolym {
 public:
-  explicit ModelListenerMediator(StartTest* const view) : view_(view) {
+  explicit ModelListenerMediator(ViewAndController* const view) : view_(view) {
     // не должно быть нулем
   }
 
@@ -40,7 +40,7 @@ private:
     view_->updateAction();
   }
 
-  StartTest* const view_;
+  ViewAndController* const view_;
 };
 
 int main(int argc, char *argv[])
@@ -52,12 +52,12 @@ int main(int argc, char *argv[])
 
   shared_ptr<pq_dal::PQConnectionPool> pool(new pq_dal::PQConnectionPool(app_core::kConnection));
   //shared_ptr
-  std::auto_ptr<app_core::AppCore> a(app_core::AppCore::createInHeap(pool));
+  std::auto_ptr<app_core::Model> a(app_core::Model::createInHeap(pool));
 
   // Пока очищаем хранилище
-  ScopeGuard _ = MakeObjGuard(*a, &app_core::AppCore::clear_store);
+  ScopeGuard _ = MakeObjGuard(*a, &app_core::Model::clear_store);
 
-  StartTest *window = new StartTest(a.get());
+  ViewAndController *window = new ViewAndController(a.get());
 
   //ModelListenerStaticPolym<QWidget> listener(window);
   shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));

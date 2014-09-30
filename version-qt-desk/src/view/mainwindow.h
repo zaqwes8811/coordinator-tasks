@@ -3,7 +3,7 @@
 
 #include "top/config.h"  // BAD, but Qt generate some files
 
-#include "canary/app_core.h"
+#include "canary/model.h"
 
 #include <QMainWindow>
 #include <QTableWidget>
@@ -36,13 +36,13 @@ public:
   }
 };
 
-class StartTest : public QMainWindow
+class ViewAndController : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  StartTest(app_core::AppCore* const app_ptr, QWidget *parent = 0);
-  ~StartTest();
+  ViewAndController(app_core::Model* const app_ptr, QWidget *parent = 0);
+  ~ViewAndController();
 
   void updateAction();
   void insertBlankRows(const int);
@@ -58,7 +58,7 @@ private:
   Ui::MainWindow *ui;
   QTableWidgetCheckEdited* scoreTable_;
 
-  app_core::AppCore* const app_ptr_;
+  app_core::Model* const app_ptr_;
 
   // FIXME: как узнать, что ячейка именно обновлена
   //   если вошли в ячейку, значит по выходу она будет обновлена?
