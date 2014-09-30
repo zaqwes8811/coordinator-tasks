@@ -32,6 +32,7 @@ public:
   ~StartTest();
 
   void updateAction();
+  void insertBlankRows(const int);
 
 private slots:
   void slotAddRecords(bool checked);
@@ -54,6 +55,8 @@ private:
     int c;
     int r;
   };
+
+  QList<QString> s_column_names_;
 };
 
 #endif // MAINWINDOW_H

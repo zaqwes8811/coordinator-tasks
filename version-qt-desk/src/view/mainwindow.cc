@@ -24,6 +24,7 @@
 #include <adobe/algorithm/for_each.hpp>
 
 #include <string>
+#include <vector>
 
 using app_core::AppCore;
 using domain::TasksMirror;  // not work
@@ -32,9 +33,7 @@ using boost::ref;
 using boost::bind;
 
 using std::string;
-
-static QList<QString> s_column_names_;
-static QList<int> s_student_scores_;
+using std::vector;
 
 StartTest::StartTest(app_core::AppCore* const app_ptr, QWidget *parent) :
     QMainWindow(parent),
@@ -75,6 +74,19 @@ StartTest::~StartTest()
     delete ui;
 }
 
+void StartTest::insertBlankRows(const int end) {
+  // вставляем еще несколько рядов
+  for (int i = end; i < end+app_core::kAddedBlankLines; ++i) {
+      QTableWidgetItem* id_item =
+          new QTableWidgetItem(QString::number(domain::EntitiesStates::kInActiveKey));
+      scoreTable_->setItem(i, 0, id_item);
+      QTableWidgetItem* item = new QTableWidgetItem;
+      scoreTable_->setItem(i, 1, item);
+      QTableWidgetItem* priority_item = new QTableWidgetItem();
+      scoreTable_->setItem(i, 2, priority_item);
+  }
+}
+
 void StartTest::clearList() {
   // есть и функция clear and clearContent
 
@@ -103,44 +115,34 @@ void StartTest::updateAction() {
     // FIXME: where save id's if need it
     //scoreTable_->setVerticalHeaderLabels(s_student_names_);
 
-    // draw one row!!
-    // FIXME: лучше это сконнектить!! операция логически неделимая
-    //   в принципе можно и слот на изменение сделать один.
     int pos = 0;
-    for (TasksMirror::const_iterator i=records.begin(), end=records.end();
-         i != end; ++i)
-      {
+    for (TasksMirror::const_iterator i=records.begin(), end=records.end(); i != end; ++i) {
+      // draw one row!!
+      // FIXME: лучше это сконнектить!! операция логически неделимая
+      //   в принципе можно и слот на изменение сделать один.
+      //
       // id
       // FIXME: так лучше не хранить, но как быть? Как надежно хранить соответствие?
       //   в объект не включить, разве что можно сделать нисходящее преобразование
       //   хотя похоже это тоже не выход. Итого. Где хранить ключ!?
-      int id = (*i)->get_primary_key();
-      QTableWidgetItem* id_item = new QTableWidgetItem(QString::number(id));
-      scoreTable_->setItem(pos, 0, id_item);
+      //
+      //vector<QTableWidget*> tmp;
+      //tmp.push_back();  // если будет исключение, то будет утечка памяти
+      // мы во владение не передали
+      vector<QString> tmp;  // производительность зависит от того как реализована qstring
+      tmp.push_back(QString::number((*i)->get_primary_key()));
+      tmp.push_back(QString::fromUtf8((*i)->get_task_name().c_str()));
+      tmp.push_back(QString::number((*i)->get_priority()));
 
-      // task description
-      string task_name = (*i)->get_task_name();
-      QTableWidgetItem* item = new QTableWidgetItem(QString::fromUtf8(task_name.c_str()));
-      scoreTable_->setItem(pos, 1, item);
-
-      // priority
-      int priority = (*i)->get_priority();
-      QTableWidgetItem* priority_item = new QTableWidgetItem(QString::number(priority));
-      scoreTable_->setItem(pos, 2, priority_item);
-
+      for (int j = 0; j < tmp.size(); j++) {
+          QTableWidgetItem* item = new QTableWidgetItem(tmp.at(j));
+          scoreTable_->setItem(pos, j, item);
+      }
       ++pos;
     }
 
     // вставляем еще несколько рядов
-    for (int i = pos; i < pos+app_core::kAddedBlankLines; ++i) {
-        QTableWidgetItem* id_item =
-            new QTableWidgetItem(QString::number(domain::EntitiesStates::kInActiveKey));
-        scoreTable_->setItem(i, 0, id_item);
-        QTableWidgetItem* item = new QTableWidgetItem;
-        scoreTable_->setItem(i, 1, item);
-        QTableWidgetItem* priority_item = new QTableWidgetItem();
-        scoreTable_->setItem(i, 2, priority_item);
-    }
+    insertBlankRows(pos);
   }
 }
 
@@ -156,6 +158,7 @@ void StartTest::slotRowIsChanged(QTableWidgetItem* item)
 
     if (id == domain::EntitiesStates::kInActiveKey) {
       // создаем новую запись
+        qDebug() << "new";
     } else {
       // просто обновляем
       TasksMirror::value_type e = app_ptr_->get_elem_by_pos(item->row());
