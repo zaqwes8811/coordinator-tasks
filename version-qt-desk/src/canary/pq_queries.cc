@@ -1,5 +1,8 @@
 // Caching
 //   http://www.postgresql.org/message-id/E16gYpD-0007KY-00@mclean.mail.mindspring.net
+//
+// FIXME: писать все запросы буквами одного региста - пусть прописные. это помогает кешировать
+//   по крайней мере в MySQL даже регистр важен
 
 #include "top/config.h"
 
