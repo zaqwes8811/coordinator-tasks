@@ -25,7 +25,7 @@ using boost::bind;
 using std::string;
 using std::vector;
 
-ViewAndController::ViewAndController(app_core::Model* const app_ptr, QWidget *parent) :
+View::View(app_core::Model* const app_ptr, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     app_ptr_(app_ptr)
@@ -59,12 +59,12 @@ ViewAndController::ViewAndController(app_core::Model* const app_ptr, QWidget *pa
   mainLayout->addWidget(submit);
 }
 
-ViewAndController::~ViewAndController()
+View::~View()
 {
     delete ui;
 }
 
-void ViewAndController::insertBlankRows(const int end) {
+void View::insertBlankRows(const int end) {
   // вставляем еще несколько рядов
   for (int i = end; i < end+app_core::kAddedBlankLines; ++i) {
       QTableWidgetItem* id_item =
@@ -77,7 +77,7 @@ void ViewAndController::insertBlankRows(const int end) {
   }
 }
 
-void ViewAndController::clearList() {
+void View::clearList() {
   // есть и функция clear and clearContent
 
   int count_rows = scoreTable_->rowCount();
@@ -85,14 +85,14 @@ void ViewAndController::clearList() {
     scoreTable_->removeRow(i);
 }
 
-void ViewAndController::slotAddRecords(bool checked) {
+void View::slotAddRecords(bool checked) {
   domain::TasksMirror mirror(test_help_data::build_fake_model());
 
   // сохраняем все
   adobe::for_each(mirror, bind(&Model::append, ref(*app_ptr_), _1));
 }
 
-void ViewAndController::updateAction() {
+void View::updateAction() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   clearList();
 
@@ -136,7 +136,7 @@ void ViewAndController::updateAction() {
   }
 }
 
-void ViewAndController::slotRowIsChanged(QTableWidgetItem* item)
+void View::slotRowIsChanged(QTableWidgetItem* item)
 {
   // FIXME: проблема!! изменения любые! может зациклить
   // FIXME: а такая вот комбинация надежно то работает?

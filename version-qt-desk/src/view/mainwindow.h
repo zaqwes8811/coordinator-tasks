@@ -36,13 +36,13 @@ public:
   }
 };
 
-class ViewAndController : public QMainWindow
+class View : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  ViewAndController(app_core::Model* const app_ptr, QWidget *parent = 0);
-  ~ViewAndController();
+  View(app_core::Model* const app_ptr, QWidget *parent = 0);
+  ~View();
 
   void updateAction();
   void insertBlankRows(const int);

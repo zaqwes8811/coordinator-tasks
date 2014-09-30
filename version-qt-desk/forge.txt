@@ -45,3 +45,4 @@ Cases:
 
 MVC
 http://javascript.ru/optimize/antimvc
+- будет только Model/View http://qt-project.org/doc/qt-4.8/model-view-programming.html
