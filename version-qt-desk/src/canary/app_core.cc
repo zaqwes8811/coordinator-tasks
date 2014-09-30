@@ -46,14 +46,14 @@ void AppCore::clear_store() {
 
 void AppCore::update(TasksMirror::value_type e) {
   assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
-  assert(store_mirror_.end() != adobe::find_if(store_mirror_, filters::get_check_contained(e->get_primary_key())));
+  assert(store_mirror_.end()
+         != adobe::find_if(store_mirror_,
+                           filters::get_check_contained(e->get_primary_key())));
 
   TaskLifetimeQueries q(tasks_table_name_);
   q.update(e, *(pool_->get()));
 
-  //cout << this;
-  TaskTableQueries a(tasks_table_name_);
-  a.print(cout, *(pool_->get()));
+  iso_->update();  // FIXME: а нужно ли?
 }
 
 void AppCore::append(TasksMirror::value_type e) {

@@ -110,26 +110,28 @@ void StartTest::updateAction() {
     for (TasksMirror::const_iterator i=records.begin(), end=records.end();
          i != end; ++i)
       {
-        // id
-        // FIXME: так лучше не хранить, но как быть? Как надежно хранить соответствие?
-        //   в объект не включить, разве что можно сделать нисходящее преобразование
-        //   хотя похоже это тоже не выход. Итого. Где хранить ключ!?
-        int id = (*i)->get_primary_key();
-        QTableWidgetItem* id_item = new QTableWidgetItem(QString::number(id));
-        scoreTable_->setItem(pos, 0, id_item);
+      // id
+      // FIXME: так лучше не хранить, но как быть? Как надежно хранить соответствие?
+      //   в объект не включить, разве что можно сделать нисходящее преобразование
+      //   хотя похоже это тоже не выход. Итого. Где хранить ключ!?
+      int id = (*i)->get_primary_key();
+      QTableWidgetItem* id_item = new QTableWidgetItem(QString::number(id));
+      scoreTable_->setItem(pos, 0, id_item);
 
-        // task description
-        string task_name = (*i)->get_task_name();
-        QTableWidgetItem* item = new QTableWidgetItem(QString::fromUtf8(task_name.c_str()));
-        scoreTable_->setItem(pos, 1, item);
+      // task description
+      string task_name = (*i)->get_task_name();
+      QTableWidgetItem* item = new QTableWidgetItem(QString::fromUtf8(task_name.c_str()));
+      scoreTable_->setItem(pos, 1, item);
 
-        // priority
-        int priority = (*i)->get_priority();
-        QTableWidgetItem* priority_item = new QTableWidgetItem(QString::number(priority));
-        scoreTable_->setItem(pos, 2, priority_item);
+      // priority
+      int priority = (*i)->get_priority();
+      QTableWidgetItem* priority_item = new QTableWidgetItem(QString::number(priority));
+      scoreTable_->setItem(pos, 2, priority_item);
 
-        ++pos;
+      ++pos;
     }
+
+    // вставляем еще несколько рядов
   }
 }
 
@@ -141,17 +143,23 @@ void StartTest::slotRowIsChanged(QTableWidgetItem* item)
     // надежнее всего получить ID строки, индексу я не верю.
     //   может через downcasting? RTTI in Qt кажется отключено
     // http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
-
-    TasksMirror::value_type e = app_ptr_->get_elem_by_pos(item->row());
     int id = scoreTable_->item(item->row(), 0)->text().toInt();
-    assert(id == e->get_primary_key());
 
-    int tmp = scoreTable_->item(item->row(), 2)->text().toInt();
-    e->set_priority(tmp);
-    QString stmp = scoreTable_->item(item->row(), 1)->text();
-    e->set_task_name(stmp.toUtf8().constData());
+    if (id == domain::EntitiesStates::kInActiveKey) {
+      // создаем новую запись
+    } else {
+      // просто обновляем
+      TasksMirror::value_type e = app_ptr_->get_elem_by_pos(item->row());
 
-    // обновляем
-    app_ptr_->update(e);
+      assert(id == e->get_primary_key());
+
+      int tmp = scoreTable_->item(item->row(), 2)->text().toInt();
+      e->set_priority(tmp);
+      QString stmp = scoreTable_->item(item->row(), 1)->text();
+      e->set_task_name(stmp.toUtf8().constData());
+
+      // обновляем
+      app_ptr_->update(e);
+    }
   }
 }
