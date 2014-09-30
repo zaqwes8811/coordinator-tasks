@@ -4,6 +4,9 @@
 // How check edited state:
 //   http://www.qtcentre.org/threads/7976-How-to-know-when-a-cell-in-a-QTableWidget-has-been-edited
 //   http://qt-project.org/forums/viewthread/31372
+//
+// Internationalization:
+//  http://stackoverflow.com/questions/4214369/how-to-convert-qstring-to-stdstring
 
 #include "top/config.h"
 
@@ -135,12 +138,20 @@ void StartTest::slotRowIsChanged(QTableWidgetItem* item)
   // FIXME: проблема!! изменения любые! может зациклить
   // FIXME: а такая вот комбинация надежно то работает?
   if (scoreTable_->edited()) {
-    // поле было одновлено
-      qDebug() << "edited " << item->row()
-               << " id " << scoreTable_->item(item->row(), 0)->text();
-
     // надежнее всего получить ID строки, индексу я не верю.
     //   может через downcasting? RTTI in Qt кажется отключено
     // http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
+
+    TasksMirror::value_type e = app_ptr_->get_elem_by_pos(item->row());
+    int id = scoreTable_->item(item->row(), 0)->text().toInt();
+    assert(id == e->get_primary_key());
+
+    int tmp = scoreTable_->item(item->row(), 2)->text().toInt();
+    e->set_priority(tmp);
+    QString stmp = scoreTable_->item(item->row(), 1)->text();
+    e->set_task_name(stmp.toUtf8().constData());
+
+    // обновляем
+    app_ptr_->update(e);
   }
 }

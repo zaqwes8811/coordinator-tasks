@@ -6,11 +6,15 @@
 #include <adobe/algorithm/find.hpp>
 #include <loki/ScopeGuard.h>
 
+#include <iostream>
+
 namespace app_core {
 using namespace pq_dal;
 using namespace domain;
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
+
+using std::cout;
 
 AppCore* AppCore::createInHeap(
     boost::shared_ptr<pq_dal::PQConnectionPool> pool)
@@ -46,6 +50,10 @@ void AppCore::update(TasksMirror::value_type e) {
 
   TaskLifetimeQueries q(tasks_table_name_);
   q.update(e, *(pool_->get()));
+
+  //cout << this;
+  TaskTableQueries a(tasks_table_name_);
+  a.print(cout, *(pool_->get()));
 }
 
 void AppCore::append(TasksMirror::value_type e) {

@@ -12,6 +12,19 @@
 
 namespace app_core
 {
+
+// FIXME: закончить реализацию
+class TaskValues {
+public:
+    TaskValues()
+        : id(domain::EntitiesStates::kInActiveKey)
+        , priority(domain::EntitiesStates::kDefaulPriority) {}
+
+    const int id;
+    const std::string description;
+    const int priority;
+};
+
 class AppCore
    : boost::noncopyable {
 
@@ -30,6 +43,13 @@ public:
 
   // элемент был сохранен и есть в mirror
   void update(domain::TasksMirror::value_type e);
+
+  // Жесткая привязка к списку
+  domain::TasksMirror::value_type get_elem_by_pos(const int pos)
+  {
+      assert(pos < model_.size());
+      return model_.at(pos);
+  }
 
   //void save_all();
 
