@@ -83,9 +83,8 @@ public:
   void clear_store();
 
   // persist filters:
-  void load_all();
-  void load_active();
-
+  //void load_all();
+  //void load_active();
   // render filters:
 
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
