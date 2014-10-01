@@ -42,7 +42,7 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
   setCentralWidget(centralWidget);
 
   scoreTable_ = new QTableWidgetCheckEdited(this);
-  scoreTable_->setColumnCount(1+1+1);
+  scoreTable_->setColumnCount(s_column_names_.size());
   scoreTable_->setColumnHidden(0, true);  // FIXME: id's пока так
   scoreTable_->setHorizontalHeaderLabels(s_column_names_);
 
@@ -149,8 +149,18 @@ void View::slotRowIsChanged(QTableWidgetItem* item)
 
     if (id == domain::EntitiesStates::kInActiveKey) {
       // создаем новую запись
-      qDebug() << "new";
-      app_core::TaskValue v();
+      QString d(scoreTable_->item(item->row(), 1)->text());
+      QString priority(scoreTable_->item(item->row(), 2)->text());
+      if (d.isEmpty() && priority.isEmpty())
+        return;
+
+      int p = domain::EntitiesStates::kDefaulPriority;
+      if (!priority.isEmpty())
+        p = priority.toInt();
+
+      app_core::TaskValue v(app_core::TaskValue::create(
+         d.toUtf8().constData(), p));
+
     } else {
       // просто обновляем
       TasksMirror::value_type e = app_ptr_->get_elem_by_pos(item->row());

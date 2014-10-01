@@ -21,11 +21,11 @@ namespace app_core
 //   это работает как кеш.
 class TaskValue {
 public:
-    TaskValue create(const std::string& d, const int p) {
+    static TaskValue create(const std::string& d, const int p) {
       return TaskValue(domain::EntitiesStates::kInActiveKey, d, p);
     }
 
-    TaskValue create() {
+    static TaskValue create() {
       int p = domain::EntitiesStates::kDefaulPriority;
       return TaskValue(domain::EntitiesStates::kInActiveKey, std::string(), p);
     }
