@@ -8,7 +8,7 @@
 #include <vector>
 
 namespace test_help_data {
-std::vector<boost::shared_ptr<domain::TaskEntity> > build_fake_model();
+entities::Tasks build_fake_model();
 }
 
 #endif // TEST_HELP_DATA_H

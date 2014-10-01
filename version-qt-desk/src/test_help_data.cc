@@ -7,7 +7,7 @@ namespace test_help_data {
 using std::vector;
 using std::string;
 using namespace boost;
-using namespace domain;
+using namespace entities;
 
 // FIXME: на русском тоже нужно!! и это может стать проблемой
 const char* events[] = {
@@ -19,12 +19,12 @@ const char* events[] = {
 
 //const char* labels[] = {"v8", "fake"};
 
-vector<shared_ptr<TaskEntity> > build_fake_model() {
-  vector<shared_ptr<TaskEntity> > model;  
+Tasks build_fake_model() {
+  Tasks model;
 
   for (int i = 0; i < 5; ++i) {
     string message(events[i]);
-    shared_ptr<TaskEntity> tmp = TaskEntity::create(message);
+    Tasks::value_type tmp = TaskEntity::create(message);
     model.push_back(tmp);
   }
 

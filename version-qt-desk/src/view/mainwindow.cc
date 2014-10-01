@@ -17,7 +17,7 @@
 #include <vector>
 
 using app_core::Model;
-using domain::TasksMirror;  // not work
+using entities::Tasks;  // not work
 
 using boost::ref;
 using boost::bind;
@@ -69,7 +69,7 @@ void View::insertBlankRows(const int end) {
   // вставляем еще несколько рядов
   for (int i = end; i < end+app_core::kAddedBlankLines; ++i) {
       QTableWidgetItem* id_item =
-          new QTableWidgetItem(QString::number(domain::EntitiesStates::kInActiveKey));
+          new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey));
       scoreTable_->setItem(i, 0, id_item);
       QTableWidgetItem* item = new QTableWidgetItem;
       scoreTable_->setItem(i, 1, item);
@@ -87,7 +87,7 @@ void View::clearList() {
 }
 
 void View::slotAddRecords(bool checked) {
-  domain::TasksMirror mirror(test_help_data::build_fake_model());
+  Tasks mirror(test_help_data::build_fake_model());
 
   // сохраняем все
   adobe::for_each(mirror, bind(&Model::append, ref(*app_ptr_), _1));
@@ -97,7 +97,7 @@ void View::updateAction() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   clearList();
 
-  TasksMirror records = app_ptr_->get_current_model_data();
+  Tasks records = app_ptr_->get_current_model_data();
 
   {
     // fill table
@@ -107,7 +107,7 @@ void View::updateAction() {
     //scoreTable_->setVerticalHeaderLabels(s_student_names_);
 
     int pos = 0;
-    for (TasksMirror::const_iterator i=records.begin(), end=records.end(); i != end; ++i) {
+    for (Tasks::const_iterator i=records.begin(), end=records.end(); i != end; ++i) {
       // draw one row!!
       // FIXME: лучше это сконнектить!! операция логически неделимая
       //   в принципе можно и слот на изменение сделать один.
@@ -140,7 +140,7 @@ void View::updateAction() {
 void View::slotRowIsChanged(QTableWidgetItem* elem)
 {
   using app_core::TaskValue;
-  using domain::EntitiesStates;
+  using entities::EntitiesStates;
 
   // FIXME: проблема!! изменения любые! может зациклить
   // FIXME: а такая вот комбинация надежно то работает?
@@ -157,16 +157,16 @@ void View::slotRowIsChanged(QTableWidgetItem* elem)
       if (d.isEmpty() && priority.isEmpty())
         return;
 
-      int p(domain::EntitiesStates::kDefaulPriority);
+      int p(entities::EntitiesStates::kDefaulPriority);
       if (!priority.isEmpty())
         p = priority.toInt();
 
       // FIXME: no injection bad!
       TaskValue v(TaskValue::create(d.toUtf8().constData(), p));
-
+      app_ptr_->append_value(v);
     } else {
       // просто обновляем
-      TasksMirror::value_type e(app_ptr_->get_elem_by_pos(elem->row()));
+      Tasks::value_type e(app_ptr_->get_elem_by_pos(elem->row()));
 
       assert(id == e->get_primary_key());
 

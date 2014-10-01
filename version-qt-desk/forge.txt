@@ -39,6 +39,10 @@ Async and parallel:
 Hotkeys:
 - Ctrl+S
 
+Error handling:
+- базовый assert плох. может упасть и попортить базу данных
+  хотя возможно исключение не решение, хотя
+
 Impl stranges:
 - segfault in boost::shared_ptr несколько раз в атомарных операциях, потом пропало - может остатки кланга
 

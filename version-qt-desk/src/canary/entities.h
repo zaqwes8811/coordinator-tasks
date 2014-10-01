@@ -14,7 +14,7 @@ namespace pq_dal {
     class TaskLifetimeQueries;  // lower level?
 }
 
-namespace domain {
+namespace entities {
 const std::string gTableName = "tasks";
 
 struct EntitiesStates {
@@ -69,7 +69,7 @@ private:
 };
 
 // set лучше, но до сохранения индекс может быть не уникальным
-typedef std::vector<boost::shared_ptr<domain::TaskEntity> > TasksMirror;
+typedef std::vector<boost::shared_ptr<entities::TaskEntity> > Tasks;
 
 // TODO: должны быть уникальные по имени и при создании это нужно контролировать.
 // TODO: Как быть при обновлении имени или цвета? Возможно нужно хранить shared_ptrs не на константу.

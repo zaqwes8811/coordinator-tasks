@@ -10,7 +10,7 @@
 #include <algorithm>
 
 namespace renders {
-std::ostream& operator<<(std::ostream& o, domain::TaskEntity& a);
+std::ostream& operator<<(std::ostream& o, entities::TaskEntity& a);
 
 template <class T>
 class _ActionSmart {

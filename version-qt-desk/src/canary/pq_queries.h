@@ -59,17 +59,17 @@ public:
   // by value
   // На групповую вставку могут быть ограничения, но в данной задаче
   //   пока не нужно, если не нужно будет что-то куда-то автоматически переливать.
-  void create(domain::TasksMirror::value_type::element_type& task, pqxx::connection& C);
-  void create(domain::TasksMirror::value_type task, pqxx::connection& C);
+  void create(entities::Tasks::value_type::element_type& task, pqxx::connection& C);
+  void create(entities::Tasks::value_type task, pqxx::connection& C);
 
   // Пока что только создает новые
-  void create(domain::TasksMirror tasks, pqxx::connection& C);
+  void create(entities::Tasks tasks, pqxx::connection& C);
 
   // FIXME: с умными указателями возникают проблемы с константростью!
-  void update(domain::TasksMirror::value_type e, pqxx::connection& C);
+  void update(entities::Tasks::value_type e, pqxx::connection& C);
 
 
-  domain::TasksMirror get_all(pqxx::connection& C) const;
+  entities::Tasks get_all(pqxx::connection& C) const;
   // get_all
 private:
   const std::string task_table_name_;

@@ -5,7 +5,7 @@
 #include <boost/shared_ptr.hpp>
 
 namespace dirty {
-using namespace domain;
+using namespace entities;
 
 // TROUBLES: при работе с shared_ptrs
 template <class OP1, class OP2

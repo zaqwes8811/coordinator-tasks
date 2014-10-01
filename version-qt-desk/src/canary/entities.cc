@@ -8,7 +8,7 @@
 #include <vector>
 
 
-namespace domain {
+namespace entities {
 using namespace pq_dal;
 
 boost::shared_ptr<TaskEntity> TaskEntity::create(const std::string& task_name) {

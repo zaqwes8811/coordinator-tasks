@@ -43,9 +43,9 @@ using pqxx::connection;
 using pqxx::work;
 using pqxx::result;
 using pqxx::nontransaction;
-using domain::TaskEntity;
-using domain::TasksMirror;
-using domain::EntitiesStates;
+using entities::TaskEntity;
+using entities::Tasks;
+using entities::EntitiesStates;
 
 PQConnectionPool::PQConnectionPool(const std::string& conn_info)
   : conn_(new pqxx::connection(conn_info)) {
@@ -90,7 +90,7 @@ void TaskTableQueries::drop(connection& C) {
   pq_lower_level::rm_table(C, table_name_);
 }
 
-void TaskLifetimeQueries::update(domain::TasksMirror::value_type e, pqxx::connection& C) {
+void TaskLifetimeQueries::update(entities::Tasks::value_type e, pqxx::connection& C) {
   assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
   string sql(
   "UPDATE "
@@ -104,25 +104,19 @@ void TaskLifetimeQueries::update(domain::TasksMirror::value_type e, pqxx::connec
   w.commit();
 }
 
-void TaskLifetimeQueries::create(domain::TasksMirror::value_type task, pqxx::connection& C) {
+void TaskLifetimeQueries::create(entities::Tasks::value_type task, pqxx::connection& C) {
   create(*task, C);
 }
 
-void TaskLifetimeQueries::create(
-      TasksMirror tasks,
-      pqxx::connection& conn)
-  { 
-
-
-
+void TaskLifetimeQueries::create(Tasks tasks, pqxx::connection& conn) {
   // FIXME: должно ли быть все атомарное
-  TasksMirror::iterator it = adobe::stable_partition(tasks, filters::get_check_non_saved());
+  Tasks::iterator it = adobe::stable_partition(tasks, filters::get_check_non_saved());
 
   if (it != tasks.begin()) {
     assert(std::distance(tasks.begin(), it) < 100);
 
     string sql("INSERT INTO " + task_table_name_ + " (task_name, priority) VALUES");
-    for (TasksMirror::const_iterator at = tasks.begin(); ;) {
+    for (Tasks::const_iterator at = tasks.begin(); ;) {
       sql += "('"
         + (*at)->get_task_name()  // будут проблемы с юникодом
         + "', "  
@@ -146,9 +140,9 @@ void TaskLifetimeQueries::create(
     {
       int i = 0;
       for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
-        int new_id(domain::EntitiesStates::kInActiveKey);
+        int new_id(entities::EntitiesStates::kInActiveKey);
         new_id = c[0].as<int>();
-        assert(new_id != domain::EntitiesStates::kInActiveKey);
+        assert(new_id != entities::EntitiesStates::kInActiveKey);
         tasks[i]->set_primary_key_(new_id);
 
         ++i;
@@ -163,7 +157,7 @@ void TaskLifetimeQueries::create(
 }
 
 void TaskLifetimeQueries::create(
-    domain::TasksMirror::value_type::element_type& e, connection& conn) {
+    entities::Tasks::value_type::element_type& e, connection& conn) {
   // нужно получить id
   // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
   string sql(
@@ -177,7 +171,7 @@ void TaskLifetimeQueries::create(
   w.commit();
 
   // Узнаем что за ключ получили
-  int new_id(domain::EntitiesStates::kInActiveKey);
+  int new_id(entities::EntitiesStates::kInActiveKey);
 
   assert(r.size() == 1);  // вставили один элемент
   
@@ -186,19 +180,19 @@ void TaskLifetimeQueries::create(
     break;
   }
 
-  assert(new_id != domain::EntitiesStates::kInActiveKey);
+  assert(new_id != entities::EntitiesStates::kInActiveKey);
   e.set_primary_key_(new_id);
 }
 
-domain::TasksMirror TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
+entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
   work w(conn);
   string sql("SELECT * from " + task_table_name_ + ";");
   result r( w.exec( sql ));
   w.commit();
 
-  TasksMirror model;
+  Tasks model;
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
-    TasksMirror::value_type elem = TaskEntity::create("");
+    Tasks::value_type elem = TaskEntity::create("");
         //Model::value_type::element_type::create(string());
     elem->set_primary_key_(c[0].as<int>());
     elem->set_task_name(c[1].as<string>());

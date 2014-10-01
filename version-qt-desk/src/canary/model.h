@@ -22,12 +22,12 @@ namespace app_core
 class TaskValue {
 public:
     static TaskValue create(const std::string& d, const int p) {
-      return TaskValue(domain::EntitiesStates::kInActiveKey, d, p);
+      return TaskValue(entities::EntitiesStates::kInActiveKey, d, p);
     }
 
     static TaskValue create() {
-      int p = domain::EntitiesStates::kDefaulPriority;
-      return TaskValue(domain::EntitiesStates::kInActiveKey, std::string(), p);
+      int p = entities::EntitiesStates::kDefaulPriority;
+      return TaskValue(entities::EntitiesStates::kInActiveKey, std::string(), p);
     }
 
     const int id;
@@ -62,7 +62,7 @@ class Model
 public:
   /// create and destory
   static Model* createInHeap(boost::shared_ptr<pq_dal::PQConnectionPool>);
-  Model(domain::TasksMirror _model,
+  Model(entities::Tasks _model,
             boost::shared_ptr<pq_dal::PQConnectionPool> _pool);
   ~Model();
 
@@ -72,13 +72,14 @@ public:
 
   // наверное лучше сразу сохранить
   // добавлять все равно буду скорее всего по-одному
-  void append(domain::TasksMirror::value_type e);
+  void append(entities::Tasks::value_type e);
+  void append_value(TaskValue e);  // overloading trouble in for_each
 
   // элемент был сохранен и есть в mirror
-  void update(domain::TasksMirror::value_type e);
+  void update(entities::Tasks::value_type e);
 
   // Жесткая привязка к списку
-  domain::TasksMirror::value_type get_elem_by_pos(const int pos);
+  entities::Tasks::value_type get_elem_by_pos(const int pos);
 
   void clear_store();
 
@@ -89,7 +90,7 @@ public:
 
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
   //   shared объекты превращаются в глобальные переменные.
-  domain::TasksMirror get_current_model_data();
+  entities::Tasks get_current_model_data();
 
 private:
   template <typename U>
@@ -97,7 +98,7 @@ private:
   void draw_task_store(std::ostream& o) const;
 
   std::string tasks_table_name_;
-  domain::TasksMirror list_tasks_;  //
+  entities::Tasks tasks_;  //
   boost::shared_ptr<pq_dal::PQConnectionPool> pool_;
   boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> observers_;
 };
