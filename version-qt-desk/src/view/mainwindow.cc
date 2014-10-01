@@ -137,40 +137,44 @@ void View::updateAction() {
   }
 }
 
-void View::slotRowIsChanged(QTableWidgetItem* item)
+void View::slotRowIsChanged(QTableWidgetItem* elem)
 {
+  using app_core::TaskValue;
+  using domain::EntitiesStates;
+
   // FIXME: проблема!! изменения любые! может зациклить
   // FIXME: а такая вот комбинация надежно то работает?
   if (scoreTable_->edited()) {
     // надежнее всего получить ID строки, индексу я не верю.
     //   может через downcasting? RTTI in Qt кажется отключено
     // http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
-    int id = scoreTable_->item(item->row(), 0)->text().toInt();
+    int id = scoreTable_->item(elem->row(), 0)->text().toInt();
 
-    if (id == domain::EntitiesStates::kInActiveKey) {
+    if (id == EntitiesStates::kInActiveKey) {
       // создаем новую запись
-      QString d(scoreTable_->item(item->row(), 1)->text());
-      QString priority(scoreTable_->item(item->row(), 2)->text());
+      QString d(scoreTable_->item(elem->row(), 1)->text());
+      QString priority(scoreTable_->item(elem->row(), 2)->text());
       if (d.isEmpty() && priority.isEmpty())
         return;
 
-      int p = domain::EntitiesStates::kDefaulPriority;
+      int p(domain::EntitiesStates::kDefaulPriority);
       if (!priority.isEmpty())
         p = priority.toInt();
 
-      app_core::TaskValue v(app_core::TaskValue::create(
-         d.toUtf8().constData(), p));
+      // FIXME: no injection bad!
+      TaskValue v(TaskValue::create(d.toUtf8().constData(), p));
 
     } else {
       // просто обновляем
-      TasksMirror::value_type e = app_ptr_->get_elem_by_pos(item->row());
+      TasksMirror::value_type e(app_ptr_->get_elem_by_pos(elem->row()));
 
       assert(id == e->get_primary_key());
 
-      int tmp = scoreTable_->item(item->row(), 2)->text().toInt();
-      e->set_priority(tmp);
-      QString stmp = scoreTable_->item(item->row(), 1)->text();
-      e->set_task_name(stmp.toUtf8().constData());
+      QString d(scoreTable_->item(elem->row(), 1)->text());
+      int p(scoreTable_->item(elem->row(), 2)->text().toInt());
+
+      e->set_priority(p);
+      e->set_task_name(d.toUtf8().constData());
 
       // обновляем
       app_ptr_->update(e);

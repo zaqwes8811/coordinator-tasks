@@ -31,7 +31,6 @@ public:
     }
 
     const int id;
-    //const std::string description;
     const int priority;
     //const bool done;  // need store
 
@@ -46,17 +45,30 @@ private:
         , description(new std::string(d)) { }
 };
 
+// FIXME: как вообще работать с кешем и базами данных.
+//   в кешах ограниченное api!
+//  http://en.wikipedia.org/wiki/Database_caching - есть про когерентность.
+//
+// But it need really?
+//   http://stackoverflow.com/questions/548301/what-is-caching
+// http://stackoverflow.com/questions/2916645/implementing-model-level-caching?rq=1
+// http://stackoverflow.com/questions/343899/how-to-cache-data-in-a-mvc-application?rq=1
+//domain::TasksMirror store_cache_;
+//bool miss_;  // кеш устарел
 class Model
    : boost::noncopyable {
 
   void notify();  // пока пусть побудет закрытой
 public:
-    Model(domain::TasksMirror _model,
+  /// create and destory
+  static Model* createInHeap(boost::shared_ptr<pq_dal::PQConnectionPool>);
+  Model(domain::TasksMirror _model,
             boost::shared_ptr<pq_dal::PQConnectionPool> _pool);
+  ~Model();
 
+  // other
   // FIXME: да, лучше передать в конструкторе, но при конструировании возникает цикл.
-  void set_listener(boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> iso)
-  { iso_ = iso; }
+  void set_listener(boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> iso);
 
   // наверное лучше сразу сохранить
   // добавлять все равно буду скорее всего по-одному
@@ -66,17 +78,7 @@ public:
   void update(domain::TasksMirror::value_type e);
 
   // Жесткая привязка к списку
-  domain::TasksMirror::value_type get_elem_by_pos(const int pos)
-  {
-      assert(pos < model_.size());
-      return model_.at(pos);
-  }
-
-  //void save_all();
-
-  static Model* createInHeap(boost::shared_ptr<pq_dal::PQConnectionPool>);
-
-  ~Model();
+  domain::TasksMirror::value_type get_elem_by_pos(const int pos);
 
   void clear_store();
 
@@ -88,33 +90,17 @@ public:
 
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
   //   shared объекты превращаются в глобальные переменные.
-  domain::TasksMirror get_current_model_data()
-  { return model_; }
+  domain::TasksMirror get_current_model_data();
 
 private:
   template <typename U>
   friend void renders::render_task_store(std::ostream& o, const U& a);
-
   void draw_task_store(std::ostream& o) const;
 
   std::string tasks_table_name_;
-
-  // FIXME: как вообще работать с кешем и базами данных.
-  //   в кешах ограниченное api!
-  //  http://en.wikipedia.org/wiki/Database_caching - есть про когерентность.
-  //
-  // But it need really?
-  //   http://stackoverflow.com/questions/548301/what-is-caching
-  // http://stackoverflow.com/questions/2916645/implementing-model-level-caching?rq=1
-  // http://stackoverflow.com/questions/343899/how-to-cache-data-in-a-mvc-application?rq=1
-  domain::TasksMirror store_cache_;
-  bool miss_;  // кеш устарел
-
-  domain::TasksMirror model_;  //
-
+  domain::TasksMirror list_tasks_;  //
   boost::shared_ptr<pq_dal::PQConnectionPool> pool_;
-
-  boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> iso_;
+  boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> observers_;
 };
 }
 
