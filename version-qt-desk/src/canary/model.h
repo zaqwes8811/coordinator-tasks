@@ -10,6 +10,8 @@
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include <string>
+
 namespace app_core
 {
 
@@ -17,17 +19,31 @@ namespace app_core
 // Есть одно но. Внутри нет быстрого поиска по id.
 //   можно сделать хэш таблицей, и наверное это правильно, т.к.
 //   это работает как кеш.
-class TaskValues {
+class TaskValue {
 public:
-    TaskValues()
-        : id(domain::EntitiesStates::kInActiveKey)
-        , priority(domain::EntitiesStates::kDefaulPriority) {}
+    TaskValue create(const std::string& d, const int p) {
+      return TaskValue(domain::EntitiesStates::kInActiveKey, d, p);
+    }
+
+    TaskValue create() {
+      int p = domain::EntitiesStates::kDefaulPriority;
+      return TaskValue(domain::EntitiesStates::kInActiveKey, std::string(), p);
+    }
 
     const int id;
-    const std::string description;
+    //const std::string description;
     const int priority;
+    //const bool done;  // need store
 
-    // shared_ptr<const string> descr.
+    // Придает семантику значений
+    // Ухудшает локальность кеша
+    boost::shared_ptr<const std::string> description;
+
+private:
+    TaskValue(const int _id, const std::string& d, const int p)
+        : id(_id)
+        , priority(p)
+        , description(new std::string(d)) { }
 };
 
 class Model

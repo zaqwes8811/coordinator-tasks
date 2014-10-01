@@ -55,8 +55,9 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
 
   // pack all
   QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
-  mainLayout->addWidget(scoreTable_);
   mainLayout->addWidget(submit);
+  mainLayout->addWidget(scoreTable_);
+
 }
 
 View::~View()
@@ -148,7 +149,8 @@ void View::slotRowIsChanged(QTableWidgetItem* item)
 
     if (id == domain::EntitiesStates::kInActiveKey) {
       // создаем новую запись
-        qDebug() << "new";
+      qDebug() << "new";
+      app_core::TaskValue v();
     } else {
       // просто обновляем
       TasksMirror::value_type e = app_ptr_->get_elem_by_pos(item->row());
