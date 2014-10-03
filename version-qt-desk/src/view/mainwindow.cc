@@ -50,12 +50,16 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
   QPushButton* submit = new QPushButton("Add records", this);
   connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
 
+  QPushButton* mark_done = new QPushButton("Mark done", this);
+  //connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
+
   connect(scoreTable_, SIGNAL(itemChanged(QTableWidgetItem*)),
           this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
   // pack all
   QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
   mainLayout->addWidget(submit);
+  mainLayout->addWidget(mark_done);
   mainLayout->addWidget(scoreTable_);
 
 }
@@ -95,6 +99,8 @@ void View::slotAddRecords(bool checked) {
 
 void View::updateAction() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
+  // FIXME: сбивает выбранную позицию
+  //
   clearList();
 
   Tasks records = app_ptr_->get_current_model_data();

@@ -32,7 +32,8 @@ SOURCES += \
   src/canary/pq_queries.cc
 
 HEADERS  += src/view/mainwindow.h \
-    src/canary/isolation.h
+    src/canary/isolation.h \
+    src/top/error_handling.h
 
 FORMS    += src/view/mainwindow.ui
 
