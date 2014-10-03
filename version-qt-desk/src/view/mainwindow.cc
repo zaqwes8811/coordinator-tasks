@@ -43,7 +43,7 @@ using boost::bind;
 using std::string;
 using std::vector;
 
-View::View(app_core::Model* const model_ptr, QWidget *parent) :
+Engine::Engine(app_core::Model* const model_ptr, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _model_ptr(model_ptr)
@@ -56,7 +56,7 @@ View::View(app_core::Model* const model_ptr, QWidget *parent) :
 
   // control
   QPushButton* mark_done = new QPushButton("Mark done", this);
-  //connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
+  connect(mark_done, SIGNAL(clicked(bool)), this, SLOT(slotSortByDecreasePriority(bool)));
 
   _grid_ptr = new QMyTableView(this);
   connect(_grid_ptr, SIGNAL(itemChanged(QTableWidgetItem*)),
@@ -70,22 +70,22 @@ View::View(app_core::Model* const model_ptr, QWidget *parent) :
   mainLayout->addLayout(actions_layout);
   mainLayout->addWidget(_grid_ptr);
 
-  updateAction();
+  redraw();
 }
 
-View::~View()
+Engine::~Engine()
 {
     delete ui;
 }
 
-void View::slotSortByDecreasePriority(bool checked) {
+void Engine::slotSortByDecreasePriority(bool checked) {
   //Tasks mirror(test_help_data::build_fake_model());
 
   // сохраняем все
   //adobe::for_each(mirror, bind(&Model::append, ref(*app_ptr_), _1));
 }
 
-void View::updateAction() {
+void Engine::redraw() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   // FIXME: сбивает выбранную позицию
   //
@@ -94,7 +94,7 @@ void View::updateAction() {
   _grid_ptr->update(records);
 }
 
-void View::slotRowIsChanged(QTableWidgetItem* elem)
+void Engine::slotRowIsChanged(QTableWidgetItem* elem)
 {
   try {
     // FIXME: проблема!! изменения любые! может зациклить

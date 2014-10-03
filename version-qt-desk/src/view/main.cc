@@ -30,17 +30,17 @@ using Loki::MakeObjGuard;
 
 class ModelListenerMediator : public ModelListenerMediatorDynPolym {
 public:
-  explicit ModelListenerMediator(View* const view) : view_(view) {
+  explicit ModelListenerMediator(Engine* const view) : view_(view) {
     // не должно быть нулем
   }
 
 private:
   void update_() {
     assert(view_);
-    view_->updateAction();
+    view_->redraw();
   }
 
-  View* const view_;
+  Engine* const view_;
 };
 
 int main(int argc, char *argv[])
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
   // Пока очищаем хранилище
   ScopeGuard _ = MakeObjGuard(*a, &app_core::Model::clear_store);
 
-  View *window = new View(a.get());
+  Engine *window = new Engine(a.get());
 
   //ModelListenerStaticPolym<QWidget> listener(window);
   shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));

@@ -13,16 +13,18 @@ namespace Ui {
 class MainWindow;
 }
 
-class View : public QMainWindow
+class Engine : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  View(app_core::Model* const app_ptr,
+  // ctor/dtor/assign/copy
+  Engine(app_core::Model* const app_ptr,
        QWidget *parent = 0);
+  ~Engine();
 
-  ~View();
-  void updateAction();
+  // actions
+  void redraw();
 
 private slots:
   void slotSortByDecreasePriority(bool checked);
