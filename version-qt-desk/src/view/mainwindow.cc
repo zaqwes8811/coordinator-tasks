@@ -19,6 +19,7 @@
 
 using app_core::Model;
 using entities::Tasks;  // not work
+using values::TaskTableIdx;
 
 using boost::ref;
 using boost::bind;
@@ -44,7 +45,7 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
 
   scoreTable_ = new QTableWidgetCheckEdited(this);
   scoreTable_->setColumnCount(s_column_names_.size());
-  scoreTable_->setColumnHidden(0, true);  // FIXME: id's пока так
+  scoreTable_->setColumnHidden(TaskTableIdx::kId, true);  // FIXME: id's пока так
   scoreTable_->setHorizontalHeaderLabels(s_column_names_);
 
   // control

@@ -114,6 +114,12 @@ private:
         , priority(p)
         , description(new std::string(d)) { }
 };
+
+struct TaskTableIdx {
+  const static int kId = 0;
+  const static int kTaskName = 1;
+  const static int kPriority = 2;
+};
 }
 
 #endif // DOMAIN_H
