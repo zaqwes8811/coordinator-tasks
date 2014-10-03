@@ -94,24 +94,39 @@ View::~View()
     delete ui;
 }
 
-void View::insertBlankRows(const int end) {
+void QTableWidgetCheckEdited::insertBlankRows(const int end) {
   // вставляем еще несколько рядов
   for (int row = end; row < end+app_core::kAddedBlankLines; ++row) {
-      scoreTable_->setItem(row, values::TaskTableIdx::kId,
-                           new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey)));
-      scoreTable_->setItem(row, values::TaskTableIdx::kTaskName,
-                           new QTableWidgetItem);
-      scoreTable_->setItem(row, values::TaskTableIdx::kPriority,
-                           new QTableWidgetItem);
+      setItem(row, values::TaskTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey)));
+      setItem(row, values::TaskTableIdx::kTaskName, new QTableWidgetItem);
+      setItem(row, values::TaskTableIdx::kPriority, new QTableWidgetItem);
   }
 }
 
-void View::clearList() {
+void QTableWidgetCheckEdited::clearList() {
   // есть и функция clear and clearContent
 
-  int count_rows = scoreTable_->rowCount();
+  int count_rows = rowCount();
   for (int i = 0; i < count_rows; ++i)
-    scoreTable_->removeRow(i);
+    removeRow(i);
+}
+
+void QTableWidgetCheckEdited::update(entities::Tasks tasks) {
+  {
+    // fill table
+    setRowCount(tasks.size() + app_core::kAddedBlankLines);
+
+    int row = 0;
+    for (Tasks::const_iterator record=tasks.begin(), end=tasks.end(); record != end; ++record) {
+      setItem(row, values::TaskTableIdx::kId, new QTableWidgetItem(QString::number((*record)->get_primary_key())));
+      setItem(row, values::TaskTableIdx::kTaskName, new QTableWidgetItem(QString::fromUtf8((*record)->get_task_name().c_str())));
+      setItem(row, values::TaskTableIdx::kPriority, new QTableWidgetItem(QString::number((*record)->get_priority())));
+      ++row;
+    }
+
+    // вставляем еще несколько рядов
+    insertBlankRows(row);
+  }
 }
 
 void View::slotSortByDecreasePriority(bool checked) {
@@ -125,29 +140,9 @@ void View::updateAction() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   // FIXME: сбивает выбранную позицию
   //
-  clearList();
-
+  scoreTable_->clearList();
   Tasks records = app_ptr_->get_current_model_data();
-
-  {
-    // fill table
-    scoreTable_->setRowCount(records.size() + app_core::kAddedBlankLines);
-
-    int row = 0;
-    for (Tasks::const_iterator record=records.begin(), end=records.end(); record != end; ++record) {
-      scoreTable_->setItem(row, values::TaskTableIdx::kId,
-                           new QTableWidgetItem(QString::number((*record)->get_primary_key())));
-      scoreTable_->setItem(row, values::TaskTableIdx::kTaskName,
-                           new QTableWidgetItem(QString::fromUtf8((*record)->get_task_name().c_str())));
-      scoreTable_->setItem(row, values::TaskTableIdx::kPriority,
-                           new QTableWidgetItem(QString::number((*record)->get_priority())));
-
-      ++row;
-    }
-
-    // вставляем еще несколько рядов
-    insertBlankRows(row);
-  }
+  scoreTable_->update(records);
 }
 
 void View::slotRowIsChanged(QTableWidgetItem* elem)

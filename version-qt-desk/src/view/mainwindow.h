@@ -34,6 +34,13 @@ public:
    else return false;
   }
 
+  void insertBlankRows(const int);
+
+  // очищает список задач
+  void clearList();
+
+  void update(entities::Tasks tasks);
+
 private:
   // FIXME: как узнать, что ячейка именно обновлена
   //   если вошли в ячейку, значит по выходу она будет обновлена?
@@ -54,18 +61,13 @@ class View : public QMainWindow
 public:
   View(app_core::Model* const app_ptr, QWidget *parent = 0);
   ~View();
-
   void updateAction();
-  void insertBlankRows(const int);
 
 private slots:
   void slotSortByDecreasePriority(bool checked);
   void slotRowIsChanged(QTableWidgetItem* item);
 
 private:
-  // очищает список задач
-  void clearList();
-
   Ui::MainWindow *ui;
   QTableWidgetCheckEdited* scoreTable_;
   app_core::Model* const app_ptr_;
