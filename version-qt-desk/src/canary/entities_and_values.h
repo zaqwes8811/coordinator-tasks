@@ -115,6 +115,7 @@ private:
         , description(new std::string(d)) { }
 };
 
+// По идее это указание Виду снизу. Это плохо
 struct TaskTableIdx {
   const static int kId = 0;
   const static int kTaskName = 1;

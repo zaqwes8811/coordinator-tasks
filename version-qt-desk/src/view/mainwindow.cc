@@ -76,11 +76,11 @@ void View::insertBlankRows(const int end) {
   for (int i = end; i < end+app_core::kAddedBlankLines; ++i) {
       QTableWidgetItem* id_item =
           new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey));
-      scoreTable_->setItem(i, 0, id_item);
+      scoreTable_->setItem(i, values::TaskTableIdx::kId, id_item);
       QTableWidgetItem* item = new QTableWidgetItem;
-      scoreTable_->setItem(i, 1, item);
+      scoreTable_->setItem(i, values::TaskTableIdx::kTaskName, item);
       QTableWidgetItem* priority_item = new QTableWidgetItem();
-      scoreTable_->setItem(i, 2, priority_item);
+      scoreTable_->setItem(i, values::TaskTableIdx::kPriority, priority_item);
   }
 }
 
@@ -111,10 +111,7 @@ void View::updateAction() {
     // fill table
     scoreTable_->setRowCount(records.size() + app_core::kAddedBlankLines);
 
-    // FIXME: where save id's if need it
-    //scoreTable_->setVerticalHeaderLabels(s_student_names_);
-
-    int pos = 0;
+    int row = 0;
     for (Tasks::const_iterator i=records.begin(), end=records.end(); i != end; ++i) {
       // draw one row!!
       // FIXME: лучше это сконнектить!! операция логически неделимая
@@ -128,20 +125,17 @@ void View::updateAction() {
       //vector<QTableWidget*> tmp;
       //tmp.push_back();  // если будет исключение, то будет утечка памяти
       // мы во владение не передали
-      vector<QString> tmp;  // производительность зависит от того как реализована qstring
-      tmp.push_back(QString::number((*i)->get_primary_key()));
-      tmp.push_back(QString::fromUtf8((*i)->get_task_name().c_str()));
-      tmp.push_back(QString::number((*i)->get_priority()));
 
-      for (int j = 0; j < tmp.size(); j++) {
-          QTableWidgetItem* item = new QTableWidgetItem(tmp.at(j));
-          scoreTable_->setItem(pos, j, item);
-      }
-      ++pos;
+      // FIXME: развернуть!
+      scoreTable_->setItem(row, values::TaskTableIdx::kId, new QTableWidgetItem(QString::number((*i)->get_primary_key())));
+      scoreTable_->setItem(row, values::TaskTableIdx::kTaskName, new QTableWidgetItem(QString::fromUtf8((*i)->get_task_name().c_str())));
+      scoreTable_->setItem(row, values::TaskTableIdx::kPriority, new QTableWidgetItem(QString::number((*i)->get_priority())));
+
+      ++row;
     }
 
     // вставляем еще несколько рядов
-    insertBlankRows(pos);
+    insertBlankRows(row);
   }
 }
 
@@ -156,12 +150,14 @@ void View::slotRowIsChanged(QTableWidgetItem* elem)
     // надежнее всего получить ID строки, индексу я не верю.
     //   может через downcasting? RTTI in Qt кажется отключено
     // http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
-    int id = scoreTable_->item(elem->row(), 0)->text().toInt();
+    int id = scoreTable_->item(elem->row(), values::TaskTableIdx::kId)->text().toInt();
 
     if (id == EntitiesStates::kInActiveKey) {
       // создаем новую запись
-      QString d(scoreTable_->item(elem->row(), 1)->text());
-      QString priority(scoreTable_->item(elem->row(), 2)->text());
+      QString d(scoreTable_->item(elem->row(),
+                                  values::TaskTableIdx::kTaskName)->text());
+      QString priority(scoreTable_->item(elem->row(),
+                                         values::TaskTableIdx::kPriority)->text());
       if (d.isEmpty() && priority.isEmpty())
         return;
 
@@ -178,8 +174,8 @@ void View::slotRowIsChanged(QTableWidgetItem* elem)
 
       assert(id == e->get_primary_key());
 
-      QString d(scoreTable_->item(elem->row(), 1)->text());
-      int p(scoreTable_->item(elem->row(), 2)->text().toInt());
+      QString d(scoreTable_->item(elem->row(), values::TaskTableIdx::kTaskName)->text());
+      int p(scoreTable_->item(elem->row(), values::TaskTableIdx::kPriority)->text().toInt());
 
       e->set_priority(p);
       e->set_task_name(d.toUtf8().constData());
