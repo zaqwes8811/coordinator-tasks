@@ -93,11 +93,16 @@ void TaskTableQueries::drop(connection& C) {
 
 void TaskLifetimeQueries::update(entities::Tasks::value_type e, pqxx::connection& C) {
   assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
+  string done("false");
+  if (e->get_is_done())
+    done = "true";
+
   string sql(
   "UPDATE "
         + task_table_name_ + " SET "
         + "TASK_NAME = '" + e->get_task_name()
         + "', PRIORITY = " + common::to_string(e->get_priority())
+        + ", DONE = " + done
         + " WHERE ID = " + common::to_string(e->get_primary_key()) + ";");
   
   work w(C);
