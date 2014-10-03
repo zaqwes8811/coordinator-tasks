@@ -150,6 +150,8 @@ entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
     elem->set_primary_key_(c[TablePositions::kId].as<int>());
     elem->set_task_name(c[TablePositions::kTaskName].as<string>());
     elem->set_priority(c[TablePositions::kPriority].as<int>());
+    elem->set_is_done(c[TablePositions::kDone].as<bool>());
+
     model.push_back(elem);
   }
 

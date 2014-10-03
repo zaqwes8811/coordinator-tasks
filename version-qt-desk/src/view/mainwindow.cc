@@ -124,11 +124,15 @@ void Engine::slotUpdateRow() {
 
   QModelIndex idx = indexList.at(0);
 
-  int row = idx.row();
-  int id = _grid_ptr->getId(row);
+  const int kRow = idx.row();
 
   // Обновляем ячейку
+  Tasks::value_type e(_model_ptr->get_elem_by_pos(kRow));
+  e->set_is_done(true);
 
+  _model_ptr->update(e);
+
+  ::renders::render_task_store(std::cout, *_model_ptr);
 }
 
 void Engine::slotRowIsChanged(QTableWidgetItem* elem)

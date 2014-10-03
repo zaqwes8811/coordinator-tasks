@@ -20,10 +20,11 @@ QMyTableView::QMyTableView(QWidget *parent)
   column_names.append("id");
   column_names.append("Task name");
   column_names.append("Priority");
+  //column_names.append("Is Done");  // не обязательно, главно id
 
   setColumnCount(column_names.size());
   setHorizontalHeaderLabels(column_names);
-  setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
+  //setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
 
   // Style
   QHeaderView *v = verticalHeader();

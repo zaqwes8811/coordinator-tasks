@@ -45,7 +45,8 @@ public:
   // http://stackoverflow.com/questions/308276/c-call-constructor-from-constructor
   TaskEntity() 
     : primary_key_(EntitiesStates::kInActiveKey)
-    , priority_(EntitiesStates::kDefaulPriority) { }
+    , priority_(EntitiesStates::kDefaulPriority)
+    , is_done_(false) { }
 
   int get_primary_key() const { return primary_key_; }
 
@@ -58,6 +59,13 @@ public:
   int get_priority() const { return priority_; }
   void set_priority(const int val) { priority_ = val; }
 
+  bool get_is_done() const
+  { return is_done_; }
+
+  // лучше так чем городить условную логику
+  void set_is_done(bool val)
+  { is_done_ = val; }
+
 private:
   friend class pq_dal::TaskLifetimeQueries;  // только он меняет первичный ключ
 
@@ -66,6 +74,7 @@ private:
   int primary_key_;  // нужно какое-то не активное
   std::string task_name_;
   int priority_;
+  bool is_done_;
 };
 
 // set лучше, но до сохранения индекс может быть не уникальным
@@ -120,6 +129,7 @@ struct TaskViewTableIdx {
   const static int kId = 0;
   const static int kTaskName = 1;
   const static int kPriority = 2;
+  const static int kDone = 3;
 };
 }
 
