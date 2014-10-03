@@ -43,10 +43,10 @@ using boost::bind;
 using std::string;
 using std::vector;
 
-View::View(app_core::Model* const app_ptr, QWidget *parent) :
+View::View(app_core::Model* const model_ptr, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    _model_ptr(app_ptr)
+    _model_ptr(model_ptr)
 {
   ui->setupUi(this);
 
@@ -55,9 +55,6 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
   setCentralWidget(centralWidget);
 
   // control
-  //QPushButton* submit = new QPushButton("Sort by decrease priority", this);
-  //connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotSortByDecreasePriority(bool)));
-
   QPushButton* mark_done = new QPushButton("Mark done", this);
   //connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
 
@@ -68,17 +65,11 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
   // pack all
   QVBoxLayout* mainLayout = new QVBoxLayout(centralWidget);
 
-  QVBoxLayout* actions_layout = new QVBoxLayout;//(mainLayout);
-  //actions_layout->addWidget(submit);
+  QVBoxLayout* actions_layout = new QVBoxLayout;
   actions_layout->addWidget(mark_done);
-
   mainLayout->addLayout(actions_layout);
   mainLayout->addWidget(_grid_ptr);
 
-  // размер окна
-
-
-  // Add empty lines - нужно загрузить старые, но как
   updateAction();
 }
 
