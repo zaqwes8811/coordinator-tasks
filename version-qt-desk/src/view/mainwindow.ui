@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>534</width>
-    <height>316</height>
+    <width>455</width>
+    <height>1062</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,19 +19,10 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>534</width>
+     <width>455</width>
      <height>29</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>RightToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="separator"/>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

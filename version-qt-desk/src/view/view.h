@@ -26,9 +26,9 @@ public:
   // очищает список задач
   void clearList();
   void update(entities::Tasks tasks);
-
   void update(const int row, entities::Tasks::value_type e);
   values::TaskValue create(const int row) const;
+  int getId(const int row) const;
 
 private:
   void insertBlankRows(const int);

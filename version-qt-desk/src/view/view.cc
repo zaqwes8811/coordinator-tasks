@@ -27,6 +27,10 @@ QMyTableView::QMyTableView(QWidget *parent)
   QHeaderView *v = verticalHeader();
   v->setResizeMode(QHeaderView::Fixed);
   v->setDefaultSectionSize(20);
+
+  horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+  //resizeRowToContents();
+  //resizeColumnsToContents();
 }
 
 bool QMyTableView::isEdited() const {
@@ -83,6 +87,9 @@ void QMyTableView::update(entities::Tasks tasks) {
   }
 }
 
+int QMyTableView::getId(const int row) const {
+  return item(row, values::TaskTableIdx::kId)->text().toInt();
+}
 
 void QMyTableView::update(const int row, entities::Tasks::value_type e) {
   QString d(item(row, values::TaskTableIdx::kTaskName)->text());

@@ -55,8 +55,8 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
   setCentralWidget(centralWidget);
 
   // control
-  QPushButton* submit = new QPushButton("Sort by decrease priority", this);
-  connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotSortByDecreasePriority(bool)));
+  //QPushButton* submit = new QPushButton("Sort by decrease priority", this);
+  //connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotSortByDecreasePriority(bool)));
 
   QPushButton* mark_done = new QPushButton("Mark done", this);
   //connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
@@ -66,14 +66,17 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
           this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
   // pack all
-  QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
+  QVBoxLayout* mainLayout = new QVBoxLayout(centralWidget);
 
   QVBoxLayout* actions_layout = new QVBoxLayout;//(mainLayout);
-  actions_layout->addWidget(submit);
+  //actions_layout->addWidget(submit);
   actions_layout->addWidget(mark_done);
 
   mainLayout->addLayout(actions_layout);
   mainLayout->addWidget(_grid_ptr);
+
+  // размер окна
+
 
   // Add empty lines - нужно загрузить старые, но как
   updateAction();
@@ -103,32 +106,30 @@ void View::updateAction() {
 void View::slotRowIsChanged(QTableWidgetItem* elem)
 {
   try {
+    // FIXME: проблема!! изменения любые! может зациклить
+    // FIXME: а такая вот комбинация надежно то работает?
+    if (_grid_ptr->isEdited()) {
+      const int kRow = elem->row();
 
-  // FIXME: проблема!! изменения любые! может зациклить
-  // FIXME: а такая вот комбинация надежно то работает?
-  if (_grid_ptr->isEdited()) {
-    const int kRow = elem->row();
+      // надежнее всего получить ID строки, индексу я не верю.
+      //   может через downcasting? RTTI in Qt кажется отключено
+      // http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
+      const int kId = _grid_ptr->getId(kRow);
 
-    // надежнее всего получить ID строки, индексу я не верю.
-    //   может через downcasting? RTTI in Qt кажется отключено
-    // http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
-    const int kId = _grid_ptr->item(kRow, values::TaskTableIdx::kId)->text().toInt();
+      if (kId == EntitiesStates::kInActiveKey) {
+        // создаем новую запись
+        TaskValue v = _grid_ptr->create(kRow);  // may throw
+        _model_ptr->append_value(v);
+      } else {
+        // просто обновляем
+        Tasks::value_type e(_model_ptr->get_elem_by_pos(kRow));
 
-    if (kId == EntitiesStates::kInActiveKey) {
-      // создаем новую запись
-      TaskValue v = _grid_ptr->create(kRow);  // may throw
-      _model_ptr->append_value(v);
-    } else {
-      // просто обновляем
-      Tasks::value_type e(_model_ptr->get_elem_by_pos(kRow));
+        assert(kId == e->get_primary_key());
 
-      assert(kId == e->get_primary_key());
-
-      _grid_ptr->update(kRow, e);
-      _model_ptr->update(e);
+        _grid_ptr->update(kRow, e);
+        _model_ptr->update(e);
+      }
     }
-  }
-
   } catch (...) {
     // FIXME: но как понять какое произошло
   }
