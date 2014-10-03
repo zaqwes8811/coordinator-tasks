@@ -1,7 +1,7 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-#include "canary/entities.h"
+#include "canary/entities_and_values.h"
 
 #include <boost/shared_ptr.hpp>
 

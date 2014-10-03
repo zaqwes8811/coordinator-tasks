@@ -84,4 +84,36 @@ private:
 };
 }  // namespace..
 
+namespace values {
+// FIXME: закончить реализацию
+// Есть одно но. Внутри нет быстрого поиска по id.
+//   можно сделать хэш таблицей, и наверное это правильно, т.к.
+//   это работает как кеш.
+class TaskValue {
+public:
+    static TaskValue create(const std::string& d, const int p) {
+      return TaskValue(entities::EntitiesStates::kInActiveKey, d, p);
+    }
+
+    static TaskValue create() {
+      int p = entities::EntitiesStates::kDefaulPriority;
+      return TaskValue(entities::EntitiesStates::kInActiveKey, std::string(), p);
+    }
+
+    const int id;
+    const int priority;
+    //const bool done;  // need store
+
+    // Придает семантику значений
+    // Ухудшает локальность кеша
+    boost::shared_ptr<const std::string> description;
+
+private:
+    TaskValue(const int _id, const std::string& d, const int p)
+        : id(_id)
+        , priority(p)
+        , description(new std::string(d)) { }
+};
+}
+
 #endif // DOMAIN_H

@@ -1,6 +1,6 @@
 #include "top/config.h"
 
-#include "canary/entities.h"
+#include "canary/entities_and_values.h"
 
 
 namespace test_help_data {

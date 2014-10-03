@@ -7,7 +7,7 @@
 #include "top/config.h"
 
 #include "canary/pq_queries.h"
-#include "canary/entities.h"
+#include "canary/entities_and_values.h"
 #include "canary/filters.h"
 
 #include <boost/bind.hpp>

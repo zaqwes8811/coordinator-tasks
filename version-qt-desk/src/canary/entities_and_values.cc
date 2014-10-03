@@ -1,6 +1,6 @@
 #include "top/config.h"
 
-#include "canary/entities.h"
+#include "canary/entities_and_values.h"
 #include "canary/pq_queries.h"
 
 #include <boost/make_shared.hpp>

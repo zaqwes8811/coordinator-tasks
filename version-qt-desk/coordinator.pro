@@ -21,11 +21,11 @@ SOURCES += \
   src/view/mainwindow.cc \
   src/view/main.cc \
     src/test_help_data.cc \
-    src/canary/model.cc
+    src/canary/model.cc \
+    src/canary/entities_and_values.cc
 
 # Business logic
 SOURCES += \
-  src/canary/entities.cc \
   src/_trash/_trash.cc \
   src/canary/renders.cc \
   src/canary/filters.cc \

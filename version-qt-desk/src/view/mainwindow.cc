@@ -4,6 +4,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "test_help_data.h"
+#include "canary/entities_and_values.h"
 
 //
 #include <QPushButton>
@@ -145,7 +146,7 @@ void View::updateAction() {
 
 void View::slotRowIsChanged(QTableWidgetItem* elem)
 {
-  using app_core::TaskValue;
+  using values::TaskValue;
   using entities::EntitiesStates;
 
   // FIXME: проблема!! изменения любые! может зациклить

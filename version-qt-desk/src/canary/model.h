@@ -1,7 +1,7 @@
 #ifndef BUSI_H
 #define BUSI_H
 
-#include "canary/entities.h"
+#include "canary/entities_and_values.h"
 #include "canary/pq_queries.h"
 #include "canary/renders.h"
 #include "canary/model.h"
@@ -15,35 +15,7 @@
 namespace app_core
 {
 
-// FIXME: закончить реализацию
-// Есть одно но. Внутри нет быстрого поиска по id.
-//   можно сделать хэш таблицей, и наверное это правильно, т.к.
-//   это работает как кеш.
-class TaskValue {
-public:
-    static TaskValue create(const std::string& d, const int p) {
-      return TaskValue(entities::EntitiesStates::kInActiveKey, d, p);
-    }
 
-    static TaskValue create() {
-      int p = entities::EntitiesStates::kDefaulPriority;
-      return TaskValue(entities::EntitiesStates::kInActiveKey, std::string(), p);
-    }
-
-    const int id;
-    const int priority;
-    //const bool done;  // need store
-
-    // Придает семантику значений
-    // Ухудшает локальность кеша
-    boost::shared_ptr<const std::string> description;
-
-private:
-    TaskValue(const int _id, const std::string& d, const int p)
-        : id(_id)
-        , priority(p)
-        , description(new std::string(d)) { }
-};
 
 // FIXME: как вообще работать с кешем и базами данных.
 //   в кешах ограниченное api!
@@ -73,7 +45,7 @@ public:
   // наверное лучше сразу сохранить
   // добавлять все равно буду скорее всего по-одному
   void append(entities::Tasks::value_type e);
-  void append_value(TaskValue e);  // overloading trouble in for_each
+  void append_value(values::TaskValue e);  // overloading trouble in for_each
 
   // элемент был сохранен и есть в mirror
   void update(entities::Tasks::value_type e);
