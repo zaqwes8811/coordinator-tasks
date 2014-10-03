@@ -56,7 +56,7 @@ QTableWidgetCheckEdited::QTableWidgetCheckEdited(QWidget *parent)
 View::View(app_core::Model* const app_ptr, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    app_ptr_(app_ptr)
+    model_ptr_(app_ptr)
 {
   ui->setupUi(this);
 
@@ -71,8 +71,8 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
   QPushButton* mark_done = new QPushButton("Mark done", this);
   //connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
 
-  scoreTable_ = new QTableWidgetCheckEdited(this);
-  connect(scoreTable_, SIGNAL(itemChanged(QTableWidgetItem*)),
+  grid_ptr_ = new QTableWidgetCheckEdited(this);
+  connect(grid_ptr_, SIGNAL(itemChanged(QTableWidgetItem*)),
           this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
   // pack all
@@ -83,7 +83,7 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
   actions_layout->addWidget(mark_done);
 
   mainLayout->addLayout(actions_layout);
-  mainLayout->addWidget(scoreTable_);
+  mainLayout->addWidget(grid_ptr_);
 
   // Add empty lines - нужно загрузить старые, но как
   updateAction();
@@ -140,9 +140,9 @@ void View::updateAction() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   // FIXME: сбивает выбранную позицию
   //
-  scoreTable_->clearList();
-  Tasks records = app_ptr_->get_current_model_data();
-  scoreTable_->update(records);
+  grid_ptr_->clearList();
+  Tasks records = model_ptr_->get_current_model_data();
+  grid_ptr_->update(records);
 }
 
 void View::slotRowIsChanged(QTableWidgetItem* elem)
@@ -152,19 +152,19 @@ void View::slotRowIsChanged(QTableWidgetItem* elem)
 
   // FIXME: проблема!! изменения любые! может зациклить
   // FIXME: а такая вот комбинация надежно то работает?
-  if (scoreTable_->edited()) {
+  if (grid_ptr_->edited()) {
     // надежнее всего получить ID строки, индексу я не верю.
     //   может через downcasting? RTTI in Qt кажется отключено
     // http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
-    int id = scoreTable_->item(elem->row(), values::TaskTableIdx::kId)->text().toInt();
+    int id = grid_ptr_->item(elem->row(), values::TaskTableIdx::kId)->text().toInt();
 
     if (id == EntitiesStates::kInActiveKey) {
       // создаем новую запись
       QString d(
-          scoreTable_->item(elem->row(), values::TaskTableIdx::kTaskName)->text());
+          grid_ptr_->item(elem->row(), values::TaskTableIdx::kTaskName)->text());
 
       QString priority(
-          scoreTable_->item(elem->row(), values::TaskTableIdx::kPriority)->text());
+          grid_ptr_->item(elem->row(), values::TaskTableIdx::kPriority)->text());
 
       if (d.isEmpty() && priority.isEmpty())
         return;
@@ -175,21 +175,21 @@ void View::slotRowIsChanged(QTableWidgetItem* elem)
 
       // FIXME: no injection bad!
       TaskValue v(TaskValue::create(d.toUtf8().constData(), p));
-      app_ptr_->append_value(v);
+      model_ptr_->append_value(v);
     } else {
       // просто обновляем
-      Tasks::value_type e(app_ptr_->get_elem_by_pos(elem->row()));
+      Tasks::value_type e(model_ptr_->get_elem_by_pos(elem->row()));
 
       assert(id == e->get_primary_key());
 
-      QString d(scoreTable_->item(elem->row(), values::TaskTableIdx::kTaskName)->text());
-      int p(scoreTable_->item(elem->row(), values::TaskTableIdx::kPriority)->text().toInt());
+      QString d(grid_ptr_->item(elem->row(), values::TaskTableIdx::kTaskName)->text());
+      int p(grid_ptr_->item(elem->row(), values::TaskTableIdx::kPriority)->text().toInt());
 
       e->set_priority(p);
       e->set_task_name(d.toUtf8().constData());
 
       // обновляем
-      app_ptr_->update(e);
+      model_ptr_->update(e);
     }
   }
 }

@@ -69,8 +69,8 @@ private slots:
 
 private:
   Ui::MainWindow *ui;
-  QTableWidgetCheckEdited* scoreTable_;
-  app_core::Model* const app_ptr_;
+  QTableWidgetCheckEdited* grid_ptr_;
+  app_core::Model* const model_ptr_;
 };
 
 #endif // MAINWINDOW_H

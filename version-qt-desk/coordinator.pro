@@ -17,7 +17,7 @@ LOCAL_3RDPARTY=../3rdparty
 
 # View
 SOURCES += \
-  src/view/trash.cc \
+  src/_trash/trash.cc \
   src/view/mainwindow.cc \
   src/view/main.cc \
     src/test_help_data.cc \
