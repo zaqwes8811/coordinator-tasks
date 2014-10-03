@@ -35,6 +35,7 @@ using app_core::Model;
 using entities::Tasks;  // not work
 using values::TaskTableIdx;
 using values::TaskValue;
+using entities::EntitiesStates;
 
 using boost::ref;
 using boost::bind;
@@ -101,37 +102,34 @@ void View::updateAction() {
 
 void View::slotRowIsChanged(QTableWidgetItem* elem)
 {
-  using values::TaskValue;
-  using entities::EntitiesStates;
-
   try {
 
   // FIXME: проблема!! изменения любые! может зациклить
   // FIXME: а такая вот комбинация надежно то работает?
   if (_grid_ptr->isEdited()) {
-    int row = elem->row();
+    const int kRow = elem->row();
 
     // надежнее всего получить ID строки, индексу я не верю.
     //   может через downcasting? RTTI in Qt кажется отключено
     // http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
-    int id = elem->text().toInt();
+    const int kId = _grid_ptr->item(kRow, values::TaskTableIdx::kId)->text().toInt();
 
-    if (id == EntitiesStates::kInActiveKey) {
+    if (kId == EntitiesStates::kInActiveKey) {
       // создаем новую запись
-      TaskValue v = _grid_ptr->create(row);  // may throw
+      TaskValue v = _grid_ptr->create(kRow);  // may throw
       _model_ptr->append_value(v);
     } else {
       // просто обновляем
-      Tasks::value_type e(_model_ptr->get_elem_by_pos(row));
+      Tasks::value_type e(_model_ptr->get_elem_by_pos(kRow));
 
-      assert(id == e->get_primary_key());
+      assert(kId == e->get_primary_key());
 
-      _grid_ptr->update(row, e);
+      _grid_ptr->update(kRow, e);
       _model_ptr->update(e);
     }
   }
 
   } catch (...) {
-    // но как понять какое произошло
+    // FIXME: но как понять какое произошло
   }
 }

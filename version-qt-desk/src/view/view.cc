@@ -4,6 +4,7 @@
 #include "canary/entities_and_values.h"
 
 #include <QWidget>
+#include <QHeaderView>
 
 #include <stdexcept>
 
@@ -22,6 +23,10 @@ QMyTableView::QMyTableView(QWidget *parent)
   setColumnCount(column_names_.size());
   setHorizontalHeaderLabels(column_names_);
   setColumnHidden(TaskTableIdx::kId, true);  // FIXME: id's пока так
+
+  QHeaderView *v = verticalHeader();
+  v->setResizeMode(QHeaderView::Fixed);
+  v->setDefaultSectionSize(20);
 }
 
 bool QMyTableView::isEdited() const {

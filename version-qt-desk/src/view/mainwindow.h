@@ -13,14 +13,14 @@ namespace Ui {
 class MainWindow;
 }
 
-
-
 class View : public QMainWindow
 {
   Q_OBJECT
 
 public:
-  View(app_core::Model* const app_ptr, QWidget *parent = 0);
+  View(app_core::Model* const app_ptr,
+       QWidget *parent = 0);
+
   ~View();
   void updateAction();
 
@@ -28,7 +28,7 @@ private slots:
   void slotSortByDecreasePriority(bool checked);
 
   // FIXME: а есть элемент не из той таблицы?
-  void slotRowIsChanged(QTableWidgetItem* item);
+  void slotRowIsChanged(QTableWidgetItem* item);  // FIXME: а место ли этому слоту здесь?
 
 private:
   Ui::MainWindow *ui;
