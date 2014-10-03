@@ -8,6 +8,7 @@
 
 #include <QMainWindow>
 #include <QTableWidget>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -27,10 +28,16 @@ public:
   void redraw();
 
 private slots:
-  void slotSortByDecreasePriority(bool checked);
+  void slotSortByDecreasePriority(int index);
 
   // FIXME: а есть элемент не из той таблицы?
-  void slotRowIsChanged(QTableWidgetItem* item);  // FIXME: а место ли этому слоту здесь?
+  // FIXME: а место ли этому слоту здесь?
+  // FIXME: на один сигнал можно подвесить несколько слотов
+  void slotRowIsChanged(QTableWidgetItem* item);
+
+  void slotUpdateRow();
+
+  void slotFillFake(bool);
 
 private:
   Ui::MainWindow *ui;

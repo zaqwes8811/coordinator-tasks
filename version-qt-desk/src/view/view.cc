@@ -8,7 +8,7 @@
 
 #include <stdexcept>
 
-using values::TaskTableIdx;
+using values::TaskViewTableIdx;
 using values::TaskValue;
 using entities::Tasks;
 
@@ -16,14 +16,16 @@ QMyTableView::QMyTableView(QWidget *parent)
     : QTableWidget(parent) {
 
   // fill lists
-  column_names_.append("id");
-  column_names_.append("name");
-  column_names_.append("priority");
+  QList<QString> column_names;  // FIXME: move from here
+  column_names.append("id");
+  column_names.append("Task name");
+  column_names.append("Priority");
 
-  setColumnCount(column_names_.size());
-  setHorizontalHeaderLabels(column_names_);
-  setColumnHidden(TaskTableIdx::kId, true);  // FIXME: id's пока так
+  setColumnCount(column_names.size());
+  setHorizontalHeaderLabels(column_names);
+  setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
 
+  // Style
   QHeaderView *v = verticalHeader();
   v->setResizeMode(QHeaderView::Fixed);
   v->setDefaultSectionSize(20);
@@ -39,8 +41,8 @@ bool QMyTableView::isEdited() const {
 }
 
 values::TaskValue QMyTableView::create(const int row) const {
-  QString d(item(row, values::TaskTableIdx::kTaskName)->text());
-  QString priority(item(row, values::TaskTableIdx::kPriority)->text());
+  QString d(item(row, values::TaskViewTableIdx::kTaskName)->text());
+  QString priority(item(row, values::TaskViewTableIdx::kPriority)->text());
 
   if (d.isEmpty() && priority.isEmpty())
     throw std::logic_error("Record is empty");  // FIXME: need think about error handling system
@@ -53,12 +55,12 @@ values::TaskValue QMyTableView::create(const int row) const {
   return TaskValue(TaskValue::create(d.toUtf8().constData(), p));
 }
 
-void QMyTableView::insertBlankRows(const int end) {
+void QMyTableView::_insertBlankRows(const int end) {
   // вставляем еще несколько рядов
   for (int row = end; row < end+app_core::kAddedBlankLines; ++row) {
-      setItem(row, values::TaskTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey)));
-      setItem(row, values::TaskTableIdx::kTaskName, new QTableWidgetItem);
-      setItem(row, values::TaskTableIdx::kPriority, new QTableWidgetItem);
+      setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey)));
+      setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem);
+      setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem);
   }
 }
 
@@ -76,24 +78,24 @@ void QMyTableView::update(entities::Tasks tasks) {
 
     int row = 0;
     for (Tasks::const_iterator record=tasks.begin(), end=tasks.end(); record != end; ++record) {
-      setItem(row, values::TaskTableIdx::kId, new QTableWidgetItem(QString::number((*record)->get_primary_key())));
-      setItem(row, values::TaskTableIdx::kTaskName, new QTableWidgetItem(QString::fromUtf8((*record)->get_task_name().c_str())));
-      setItem(row, values::TaskTableIdx::kPriority, new QTableWidgetItem(QString::number((*record)->get_priority())));
+      setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number((*record)->get_primary_key())));
+      setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem(QString::fromUtf8((*record)->get_task_name().c_str())));
+      setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem(QString::number((*record)->get_priority())));
       ++row;
     }
 
     // вставляем еще несколько рядов
-    insertBlankRows(row);
+    _insertBlankRows(row);
   }
 }
 
 int QMyTableView::getId(const int row) const {
-  return item(row, values::TaskTableIdx::kId)->text().toInt();
+  return item(row, values::TaskViewTableIdx::kId)->text().toInt();
 }
 
 void QMyTableView::update(const int row, entities::Tasks::value_type e) {
-  QString d(item(row, values::TaskTableIdx::kTaskName)->text());
-  int p(item(row, values::TaskTableIdx::kPriority)->text().toInt());
+  QString d(item(row, values::TaskViewTableIdx::kTaskName)->text());
+  int p(item(row, values::TaskViewTableIdx::kPriority)->text().toInt());
 
   e->set_priority(p);
   e->set_task_name(d.toUtf8().constData());

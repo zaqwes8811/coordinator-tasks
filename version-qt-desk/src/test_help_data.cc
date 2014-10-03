@@ -1,6 +1,9 @@
 #include "top/config.h"
 
 #include "canary/entities_and_values.h"
+#include "top/common.h"
+
+#include <cstdlib>
 
 
 namespace test_help_data {
@@ -24,7 +27,13 @@ Tasks build_fake_model() {
 
   for (int i = 0; i < 5; ++i) {
     string message(events[i]);
-    Tasks::value_type tmp = TaskEntity::create(message);
+    int p = rand() % 10 + 1;
+    Tasks::value_type tmp = TaskEntity::create(
+          common::to_string(p)
+          //message
+          );
+
+    tmp->set_priority(p);
     model.push_back(tmp);
   }
 

@@ -9,6 +9,7 @@
 #include "canary/pq_queries.h"
 #include "canary/entities_and_values.h"
 #include "canary/filters.h"
+#include "top/common.h"
 
 #include <boost/bind.hpp>
 #include <boost/bind/make_adaptable.hpp>
@@ -24,16 +25,14 @@
 #include <cassert>
 #include <sstream>
 
-namespace common {
-template <typename T>
-std::string to_string(T const& value) {
-  std::stringstream sstr;
-  sstr << value;
-  return sstr.str();
-}
-}
-
 namespace pq_dal {
+struct TablePositions {
+  const static int kId = 0;
+  const static int kTaskName = 1;
+  const static int kPriority = 2;
+  const static int kDone = 3;
+};
+
 using namespace boost;
 
 using std::string;
@@ -61,13 +60,15 @@ PQConnectionPool::~PQConnectionPool() {
 
 void TaskTableQueries::print(std::ostream& o, connection& conn) const {
   nontransaction no_tr_w(conn);
-  string sql("SELECT * from " + table_name_ + " order by id;");
+  string sql("SELECT * FROM " + table_name_ + " ORDER BY ID;");
   result r( no_tr_w.exec( sql ));
 
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
-    o << "ID = " << c[0].as<int>()
-         << " Name = " << c[1].as<string>()
-         << " Priority = "  << c[2].as<int>() << endl;
+    o << "ID = " << c[TablePositions::kId].as<int>()
+         << " Name = " << c[TablePositions::kTaskName].as<string>()
+         << " Priority = "  << c[TablePositions::kPriority].as<int>()
+         << " Done = "  << c[TablePositions::kDone].as<bool>()
+         << endl;
   }
 }
 
@@ -78,12 +79,12 @@ void TaskTableQueries::createIfNotExist(connection& C) {
     table_name_ +
     "(" \
     // сделать чтобы было >0
-    "id         SERIAL PRIMARY KEY NOT NULL," \
-    "task_name  TEXT               NOT NULL, " \
-    "priority   INT                NOT NULL);");
+    "ID         SERIAL PRIMARY KEY NOT NULL," \
+    "TASK_NAME  TEXT               NOT NULL, " \
+    "PRIORITY   INT                NOT NULL, " \
+    "DONE BOOLEAN DEFAULT FALSE);");
 
   pq_lower_level::run_transaction(sql, C);
-  //pq_lower
 }
 
 void TaskTableQueries::drop(connection& C) {
@@ -95,9 +96,9 @@ void TaskLifetimeQueries::update(entities::Tasks::value_type e, pqxx::connection
   string sql(
   "UPDATE "
         + task_table_name_ + " SET "
-        + "task_name = '" + e->get_task_name()
-        + "', priority = " + common::to_string(e->get_priority())
-        + " WHERE id = " + common::to_string(e->get_primary_key()) + ";");
+        + "TASK_NAME = '" + e->get_task_name()
+        + "', PRIORITY = " + common::to_string(e->get_priority())
+        + " WHERE ID = " + common::to_string(e->get_primary_key()) + ";");
   
   work w(C);
   w.exec(sql);
@@ -108,63 +109,15 @@ void TaskLifetimeQueries::create(entities::Tasks::value_type task, pqxx::connect
   create(*task, C);
 }
 
-void TaskLifetimeQueries::create(Tasks tasks, pqxx::connection& conn) {
-  // FIXME: должно ли быть все атомарное
-  Tasks::iterator it = adobe::stable_partition(tasks, filters::get_check_non_saved());
-
-  if (it != tasks.begin()) {
-    assert(std::distance(tasks.begin(), it) < 100);
-
-    string sql("INSERT INTO " + task_table_name_ + " (task_name, priority) VALUES");
-    for (Tasks::const_iterator at = tasks.begin(); ;) {
-      sql += "('"
-        + (*at)->get_task_name()  // будут проблемы с юникодом
-        + "', "  
-        + common::to_string((*at)->get_priority())
-        + ")";
-
-      ++at;
-      if (at == it)
-        break;
-
-      sql += ", ";
-    }
-
-    sql += " RETURNING id;";
-
-    // make query
-    work w(conn);
-    result r( w.exec( sql ));  // похоже нельзя выполнить два запроса
-    w.commit();
-
-    {
-      int i = 0;
-      for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
-        int new_id(entities::EntitiesStates::kInActiveKey);
-        new_id = c[0].as<int>();
-        assert(new_id != entities::EntitiesStates::kInActiveKey);
-        tasks[i]->set_primary_key_(new_id);
-
-        ++i;
-      }
-    }
-  }
-
-  // Разбиваем на операции
-  // save partion - no saved
-
-  // update
-}
-
 void TaskLifetimeQueries::create(
     entities::Tasks::value_type::element_type& e, connection& conn) {
   // нужно получить id
   // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
   string sql(
-      "INSERT INTO " + task_table_name_ + " (task_name, priority) " \
+      "INSERT INTO " + task_table_name_ + " (TASK_NAME, PRIORITY) " \
         "VALUES ('"
         + e.get_task_name()+"', "
-        + common::to_string(e.get_priority()) + ") RETURNING id; ");
+        + common::to_string(e.get_priority()) + ") RETURNING ID; ");
 
   work w(conn);
   result r( w.exec( sql ));  // похоже нельзя выполнить два запроса
@@ -176,7 +129,7 @@ void TaskLifetimeQueries::create(
   assert(r.size() == 1);  // вставили один элемент
   
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
-    new_id = c[0].as<int>();
+    new_id = c[TablePositions::kId].as<int>();
     break;
   }
 
@@ -186,7 +139,7 @@ void TaskLifetimeQueries::create(
 
 entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
   work w(conn);
-  string sql("SELECT * from " + task_table_name_ + ";");
+  string sql("SELECT * FROM " + task_table_name_ + ";");
   result r( w.exec( sql ));
   w.commit();
 
@@ -194,9 +147,9 @@ entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
     Tasks::value_type elem = TaskEntity::create("");
         //Model::value_type::element_type::create(string());
-    elem->set_primary_key_(c[0].as<int>());
-    elem->set_task_name(c[1].as<string>());
-    elem->set_priority(c[2].as<int>());
+    elem->set_primary_key_(c[TablePositions::kId].as<int>());
+    elem->set_task_name(c[TablePositions::kTaskName].as<string>());
+    elem->set_priority(c[TablePositions::kPriority].as<int>());
     model.push_back(elem);
   }
 
@@ -214,7 +167,7 @@ using pqxx::work;
 void rm_table(connection& conn, const string& table_name)
 {
   // Если таблицы нет, то просто ничего не происходит.
-  string sql("drop table " + table_name + ";");
+  string sql("DROP TABLE " + table_name + ";");
 
   // создаем транзакционный объект
   work w(conn);

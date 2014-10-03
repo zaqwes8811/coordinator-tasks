@@ -116,7 +116,7 @@ private:
 };
 
 // По идее это указание Виду снизу. Это плохо
-struct TaskTableIdx {
+struct TaskViewTableIdx {
   const static int kId = 0;
   const static int kTaskName = 1;
   const static int kPriority = 2;

@@ -35,7 +35,8 @@ SOURCES += \
 HEADERS  += src/view/mainwindow.h \
     src/canary/isolation.h \
     src/top/error_handling.h \
-    src/view/view.h
+    src/view/view.h \
+    src/top/common.h
 
 FORMS    += src/view/mainwindow.ui
 

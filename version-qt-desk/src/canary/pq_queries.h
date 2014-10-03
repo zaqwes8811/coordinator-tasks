@@ -62,12 +62,8 @@ public:
   void create(entities::Tasks::value_type::element_type& task, pqxx::connection& C);
   void create(entities::Tasks::value_type task, pqxx::connection& C);
 
-  // Пока что только создает новые
-  void create(entities::Tasks tasks, pqxx::connection& C);
-
   // FIXME: с умными указателями возникают проблемы с константростью!
   void update(entities::Tasks::value_type e, pqxx::connection& C);
-
 
   entities::Tasks get_all(pqxx::connection& C) const;
   // get_all

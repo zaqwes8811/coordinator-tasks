@@ -103,3 +103,53 @@ smart2ptr_t<T> smart2ptr(T op)
     return smart2ptr<T>(op);
 }
 }
+
+/*
+void TaskLifetimeQueries::create(Tasks tasks, pqxx::connection& conn) {
+  // FIXME: должно ли быть все атомарное
+  Tasks::iterator it = adobe::stable_partition(tasks, filters::get_check_non_saved());
+
+  if (it != tasks.begin()) {
+    assert(std::distance(tasks.begin(), it) < 100);
+
+    string sql("INSERT INTO " + task_table_name_ + " (TASK_NAME, PRIORITY) VALUES");
+    for (Tasks::const_iterator at = tasks.begin(); ;) {
+      sql += "('"
+        + (*at)->get_task_name()  // будут проблемы с юникодом
+        + "', "
+        + common::to_string((*at)->get_priority())
+        + ")";
+
+      ++at;
+      if (at == it)
+        break;
+
+      sql += ", ";
+    }
+
+    sql += " RETURNING ID;";
+
+    // make query
+    work w(conn);
+    result r( w.exec( sql ));  // похоже нельзя выполнить два запроса
+    w.commit();
+
+    {
+      int i = 0;
+      for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
+        int new_id = c[0].as<int>();
+        assert(new_id != entities::EntitiesStates::kInActiveKey);
+
+        tasks[i]->set_primary_key_(new_id);
+
+        ++i;
+      }
+    }
+  }
+
+  // Разбиваем на операции
+  // save partion - no saved
+
+  // update
+}
+*/

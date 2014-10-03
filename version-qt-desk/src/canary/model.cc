@@ -5,8 +5,11 @@
 
 #include <adobe/algorithm/find.hpp>
 #include <loki/ScopeGuard.h>
+#include <adobe/algorithm/sort.hpp>
+#include <boost/bind.hpp>
 
 #include <iostream>
+#include <functional>
 
 namespace app_core {
 using namespace pq_dal;
@@ -25,12 +28,10 @@ Model* Model::createInHeap(
   TaskTableQueries q(app_core::kTaskTableNameRef);
   q.createIfNotExist(*(pool->get()));
 
-  // get tasks
-  TaskLifetimeQueries q_live(app_core::kTaskTableNameRef);
-  Tasks model(q_live.get_all(*(pool->get())));
+  Tasks t = load_active(app_core::kTaskTableNameRef, pool);
 
   // build
-  return new Model(model, pool);
+  return new Model(t, pool);
 }
 
 void Model::draw_task_store(std::ostream& o) const {
@@ -43,6 +44,12 @@ Model::~Model() { }
 void Model::clear_store() {
   TaskTableQueries q(tasks_table_name_);
   q.drop(*(pool_->get()));
+}
+
+Tasks Model::load_active(const std::string& table_name,
+                         boost::shared_ptr<pq_dal::PQConnectionPool> pool) {
+  TaskLifetimeQueries q_live(table_name);
+  return Tasks(q_live.get_all(*(pool->get())));
 }
 
 void Model::update(Tasks::value_type e) {
@@ -103,11 +110,20 @@ void Model::notify()
   observers_->update();
 }
 
-entities::Tasks::value_type Model::get_elem_by_pos(const int pos)
-{
-    assert(pos < tasks_.size());
-    return tasks_.at(pos);
+void Model::stable_sort_decrease_priority() {
+  adobe::stable_sort(tasks_,
+      bind(std::greater<int>(),
+           bind(&TaskEntity::get_priority, _1),
+           bind(&TaskEntity::get_priority, _2)));
+
+  notify();
 }
+
+entities::Tasks::value_type Model::get_elem_by_pos(const int pos) {
+  assert(pos < tasks_.size());
+  return tasks_.at(pos);
+}
+
 void Model::set_listener(boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> iso)
 { observers_ = iso; }
 

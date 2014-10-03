@@ -30,10 +30,11 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <iostream>
 
 using app_core::Model;
 using entities::Tasks;  // not work
-using values::TaskTableIdx;
+using values::TaskViewTableIdx;
 using values::TaskValue;
 using entities::EntitiesStates;
 
@@ -56,7 +57,9 @@ Engine::Engine(app_core::Model* const model_ptr, QWidget *parent) :
 
   // control
   QPushButton* mark_done = new QPushButton("Mark done", this);
-  connect(mark_done, SIGNAL(clicked(bool)), this, SLOT(slotSortByDecreasePriority(bool)));
+  QPushButton* fake = new QPushButton("Fake", this);
+  connect(fake, SIGNAL(clicked(bool)), this, SLOT(slotFillFake(bool)));
+  connect(mark_done, SIGNAL(clicked()), this, SLOT(slotUpdateRow()));
 
   _grid_ptr = new QMyTableView(this);
   connect(_grid_ptr, SIGNAL(itemChanged(QTableWidgetItem*)),
@@ -67,8 +70,14 @@ Engine::Engine(app_core::Model* const model_ptr, QWidget *parent) :
 
   QVBoxLayout* actions_layout = new QVBoxLayout;
   actions_layout->addWidget(mark_done);
-  mainLayout->addLayout(actions_layout);
+  actions_layout->addWidget(fake);
+
   mainLayout->addWidget(_grid_ptr);
+  mainLayout->addLayout(actions_layout);
+
+
+  connect(_grid_ptr->horizontalHeader(), SIGNAL(sectionClicked(int)),
+          this, SLOT(slotSortByDecreasePriority(int)));
 
   redraw();
 }
@@ -78,11 +87,20 @@ Engine::~Engine()
     delete ui;
 }
 
-void Engine::slotSortByDecreasePriority(bool checked) {
-  //Tasks mirror(test_help_data::build_fake_model());
+void Engine::slotSortByDecreasePriority(int idx) {
+  if (idx == values::TaskViewTableIdx::kPriority) {
+    // сортируем
+    _model_ptr->stable_sort_decrease_priority();
+  }
+}
+
+void Engine::slotFillFake(bool) {
+  Tasks mirror(test_help_data::build_fake_model());
 
   // сохраняем все
-  //adobe::for_each(mirror, bind(&Model::append, ref(*app_ptr_), _1));
+  adobe::for_each(mirror, bind(&Model::append, ref(*_model_ptr), _1));
+
+  ::renders::render_task_store(std::cout, *_model_ptr);
 }
 
 void Engine::redraw() {
@@ -92,6 +110,25 @@ void Engine::redraw() {
   _grid_ptr->clearList();
   Tasks records = _model_ptr->get_current_model_data();  // may throw
   _grid_ptr->update(records);
+}
+
+void Engine::slotUpdateRow() {
+  //if (!_grid_ptr->hasSelection())
+  //  return;
+
+  QModelIndexList indexList = _grid_ptr->selectionModel()->selectedIndexes();
+
+  // Должна быть выбрана одна ячейка
+  if (indexList.empty() || (indexList.size() != 1))
+    return;
+
+  QModelIndex idx = indexList.at(0);
+
+  int row = idx.row();
+  int id = _grid_ptr->getId(row);
+
+  // Обновляем ячейку
+
 }
 
 void Engine::slotRowIsChanged(QTableWidgetItem* elem)

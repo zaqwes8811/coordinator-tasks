@@ -14,9 +14,6 @@
 
 namespace app_core
 {
-
-
-
 // FIXME: как вообще работать с кешем и базами данных.
 //   в кешах ограниченное api!
 //  http://en.wikipedia.org/wiki/Database_caching - есть про когерентность.
@@ -57,8 +54,11 @@ public:
 
   // persist filters:
   //void load_all();
-  //void load_active();
+  static entities::Tasks load_active(const std::string& table_name,
+                                     boost::shared_ptr<pq_dal::PQConnectionPool> pool);
+
   // render filters:
+  void stable_sort_decrease_priority();
 
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
   //   shared объекты превращаются в глобальные переменные.
