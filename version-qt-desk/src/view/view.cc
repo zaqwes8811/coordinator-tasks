@@ -58,7 +58,7 @@ values::TaskValue QMyTableView::create(const int row) const {
 
 void QMyTableView::_insertBlankRows(const int end) {
   // вставляем еще несколько рядов
-  for (int row = end; row < end+app_core::kAddedBlankLines; ++row) {
+  for (int row = end; row < end+models::kAddedBlankLines; ++row) {
       setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey)));
       setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem);
       setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem);
@@ -75,7 +75,7 @@ void QMyTableView::clearList() {
 void QMyTableView::update(entities::Tasks tasks) {
   {
     // fill table
-    setRowCount(tasks.size() + app_core::kAddedBlankLines);
+    setRowCount(tasks.size() + models::kAddedBlankLines);
 
     int row = 0;
     for (Tasks::const_iterator record=tasks.begin(), end=tasks.end(); record != end; ++record) {

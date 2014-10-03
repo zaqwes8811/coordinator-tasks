@@ -32,7 +32,7 @@
 #include <stdexcept>
 #include <iostream>
 
-using app_core::Model;
+using models::Model;
 using entities::Tasks;  // not work
 using values::TaskViewTableIdx;
 using values::TaskValue;
@@ -44,7 +44,7 @@ using boost::bind;
 using std::string;
 using std::vector;
 
-Engine::Engine(app_core::Model* const model_ptr, QWidget *parent) :
+Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _model_ptr(model_ptr)
@@ -125,6 +125,9 @@ void Engine::slotUpdateRow() {
   QModelIndex idx = indexList.at(0);
 
   const int kRow = idx.row();
+
+  if (kRow >= _model_ptr->get_current_model_data().size())  // FIXME: BAD!!! slow
+    return;
 
   // Обновляем ячейку
   Tasks::value_type e(_model_ptr->get_elem_by_pos(kRow));

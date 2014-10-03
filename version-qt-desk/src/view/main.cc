@@ -50,12 +50,12 @@ int main(int argc, char *argv[])
   // View
   QApplication app(argc, argv);
 
-  shared_ptr<pq_dal::PQConnectionPool> pool(new pq_dal::PQConnectionPool(app_core::kConnection));
+  shared_ptr<pq_dal::PQConnectionPool> pool(new pq_dal::PQConnectionPool(models::kConnection));
   //shared_ptr
-  std::auto_ptr<app_core::Model> a(app_core::Model::createInHeap(pool));
+  std::auto_ptr<models::Model> a(models::Model::createInHeap(pool));
 
   // Пока очищаем хранилище
-  ScopeGuard _ = MakeObjGuard(*a, &app_core::Model::clear_store);
+  ScopeGuard _ = MakeObjGuard(*a, &models::Model::clear_store);
 
   Engine *window = new Engine(a.get());
 

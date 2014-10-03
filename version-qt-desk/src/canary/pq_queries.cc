@@ -142,12 +142,7 @@ void TaskLifetimeQueries::create(
   e.set_primary_key_(new_id);
 }
 
-entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
-  work w(conn);
-  string sql("SELECT * FROM " + task_table_name_ + ";");
-  result r( w.exec( sql ));
-  w.commit();
-
+entities::Tasks TaskLifetimeQueries::_pack(pqxx::result& r) {
   Tasks model;
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
     Tasks::value_type elem = TaskEntity::create("");
@@ -159,8 +154,15 @@ entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
 
     model.push_back(elem);
   }
-
   return model;
+}
+
+entities::Tasks TaskLifetimeQueries::get_active(pqxx::connection& conn) const {
+  work w(conn);
+  string sql("SELECT * FROM " + task_table_name_ + " WHERE DONE = FALSE;");
+  result r( w.exec( sql ));
+  w.commit();
+  return _pack(r);
 }
 
 }  // ns

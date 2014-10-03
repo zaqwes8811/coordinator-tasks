@@ -12,8 +12,15 @@
 
 #include <string>
 
-namespace app_core
+namespace models
 {
+
+class Filter {
+public:
+  virtual ~Filter() { }
+  virtual entities::Tasks operator()(entities::Tasks t) = 0;
+};
+
 // FIXME: как вообще работать с кешем и базами данных.
 //   в кешах ограниченное api!
 //  http://en.wikipedia.org/wiki/Database_caching - есть про когерентность.
@@ -22,8 +29,12 @@ namespace app_core
 //   http://stackoverflow.com/questions/548301/what-is-caching
 // http://stackoverflow.com/questions/2916645/implementing-model-level-caching?rq=1
 // http://stackoverflow.com/questions/343899/how-to-cache-data-in-a-mvc-application?rq=1
-//domain::TasksMirror store_cache_;
-//bool miss_;  // кеш устарел
+//   domain::TasksMirror store_cache_;
+//   bool miss_;  // кеш устарел
+//
+// FIXME: логичекая проблема с фильтрами - как быть, если каждый раз не перезагужать кеш?
+//   похоже есть зависимость от текущего фильтра
+//
 class Model
    : boost::noncopyable {
 
@@ -71,6 +82,9 @@ private:
 
   std::string tasks_table_name_;
   entities::Tasks tasks_;  //
+
+  // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
+
   boost::shared_ptr<pq_dal::PQConnectionPool> pool_;
   boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> observers_;
 };

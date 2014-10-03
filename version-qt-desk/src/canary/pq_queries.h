@@ -65,9 +65,10 @@ public:
   // FIXME: с умными указателями возникают проблемы с константростью!
   void update(entities::Tasks::value_type e, pqxx::connection& C);
 
-  entities::Tasks get_all(pqxx::connection& C) const;
+  entities::Tasks get_active(pqxx::connection& C) const;
   // get_all
 private:
+  static entities::Tasks _pack(pqxx::result& r);
   const std::string task_table_name_;
 };
 }  // ns

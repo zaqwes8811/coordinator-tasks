@@ -20,7 +20,7 @@ class Engine : public QMainWindow
 
 public:
   // ctor/dtor/assign/copy
-  Engine(app_core::Model* const app_ptr,
+  Engine(models::Model* const app_ptr,
        QWidget *parent = 0);
   ~Engine();
 
@@ -42,7 +42,7 @@ private slots:
 private:
   Ui::MainWindow *ui;
   QMyTableView* _grid_ptr;
-  app_core::Model* const _model_ptr;
+  models::Model* const _model_ptr;
 };
 
 #endif // MAINWINDOW_H

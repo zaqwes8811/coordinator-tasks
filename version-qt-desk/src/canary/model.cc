@@ -11,7 +11,7 @@
 #include <iostream>
 #include <functional>
 
-namespace app_core {
+namespace models {
 using namespace pq_dal;
 using namespace entities;
 using Loki::ScopeGuard;
@@ -25,10 +25,10 @@ Model* Model::createInHeap(
   {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
-  TaskTableQueries q(app_core::kTaskTableNameRef);
+  TaskTableQueries q(models::kTaskTableNameRef);
   q.createIfNotExist(*(pool->get()));
 
-  Tasks t = load_active(app_core::kTaskTableNameRef, pool);
+  Tasks t = load_active(models::kTaskTableNameRef, pool);
 
   // build
   return new Model(t, pool);
@@ -49,7 +49,7 @@ void Model::clear_store() {
 Tasks Model::load_active(const std::string& table_name,
                          boost::shared_ptr<pq_dal::PQConnectionPool> pool) {
   TaskLifetimeQueries q_live(table_name);
-  return Tasks(q_live.get_all(*(pool->get())));
+  return Tasks(q_live.get_active(*(pool->get())));
 }
 
 void Model::update(Tasks::value_type e) {
@@ -101,7 +101,7 @@ void Model::append(Tasks::value_type e) {
 
 Model::Model(entities::Tasks _tasks,
              boost::shared_ptr<pq_dal::PQConnectionPool> _pool)
-    : tasks_table_name_(app_core::kTaskTableNameRef)
+    : tasks_table_name_(models::kTaskTableNameRef)
     , tasks_(_tasks)
     , pool_(_pool) {  }
 
