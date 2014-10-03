@@ -27,13 +27,24 @@ class QTableWidgetCheckEdited : public QTableWidget {
   // Internationalization:
   //  http://stackoverflow.com/questions/4214369/how-to-convert-qstring-to-stdstring
 public:
-  explicit QTableWidgetCheckEdited(QWidget *parent = 0)
-    : QTableWidget(parent) {}
+  explicit QTableWidgetCheckEdited(QWidget *parent = 0);
 
   bool edited() const {
    if (state() == QAbstractItemView::EditingState) return true;
    else return false;
   }
+
+private:
+  // FIXME: как узнать, что ячейка именно обновлена
+  //   если вошли в ячейку, значит по выходу она будет обновлена?
+  //bool entered_;  //
+  struct Point {
+    Point() : c(0), r(0) { }
+    int c;
+    int r;
+  };
+
+  QList<QString> s_column_names_;
 };
 
 class View : public QMainWindow
@@ -57,19 +68,7 @@ private:
 
   Ui::MainWindow *ui;
   QTableWidgetCheckEdited* scoreTable_;
-
   app_core::Model* const app_ptr_;
-
-  // FIXME: как узнать, что ячейка именно обновлена
-  //   если вошли в ячейку, значит по выходу она будет обновлена?
-  //bool entered_;  //
-  struct Point {
-    Point() : c(0), r(0) { }
-    int c;
-    int r;
-  };
-
-  QList<QString> s_column_names_;
 };
 
 #endif // MAINWINDOW_H

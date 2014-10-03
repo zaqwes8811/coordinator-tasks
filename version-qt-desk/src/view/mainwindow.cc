@@ -40,6 +40,19 @@ using boost::bind;
 using std::string;
 using std::vector;
 
+QTableWidgetCheckEdited::QTableWidgetCheckEdited(QWidget *parent)
+    : QTableWidget(parent) {
+
+  // fill lists
+  s_column_names_.append("id");
+  s_column_names_.append("name");
+  s_column_names_.append("priority");
+
+  setColumnCount(s_column_names_.size());
+  setHorizontalHeaderLabels(s_column_names_);
+  setColumnHidden(TaskTableIdx::kId, true);  // FIXME: id's пока так
+}
+
 View::View(app_core::Model* const app_ptr, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -47,20 +60,9 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
 {
   ui->setupUi(this);
 
-  // fill lists
-  s_column_names_.append("id");
-  s_column_names_.append("name");
-  s_column_names_.append("priority");
-
   // table
   QWidget* centralWidget = new QWidget(this);
   setCentralWidget(centralWidget);
-
-  scoreTable_ = new QTableWidgetCheckEdited(this);
-  scoreTable_->setColumnCount(s_column_names_.size());
-  scoreTable_->setHorizontalHeaderLabels(s_column_names_);
-
-  scoreTable_->setColumnHidden(TaskTableIdx::kId, true);  // FIXME: id's пока так
 
   // control
   QPushButton* submit = new QPushButton("Sort by decrease priority", this);
@@ -69,7 +71,7 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
   QPushButton* mark_done = new QPushButton("Mark done", this);
   //connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
 
-
+  scoreTable_ = new QTableWidgetCheckEdited(this);
   connect(scoreTable_, SIGNAL(itemChanged(QTableWidgetItem*)),
           this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
@@ -81,9 +83,6 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
   actions_layout->addWidget(mark_done);
 
   mainLayout->addLayout(actions_layout);
-
-
-  //mainLayout->addWidget(mark_done);
   mainLayout->addWidget(scoreTable_);
 
   // Add empty lines - нужно загрузить старые, но как
