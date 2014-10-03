@@ -42,43 +42,10 @@ using boost::bind;
 using std::string;
 using std::vector;
 
-QMyTableView::QMyTableView(QWidget *parent)
-    : QTableWidget(parent) {
-
-  // fill lists
-  column_names_.append("id");
-  column_names_.append("name");
-  column_names_.append("priority");
-
-  setColumnCount(column_names_.size());
-  setHorizontalHeaderLabels(column_names_);
-  setColumnHidden(TaskTableIdx::kId, true);  // FIXME: id's пока так
-}
-
-bool QMyTableView::isEdited() const {
- if (state() == QAbstractItemView::EditingState) return true;
- else return false;
-}
-
-values::TaskValue QMyTableView::create(const int row) const {
-  QString d(item(row, values::TaskTableIdx::kTaskName)->text());
-  QString priority(item(row, values::TaskTableIdx::kPriority)->text());
-
-  if (d.isEmpty() && priority.isEmpty())
-    throw std::logic_error("Record is empty");  // FIXME: need think about error handling system
-
-  int p(entities::EntitiesStates::kDefaulPriority);
-  if (!priority.isEmpty())
-    p = priority.toInt();
-
-  // FIXME: no injection bad!
-  return TaskValue(TaskValue::create(d.toUtf8().constData(), p));
-}
-
 View::View(app_core::Model* const app_ptr, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    model_ptr_(app_ptr)
+    _model_ptr(app_ptr)
 {
   ui->setupUi(this);
 
@@ -93,8 +60,8 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
   QPushButton* mark_done = new QPushButton("Mark done", this);
   //connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
 
-  grid_ptr_ = new QMyTableView(this);
-  connect(grid_ptr_, SIGNAL(itemChanged(QTableWidgetItem*)),
+  _grid_ptr = new QMyTableView(this);
+  connect(_grid_ptr, SIGNAL(itemChanged(QTableWidgetItem*)),
           this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
   // pack all
@@ -105,7 +72,7 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
   actions_layout->addWidget(mark_done);
 
   mainLayout->addLayout(actions_layout);
-  mainLayout->addWidget(grid_ptr_);
+  mainLayout->addWidget(_grid_ptr);
 
   // Add empty lines - нужно загрузить старые, но как
   updateAction();
@@ -114,40 +81,6 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
 View::~View()
 {
     delete ui;
-}
-
-void QMyTableView::insertBlankRows(const int end) {
-  // вставляем еще несколько рядов
-  for (int row = end; row < end+app_core::kAddedBlankLines; ++row) {
-      setItem(row, values::TaskTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey)));
-      setItem(row, values::TaskTableIdx::kTaskName, new QTableWidgetItem);
-      setItem(row, values::TaskTableIdx::kPriority, new QTableWidgetItem);
-  }
-}
-
-void QMyTableView::clearList() {
-  // есть и функция clear and clearContent
-  int count_rows = rowCount();
-  for (int i = 0; i < count_rows; ++i)
-    removeRow(i);
-}
-
-void QMyTableView::update(entities::Tasks tasks) {
-  {
-    // fill table
-    setRowCount(tasks.size() + app_core::kAddedBlankLines);
-
-    int row = 0;
-    for (Tasks::const_iterator record=tasks.begin(), end=tasks.end(); record != end; ++record) {
-      setItem(row, values::TaskTableIdx::kId, new QTableWidgetItem(QString::number((*record)->get_primary_key())));
-      setItem(row, values::TaskTableIdx::kTaskName, new QTableWidgetItem(QString::fromUtf8((*record)->get_task_name().c_str())));
-      setItem(row, values::TaskTableIdx::kPriority, new QTableWidgetItem(QString::number((*record)->get_priority())));
-      ++row;
-    }
-
-    // вставляем еще несколько рядов
-    insertBlankRows(row);
-  }
 }
 
 void View::slotSortByDecreasePriority(bool checked) {
@@ -161,9 +94,9 @@ void View::updateAction() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   // FIXME: сбивает выбранную позицию
   //
-  grid_ptr_->clearList();
-  Tasks records = model_ptr_->get_current_model_data();  // may throw
-  grid_ptr_->update(records);
+  _grid_ptr->clearList();
+  Tasks records = _model_ptr->get_current_model_data();  // may throw
+  _grid_ptr->update(records);
 }
 
 void View::slotRowIsChanged(QTableWidgetItem* elem)
@@ -175,7 +108,7 @@ void View::slotRowIsChanged(QTableWidgetItem* elem)
 
   // FIXME: проблема!! изменения любые! может зациклить
   // FIXME: а такая вот комбинация надежно то работает?
-  if (grid_ptr_->isEdited()) {
+  if (_grid_ptr->isEdited()) {
     int row = elem->row();
 
     // надежнее всего получить ID строки, индексу я не верю.
@@ -185,21 +118,16 @@ void View::slotRowIsChanged(QTableWidgetItem* elem)
 
     if (id == EntitiesStates::kInActiveKey) {
       // создаем новую запись
-      TaskValue v = grid_ptr_->create(row);  // may throw
-      model_ptr_->append_value(v);
+      TaskValue v = _grid_ptr->create(row);  // may throw
+      _model_ptr->append_value(v);
     } else {
       // просто обновляем
-      Tasks::value_type e(model_ptr_->get_elem_by_pos(row));
+      Tasks::value_type e(_model_ptr->get_elem_by_pos(row));
 
       assert(id == e->get_primary_key());
 
-      QString d(grid_ptr_->item(row, values::TaskTableIdx::kTaskName)->text());
-      int p(grid_ptr_->item(row, values::TaskTableIdx::kPriority)->text().toInt());
-
-      e->set_priority(p);
-      e->set_task_name(d.toUtf8().constData());
-
-      model_ptr_->update(e);
+      _grid_ptr->update(row, e);
+      _model_ptr->update(e);
     }
   }
 

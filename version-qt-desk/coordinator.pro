@@ -22,7 +22,8 @@ SOURCES += \
   src/view/main.cc \
     src/test_help_data.cc \
     src/canary/model.cc \
-    src/canary/entities_and_values.cc
+    src/canary/entities_and_values.cc \
+    src/view/view.cc
 
 # Business logic
 SOURCES += \
@@ -33,7 +34,8 @@ SOURCES += \
 
 HEADERS  += src/view/mainwindow.h \
     src/canary/isolation.h \
-    src/top/error_handling.h
+    src/top/error_handling.h \
+    src/view/view.h
 
 FORMS    += src/view/mainwindow.ui
 
