@@ -68,5 +68,6 @@ int main(int argc, char *argv[])
   // Пакуем вид и передаем модели
   // Patterns: Observer and Mediator
 
+  // FIXME: run event loop?
   return app.exec();
 }

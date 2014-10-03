@@ -1,3 +1,16 @@
+// draw one row
+// FIXME: лучше это сконнектить!! операция логически неделимая
+//   в принципе можно и слот на изменение сделать один.
+//
+// id
+// FIXME: так лучше не хранить, но как быть? Как надежно хранить соответствие?
+//   в объект не включить, разве что можно сделать нисходящее преобразование
+//   хотя похоже это тоже не выход. Итого. Где хранить ключ!?
+//
+//vector<QTableWidget*> tmp;
+//tmp.push_back();  // если будет исключение, то будет утечка памяти
+// мы во владение не передали
+
 #include "top/config.h"
 
 // App
@@ -45,25 +58,36 @@ View::View(app_core::Model* const app_ptr, QWidget *parent) :
 
   scoreTable_ = new QTableWidgetCheckEdited(this);
   scoreTable_->setColumnCount(s_column_names_.size());
-  scoreTable_->setColumnHidden(TaskTableIdx::kId, true);  // FIXME: id's пока так
   scoreTable_->setHorizontalHeaderLabels(s_column_names_);
 
+  scoreTable_->setColumnHidden(TaskTableIdx::kId, true);  // FIXME: id's пока так
+
   // control
-  QPushButton* submit = new QPushButton("Add records", this);
-  connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
+  QPushButton* submit = new QPushButton("Sort by decrease priority", this);
+  connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotSortByDecreasePriority(bool)));
 
   QPushButton* mark_done = new QPushButton("Mark done", this);
   //connect(submit, SIGNAL(clicked(bool)), this, SLOT(slotAddRecords(bool)));
+
 
   connect(scoreTable_, SIGNAL(itemChanged(QTableWidgetItem*)),
           this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
   // pack all
   QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
-  mainLayout->addWidget(submit);
-  mainLayout->addWidget(mark_done);
+
+  QVBoxLayout* actions_layout = new QVBoxLayout;//(mainLayout);
+  actions_layout->addWidget(submit);
+  actions_layout->addWidget(mark_done);
+
+  mainLayout->addLayout(actions_layout);
+
+
+  //mainLayout->addWidget(mark_done);
   mainLayout->addWidget(scoreTable_);
 
+  // Add empty lines - нужно загрузить старые, но как
+  updateAction();
 }
 
 View::~View()
@@ -73,14 +97,13 @@ View::~View()
 
 void View::insertBlankRows(const int end) {
   // вставляем еще несколько рядов
-  for (int i = end; i < end+app_core::kAddedBlankLines; ++i) {
-      QTableWidgetItem* id_item =
-          new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey));
-      scoreTable_->setItem(i, values::TaskTableIdx::kId, id_item);
-      QTableWidgetItem* item = new QTableWidgetItem;
-      scoreTable_->setItem(i, values::TaskTableIdx::kTaskName, item);
-      QTableWidgetItem* priority_item = new QTableWidgetItem();
-      scoreTable_->setItem(i, values::TaskTableIdx::kPriority, priority_item);
+  for (int row = end; row < end+app_core::kAddedBlankLines; ++row) {
+      scoreTable_->setItem(row, values::TaskTableIdx::kId,
+                           new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey)));
+      scoreTable_->setItem(row, values::TaskTableIdx::kTaskName,
+                           new QTableWidgetItem);
+      scoreTable_->setItem(row, values::TaskTableIdx::kPriority,
+                           new QTableWidgetItem);
   }
 }
 
@@ -92,11 +115,11 @@ void View::clearList() {
     scoreTable_->removeRow(i);
 }
 
-void View::slotAddRecords(bool checked) {
-  Tasks mirror(test_help_data::build_fake_model());
+void View::slotSortByDecreasePriority(bool checked) {
+  //Tasks mirror(test_help_data::build_fake_model());
 
   // сохраняем все
-  adobe::for_each(mirror, bind(&Model::append, ref(*app_ptr_), _1));
+  //adobe::for_each(mirror, bind(&Model::append, ref(*app_ptr_), _1));
 }
 
 void View::updateAction() {
@@ -112,24 +135,13 @@ void View::updateAction() {
     scoreTable_->setRowCount(records.size() + app_core::kAddedBlankLines);
 
     int row = 0;
-    for (Tasks::const_iterator i=records.begin(), end=records.end(); i != end; ++i) {
-      // draw one row!!
-      // FIXME: лучше это сконнектить!! операция логически неделимая
-      //   в принципе можно и слот на изменение сделать один.
-      //
-      // id
-      // FIXME: так лучше не хранить, но как быть? Как надежно хранить соответствие?
-      //   в объект не включить, разве что можно сделать нисходящее преобразование
-      //   хотя похоже это тоже не выход. Итого. Где хранить ключ!?
-      //
-      //vector<QTableWidget*> tmp;
-      //tmp.push_back();  // если будет исключение, то будет утечка памяти
-      // мы во владение не передали
-
-      // FIXME: развернуть!
-      scoreTable_->setItem(row, values::TaskTableIdx::kId, new QTableWidgetItem(QString::number((*i)->get_primary_key())));
-      scoreTable_->setItem(row, values::TaskTableIdx::kTaskName, new QTableWidgetItem(QString::fromUtf8((*i)->get_task_name().c_str())));
-      scoreTable_->setItem(row, values::TaskTableIdx::kPriority, new QTableWidgetItem(QString::number((*i)->get_priority())));
+    for (Tasks::const_iterator record=records.begin(), end=records.end(); record != end; ++record) {
+      scoreTable_->setItem(row, values::TaskTableIdx::kId,
+                           new QTableWidgetItem(QString::number((*record)->get_primary_key())));
+      scoreTable_->setItem(row, values::TaskTableIdx::kTaskName,
+                           new QTableWidgetItem(QString::fromUtf8((*record)->get_task_name().c_str())));
+      scoreTable_->setItem(row, values::TaskTableIdx::kPriority,
+                           new QTableWidgetItem(QString::number((*record)->get_priority())));
 
       ++row;
     }
@@ -154,10 +166,12 @@ void View::slotRowIsChanged(QTableWidgetItem* elem)
 
     if (id == EntitiesStates::kInActiveKey) {
       // создаем новую запись
-      QString d(scoreTable_->item(elem->row(),
-                                  values::TaskTableIdx::kTaskName)->text());
-      QString priority(scoreTable_->item(elem->row(),
-                                         values::TaskTableIdx::kPriority)->text());
+      QString d(
+          scoreTable_->item(elem->row(), values::TaskTableIdx::kTaskName)->text());
+
+      QString priority(
+          scoreTable_->item(elem->row(), values::TaskTableIdx::kPriority)->text());
+
       if (d.isEmpty() && priority.isEmpty())
         return;
 

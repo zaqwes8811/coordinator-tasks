@@ -48,7 +48,7 @@ public:
   void insertBlankRows(const int);
 
 private slots:
-  void slotAddRecords(bool checked);
+  void slotSortByDecreasePriority(bool checked);
   void slotRowIsChanged(QTableWidgetItem* item);
 
 private:
