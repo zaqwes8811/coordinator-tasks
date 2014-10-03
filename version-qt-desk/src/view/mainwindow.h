@@ -12,7 +12,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class QTableWidgetCheckEdited : public QTableWidget {
+class QMyTableView : public QTableWidget {
   // TableWidget troubles list:
   //
   // http://qt-project.org/forums/viewthread/7769 - Move column
@@ -27,19 +27,17 @@ class QTableWidgetCheckEdited : public QTableWidget {
   // Internationalization:
   //  http://stackoverflow.com/questions/4214369/how-to-convert-qstring-to-stdstring
 public:
-  explicit QTableWidgetCheckEdited(QWidget *parent = 0);
+  explicit QMyTableView(QWidget *parent = 0);
 
-  bool edited() const {
-   if (state() == QAbstractItemView::EditingState) return true;
-   else return false;
-  }
-
+  bool isEdited() const;
   void insertBlankRows(const int);
 
   // очищает список задач
   void clearList();
 
   void update(entities::Tasks tasks);
+
+  values::TaskValue create(const int row) const;
 
 private:
   // FIXME: как узнать, что ячейка именно обновлена
@@ -51,7 +49,7 @@ private:
     int r;
   };
 
-  QList<QString> s_column_names_;
+  QList<QString> column_names_;  // FIXME: move from here
 };
 
 class View : public QMainWindow
@@ -69,7 +67,7 @@ private slots:
 
 private:
   Ui::MainWindow *ui;
-  QTableWidgetCheckEdited* grid_ptr_;
+  QMyTableView* grid_ptr_;
   app_core::Model* const model_ptr_;
 };
 
