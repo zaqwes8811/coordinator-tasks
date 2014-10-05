@@ -31,7 +31,7 @@ bool operator==(const Filter& lhs, const Filter& rhs) {
 
 bool operator==(Filter::FilterPtr lhs, Filter::FilterPtr rhs) {
   // FIXME: It is very bad! dynamic cast don't work, no info
-  return (typeid(*lhs)) == (typeid(*rhs));
+  return typeid(*lhs) == typeid(*rhs);
 }
 
 
@@ -57,4 +57,5 @@ TEST(ChainFilter, Base) {
 
   EmptyFilter* e_ = dynamic_cast<EmptyFilter*>(f);
   EXPECT_TRUE(e_);
+  delete f;
 }
