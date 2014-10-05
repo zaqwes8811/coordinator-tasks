@@ -7,8 +7,10 @@
 
 #include <gtest/gtest.h>
 #include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 using boost::shared_ptr;
+using boost::make_shared;
 using models::Filter;
 
 class EmptyFilter : public Filter {
@@ -17,7 +19,7 @@ public:
   }
 };
 
-class SortFilter : public Filter {
+class DoneFilter : public Filter {
 public:
   entities::Tasks operator()(entities::Tasks e) {
   }
@@ -36,23 +38,33 @@ bool operator==(Filter::FilterPtr lhs, Filter::FilterPtr rhs) {
 
 
 // на входе весь кеш, на выходе результат собственно, может лучше через SQL?
-// Но как легко комбинировать фильтры.
+// Но как легко комбинировать фильтры. Откат к sql может повлиять, а может и нет на архитектуры.
 //
 // зацепаемся за типы? может еще можно как-то?
 class ChainFilters {
 public:
-  void add(models::Filter::FilterPtr e);
+  ChainFilters() {
+    l_.push_back(make_shared<EmptyFilter>(EmptyFilter()));
+  }
+
+  void add(models::Filter::FilterPtr e) {
+    l_.push_back(e);
+  }
 
   // FIXME: как удалить то без RTTI? Список то полиморфный
-  void remove(models::Filter::FilterPtr e);
+  void remove(models::Filter::FilterPtr e) {
+    l_.remove(e);
+  }
 
-  void operator()() const;
+  entities::Tasks operator()(entities::Tasks e) const;
 
+private:
+  std::list<Filter::FilterPtr> l_;
 };
 
 TEST(ChainFilter, Base) {
   Filter* f = new EmptyFilter;
-  SortFilter* e = dynamic_cast<SortFilter*>(f);
+  DoneFilter* e = dynamic_cast<DoneFilter*>(f);
   EXPECT_FALSE(e);
 
   EmptyFilter* e_ = dynamic_cast<EmptyFilter*>(f);
