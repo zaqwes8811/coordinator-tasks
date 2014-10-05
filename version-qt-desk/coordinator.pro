@@ -19,11 +19,15 @@ LOCAL_3RDPARTY=../3rdparty
 SOURCES += \
   src/_trash/trash.cc \
   src/view/mainwindow.cc \
-  src/view/main.cc \
     src/test_help_data.cc \
     src/canary/model.cc \
     src/canary/entities_and_values.cc \
-    src/view/view.cc
+    src/view/view.cc \
+    launcher.cc \
+    ../3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
+    src/view/app_spec_test.cc \
+    src/canary/entities_and_values_test.cc \
+    src/canary/filters_chain_test.cc
 
 # Business logic
 SOURCES += \
@@ -45,7 +49,8 @@ INCLUDEPATH += src
 INCLUDEPATH += \
   $$BOOST \
   $$ASL \
-  $$LOCAL_3RDPARTY/loki-0.1.7/include
+  $$LOCAL_3RDPARTY/loki-0.1.7/include \
+  ../3rdparty/gmock-1.6.0/fused-src/
 
 # -lpthread -lrt
 LIBS += -lpq -lpqxx

@@ -157,9 +157,9 @@ entities::Tasks TaskLifetimeQueries::_pack(pqxx::result& r) {
   return model;
 }
 
-entities::Tasks TaskLifetimeQueries::get_active(pqxx::connection& conn) const {
+entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
   work w(conn);
-  string sql("SELECT * FROM " + task_table_name_ + " WHERE DONE = FALSE;");
+  string sql("SELECT * FROM " + task_table_name_ + ";");// WHERE DONE = FALSE;");
   result r( w.exec( sql ));
   w.commit();
   return _pack(r);

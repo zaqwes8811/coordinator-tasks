@@ -15,8 +15,14 @@
 namespace models
 {
 
+
+// могли бы вставляться друг в друга
 class Filter {
 public:
+  // typedefs
+  typedef boost::shared_ptr<models::Filter> FilterPtr;
+
+  // ctors/..
   virtual ~Filter() { }
   virtual entities::Tasks operator()(entities::Tasks t) = 0;
 };
@@ -27,13 +33,13 @@ public:
 //
 // But it need really?
 //   http://stackoverflow.com/questions/548301/what-is-caching
-// http://stackoverflow.com/questions/2916645/implementing-model-level-caching?rq=1
-// http://stackoverflow.com/questions/343899/how-to-cache-data-in-a-mvc-application?rq=1
+//   http://stackoverflow.com/questions/2916645/implementing-model-level-caching?rq=1
+//   http://stackoverflow.com/questions/343899/how-to-cache-data-in-a-mvc-application?rq=1
 //   domain::TasksMirror store_cache_;
 //   bool miss_;  // кеш устарел
 //
 // FIXME: логичекая проблема с фильтрами - как быть, если каждый раз не перезагужать кеш?
-//   похоже есть зависимость от текущего фильтра
+//   похоже есть зависимость от текущего фильтра. А если отред. и теперь в фильтр не попадает?
 //
 class Model
    : boost::noncopyable {
@@ -58,15 +64,10 @@ public:
   // элемент был сохранен и есть в mirror
   void update(entities::Tasks::value_type e);
 
-  // Жесткая привязка к списку
+  // Жесткая привязка к списку и к цепочке фильтров
   entities::Tasks::value_type get_elem_by_pos(const int pos);
 
   void clear_store();
-
-  // persist filters:
-  //void load_all();
-  static entities::Tasks load_active(const std::string& table_name,
-                                     boost::shared_ptr<pq_dal::PQConnectionPool> pool);
 
   // render filters:
   void stable_sort_decrease_priority();
@@ -80,6 +81,10 @@ private:
   friend void renders::render_task_store(std::ostream& o, const U& a);
   void draw_task_store(std::ostream& o) const;
 
+  // persist filters:
+  static entities::Tasks load_all(const std::string& table_name,
+                                     boost::shared_ptr<pq_dal::PQConnectionPool> pool);
+
   std::string tasks_table_name_;
   entities::Tasks tasks_;  //
 
@@ -87,6 +92,7 @@ private:
 
   boost::shared_ptr<pq_dal::PQConnectionPool> pool_;
   boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> observers_;
+  //boost::shared_ptr<const Filter> current_filter_;
 };
 }
 

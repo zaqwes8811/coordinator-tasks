@@ -28,7 +28,7 @@ Model* Model::createInHeap(
   TaskTableQueries q(models::kTaskTableNameRef);
   q.createIfNotExist(*(pool->get()));
 
-  Tasks t = load_active(models::kTaskTableNameRef, pool);
+  Tasks t = load_all(models::kTaskTableNameRef, pool);
 
   // build
   return new Model(t, pool);
@@ -46,10 +46,10 @@ void Model::clear_store() {
   q.drop(*(pool_->get()));
 }
 
-Tasks Model::load_active(const std::string& table_name,
+Tasks Model::load_all(const std::string& table_name,
                          boost::shared_ptr<pq_dal::PQConnectionPool> pool) {
   TaskLifetimeQueries q_live(table_name);
-  return Tasks(q_live.get_active(*(pool->get())));
+  return Tasks(q_live.get_all(*(pool->get())));
 }
 
 void Model::update(Tasks::value_type e) {

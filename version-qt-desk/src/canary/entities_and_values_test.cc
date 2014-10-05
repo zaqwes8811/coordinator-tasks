@@ -27,7 +27,7 @@
 
 #include "top/config.h"
 
-#include "canary/entities.h"
+#include "canary/entities_and_values.h"
 #include "canary/pq_queries.h"
 #include "canary/renders.h"
 #include "test_help_data.h"
@@ -55,12 +55,12 @@
 namespace {
 using namespace boost;
 using namespace pq_dal;
-using namespace domain;
+using namespace entities;
 using namespace Loki;
 using namespace pqxx;
 using namespace pq_lower_level;
 using namespace test_help_data;
-using domain::TasksMirror;
+using entities::Tasks;
 
 using std::vector;
 using std::string;
@@ -73,11 +73,11 @@ TEST(ModelTest, BaseCase) {
 
   // пока храним все в памяти - активные только
   // ссылки не должны утечь, но как удалять из хранилища?
-  TasksMirror model;
+  Tasks model;
 
   model.push_back(
-    make_shared<TasksMirror::value_type::element_type>(
-      TasksMirror::value_type::element_type()));
+    make_shared<Tasks::value_type::element_type>(
+      Tasks::value_type::element_type()));
 
   // only tmp!!! maybe weak? - тогда копия не владеет, хотя и работать не очень удобно
   // weak_ptr - неожиданно влядеет
@@ -91,15 +91,15 @@ TEST(ModelTest, BaseCase) {
 
 TEST(ModelTest, Create) {
   // load from store
-  TasksMirror model(build_fake_model());
+  Tasks model(build_fake_model());
   
   // view unsaved
   cout << model;  
 
   // save
-  connection C(app::kConnection);
+  connection C(models::kConnection);
   {
-    using app::kTaskTableNameRef;
+    using models::kTaskTableNameRef;
 
     EXPECT_TRUE(C.is_open());
     
@@ -115,9 +115,9 @@ TEST(ModelTest, Create) {
     {
       // Create records
       TaskLifetimeQueries q_insert(kTaskTableNameRef);
-      q_insert.create(model, C);
+      //q_insert.create(model, C);
 
-      TasksMirror::iterator it = adobe::find_if(model, filters::get_check_non_saved());
+      //Tasks::iterator it = adobe::find_if(model, filters::get_check_non_saved());
 
       //EXPECT_EQ(it, model.end());  // все сохранили и исключение не выскочило
 

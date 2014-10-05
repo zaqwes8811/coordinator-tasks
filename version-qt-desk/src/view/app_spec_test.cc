@@ -19,6 +19,7 @@
 #include <QTableWidget>
 #include <boost/shared_ptr.hpp>
 #include <loki/ScopeGuard.h>
+#include <gtest/gtest.h>
 
 #include <memory>
 #include <cassert>
@@ -43,11 +44,12 @@ private:
   Engine* const view_;
 };
 
-int main(int argc, char *argv[])
-{
+TEST(Blocked, TestApp) {
   // Model
 
   // View
+  int argc = 1;
+  char** argv;
   QApplication app(argc, argv);
 
   shared_ptr<pq_dal::PQConnectionPool> pool(new pq_dal::PQConnectionPool(models::kConnection));
@@ -69,5 +71,6 @@ int main(int argc, char *argv[])
   // Patterns: Observer and Mediator
 
   // FIXME: run event loop?
-  return app.exec();
+  //return
+  app.exec();
 }
