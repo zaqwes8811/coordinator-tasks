@@ -66,9 +66,9 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
           this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
   // pack all
-  QVBoxLayout* mainLayout = new QVBoxLayout(centralWidget);
+  QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
 
-  QVBoxLayout* actions_layout = new QVBoxLayout;
+  QHBoxLayout* actions_layout = new QHBoxLayout;
   actions_layout->addWidget(mark_done);
   actions_layout->addWidget(fake);
 
@@ -77,7 +77,7 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 
 
   connect(_grid_ptr->horizontalHeader(), SIGNAL(sectionClicked(int)),
-          this, SLOT(filterSortByDecreasePriority(int)));
+          this, SLOT(filterSortByDecPriority(int)));
 
   redraw();
 }
@@ -87,7 +87,7 @@ Engine::~Engine()
     delete ui;
 }
 
-void Engine::filterSortByDecreasePriority(int idx) {
+void Engine::filterSortByDecPriority(int idx) {
   if (idx == values::TaskViewTableIdx::kPriority) {
     // сортируем
     _model_ptr->stable_sort_decrease_priority();
@@ -124,7 +124,7 @@ void Engine::slotUpdateRow() {
 
   QModelIndex idx = indexList.at(0);
 
-  const int kRow = idx.row();
+  const size_t kRow = idx.row();
 
   if (kRow >= _model_ptr->get_current_model_data().size())  // FIXME: BAD!!! slow
     return;

@@ -30,7 +30,7 @@ public:
 private slots:
 
   // filters chain:
-  void filterSortByDecreasePriority(int index);
+  void filterSortByDecPriority(int index);
 
   // other actions:
   // FIXME: а есть элемент не из той таблицы?
