@@ -52,16 +52,22 @@ public:
     , priority_(EntitiesStates::kDefaulPriority)
     , is_done_(false) { }
 
-  int get_primary_key() const { return primary_key_; }
+  int get_primary_key() const
+  { return primary_key_; }
 
   static boost::shared_ptr<TaskEntity> create(const std::string& task_name);
 
   // лучше по значению
-  std::string get_task_name() const { return task_name_; }
-  void set_task_name(const std::string& value) { task_name_ = value; }
+  std::string get_task_name() const
+  { return task_name_; }
+  void set_task_name(const std::string& value)
+  { task_name_ = value; }
   
-  int get_priority() const { return priority_; }
-  void set_priority(const int val) { priority_ = val; }
+  int get_priority() const
+  { return priority_; }
+
+  void set_priority(const int val)
+  { priority_ = val; }
 
   bool get_is_done() const
   { return is_done_; }
@@ -73,7 +79,8 @@ public:
 private:
   friend class pq_dal::TaskLifetimeQueries;  // только он меняет первичный ключ
 
-  void set_primary_key_(int val) { primary_key_ = val; }
+  void set_primary_key_(int val)
+  { primary_key_ = val; }
 
   int primary_key_;  // нужно какое-то не активное
   std::string task_name_;
