@@ -42,6 +42,10 @@ struct EntitiesStates {
 //explicit TaskEntity(std::string& name) :
 class TaskEntity {
 public:
+  // typedefs  - best non here
+
+
+  // ctor/dtor/assign/copy
   // http://stackoverflow.com/questions/308276/c-call-constructor-from-constructor
   TaskEntity() 
     : primary_key_(EntitiesStates::kInActiveKey)
@@ -78,7 +82,8 @@ private:
 };
 
 // set лучше, но до сохранения индекс может быть не уникальным
-typedef std::vector<boost::shared_ptr<entities::TaskEntity> > Tasks;
+typedef boost::shared_ptr<TaskEntity> TaskEntityPtr;
+typedef std::vector<entities::TaskEntityPtr> Tasks;
 
 // TODO: должны быть уникальные по имени и при создании это нужно контролировать.
 // TODO: Как быть при обновлении имени или цвета? Возможно нужно хранить shared_ptrs не на константу.

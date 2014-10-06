@@ -18,7 +18,6 @@ boost::function1<bool, entities::Tasks::value_type> get_check_contained(const in
 class Filter {
 public:
   // typedefs
-  typedef boost::shared_ptr<Filter> FilterPtr;
 
   // ctors/..
   virtual ~Filter() { }
@@ -28,6 +27,7 @@ public:
   //   Проблема в удалении фильтра из цепочки.
   virtual int get_type_id() const = 0;
 };
+typedef boost::shared_ptr<Filter> FilterPtr;
 
 }
 

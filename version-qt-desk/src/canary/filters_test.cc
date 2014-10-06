@@ -14,6 +14,7 @@ namespace {
 using boost::shared_ptr;
 using boost::make_shared;
 using filters::Filter;
+using filters::FilterPtr;
 
 class EmptyFilter : public Filter {
 public:
@@ -36,7 +37,7 @@ bool operator==(const Filter& lhs, const Filter& rhs) {
   return (typeid(lhs)) == (typeid(rhs));
 }
 
-bool operator==(Filter::FilterPtr lhs, Filter::FilterPtr rhs) {
+bool operator==(FilterPtr lhs, FilterPtr rhs) {
   return typeid(*lhs) == typeid(*rhs);
 }
 
@@ -51,11 +52,11 @@ public:
     //l_.push_back(make_shared<EmptyFilter>(EmptyFilter()));  // все же не нужно
   }
 
-  void add(Filter::FilterPtr e)
+  void add(FilterPtr e)
   { l_.push_back(e); }
 
   // FIXME: как удалить то без RTTI? Список то полиморфный
-  void remove(Filter::FilterPtr e)
+  void remove(FilterPtr e)
   { l_.remove(e); }
 
   entities::Tasks operator()(entities::Tasks e) const {
@@ -65,7 +66,7 @@ public:
   }
 
 private:
-  std::list<Filter::FilterPtr> l_;
+  std::list<FilterPtr> l_;
 };
 
 TEST(ChainFilter, Base) {

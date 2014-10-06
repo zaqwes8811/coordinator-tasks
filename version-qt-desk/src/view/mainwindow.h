@@ -41,6 +41,8 @@ private slots:
   void slotFillFake(bool);
 
 private:
+  entities::Tasks get_model_data() const;
+
   Ui::MainWindow *ui;
   QMyTableView* _grid_ptr;
   models::Model* const _model_ptr;

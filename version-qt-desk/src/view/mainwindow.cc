@@ -15,7 +15,9 @@
 
 // App
 #include "mainwindow.h"
+
 #include "ui_mainwindow.h"
+
 #include "test_help_data.h"
 #include "canary/entities_and_values.h"
 
@@ -51,6 +53,9 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 {
   ui->setupUi(this);
 
+  // FIXME: сделать что-то через editor - пока тщетно. Например как сконнектиться с отнасл. таблицей?
+  //   http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
+  //
   // table
   QWidget* centralWidget = new QWidget(this);
   setCentralWidget(centralWidget);
@@ -71,6 +76,8 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   QHBoxLayout* actions_layout = new QHBoxLayout;
   actions_layout->addWidget(mark_done);
   actions_layout->addWidget(fake);
+
+  // добавляем чекбоксы
 
   mainLayout->addWidget(_grid_ptr);
   mainLayout->addLayout(actions_layout);
@@ -94,6 +101,10 @@ void Engine::filterSortByDecPriority(int idx) {
   }
 }
 
+entities::Tasks Engine::get_model_data() const {
+  return _model_ptr->get_current_model_data();
+}
+
 void Engine::slotFillFake(bool) {
   Tasks mirror(test_help_data::build_fake_model());
 
@@ -108,7 +119,7 @@ void Engine::redraw() {
   // FIXME: сбивает выбранную позицию
   //
   _grid_ptr->clearList();
-  Tasks records = _model_ptr->get_current_model_data();  // may throw
+  Tasks records = get_model_data();  // may throw
   _grid_ptr->update(records);
 }
 
@@ -126,7 +137,7 @@ void Engine::slotUpdateRow() {
 
   const size_t kRow = idx.row();
 
-  if (kRow >= _model_ptr->get_current_model_data().size())  // FIXME: BAD!!! slow
+  if (kRow >= get_model_data().size())  // FIXME: BAD!!! slow
     return;
 
   // Обновляем ячейку
