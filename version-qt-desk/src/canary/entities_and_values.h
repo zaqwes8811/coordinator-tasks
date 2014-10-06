@@ -84,6 +84,9 @@ private:
 // set лучше, но до сохранения индекс может быть не уникальным
 typedef boost::shared_ptr<TaskEntity> TaskEntityPtr;
 typedef std::vector<entities::TaskEntityPtr> Tasks;
+// FIXME: не удобно
+//typedef Tasks::value_type Tasks::elem_ptr;
+//typedef Tasks::value_type::element_type elem;
 
 // TODO: должны быть уникальные по имени и при создании это нужно контролировать.
 // TODO: Как быть при обновлении имени или цвета? Возможно нужно хранить shared_ptrs не на константу.
