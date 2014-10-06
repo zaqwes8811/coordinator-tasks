@@ -77,7 +77,7 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 
 
   connect(_grid_ptr->horizontalHeader(), SIGNAL(sectionClicked(int)),
-          this, SLOT(slotSortByDecreasePriority(int)));
+          this, SLOT(filterSortByDecreasePriority(int)));
 
   redraw();
 }
@@ -87,7 +87,7 @@ Engine::~Engine()
     delete ui;
 }
 
-void Engine::slotSortByDecreasePriority(int idx) {
+void Engine::filterSortByDecreasePriority(int idx) {
   if (idx == values::TaskViewTableIdx::kPriority) {
     // сортируем
     _model_ptr->stable_sort_decrease_priority();

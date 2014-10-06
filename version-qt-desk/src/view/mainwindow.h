@@ -28,15 +28,16 @@ public:
   void redraw();
 
 private slots:
-  void slotSortByDecreasePriority(int index);
 
+  // filters chain:
+  void filterSortByDecreasePriority(int index);
+
+  // other actions:
   // FIXME: а есть элемент не из той таблицы?
   // FIXME: а место ли этому слоту здесь?
   // FIXME: на один сигнал можно подвесить несколько слотов
   void slotRowIsChanged(QTableWidgetItem* item);
-
   void slotUpdateRow();
-
   void slotFillFake(bool);
 
 private:
