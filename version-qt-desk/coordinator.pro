@@ -27,7 +27,7 @@ SOURCES += \
     ../3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
     src/view/app_spec_test.cc \
     src/canary/entities_and_values_test.cc \
-    src/canary/filters_chain_test.cc
+    src/canary/filters_test.cc
 
 # Business logic
 SOURCES += \

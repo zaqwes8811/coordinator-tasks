@@ -44,19 +44,17 @@ bool operator==(Filter::FilterPtr lhs, Filter::FilterPtr rhs) {
 class ChainFilters {
 public:
   ChainFilters() {
-    l_.push_back(make_shared<EmptyFilter>(EmptyFilter()));
+    //l_.push_back(make_shared<EmptyFilter>(EmptyFilter()));  // все же не нужно
   }
 
-  void add(models::Filter::FilterPtr e) {
-    l_.push_back(e);
-  }
+  void add(models::Filter::FilterPtr e)
+  { l_.push_back(e); }
 
   // FIXME: как удалить то без RTTI? Список то полиморфный
-  void remove(models::Filter::FilterPtr e) {
-    l_.remove(e);
-  }
+  void remove(models::Filter::FilterPtr e)
+  { l_.remove(e); }
 
-  entities::Tasks operator()(entities::Tasks e) const;
+  entities::Tasks operator()(entities::Tasks e) const { }
 
 private:
   std::list<Filter::FilterPtr> l_;
