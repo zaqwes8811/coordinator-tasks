@@ -14,19 +14,6 @@
 
 namespace models
 {
-
-
-// могли бы вставляться друг в друга
-class Filter {
-public:
-  // typedefs
-  typedef boost::shared_ptr<models::Filter> FilterPtr;
-
-  // ctors/..
-  virtual ~Filter() { }
-  virtual entities::Tasks operator()(entities::Tasks t) = 0;
-};
-
 // FIXME: как вообще работать с кешем и базами данных.
 //   в кешах ограниченное api!
 //  http://en.wikipedia.org/wiki/Database_caching - есть про когерентность.

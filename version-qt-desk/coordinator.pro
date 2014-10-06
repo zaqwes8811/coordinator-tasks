@@ -17,7 +17,6 @@ LOCAL_3RDPARTY=../3rdparty
 
 # View
 SOURCES += \
-  src/_trash/trash.cc \
   src/view/mainwindow.cc \
     src/test_help_data.cc \
     src/canary/model.cc \
@@ -27,11 +26,14 @@ SOURCES += \
     ../3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
     src/view/app_spec_test.cc \
     src/canary/entities_and_values_test.cc \
-    src/canary/filters_test.cc
+    src/canary/filters_test.cc \
+    src/canary/model_test.cc \
+    src/canary/pq_queries_test.cc \
+    src/htable_adapt_test.cc
 
 # Business logic
 SOURCES += \
-  src/_trash/_trash.cc \
+  src/trash_test.cc \
   src/canary/renders.cc \
   src/canary/filters.cc \
   src/canary/pq_queries.cc

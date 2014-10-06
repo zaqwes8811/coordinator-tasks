@@ -1,8 +1,8 @@
 #include "top/config.h"
 
-#include "canary/entities.h"
+#include "canary/entities_and_values.h"
 #include "canary/pq_queries.h"  // BAD!! too low level
-#include "canary/app_core.h"
+#include "canary/model.h"
 #include "test_help_data.h"
 #include "canary/renders.h"
 
@@ -24,47 +24,47 @@ using Loki::MakeObjGuard;
 using Loki::ScopeGuard;
 
 using pq_dal::PQConnectionPool;
-using app_core::AppCore;
-using domain::TasksMirror;
+using models::Model;
+using entities::Tasks;
 using std::cout;
 using renders::render_task_store;
 
 TEST(AppCore, Create) {
   // make_shared получает по копии - проблема с некопируемыми объектами
   shared_ptr<PQConnectionPool> pool(
-        new PQConnectionPool(app::kConnection));
+        new PQConnectionPool(models::kConnection));
   {
-    std::auto_ptr<AppCore> app_ptr(AppCore::createInHeap(pool));
+    std::auto_ptr<Model> app_ptr(Model::createInHeap(pool));
 
     // добавляем записи
-    TasksMirror data = test_help_data::build_fake_model();
+    Tasks data = test_help_data::build_fake_model();
 
     // как добавить пачкой?
-    std::for_each(data.begin(), data.end(), bind(&AppCore::append, ref(*app_ptr), _1));
+    std::for_each(data.begin(), data.end(), bind(&Model::append, ref(*app_ptr), _1));
 
     //renders::render_task_store(cout, *(app_ptr.get()));
   }
 
   {
-    std::auto_ptr<AppCore> app_ptr(AppCore::createInHeap(pool));
-    ScopeGuard _ = MakeObjGuard(*app_ptr, &AppCore::clear_store);
+    std::auto_ptr<Model> app_ptr(Model::createInHeap(pool));
+    ScopeGuard _ = MakeObjGuard(*app_ptr, &Model::clear_store);
 
     //renders::render_task_store(cout, *(app_ptr.get()));
   }
 
-  pq_dal::TaskTableQueries q(app::kTaskTableNameRef);
+  pq_dal::TaskTableQueries q(models::kTaskTableNameRef);
   EXPECT_THROW(q.print(cout, *(pool->get())), pqxx::undefined_table);
 }
 
 TEST(AppCore, UpdatePriority) {
-  shared_ptr<PQConnectionPool> pool(new PQConnectionPool(app::kConnection));
+  shared_ptr<PQConnectionPool> pool(new PQConnectionPool(models::kConnection));
   {
-    std::auto_ptr<AppCore> app_ptr(AppCore::createInHeap(pool));
-    ScopeGuard _ = MakeObjGuard(*app_ptr, &AppCore::clear_store);
+    std::auto_ptr<Model> app_ptr(Model::createInHeap(pool));
+    ScopeGuard _ = MakeObjGuard(*app_ptr, &Model::clear_store);
 
     // добавляем записи
-    TasksMirror data = test_help_data::build_fake_model();
-    adobe::for_each(data, bind(&AppCore::append, ref(*app_ptr), _1));
+    Tasks data = test_help_data::build_fake_model();
+    adobe::for_each(data, bind(&Model::append, ref(*app_ptr), _1));
     renders::render_task_store(cout, *app_ptr);
 
     // Change priority
@@ -73,7 +73,7 @@ TEST(AppCore, UpdatePriority) {
     renders::render_task_store(cout, *app_ptr);
   }
 
-  pq_dal::TaskTableQueries q(app::kTaskTableNameRef);
+  pq_dal::TaskTableQueries q(models::kTaskTableNameRef);
   EXPECT_THROW(q.print(cout, *(pool->get())), pqxx::undefined_table);
 }
 

@@ -6,8 +6,7 @@
 #include "top/config.h"
 
 #include "canary/pq_queries.h"
-#include "canary/entities.h"
-//#include "anary/entities.h"
+#include "canary/entities_and_values.h"
 
 #include <loki/ScopeGuard.h>
 #include <pqxx/pqxx> 
@@ -25,7 +24,7 @@
 
 namespace {
 using namespace pq_dal;
-using namespace domain;
+using namespace entities;
 using namespace Loki;
 using namespace pqxx;
 using namespace pq_lower_level;
@@ -33,7 +32,7 @@ using namespace std;
 
 void do_something(pqxx::connection& C)
 {
-  using app::kTaskTableNameRef;
+  using models::kTaskTableNameRef;
   
   // Tasks
   TaskTableQueries q(kTaskTableNameRef);
@@ -59,7 +58,7 @@ void do_something(pqxx::connection& C)
 }
 
 TEST(postgres, all) {
-  connection C(app::kConnection);
+  connection C(models::kConnection);
   cout << "conn" << endl;
   {
     if (!C.is_open()) {
