@@ -58,7 +58,7 @@ void Model::update(Tasks::value_type e) {
          != adobe::find_if(tasks_, filters::get_check_contained(e->get_primary_key())));
 
   TaskLifetimeQueries q(tasks_table_name_);
-  q.update(e, *(pool_->get()));
+  q.update(e->make_value(), *(pool_->get()));
 
   notify();  // FIXME: а нужно ли?
 }
@@ -93,7 +93,7 @@ void Model::append(Tasks::value_type e) {
   TaskLifetimeQueries q(tasks_table_name_);
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
-  q.create(e, *(pool_->get()));
+  q.create(e->make_value(), *(pool_->get()));
 
   notify();
   _.Dismiss();

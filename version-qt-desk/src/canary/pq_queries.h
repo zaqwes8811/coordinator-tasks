@@ -47,30 +47,27 @@ private:
 
 // Делать один репозиторий не советуют
 // TODO: Может DI какой сделать, или все равно?
+// FIXME: как то объединить create, update, etc. в persist
+//
+// Назначет id!! очень важно! объекты уникальные
+// Создает, если еще не был создан, либо обновляет всю запись
+// by value
+// На групповую вставку могут быть ограничения, но в данной задаче
+//   пока не нужно, если не нужно будет что-то куда-то автоматически переливать.
+//
+// FIXME: с умными указателями возникают проблемы с константростью!
 class TaskLifetimeQueries : public boost::noncopyable {
 public:
-  explicit TaskLifetimeQueries(const std::string& table_name)
-        : task_table_name_(table_name) { }
+  explicit TaskLifetimeQueries(const std::string& table_name);
 
-  // FIXME: как то объединить create, update, etc. в persist
+  // values op.
+  values::ImmutableTask create(const values::ImmutableTask& v, pqxx::connection& C);
+  void update(const values::ImmutableTask& v, pqxx::connection& C);
 
-  // Назначет id!! очень важно! объекты уникальные
-  // Создает, если еще не был создан, либо обновляет всю запись
-  // by value
-  // На групповую вставку могут быть ограничения, но в данной задаче
-  //   пока не нужно, если не нужно будет что-то куда-то автоматически переливать.
-  //
-  // return id
-  int create(entities::Tasks::value_type::element_type& task, pqxx::connection& C);
-  void create(entities::Tasks::value_type task, pqxx::connection& C);
-
-  // FIXME: с умными указателями возникают проблемы с константростью!
-  void update(const entities::Tasks::value_type e, pqxx::connection& C);
-
+  // entities op.
   entities::Tasks get_all(pqxx::connection& C) const;
-  // get_all
+
 private:
-  static entities::Tasks _pack(pqxx::result& r);
   const std::string task_table_name_;
 };
 }  // ns

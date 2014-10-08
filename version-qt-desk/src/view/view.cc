@@ -48,7 +48,7 @@ values::ImmutableTask QMyTableView::create(const int row) const {
   if (d.isEmpty() && priority.isEmpty())
     throw std::logic_error("Record is empty");  // FIXME: need think about error handling system
 
-  int p(entities::EntitiesStates::kDefaulPriority);
+  int p(entities::EntitiesStates::kDefaultPriority);
   if (!priority.isEmpty())
     p = priority.toInt();
 

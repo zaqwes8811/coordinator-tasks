@@ -11,7 +11,11 @@
 #include <vector>
 
 namespace pq_dal {
-    class TaskLifetimeQueries;  // lower level?
+//class TaskLifetimeQueries;  // lower level?
+}
+
+namespace values {
+class ImmutableTask;
 }
 
 namespace entities {
@@ -19,7 +23,7 @@ const std::string gTableName = "tasks";
 
 struct EntitiesStates {
   static const int kInActiveKey = -1;
-  static const int kDefaulPriority = 0;
+  static const int kDefaultPriority = 0;
 };
 
 // раз обрабатываем пачкой, то наверное нужны метки
@@ -36,6 +40,7 @@ public:
   // FIXME: конструктор лучше закрыть
   TaskEntity();
   static boost::shared_ptr<TaskEntity> create(const std::string& task_name);
+  static boost::shared_ptr<TaskEntity> create(const values::ImmutableTask& v);
 
   int get_primary_key() const;
 
@@ -48,14 +53,14 @@ public:
   bool get_is_done() const;
   void set_is_done(bool val);
 
+  void set_primary_key(int val)
+  { id_ = val; }
+
+  values::ImmutableTask make_value() const;
+
 private:
-  friend class pq_dal::TaskLifetimeQueries;  // только он меняет первичный ключ
-
-  // FIXME: а может в конструктор передать и все?
-  void set_primary_key_(int val)
-  { primary_key_ = val; }
-
-  int primary_key_;  // нужно какое-то не активное
+  //friend class pq_dal::TaskLifetimeQueries;  // только он меняет первичный ключ
+  int id_;  // нужно какое-то не активное
   std::string task_name_;
   int priority_;
   bool is_done_;
@@ -64,9 +69,6 @@ private:
 // set лучше, но до сохранения индекс может быть не уникальным
 typedef boost::shared_ptr<TaskEntity> TaskEntityPtr;
 typedef std::vector<entities::TaskEntityPtr> Tasks;
-// FIXME: не удобно
-//typedef Tasks::value_type Tasks::elem_ptr;
-//typedef Tasks::value_type::element_type elem;
 }  // namespace..
 
 namespace values {
@@ -75,31 +77,24 @@ namespace values {
 // Есть одно но. Внутри нет быстрого поиска по id.
 //   можно сделать хэш таблицей, и наверное это правильно, т.к.
 //   это работает как кеш.
+//
+// Придает семантику значений
+// Ухудшает локальность кеша
+// FIXME: Immutable now?
 class ImmutableTask {
 public:
-    static ImmutableTask create(const std::string& d, const int p) {
-      return ImmutableTask(entities::EntitiesStates::kInActiveKey, d, p);
-    }
-
-    static ImmutableTask create() {
-      int p = entities::EntitiesStates::kDefaulPriority;
-      return ImmutableTask(entities::EntitiesStates::kInActiveKey, std::string(), p);
-    }
+    static ImmutableTask create();
+    static ImmutableTask create(const std::string& d, const int p);
+    static ImmutableTask create(const int id, const std::string& d, const int p);
+    static ImmutableTask create(const int id, const std::string& d, const int p, const bool _done);
 
     const int id;
+    const boost::shared_ptr<const std::string> description;  // FIXME: NonImmutable really
     const int priority;
-    //const bool done;  // need store
-
-    // Придает семантику значений
-    // Ухудшает локальность кеша
-    const  // FIXME: Immutable now?
-    boost::shared_ptr<const std::string> description;  // FIXME: NonImmutable really
+    const bool done;  // need store
 
 private:
-    ImmutableTask(const int _id, const std::string& d, const int p)
-        : id(_id)
-        , priority(p)
-        , description(new std::string(d)) { }
+    ImmutableTask(const int _id, const std::string& d, const int p, const bool);
 };
 
 // По идее это указание Виду снизу. Это плохо

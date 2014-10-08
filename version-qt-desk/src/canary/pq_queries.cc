@@ -46,6 +46,8 @@ using entities::TaskEntity;
 using entities::Tasks;
 using entities::EntitiesStates;
 
+using values::ImmutableTask;
+
 PQConnectionPool::PQConnectionPool(const std::string& conn_info)
   : conn_(new pqxx::connection(conn_info)) {
   assert(conn_->is_open());
@@ -91,64 +93,69 @@ void TaskTableQueries::drop(connection& C) {
   pq_lower_level::rm_table(C, table_name_);
 }
 
-void TaskLifetimeQueries::update(const entities::Tasks::value_type e, pqxx::connection& C) {
-  assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
+TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name) : task_table_name_(table_name) { }
+
+void TaskLifetimeQueries::update(const values::ImmutableTask& v, pqxx::connection& C) {
+
+  assert(v.id != EntitiesStates::kInActiveKey);
   string done("false");
-  if (e->get_is_done())
+  if (v.done)
     done = "true";
 
   string sql(
   "UPDATE "
         + task_table_name_ + " SET "
-        + "TASK_NAME = '" + e->get_task_name()
-        + "', PRIORITY = " + common::to_string(e->get_priority())
+        + "TASK_NAME = '" + *v.description
+        + "', PRIORITY = " + common::to_string(v.priority)
         + ", DONE = " + done
-        + " WHERE ID = " + common::to_string(e->get_primary_key()) + ";");
+        + " WHERE ID = " + common::to_string(v.id) + ";");
   
   work w(C);
   w.exec(sql);
   w.commit();
 }
 
-void TaskLifetimeQueries::create(entities::Tasks::value_type task, pqxx::connection& C) {
-  create(*task, C);
-}
+values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v, pqxx::connection& conn)
+{
+  assert(v.id == entities::EntitiesStates::kInActiveKey);
+  assert(!v.done);
 
-int TaskLifetimeQueries::create(
-    entities::Tasks::value_type::element_type& e, connection& conn) {
-  // нужно получить id
-  // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
   string sql(
       "INSERT INTO " + task_table_name_ + " (TASK_NAME, PRIORITY) " \
         "VALUES ('"
-        + e.get_task_name()+"', "
-        + common::to_string(e.get_priority()) + ") RETURNING ID; ");
+        + *v.description+"', "
+        + common::to_string(v.priority) + ") RETURNING ID; ");
 
   work w(conn);
   result r( w.exec( sql ));  // похоже нельзя выполнить два запроса
   w.commit();
+  assert(r.size() == 1);
 
   // Узнаем что за ключ получили
-  int new_id(entities::EntitiesStates::kInActiveKey);
-
-  assert(r.size() == 1);  // вставили один элемент
-  
+  int id(entities::EntitiesStates::kInActiveKey);
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
-    new_id = c[TablePositions::kId].as<int>();
+    id = c[TablePositions::kId].as<int>();
     break;
   }
+  assert(id != entities::EntitiesStates::kInActiveKey);
 
-  assert(new_id != entities::EntitiesStates::kInActiveKey);
-  e.set_primary_key_(new_id);
-
-  return new_id;
+  // из-за константрости приходится распаковывать значение, нельзя
+  //   просто приствоить и оттюнить.
+  return ImmutableTask::create(id, *v.description, v.priority);
 }
 
-entities::Tasks TaskLifetimeQueries::_pack(pqxx::result& r) {
+
+entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
+  work w(conn);
+  string sql("SELECT * FROM " + task_table_name_ + ";");// WHERE DONE = FALSE;");
+  result r( w.exec( sql ));
+  w.commit();
+
+  // pack
   Tasks model;
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
     Tasks::value_type elem = TaskEntity::create("");
-    elem->set_primary_key_(c[TablePositions::kId].as<int>());
+    elem->set_primary_key(c[TablePositions::kId].as<int>());
     elem->set_task_name(c[TablePositions::kTaskName].as<string>());
     elem->set_priority(c[TablePositions::kPriority].as<int>());
     elem->set_is_done(c[TablePositions::kDone].as<bool>());
@@ -156,14 +163,6 @@ entities::Tasks TaskLifetimeQueries::_pack(pqxx::result& r) {
     model.push_back(elem);
   }
   return model;
-}
-
-entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
-  work w(conn);
-  string sql("SELECT * FROM " + task_table_name_ + ";");// WHERE DONE = FALSE;");
-  result r( w.exec( sql ));
-  w.commit();
-  return _pack(r);
 }
 
 }  // ns

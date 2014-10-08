@@ -14,16 +14,28 @@ using namespace pq_dal;
 boost::shared_ptr<TaskEntity> TaskEntity::create(const std::string& task_name) {
   boost::shared_ptr<TaskEntity> tmp = boost::make_shared<TaskEntity>(TaskEntity());
   tmp->task_name_ = task_name;
+
+  //const boost::shared_ptr<const TaskEntity> tmp_ = tmp;
+
+  return tmp;
+}
+
+boost::shared_ptr<TaskEntity> TaskEntity::create(const values::ImmutableTask& v)
+{
+  boost::shared_ptr<TaskEntity> tmp = TaskEntity::create(*v.description);
+  tmp->set_primary_key(v.id);
+  tmp->set_priority(v.priority);
+  tmp->set_is_done(v.done);
   return tmp;
 }
 
 TaskEntity::TaskEntity()
-  : primary_key_(EntitiesStates::kInActiveKey)
-  , priority_(EntitiesStates::kDefaulPriority)
+  : id_(EntitiesStates::kInActiveKey)
+  , priority_(EntitiesStates::kDefaultPriority)
   , is_done_(false) { }
 
 int TaskEntity::get_primary_key() const
-{ return primary_key_; }
+{ return id_; }
 
 // лучше по значению
 std::string TaskEntity::get_task_name() const
@@ -45,4 +57,40 @@ bool TaskEntity::get_is_done() const
 void TaskEntity::set_is_done(bool val)
 { is_done_ = val; }
 
+values::ImmutableTask TaskEntity::make_value() const {
+  return values::ImmutableTask::create(
+        get_primary_key(),
+        get_task_name(),
+        get_priority(),
+        get_is_done());
+}
+
 }  // namespace
+
+namespace values {
+  ImmutableTask::ImmutableTask(const int _id, const std::string& d, const int p, const bool _d)
+      : id(_id)
+      , description(boost::make_shared<std::string>(d))
+      , priority(p)
+      , done(_d)
+  { }
+
+ImmutableTask ImmutableTask::create(const std::string& d, const int p) {
+  return ImmutableTask(entities::EntitiesStates::kInActiveKey, d, p, false);
+}
+
+ImmutableTask ImmutableTask::create(const int id, const std::string& d, const int p) {
+  return ImmutableTask(id, d, p, false);
+}
+
+ImmutableTask ImmutableTask::create() {
+  int p = entities::EntitiesStates::kDefaultPriority;
+  return ImmutableTask(entities::EntitiesStates::kInActiveKey, std::string(), p, false);
+}
+
+ImmutableTask ImmutableTask::create(
+        const int id,
+        const std::string& d,
+        const int p,
+        const bool _done) { return ImmutableTask(id, d, p, _done); }
+}
