@@ -54,7 +54,7 @@ Tasks Model::load_all(const std::string& table_name,
 }
 
 entities::Tasks::value_type Model::_get_elem_by_id(const int id) {
-  Tasks::iterator it = adobe::find_if(tasks_, bind(&entities::TaskEntity::get_primary_key, _1));
+  Tasks::iterator it = adobe::find_if(tasks_, filters::get_check_contained(id));
   assert(it != tasks_.end());
   return *it;
 }

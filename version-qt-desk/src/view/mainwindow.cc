@@ -164,9 +164,14 @@ void Engine::slotRowIsChanged(QTableWidgetItem* elem)
         ImmutableTask v = _grid_ptr->create(kRow);  // may throw
         _model_ptr->append_value(v);
       } else {
+
+
         // Одна из видимых ячеек была обновлена
         values::ImmutableTask v = _grid_ptr->get_elem(kRow);
         _model_ptr->update(v);
+
+
+
       }
     }
   } catch (...) {
