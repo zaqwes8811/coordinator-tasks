@@ -101,14 +101,13 @@ Engine::~Engine()
 
 void Engine::filterSortByDecPriority(int idx) {
   if (idx == values::TaskViewTableIdx::kPriority) {
-    // TODO: set filter
-    //_model_ptr->stable_sort_decrease_priority();
+    filters::FilterPtr f(new filters::SortByPriorityFilter());
+    _filters_chain.add(f);
   }
 }
 
 entities::Tasks Engine::get_model_data() const {
-  //_filters_chain
-  return (_model->get_current_model_data());
+  return _filters_chain(_model->get_current_model_data());
 }
 
 void Engine::slotFillFake(bool) {

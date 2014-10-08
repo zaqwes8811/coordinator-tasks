@@ -19,17 +19,18 @@ LOCAL_3RDPARTY=../3rdparty
 SOURCES += \
   src/view/mainwindow.cc \
     src/canary/model.cc \
-    src/canary/entities_and_values.cc \
     src/view/view.cc \
     launcher.cc \
     ../3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc \
     src/view/app_spec_test.cc \
-    src/canary/entities_and_values_test.cc \
     src/canary/filters_test.cc \
     src/canary/model_test.cc \
     src/canary/pq_queries_test.cc \
     src/htable_adapt_test.cc \
-    src/fake_store.cc
+    src/fake_store.cc \
+    src/canary/values.cc \
+    src/canary/entities.cc \
+    src/canary/entities_test.cc
 
 # Business logic
 SOURCES += \
@@ -43,7 +44,8 @@ HEADERS  += src/view/mainwindow.h \
     src/top/error_handling.h \
     src/view/view.h \
     src/top/common.h \
-    src/fake_store.h
+    src/fake_store.h \
+    src/canary/values.h
 
 FORMS    += src/view/mainwindow.ui
 

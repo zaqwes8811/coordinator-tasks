@@ -3,6 +3,7 @@
 #include "canary/filters.h"
 
 #include <boost/bind.hpp>
+#include <adobe/algorithm/sort.hpp>
 
 //#include <
 
@@ -48,5 +49,36 @@ entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
 
   return r;
 }
+
+entities::Tasks EmptyFilter::operator()(entities::Tasks e)
+{ return e; }
+
+int EmptyFilter::get_type_id() const
+{ return 1; }
+
+
+entities::Tasks SortByPriorityFilter::operator()(entities::Tasks e) {
+  adobe::stable_sort(e,
+      bind(std::greater<int>(),
+           bind(&TaskEntity::get_priority, _1),
+           bind(&TaskEntity::get_priority, _2)));
+  return e;
+}
+
+int SortByPriorityFilter::get_type_id() const
+{ return 2; }
+
+// сырые указатели лучше не передавать.
+bool operator==(const Filter& lhs, const Filter& rhs) {
+  // FIXME: It is very bad! dynamic cast don't work, no info
+  //return (typeid(lhs)) == (typeid(rhs));
+  return lhs.get_type_id() == rhs.get_type_id();
+}
+
+bool operator==(FilterPtr lhs, FilterPtr rhs) {
+  //return typeid(*lhs) == typeid(*rhs);  // no way
+  return lhs->get_type_id() == rhs->get_type_id();
+}
+
 
 }  // namespace

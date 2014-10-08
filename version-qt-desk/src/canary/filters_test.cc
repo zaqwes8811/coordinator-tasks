@@ -19,49 +19,8 @@ using boost::bind;
 using filters::Filter;
 using filters::FilterPtr;
 using entities::TaskEntity;
-
-class EmptyFilter : public Filter {
-public:
-  entities::Tasks operator()(entities::Tasks e)
-  { return e; }
-
-  int get_type_id() const
-  { return 1; }
-};
-
-class SortByPriorityFilter : public Filter {
-public:
-  entities::Tasks operator()(entities::Tasks e) {
-    adobe::stable_sort(e,
-        bind(std::greater<int>(),
-             bind(&TaskEntity::get_priority, _1),
-             bind(&TaskEntity::get_priority, _2)));
-    return e;
-  }
-
-  int get_type_id() const
-  { return 2; }
-};
-
-/*
-class DoneFilter : public Filter {
-public:
-  entities::Tasks operator()(entities::Tasks e) {
-  }
-};
-*/
-
-// сырые указатели лучше не передавать.
-bool operator==(const Filter& lhs, const Filter& rhs) {
-  // FIXME: It is very bad! dynamic cast don't work, no info
-  //return (typeid(lhs)) == (typeid(rhs));
-  return lhs.get_type_id() == rhs.get_type_id();
-}
-
-bool operator==(FilterPtr lhs, FilterPtr rhs) {
-  //return typeid(*lhs) == typeid(*rhs);  // no way
-  return lhs->get_type_id() == rhs->get_type_id();
-}
+using filters::EmptyFilter;
+using filters::SortByPriorityFilter;
 
 TEST(ChainFilter, Base) {
   Filter* f = new EmptyFilter;

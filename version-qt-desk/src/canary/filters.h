@@ -7,6 +7,7 @@
 #include "canary/entities_and_values.h"
 
 #include <boost/function.hpp>
+#include <boost/unordered_set.hpp>
 
 #include <list>
 
@@ -35,6 +36,7 @@ typedef boost::shared_ptr<Filter> FilterPtr;
 // Но как легко комбинировать фильтры. Откат к sql может повлиять, а может и нет на архитектуры.
 //
 // зацепаемся за типы? может еще можно как-то?
+// FIXME: Фильтры должны быть линейными, а значить переставляемыми, но как доказать?
 class ChainFilters {
 public:
   ChainFilters();
@@ -47,7 +49,29 @@ public:
 
 private:
   std::list<FilterPtr> l_;
+
+  // http://stackoverflow.com/questions/17016175/c-unordered-map-using-a-custom-class-type-as-the-key
+  // лучше hash_set, set как-то странно проверяет на равенство
+  // можно hash_map, может так и проще, тогда не нужны свои hash and equal
+
+  //boost::unordered_set<FilterPtr, > s_;  // need own hasher
 };
+
+class EmptyFilter : public Filter {
+public:
+  entities::Tasks operator()(entities::Tasks e);
+  int get_type_id() const;
+};
+
+class SortByPriorityFilter : public Filter {
+public:
+  entities::Tasks operator()(entities::Tasks e);
+  int get_type_id() const;
+};
+
+// сырые указатели лучше не передавать.
+bool operator==(const Filter& lhs, const Filter& rhs);
+bool operator==(FilterPtr lhs, FilterPtr rhs);
 
 }
 
