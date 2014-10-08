@@ -34,6 +34,8 @@ private:
   boost::shared_ptr<pqxx::connection> conn_;
 };
 
+typedef boost::shared_ptr<pq_dal::PQConnectionPool> PQConnectionPoolPtr;
+
 
 class TaskTableQueries : public boost::noncopyable {
 public:
@@ -56,7 +58,9 @@ private:
 //   пока не нужно, если не нужно будет что-то куда-то автоматически переливать.
 //
 // FIXME: с умными указателями возникают проблемы с константростью!
-class TaskLifetimeQueries : public boost::noncopyable {
+class TaskLifetimeQueries
+    : public boost::noncopyable
+{
 public:
   explicit TaskLifetimeQueries(const std::string& table_name);
 
@@ -68,7 +72,7 @@ public:
   entities::Tasks get_all(pqxx::connection& C) const;
 
 private:
-  const std::string task_table_name_;
+  const std::string _table_name;
 };
 }  // ns
 

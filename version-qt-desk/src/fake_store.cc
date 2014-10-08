@@ -6,7 +6,7 @@
 #include <cstdlib>
 
 
-namespace test_help_data {
+namespace fake_store {
 using std::vector;
 using std::string;
 using namespace boost;
@@ -22,7 +22,7 @@ const char* events[] = {
 
 //const char* labels[] = {"v8", "fake"};
 
-Tasks build_fake_model() {
+Tasks get_all() {
   Tasks model;
 
   for (int i = 0; i < 5; ++i) {
@@ -39,4 +39,18 @@ Tasks build_fake_model() {
 
   return model;
 }
+
+std::vector<values::ImmutableTask> get_all_values() {
+  //Tasks model = build_fake_model();
+
+  std::vector<values::ImmutableTask> v;
+  for (int i = 0; i < 5; ++i) {
+    int p = rand() % 10 + 1;
+    values::ImmutableTask tmp = values::ImmutableTask::create(common::to_string(p), p);
+    v.push_back(tmp);
+  }
+
+  return v;
+}
+
 }

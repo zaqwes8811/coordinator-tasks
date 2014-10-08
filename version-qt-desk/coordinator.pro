@@ -18,7 +18,6 @@ LOCAL_3RDPARTY=../3rdparty
 # View
 SOURCES += \
   src/view/mainwindow.cc \
-    src/test_help_data.cc \
     src/canary/model.cc \
     src/canary/entities_and_values.cc \
     src/view/view.cc \
@@ -29,7 +28,8 @@ SOURCES += \
     src/canary/filters_test.cc \
     src/canary/model_test.cc \
     src/canary/pq_queries_test.cc \
-    src/htable_adapt_test.cc
+    src/htable_adapt_test.cc \
+    src/fake_store.cc
 
 # Business logic
 SOURCES += \
@@ -42,7 +42,8 @@ HEADERS  += src/view/mainwindow.h \
     src/canary/isolation.h \
     src/top/error_handling.h \
     src/view/view.h \
-    src/top/common.h
+    src/top/common.h \
+    src/fake_store.h
 
 FORMS    += src/view/mainwindow.ui
 

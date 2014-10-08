@@ -20,11 +20,11 @@ QMyTableView::QMyTableView(QWidget *parent)
   column_names.append("id");
   column_names.append("Task name");
   column_names.append("Priority");
-  //column_names.append("Is Done");  // не обязательно, главно id
+  column_names.append("Is Done");
 
   setColumnCount(column_names.size());
   setHorizontalHeaderLabels(column_names);
-  //setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
+  setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
 
   // Style
   QHeaderView *v = verticalHeader();
@@ -62,6 +62,7 @@ void QMyTableView::_insertBlankRows(const int end) {
       setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey)));
       setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem);
       setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem);
+      setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem(QString::number(entities::EntitiesStates::kNonDone)));
   }
 }
 
@@ -73,31 +74,35 @@ void QMyTableView::clearList() {
 }
 
 void QMyTableView::update(entities::Tasks tasks) {
-  {
-    // fill table
-    setRowCount(tasks.size() + models::kAddedBlankLines);
+  // fill table
+  setRowCount(tasks.size() + models::kAddedBlankLines);
 
-    int row = 0;
-    for (Tasks::const_iterator record=tasks.begin(), end=tasks.end(); record != end; ++record) {
-      setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number((*record)->get_primary_key())));
-      setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem(QString::fromUtf8((*record)->get_task_name().c_str())));
-      setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem(QString::number((*record)->get_priority())));
-      ++row;
-    }
-
-    // вставляем еще несколько рядов
-    _insertBlankRows(row);
+  int row = 0;
+  for (Tasks::const_iterator record=tasks.begin(), end=tasks.end(); record != end; ++record) {
+    setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number((*record)->get_primary_key())));
+    setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem(QString::fromUtf8((*record)->get_task_name().c_str())));
+    setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem(QString::number((*record)->get_priority())));
+    ++row;
   }
+
+  // вставляем еще несколько рядов
+  _insertBlankRows(row);
 }
 
 int QMyTableView::getId(const int row) const {
   return item(row, values::TaskViewTableIdx::kId)->text().toInt();
 }
 
-void QMyTableView::update(const int row, entities::Tasks::value_type e) {
+values::ImmutableTask QMyTableView::get_elem(const int row, const entities::Tasks::value_type e) {
+  assert(row < rowCount());
+
+  // id
   QString d(item(row, values::TaskViewTableIdx::kTaskName)->text());
   int p(item(row, values::TaskViewTableIdx::kPriority)->text().toInt());
+  // done
 
   e->set_priority(p);
   e->set_task_name(d.toUtf8().constData());
+
+  return values::ImmutableTask::create(d.toUtf8().constData(), p);
 }

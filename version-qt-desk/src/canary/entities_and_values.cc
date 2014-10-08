@@ -22,10 +22,10 @@ boost::shared_ptr<TaskEntity> TaskEntity::create(const std::string& task_name) {
 
 boost::shared_ptr<TaskEntity> TaskEntity::create(const values::ImmutableTask& v)
 {
-  boost::shared_ptr<TaskEntity> tmp = TaskEntity::create(*v.description);
-  tmp->set_primary_key(v.id);
-  tmp->set_priority(v.priority);
-  tmp->set_is_done(v.done);
+  boost::shared_ptr<TaskEntity> tmp = TaskEntity::create(*v.description());
+  tmp->set_primary_key(v.id());
+  tmp->set_priority(v.priority());
+  tmp->set_is_done(v.done());
   return tmp;
 }
 
@@ -57,6 +57,9 @@ bool TaskEntity::get_is_done() const
 void TaskEntity::set_is_done(bool val)
 { is_done_ = val; }
 
+void TaskEntity::set_primary_key(int val)
+{ id_ = val; }
+
 values::ImmutableTask TaskEntity::make_value() const {
   return values::ImmutableTask::create(
         get_primary_key(),
@@ -68,12 +71,30 @@ values::ImmutableTask TaskEntity::make_value() const {
 }  // namespace
 
 namespace values {
-  ImmutableTask::ImmutableTask(const int _id, const std::string& d, const int p, const bool _d)
-      : id(_id)
-      , description(boost::make_shared<std::string>(d))
-      , priority(p)
-      , done(_d)
-  { }
+
+ImmutableTask::ImmutableTask(const ImmutableTask& v)
+  : _id(v.id()), _description(v.description())
+  , _priority(v.priority()), _done(v.done()) { }
+
+
+ImmutableTask& ImmutableTask::operator=(const ImmutableTask& v) {
+  ImmutableTask tmp(v);
+  //std::swap(*this, tmp);  // failed on shared ptr - segfault
+
+  std::swap(tmp._id, _id);
+  std::swap(tmp._description, _description);  // swap doesn't work, work now
+  std::swap(tmp._priority, _priority);
+  std::swap(tmp._done, _done);
+
+  return *this;
+}
+
+ImmutableTask::ImmutableTask(const int _id, const std::string& d, const int p, const bool _d)
+  : _id(_id)
+  , _description(boost::make_shared<std::string>(d))
+  , _priority(p)
+  , _done(_d)
+{ }
 
 ImmutableTask ImmutableTask::create(const std::string& d, const int p) {
   return ImmutableTask(entities::EntitiesStates::kInActiveKey, d, p, false);
@@ -93,4 +114,16 @@ ImmutableTask ImmutableTask::create(
         const std::string& d,
         const int p,
         const bool _done) { return ImmutableTask(id, d, p, _done); }
+
+int ImmutableTask::id() const
+{ return _id; }
+
+boost::shared_ptr<const std::string> ImmutableTask::description() const
+{ return _description; }
+
+int ImmutableTask::priority() const
+{ return _priority; }
+
+bool ImmutableTask::done() const
+{ return _done; }
 }

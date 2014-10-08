@@ -64,11 +64,11 @@ void Model::update(Tasks::value_type e) {
 }
 
 void Model::append_value(ImmutableTask e) {
-  assert(e.id == EntitiesStates::kInActiveKey);
+  assert(e.id() == EntitiesStates::kInActiveKey);
 
   Tasks::value_type h(new Tasks::value_type::element_type());
-  h->set_task_name(*e.description);
-  h->set_priority(e.priority);
+  h->set_task_name(*e.description());
+  h->set_priority(e.priority());
   append(h);
 }
 

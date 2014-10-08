@@ -3,7 +3,7 @@
 #include "canary/entities_and_values.h"
 #include "canary/pq_queries.h"  // BAD!! too low level
 #include "canary/model.h"
-#include "test_help_data.h"
+#include "fake_store.h"
 #include "canary/renders.h"
 
 #include <gtest/gtest.h>
@@ -37,7 +37,7 @@ TEST(AppCore, Create) {
     std::auto_ptr<Model> app_ptr(Model::createInHeap(pool));
 
     // добавляем записи
-    Tasks data = test_help_data::build_fake_model();
+    Tasks data = fake_store::get_all();
 
     // как добавить пачкой?
     std::for_each(data.begin(), data.end(), bind(&Model::append, ref(*app_ptr), _1));
@@ -63,7 +63,7 @@ TEST(AppCore, UpdatePriority) {
     ScopeGuard _ = MakeObjGuard(*app_ptr, &Model::clear_store);
 
     // добавляем записи
-    Tasks data = test_help_data::build_fake_model();
+    Tasks data = fake_store::get_all();
     adobe::for_each(data, bind(&Model::append, ref(*app_ptr), _1));
     renders::render_task_store(cout, *app_ptr);
 

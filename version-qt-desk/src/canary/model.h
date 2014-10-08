@@ -36,8 +36,7 @@ class Model
 public:
   /// create and destory
   static Model* createInHeap(boost::shared_ptr<pq_dal::PQConnectionPool>);
-  Model(entities::Tasks _model,
-            boost::shared_ptr<pq_dal::PQConnectionPool> _pool);
+  Model(entities::Tasks _model, pq_dal::PQConnectionPoolPtr _pool);
   ~Model();
 
   // other
@@ -55,14 +54,14 @@ public:
   // Жесткая привязка к списку и к цепочке фильтров
   entities::Tasks::value_type get_elem_by_pos(const int pos);
 
+  // FIXME: плохо что хендлы утекают, и из-за того что указатели
+  //   shared объекты превращаются в глобальные переменные.
+  entities::Tasks get_current_model_data();
+
   void clear_store();
 
   // render filters:
   void stable_sort_decrease_priority();
-
-  // FIXME: плохо что хендлы утекают, и из-за того что указатели
-  //   shared объекты превращаются в глобальные переменные.
-  entities::Tasks get_current_model_data();
 
 private:
   template <typename U>

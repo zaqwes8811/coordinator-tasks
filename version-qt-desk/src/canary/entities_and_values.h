@@ -1,18 +1,12 @@
 #ifndef DOMAIN_H_
 #define DOMAIN_H_
 
-//#include "canary/pq_dal.h"
-
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
 #include <set>
 #include <string>
 #include <vector>
-
-namespace pq_dal {
-//class TaskLifetimeQueries;  // lower level?
-}
 
 namespace values {
 class ImmutableTask;
@@ -24,6 +18,7 @@ const std::string gTableName = "tasks";
 struct EntitiesStates {
   static const int kInActiveKey = -1;
   static const int kDefaultPriority = 0;
+  static const bool kNonDone = false;
 };
 
 // раз обрабатываем пачкой, то наверное нужны метки
@@ -33,16 +28,20 @@ struct EntitiesStates {
 //
 // TODO: нужно как-то сохранять со связями
 //
+// http://stackoverflow.com/questions/308276/c-call-constructor-from-constructor
 class TaskEntity {
 public:
   // ctor/dtor/assign/copy
-  // http://stackoverflow.com/questions/308276/c-call-constructor-from-constructor
   // FIXME: конструктор лучше закрыть
   TaskEntity();
   static boost::shared_ptr<TaskEntity> create(const std::string& task_name);
   static boost::shared_ptr<TaskEntity> create(const values::ImmutableTask& v);
+  values::ImmutableTask make_value() const;
+  //static values::ImmutableTask make_value(boost::shared_ptr<TaskEntity> e) const;
 
+  // accessors
   int get_primary_key() const;
+  void set_primary_key(int val);
 
   std::string get_task_name() const;
   void set_task_name(const std::string& value);
@@ -52,11 +51,6 @@ public:
 
   bool get_is_done() const;
   void set_is_done(bool val);
-
-  void set_primary_key(int val)
-  { id_ = val; }
-
-  values::ImmutableTask make_value() const;
 
 private:
   //friend class pq_dal::TaskLifetimeQueries;  // только он меняет первичный ключ
@@ -68,6 +62,7 @@ private:
 
 // set лучше, но до сохранения индекс может быть не уникальным
 typedef boost::shared_ptr<TaskEntity> TaskEntityPtr;
+typedef boost::shared_ptr<const TaskEntity> ImmutableTaskEntityPtr;
 typedef std::vector<entities::TaskEntityPtr> Tasks;
 }  // namespace..
 
@@ -88,12 +83,22 @@ public:
     static ImmutableTask create(const int id, const std::string& d, const int p);
     static ImmutableTask create(const int id, const std::string& d, const int p, const bool _done);
 
-    const int id;
-    const boost::shared_ptr<const std::string> description;  // FIXME: NonImmutable really
-    const int priority;
-    const bool done;  // need store
+    // copy/assign
+    ImmutableTask(const ImmutableTask& v);
+    ImmutableTask& operator=(const ImmutableTask& v);
+
+    // accessors
+    int id() const;
+    boost::shared_ptr<const std::string> description() const;
+    int priority() const;
+    bool done() const;
 
 private:
+    int _id;
+    boost::shared_ptr<const std::string> _description;  // FIXME: NonImmutable really
+    int _priority;
+    bool _done;  // need store
+
     ImmutableTask(const int _id, const std::string& d, const int p, const bool);
 };
 

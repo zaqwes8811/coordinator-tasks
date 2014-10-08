@@ -18,7 +18,7 @@
 
 #include "ui_mainwindow.h"
 
-#include "test_help_data.h"
+#include "fake_store.h"
 #include "canary/entities_and_values.h"
 
 //
@@ -106,7 +106,7 @@ entities::Tasks Engine::get_model_data() const {
 }
 
 void Engine::slotFillFake(bool) {
-  Tasks mirror(test_help_data::build_fake_model());
+  Tasks mirror(fake_store::get_all());
 
   // сохраняем все
   adobe::for_each(mirror, bind(&Model::append, ref(*_model_ptr), _1));
@@ -167,12 +167,12 @@ void Engine::slotRowIsChanged(QTableWidgetItem* elem)
         ImmutableTask v = _grid_ptr->create(kRow);  // may throw
         _model_ptr->append_value(v);
       } else {
-        // просто обновляем
+        // Одна из видимых ячеек была обновлена
         Tasks::value_type e(_model_ptr->get_elem_by_pos(kRow));
 
         assert(kId == e->get_primary_key());
 
-        _grid_ptr->update(kRow, e);
+        _grid_ptr->get_elem(kRow, e);
         _model_ptr->update(e);
       }
     }

@@ -93,22 +93,23 @@ void TaskTableQueries::drop(connection& C) {
   pq_lower_level::rm_table(C, table_name_);
 }
 
-TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name) : task_table_name_(table_name) { }
+/// Objects
+TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name) : _table_name(table_name) { }
 
 void TaskLifetimeQueries::update(const values::ImmutableTask& v, pqxx::connection& C) {
 
-  assert(v.id != EntitiesStates::kInActiveKey);
+  assert(v.id() != EntitiesStates::kInActiveKey);
   string done("false");
-  if (v.done)
+  if (v.done())
     done = "true";
 
   string sql(
   "UPDATE "
-        + task_table_name_ + " SET "
-        + "TASK_NAME = '" + *v.description
-        + "', PRIORITY = " + common::to_string(v.priority)
+        + _table_name + " SET "
+        + "TASK_NAME = '" + *v.description()
+        + "', PRIORITY = " + common::to_string(v.priority())
         + ", DONE = " + done
-        + " WHERE ID = " + common::to_string(v.id) + ";");
+        + " WHERE ID = " + common::to_string(v.id()) + ";");
   
   work w(C);
   w.exec(sql);
@@ -117,14 +118,14 @@ void TaskLifetimeQueries::update(const values::ImmutableTask& v, pqxx::connectio
 
 values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v, pqxx::connection& conn)
 {
-  assert(v.id == entities::EntitiesStates::kInActiveKey);
-  assert(!v.done);
+  assert(v.id() == entities::EntitiesStates::kInActiveKey);
+  assert(!v.done());
 
   string sql(
-      "INSERT INTO " + task_table_name_ + " (TASK_NAME, PRIORITY) " \
+      "INSERT INTO " + _table_name + " (TASK_NAME, PRIORITY) " \
         "VALUES ('"
-        + *v.description+"', "
-        + common::to_string(v.priority) + ") RETURNING ID; ");
+        + *v.description()+"', "
+        + common::to_string(v.priority()) + ") RETURNING ID; ");
 
   work w(conn);
   result r( w.exec( sql ));  // похоже нельзя выполнить два запроса
@@ -141,13 +142,13 @@ values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v
 
   // из-за константрости приходится распаковывать значение, нельзя
   //   просто приствоить и оттюнить.
-  return ImmutableTask::create(id, *v.description, v.priority);
+  return ImmutableTask::create(id, *v.description(), v.priority());
 }
 
 
 entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
   work w(conn);
-  string sql("SELECT * FROM " + task_table_name_ + ";");// WHERE DONE = FALSE;");
+  string sql("SELECT * FROM " + _table_name + ";");// WHERE DONE = FALSE;");
   result r( w.exec( sql ));
   w.commit();
 

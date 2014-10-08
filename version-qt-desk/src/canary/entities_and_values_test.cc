@@ -30,7 +30,7 @@
 #include "canary/entities_and_values.h"
 #include "canary/pq_queries.h"
 #include "canary/renders.h"
-#include "test_help_data.h"
+#include "fake_store.h"
 #include "canary/filters.h"
 
 #include <adobe/algorithm/find.hpp>  // удобно если работа с целым контейнером, иначе лучше std
@@ -59,7 +59,7 @@ using namespace entities;
 using namespace Loki;
 using namespace pqxx;
 using namespace pq_lower_level;
-using namespace test_help_data;
+using namespace fake_store;
 using entities::Tasks;
 
 using std::vector;
@@ -91,7 +91,7 @@ TEST(ModelTest, BaseCase) {
 
 TEST(ModelTest, Create) {
   // load from store
-  Tasks model(build_fake_model());
+  Tasks model(get_all());
   
   // view unsaved
   cout << model;  
@@ -127,6 +127,13 @@ TEST(ModelTest, Create) {
   }
   EXPECT_FALSE(C.is_open());
 
+}
+
+TEST(Values, Assign) {
+  using namespace values;
+  ImmutableTask v = ImmutableTask::create();
+  ImmutableTask v1 = ImmutableTask::create("hello", 90);
+  v = v1;
 }
 
 }
