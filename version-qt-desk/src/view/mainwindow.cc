@@ -28,6 +28,7 @@
 #include <QDebug>
 #include <boost/bind.hpp>
 #include <adobe/algorithm/for_each.hpp>
+#include <adobe/algorithm/find.hpp>
 
 #include <string>
 #include <vector>
@@ -96,12 +97,15 @@ Engine::~Engine()
 
 void Engine::filterSortByDecPriority(int idx) {
   if (idx == values::TaskViewTableIdx::kPriority) {
-    // сортируем
-    _model_ptr->stable_sort_decrease_priority();
+    // TODO: set filter сортируем
+    //_model_ptr->stable_sort_decrease_priority();
   }
 }
 
 entities::Tasks Engine::get_model_data() const {
+  // FIXME: filtration
+
+
   return _model_ptr->get_current_model_data();
 }
 
@@ -141,7 +145,8 @@ void Engine::slotUpdateRow() {
     return;
 
   // Обновляем ячейку
-  Tasks::value_type e(_model_ptr->get_elem_by_pos(kRow));
+  int id = _grid_ptr->getId(kRow);
+  Tasks::value_type e(get_elem_by_id(id));
   e->set_is_done(true);
 
   _model_ptr->update(e);
@@ -166,7 +171,6 @@ void Engine::slotRowIsChanged(QTableWidgetItem* elem)
         // создаем новую запись
         ImmutableTask v = _grid_ptr->create(kRow);  // may throw
         _model_ptr->append_value(v);
-
       } else {
         // Одна из видимых ячеек была обновлена
         values::ImmutableTask v = _grid_ptr->get_elem(kRow);
@@ -178,4 +182,22 @@ void Engine::slotRowIsChanged(QTableWidgetItem* elem)
   } catch (...) {
     // FIXME: но как понять какое произошло
   }
+}
+
+void Engine::stable_sort_decrease_priority() {
+  /*adobe::stable_sort(tasks_,
+      bind(std::greater<int>(),
+           bind(&TaskEntity::get_priority, _1),
+           bind(&TaskEntity::get_priority, _2)));
+
+  notify();
+  */
+}
+
+entities::Tasks::value_type Engine::get_elem_by_id(const int id) {
+  Tasks r = this->get_model_data();
+  Tasks::iterator it = adobe::find_if(r, bind(&entities::TaskEntity::get_primary_key, _1));
+
+  assert(it != r.end());  // должен быть
+  return *it;
 }

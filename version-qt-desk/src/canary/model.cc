@@ -63,6 +63,10 @@ void Model::update(Tasks::value_type e) {
   notify();  // FIXME: а нужно ли?
 }
 
+void update(values::ImmutableTask e) {
+  //update(_e);
+}
+
 void Model::append_value(ImmutableTask e) {
   assert(e.id() == EntitiesStates::kInActiveKey);
 
@@ -112,20 +116,6 @@ Model::Model(entities::Tasks _tasks,
 void Model::notify()
 {
   observers_->update();
-}
-
-void Model::stable_sort_decrease_priority() {
-  adobe::stable_sort(tasks_,
-      bind(std::greater<int>(),
-           bind(&TaskEntity::get_priority, _1),
-           bind(&TaskEntity::get_priority, _2)));
-
-  notify();
-}
-
-entities::Tasks::value_type Model::get_elem_by_pos(const int pos) {
-  assert(pos < tasks_.size());
-  return tasks_.at(pos);
 }
 
 void Model::set_listener(boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> iso)

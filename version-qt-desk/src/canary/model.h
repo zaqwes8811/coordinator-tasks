@@ -50,20 +50,15 @@ public:
 
   // элемент был сохранен и есть в mirror
   void update(entities::Tasks::value_type e);
+  void update(values::ImmutableTask e);
 
-  // FIXME: DANGER!! при реализации фильтров сломает логику!!!
-  // Жесткая привязка к списку и к цепочке фильтров
-  entities::Tasks::value_type get_elem_by_pos(const int pos);
+
 
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
   //   shared объекты превращаются в глобальные переменные.
   entities::Tasks get_current_model_data();
 
   void clear_store();
-
-  // render filters:
-  void stable_sort_decrease_priority();
-
 private:
   template <typename U>
   friend void renders::render_task_store(std::ostream& o, const U& a);

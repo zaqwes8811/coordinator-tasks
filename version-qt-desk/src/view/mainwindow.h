@@ -40,6 +40,13 @@ private slots:
   void slotUpdateRow();
   void slotFillFake(bool);
 
+  // FIXME: DANGER!! при реализации фильтров сломает логику!!!
+  // Жесткая привязка к списку и к цепочке фильтров
+  entities::Tasks::value_type get_elem_by_id(const int pos);
+
+  // render filters:
+  void stable_sort_decrease_priority();
+
 private:
   entities::Tasks get_model_data() const;
 
