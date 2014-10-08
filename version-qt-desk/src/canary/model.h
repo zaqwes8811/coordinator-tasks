@@ -31,12 +31,11 @@ namespace models
 // FIXME: утекают хендлы!! make ImmutableTask. причем утекают как на нижние уровни, так и на верхние
 class Model
    : boost::noncopyable {
-
-public:
   void notify();  // Нужно было открыть для обновления при семене фильтров
 
-  /// create and destory
-  static Model* createInHeap(boost::shared_ptr<pq_dal::PQConnectionPool>);
+public:
+  // create/destory
+  static Model* createInHeap(pq_dal::PQConnectionPoolPtr);
   Model(entities::Tasks _model, pq_dal::PQConnectionPoolPtr _pool);
   ~Model();
 
@@ -63,16 +62,14 @@ private:
   void draw_task_store(std::ostream& o) const;
 
   // persist filters:
-  static entities::Tasks load_all(
-          const std::string& table_name,
-          boost::shared_ptr<pq_dal::PQConnectionPool> pool);
+  static entities::Tasks load_all(const std::string& table_name, pq_dal::PQConnectionPoolPtr pool);
 
   std::string tasks_table_name_;
   entities::Tasks tasks_;  //
 
   // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
-  boost::shared_ptr<pq_dal::PQConnectionPool> pool_;
-  boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> observers_;
+  pq_dal::PQConnectionPoolPtr pool_;
+  isolation::ModelListenerPtr observers_;
   entities::Tasks::value_type _get_elem_by_id(const int id);
 };
 }

@@ -19,15 +19,15 @@ using boost::bind;
 using filters::Filter;
 using filters::FilterPtr;
 using entities::TaskEntity;
-using filters::EmptyFilter;
+using filters::DoneFilter;
 using filters::SortByPriorityFilter;
 
 TEST(ChainFilter, Base) {
-  Filter* f = new EmptyFilter;
+  Filter* f = new DoneFilter;
   SortByPriorityFilter* e = dynamic_cast<SortByPriorityFilter*>(f);
   EXPECT_FALSE(e);
 
-  EmptyFilter* e_ = dynamic_cast<EmptyFilter*>(f);
+  DoneFilter* e_ = dynamic_cast<DoneFilter*>(f);
   EXPECT_TRUE(e_);
   delete f;
 }

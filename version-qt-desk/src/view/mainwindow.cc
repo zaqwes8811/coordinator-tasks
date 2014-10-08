@@ -30,6 +30,7 @@
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QDebug>
+#include <QCheckBox>
 #include <boost/bind.hpp>
 #include <adobe/algorithm/for_each.hpp>
 #include <adobe/algorithm/find.hpp>
@@ -75,12 +76,17 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   connect(_table, SIGNAL(itemChanged(QTableWidgetItem*)),
           this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
+  QCheckBox* done = new QCheckBox("Done", this);
+
+  connect(done, SIGNAL(stateChanged(int)), this, SLOT(filterOnDone(int)));
+
   // pack all
   QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
 
   QVBoxLayout* actions_layout = new QVBoxLayout;
   actions_layout->addWidget(mark_done);
   actions_layout->addWidget(fake);
+  actions_layout->addWidget(done);
 
   // добавляем чекбоксы
 
@@ -94,6 +100,18 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   redraw();
 }
 
+void Engine::filterOnDone(int state) {
+  if (Qt::Unchecked == state) {
+    // del filter
+    return;
+  }
+
+  if (Qt::Checked == state) {
+    // add filter
+    return;
+  }
+}
+
 Engine::~Engine()
 {
     delete ui;
@@ -105,7 +123,7 @@ void Engine::filterSortByDecPriority(int idx) {
     _filters_chain.add(f);
 
     // нужно обновить вид
-    _model->notify();
+    redraw();
   }
 }
 
@@ -169,16 +187,6 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
   } catch (...) {
     // FIXME: но как понять какое произошло
   }
-}
-
-void Engine::stable_sort_decrease_priority() {
-  /*adobe::stable_sort(tasks_,
-      bind(std::greater<int>(),
-           bind(&TaskEntity::get_priority, _1),
-           bind(&TaskEntity::get_priority, _2)));
-
-  notify();
-  */
 }
 
 entities::Tasks::value_type Engine::get_elem_by_id(const int id) {

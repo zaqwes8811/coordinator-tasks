@@ -4,8 +4,7 @@
 
 #include <boost/bind.hpp>
 #include <adobe/algorithm/sort.hpp>
-
-//#include <
+#include <adobe/algorithm/partition.hpp>
 
 namespace filters {
 // add check non saved
@@ -58,10 +57,13 @@ entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
   return r;
 }
 
-entities::Tasks EmptyFilter::operator()(entities::Tasks e)
-{ return e; }
+entities::Tasks DoneFilter::operator()(entities::Tasks e)
+{
+  //entities::Tasks::iterator it = adobe::stable_partition(e, bind(, _1));
+  return e;
+}
 
-int EmptyFilter::get_type_id() const
+int DoneFilter::get_type_id() const
 { return 1; }
 
 

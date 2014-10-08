@@ -78,7 +78,7 @@ private:
   boost::unordered_set<FilterPtr, KeyHasher, KeyEqual> s_;  // need own hasher
 };
 
-class EmptyFilter : public Filter {
+class DoneFilter : public Filter {
 public:
   entities::Tasks operator()(entities::Tasks e);
   int get_type_id() const;

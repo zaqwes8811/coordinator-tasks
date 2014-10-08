@@ -32,6 +32,7 @@ private slots:
 
   // filters chain:
   void filterSortByDecPriority(int index);
+  void filterOnDone(int state);
 
   // other actions:
   // FIXME: а есть элемент не из той таблицы?
@@ -44,9 +45,6 @@ private slots:
   // FIXME: DANGER!! при реализации фильтров сломает логику!!!
   // Жесткая привязка к списку и к цепочке фильтров
   entities::Tasks::value_type get_elem_by_id(const int pos);
-
-  // render filters:
-  void stable_sort_decrease_priority();
 
 private:
   entities::Tasks get_model_data() const;
