@@ -31,6 +31,7 @@ public:
   values::ImmutableTask get_elem(const int row) const;
   values::ImmutableTask create(const int row) const;
   int getId(const int row) const;
+  void mark_done(const int row);
 
 private:
   void _insertBlankRows(const int);

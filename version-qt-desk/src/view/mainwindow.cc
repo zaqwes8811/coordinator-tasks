@@ -74,7 +74,7 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   // pack all
   QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
 
-  QHBoxLayout* actions_layout = new QHBoxLayout;
+  QVBoxLayout* actions_layout = new QVBoxLayout;
   actions_layout->addWidget(mark_done);
   actions_layout->addWidget(fake);
 
@@ -97,7 +97,7 @@ Engine::~Engine()
 
 void Engine::filterSortByDecPriority(int idx) {
   if (idx == values::TaskViewTableIdx::kPriority) {
-    // TODO: set filter сортируем
+    // TODO: set filter
     //_model_ptr->stable_sort_decrease_priority();
   }
 }
@@ -128,28 +128,20 @@ void Engine::redraw() {
 }
 
 void Engine::slotUpdateRow() {
-  //if (!_grid_ptr->hasSelection())
-  //  return;
-
   QModelIndexList indexList = _grid_ptr->selectionModel()->selectedIndexes();
 
   // Должна быть выбрана одна ячейка
   if (indexList.empty() || (indexList.size() != 1))
     return;
 
-  QModelIndex idx = indexList.at(0);
+  const size_t kRow = indexList.at(0).row();
 
-  const size_t kRow = idx.row();
-
-  if (kRow >= get_model_data().size())  // FIXME: BAD!!! slow
+  if (kRow >= get_model_data().size())
     return;
 
   // Обновляем ячейку
-  int id = _grid_ptr->getId(kRow);
-  Tasks::value_type e(get_elem_by_id(id));
-  e->set_is_done(true);
-
-  _model_ptr->update(e);
+  _grid_ptr->mark_done(kRow);
+  _model_ptr->update(_grid_ptr->get_elem(kRow));
 
   ::renders::render_task_store(std::cout, *_model_ptr);
 }
@@ -174,9 +166,7 @@ void Engine::slotRowIsChanged(QTableWidgetItem* elem)
       } else {
         // Одна из видимых ячеек была обновлена
         values::ImmutableTask v = _grid_ptr->get_elem(kRow);
-        Tasks::value_type e = entities::TaskEntity::create(v);
-        assert(kId == e->get_primary_key());
-        _model_ptr->update(e);
+        _model_ptr->update(v);
       }
     }
   } catch (...) {

@@ -38,6 +38,7 @@ public:
   static boost::shared_ptr<TaskEntity> create(const values::ImmutableTask& v);
   values::ImmutableTask make_value() const;
   //static values::ImmutableTask make_value(boost::shared_ptr<TaskEntity> e) const;
+  void assign(values::ImmutableTask& v);
 
   // accessors
   int get_primary_key() const;

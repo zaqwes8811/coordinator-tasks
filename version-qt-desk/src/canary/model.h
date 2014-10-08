@@ -49,10 +49,7 @@ public:
   void append_value(values::ImmutableTask e);  // overloading trouble in for_each
 
   // элемент был сохранен и есть в mirror
-  void update(entities::Tasks::value_type e);
   void update(values::ImmutableTask e);
-
-
 
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
   //   shared объекты превращаются в глобальные переменные.
@@ -76,6 +73,9 @@ private:
   boost::shared_ptr<pq_dal::PQConnectionPool> pool_;
   boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> observers_;
   //boost::shared_ptr<const Filter> current_filter_;
+
+  entities::Tasks::value_type _get_elem_by_id(const int id);
+  void update(entities::Tasks::value_type e);
 };
 }
 

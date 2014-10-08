@@ -68,8 +68,8 @@ TEST(AppCore, UpdatePriority) {
     renders::render_task_store(cout, *app_ptr);
 
     // Change priority
-    data[0]->set_priority(10);
-    app_ptr->update(data[0]);
+    //data[0]->set_priority(10);
+    //app_ptr->update(data[0]);
     renders::render_task_store(cout, *app_ptr);
   }
 

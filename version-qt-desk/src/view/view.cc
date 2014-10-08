@@ -81,6 +81,10 @@ int QMyTableView::getId(const int row) const {
   return item(row, values::TaskViewTableIdx::kId)->text().toInt();
 }
 
+void QMyTableView::mark_done(const int row) {
+  item(row, values::TaskViewTableIdx::kDone)->setText(QString::number(!entities::EntitiesStates::kNonDone));
+}
+
 values::ImmutableTask QMyTableView::create(const int row) const {
   QString d(item(row, values::TaskViewTableIdx::kTaskName)->text());
   QString priority(item(row, values::TaskViewTableIdx::kPriority)->text());
