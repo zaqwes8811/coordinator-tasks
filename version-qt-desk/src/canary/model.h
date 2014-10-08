@@ -32,8 +32,9 @@ namespace models
 class Model
    : boost::noncopyable {
 
-  void notify();  // пока пусть побудет закрытой
 public:
+  void notify();  // Нужно было открыть для обновления при семене фильтров
+
   /// create and destory
   static Model* createInHeap(boost::shared_ptr<pq_dal::PQConnectionPool>);
   Model(entities::Tasks _model, pq_dal::PQConnectionPoolPtr _pool);

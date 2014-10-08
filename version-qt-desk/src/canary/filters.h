@@ -32,6 +32,26 @@ public:
 };
 typedef boost::shared_ptr<Filter> FilterPtr;
 
+// сырые указатели лучше не передавать.
+bool operator==(const Filter& lhs, const Filter& rhs);
+bool operator==(FilterPtr lhs, FilterPtr rhs);
+//std::size_t hash_value(FilterPtr b);  // пока страшновато, до конца не понял
+
+struct KeyHasher
+{
+  std::size_t operator()(FilterPtr k) const
+  {
+    using boost::hash;
+    return hash<int>()(k->get_type_id());
+  }
+};
+
+struct KeyEqual {
+    bool operator()(FilterPtr lhs, FilterPtr rhs) const {
+        return lhs == rhs;
+    }
+};
+
 // на входе весь кеш, на выходе результат собственно, может лучше через SQL?
 // Но как легко комбинировать фильтры. Откат к sql может повлиять, а может и нет на архитектуры.
 //
@@ -48,13 +68,14 @@ public:
   entities::Tasks operator()(entities::Tasks e) const;
 
 private:
-  std::list<FilterPtr> l_;
+  //std::list<FilterPtr> l_;
 
   // http://stackoverflow.com/questions/17016175/c-unordered-map-using-a-custom-class-type-as-the-key
   // лучше hash_set, set как-то странно проверяет на равенство
   // можно hash_map, может так и проще, тогда не нужны свои hash and equal
 
-  //boost::unordered_set<FilterPtr, > s_;  // need own hasher
+  // FIXME: можно вообще тупо массив
+  boost::unordered_set<FilterPtr, KeyHasher, KeyEqual> s_;  // need own hasher
 };
 
 class EmptyFilter : public Filter {
@@ -69,9 +90,7 @@ public:
   int get_type_id() const;
 };
 
-// сырые указатели лучше не передавать.
-bool operator==(const Filter& lhs, const Filter& rhs);
-bool operator==(FilterPtr lhs, FilterPtr rhs);
+
 
 }
 

@@ -32,17 +32,25 @@ ChainFilters::ChainFilters() {
 }
 
 void ChainFilters::add(FilterPtr e)
-{ l_.push_back(e); }
+{
+  //l_.push_back(e);
+  s_.insert(e);
+}
 
 // FIXME: как удалить то без RTTI? Список то полиморфный
 void ChainFilters::remove(FilterPtr e)
-{ l_.remove(e); }
+{
+  //l_.remove(e);
+  s_.erase(e);
+}
 
 entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
   entities::Tasks r = e;  // impl. empty filter
 
   // фильтруем
-  for (std::list<FilterPtr>::const_iterator it = l_.begin(); it != l_.end(); ++it) {
+  for (//std::list<FilterPtr>
+       boost::unordered_set<FilterPtr, KeyHasher, KeyEqual>
+       ::const_iterator it = s_.begin(); it != s_.end(); ++it) {
     FilterPtr action = *it;
     r = (*action)(r);
   }
@@ -80,5 +88,10 @@ bool operator==(FilterPtr lhs, FilterPtr rhs) {
   return lhs->get_type_id() == rhs->get_type_id();
 }
 
+std::size_t hash_value(FilterPtr b)
+{
+    boost::hash<int> hasher;
+    return hasher(b->get_type_id());
+}
 
 }  // namespace

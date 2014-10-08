@@ -103,6 +103,9 @@ void Engine::filterSortByDecPriority(int idx) {
   if (idx == values::TaskViewTableIdx::kPriority) {
     filters::FilterPtr f(new filters::SortByPriorityFilter());
     _filters_chain.add(f);
+
+    // нужно обновить вид
+    _model->notify();
   }
 }
 
@@ -114,7 +117,8 @@ void Engine::slotFillFake(bool) {
   Tasks mirror(fake_store::get_all());
 
   // сохраняем все
-  //adobe::for_each(mirror, bind(&Model::append, ref(*_model_ptr), _1));
+  adobe::for_each(mirror, bind(&Model::append, ref(*_model),
+                               bind(&entities::TaskEntity::make_value, _1)));
 
   ::renders::render_task_store(std::cout, *_model);
 }
