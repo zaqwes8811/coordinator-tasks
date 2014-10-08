@@ -53,16 +53,6 @@ Tasks Model::load_all(const std::string& table_name,
   return Tasks(q_live.get_all(*(pool->get())));
 }
 
-void Model::update(Tasks::value_type e) {
-  assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
-  assert(tasks_.end() != adobe::find_if(tasks_, filters::get_check_contained(e->get_primary_key())));
-
-  TaskLifetimeQueries q(tasks_table_name_);
-  q.update(e->make_value(), *(pool_->get()));
-
-  notify();  // FIXME: а нужно ли?
-}
-
 entities::Tasks::value_type Model::_get_elem_by_id(const int id) {
   Tasks::iterator it = adobe::find_if(tasks_, bind(&entities::TaskEntity::get_primary_key, _1));
   assert(it != tasks_.end());
@@ -72,7 +62,14 @@ entities::Tasks::value_type Model::_get_elem_by_id(const int id) {
 void Model::update(values::ImmutableTask e) {
   Tasks::value_type k = _get_elem_by_id(e.id());
   k->assign(e);
-  update(k);
+
+  assert(k->get_primary_key() != EntitiesStates::kInActiveKey);
+  assert(tasks_.end() != adobe::find_if(tasks_, filters::get_check_contained(k->get_primary_key())));
+
+  TaskLifetimeQueries q(tasks_table_name_);
+  q.update(k->make_value(), *(pool_->get()));
+
+  notify();  // FIXME: а нужно ли?
 }
 
 void Model::append_value(ImmutableTask e) {

@@ -75,7 +75,6 @@ private:
   //boost::shared_ptr<const Filter> current_filter_;
 
   entities::Tasks::value_type _get_elem_by_id(const int id);
-  void update(entities::Tasks::value_type e);
 };
 }
 
