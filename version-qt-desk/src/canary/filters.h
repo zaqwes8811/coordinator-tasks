@@ -1,6 +1,12 @@
 // WARNING: danger! всю иерархию фильтров хранить в этой паре файлов! это связано в операцией
 //   сравнения по типу.
 //
+// TROUBLE: фильтры не такие простные штуки
+//
+// http://stackoverflow.com/questions/17016175/c-unordered-map-using-a-custom-class-type-as-the-key
+// лучше hash_set, set как-то странно проверяет на равенство
+// можно hash_map, может так и проще, тогда не нужны свои hash and equal
+
 #ifndef FILTERS_H
 #define FILTERS_H
 
@@ -20,8 +26,6 @@ boost::function1<bool, entities::Tasks::value_type> get_check_contained(const in
 // могли бы вставляться друг в друга
 class Filter {
 public:
-  // typedefs
-
   // ctors/..
   virtual ~Filter() { }
   virtual entities::Tasks operator()(entities::Tasks t) = 0;
@@ -68,13 +72,7 @@ public:
   entities::Tasks operator()(entities::Tasks e) const;
 
 private:
-  //std::list<FilterPtr> l_;
-
-  // http://stackoverflow.com/questions/17016175/c-unordered-map-using-a-custom-class-type-as-the-key
-  // лучше hash_set, set как-то странно проверяет на равенство
-  // можно hash_map, может так и проще, тогда не нужны свои hash and equal
-
-  // FIXME: можно вообще тупо массив
+  // FIXME: можно вообще тупо массив, фильтров все равно не 100500
   boost::unordered_set<FilterPtr, KeyHasher, KeyEqual> s_;  // need own hasher
 };
 
@@ -89,9 +87,6 @@ public:
   entities::Tasks operator()(entities::Tasks e);
   int get_type_id() const;
 };
-
-
-
 }
 
 #endif // FILTERS_H

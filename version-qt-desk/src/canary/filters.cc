@@ -26,30 +26,27 @@ boost::function1<bool, entities::Tasks::value_type> get_check_contained(const in
       bind(&TaskEntity::get_primary_key, _1)) ;
 }
 
-ChainFilters::ChainFilters() {
-  //l_.push_back(make_shared<EmptyFilter>(EmptyFilter()));  // все же не нужно
+boost::function1<bool, entities::Tasks::value_type> get_is_non_done() {
+  return bind(
+      bind(equal_to<int>(), _1, entities::EntitiesStates::kNonDone),
+      bind(&TaskEntity::get_is_done, _1)) ;
 }
 
+ChainFilters::ChainFilters() { }
+
 void ChainFilters::add(FilterPtr e)
-{
-  //l_.push_back(e);
-  s_.insert(e);
-}
+{ s_.insert(e); }
 
 // FIXME: как удалить то без RTTI? Список то полиморфный
 void ChainFilters::remove(FilterPtr e)
-{
-  //l_.remove(e);
-  s_.erase(e);
-}
+{ s_.erase(e); }
 
 entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
   entities::Tasks r = e;  // impl. empty filter
 
   // фильтруем
-  for (//std::list<FilterPtr>
-       boost::unordered_set<FilterPtr, KeyHasher, KeyEqual>
-       ::const_iterator it = s_.begin(); it != s_.end(); ++it) {
+  for (boost::unordered_set<FilterPtr, KeyHasher, KeyEqual>
+          ::const_iterator it = s_.begin(); it != s_.end(); ++it) {
     FilterPtr action = *it;
     r = (*action)(r);
   }
@@ -59,8 +56,8 @@ entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
 
 entities::Tasks DoneFilter::operator()(entities::Tasks e)
 {
-  //entities::Tasks::iterator it = adobe::stable_partition(e, bind(, _1));
-  return e;
+  entities::Tasks::iterator it = adobe::stable_partition(e, get_is_non_done());
+  return entities::Tasks(e.begin(), it);
 }
 
 int DoneFilter::get_type_id() const

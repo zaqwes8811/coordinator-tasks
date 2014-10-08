@@ -76,9 +76,11 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   connect(_table, SIGNAL(itemChanged(QTableWidgetItem*)),
           this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
+  QCheckBox* non_done = new QCheckBox("Non Done", this);
   QCheckBox* done = new QCheckBox("Done", this);
 
-  connect(done, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffDone(int)));
+  connect(non_done, SIGNAL(stateChanged(int)),
+          this, SLOT(filterOnOffDone(int)));
 
   // pack all
   QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
@@ -86,13 +88,12 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   QVBoxLayout* actions_layout = new QVBoxLayout;
   actions_layout->addWidget(mark_done);
   actions_layout->addWidget(fake);
+  actions_layout->addWidget(non_done);
   actions_layout->addWidget(done);
 
   // добавляем чекбоксы
   mainLayout->addLayout(actions_layout);
   mainLayout->addWidget(_table);
-
-
 
   connect(_table->horizontalHeader(), SIGNAL(sectionClicked(int)),
           this, SLOT(filterSortByDecPriority(int)));
@@ -101,15 +102,19 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 }
 
 void Engine::filterOnOffDone(int state) {
+  filters::FilterPtr f(new filters::DoneFilter());
   if (Qt::Unchecked == state) {
     // del filter
-    return;
+    _filters_chain.remove(f);
+    //return;
   }
 
   if (Qt::Checked == state) {
     // add filter
-    return;
+      _filters_chain.add(f);
+    //return;
   }
+  redraw();
 }
 
 Engine::~Engine()

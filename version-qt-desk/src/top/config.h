@@ -7,5 +7,7 @@ const char* const kTaskTableNameRef = "task_fake_entity";
 const int kAddedBlankLines = 10;
 }
 
+#define G_I_WANT_USE_IT
+
 #endif   
 // TOP_CONFIG_H_
