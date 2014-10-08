@@ -78,7 +78,7 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 
   QCheckBox* done = new QCheckBox("Done", this);
 
-  connect(done, SIGNAL(stateChanged(int)), this, SLOT(filterOnDone(int)));
+  connect(done, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffDone(int)));
 
   // pack all
   QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
@@ -89,9 +89,9 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   actions_layout->addWidget(done);
 
   // добавляем чекбоксы
-
-  mainLayout->addWidget(_table);
   mainLayout->addLayout(actions_layout);
+  mainLayout->addWidget(_table);
+
 
 
   connect(_table->horizontalHeader(), SIGNAL(sectionClicked(int)),
@@ -100,7 +100,7 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   redraw();
 }
 
-void Engine::filterOnDone(int state) {
+void Engine::filterOnOffDone(int state) {
   if (Qt::Unchecked == state) {
     // del filter
     return;

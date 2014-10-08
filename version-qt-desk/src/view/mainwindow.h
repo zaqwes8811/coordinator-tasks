@@ -32,7 +32,7 @@ private slots:
 
   // filters chain:
   void filterSortByDecPriority(int index);
-  void filterOnDone(int state);
+  void filterOnOffDone(int state);
 
   // other actions:
   // FIXME: а есть элемент не из той таблицы?
