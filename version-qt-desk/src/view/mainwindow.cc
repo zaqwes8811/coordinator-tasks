@@ -69,7 +69,7 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   QPushButton* mark_done = new QPushButton("Mark done", this);
   QPushButton* fake = new QPushButton("Fake", this);
   connect(fake, SIGNAL(clicked(bool)), this, SLOT(slotFillFake(bool)));
-  connect(mark_done, SIGNAL(clicked()), this, SLOT(slotUpdateRow()));
+  connect(mark_done, SIGNAL(clicked()), this, SLOT(slotMarkDone()));
 
   _table = new QMyTableView(this);
   connect(_table, SIGNAL(itemChanged(QTableWidgetItem*)),
@@ -107,10 +107,8 @@ void Engine::filterSortByDecPriority(int idx) {
 }
 
 entities::Tasks Engine::get_model_data() const {
-  // FIXME: filtration
-
-
-  return _model->get_current_model_data();
+  //_filters_chain
+  return (_model->get_current_model_data());
 }
 
 void Engine::slotFillFake(bool) {
@@ -131,7 +129,7 @@ void Engine::redraw() {
   _table->draw(records);
 }
 
-void Engine::slotUpdateRow() {
+void Engine::slotMarkDone() {
   QModelIndexList indexList = _table->selectionModel()->selectedIndexes();
 
   // Должна быть выбрана одна ячейка

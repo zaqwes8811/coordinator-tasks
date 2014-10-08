@@ -40,6 +40,12 @@ void ChainFilters::remove(FilterPtr e)
 entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
   entities::Tasks r = e;  // impl. empty filter
 
+  // фильтруем
+  for (std::list<FilterPtr>::const_iterator it = l_.begin(); it != l_.end(); ++it) {
+    FilterPtr action = *it;
+    r = (*action)(r);
+  }
+
   return r;
 }
 

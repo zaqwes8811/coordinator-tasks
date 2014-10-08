@@ -55,20 +55,21 @@ public:
   entities::Tasks get_current_model_data();
 
   void clear_store();
+
 private:
   template <typename U>
   friend void renders::render_task_store(std::ostream& o, const U& a);
   void draw_task_store(std::ostream& o) const;
 
   // persist filters:
-  static entities::Tasks load_all(const std::string& table_name,
-                                     boost::shared_ptr<pq_dal::PQConnectionPool> pool);
+  static entities::Tasks load_all(
+          const std::string& table_name,
+          boost::shared_ptr<pq_dal::PQConnectionPool> pool);
 
   std::string tasks_table_name_;
   entities::Tasks tasks_;  //
 
   // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
-
   boost::shared_ptr<pq_dal::PQConnectionPool> pool_;
   boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> observers_;
   entities::Tasks::value_type _get_elem_by_id(const int id);

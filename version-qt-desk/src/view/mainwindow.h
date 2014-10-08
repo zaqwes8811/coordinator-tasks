@@ -5,6 +5,7 @@
 
 #include "canary/model.h"
 #include "view/view.h"
+#include "canary/filters.h"
 
 #include <QMainWindow>
 #include <QTableWidget>
@@ -37,7 +38,7 @@ private slots:
   // FIXME: а место ли этому слоту здесь?
   // FIXME: на один сигнал можно подвесить несколько слотов
   void slotRowIsChanged(QTableWidgetItem* item);
-  void slotUpdateRow();
+  void slotMarkDone();
   void slotFillFake(bool);
 
   // FIXME: DANGER!! при реализации фильтров сломает логику!!!
@@ -54,8 +55,7 @@ private:
   QMyTableView* _table;
   models::Model* const _model;
 
-  //boost::shared_ptr<const Filter> current_filter_;
-
+  filters::ChainFilters _filters_chain;
 };
 
 #endif // MAINWINDOW_H

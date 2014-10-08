@@ -94,9 +94,9 @@ values::ImmutableTask QMyTableView::get_elem(const int row) const {
   assert(row < rowCount());
 
   int id = getId(row);
-  QString d(item(row, values::TaskViewTableIdx::kTaskName)->text());
+  std::string d(item(row, values::TaskViewTableIdx::kTaskName)->text().toUtf8().constData());
   int p(item(row, values::TaskViewTableIdx::kPriority)->text().toInt());
-  bool done = item(row, values::TaskViewTableIdx::kPriority)->text().toInt();
+  bool done = item(row, values::TaskViewTableIdx::kDone)->text().toInt();
 
-  return values::ImmutableTask::create(id, d.toUtf8().constData(), p, done);
+  return values::ImmutableTask::create(id, d, p, done);
 }
