@@ -50,7 +50,7 @@ private:
 class TaskLifetimeQueries : public boost::noncopyable {
 public:
   explicit TaskLifetimeQueries(const std::string& table_name)
-        : task_table_name_(table_name) {}
+        : task_table_name_(table_name) { }
 
   // FIXME: как то объединить create, update, etc. в persist
 
@@ -59,11 +59,13 @@ public:
   // by value
   // На групповую вставку могут быть ограничения, но в данной задаче
   //   пока не нужно, если не нужно будет что-то куда-то автоматически переливать.
-  void create(entities::Tasks::value_type::element_type& task, pqxx::connection& C);
+  //
+  // return id
+  int create(entities::Tasks::value_type::element_type& task, pqxx::connection& C);
   void create(entities::Tasks::value_type task, pqxx::connection& C);
 
   // FIXME: с умными указателями возникают проблемы с константростью!
-  void update(entities::Tasks::value_type e, pqxx::connection& C);
+  void update(const entities::Tasks::value_type e, pqxx::connection& C);
 
   entities::Tasks get_all(pqxx::connection& C) const;
   // get_all

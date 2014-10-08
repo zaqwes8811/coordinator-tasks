@@ -28,6 +28,7 @@ namespace models
 // FIXME: логичекая проблема с фильтрами - как быть, если каждый раз не перезагужать кеш?
 //   похоже есть зависимость от текущего фильтра. А если отред. и теперь в фильтр не попадает?
 //
+// FIXME: утекают хендлы!! make ImmutableTask. причем утекают как на нижние уровни, так и на верхние
 class Model
    : boost::noncopyable {
 
@@ -46,7 +47,7 @@ public:
   // наверное лучше сразу сохранить
   // добавлять все равно буду скорее всего по-одному
   void append(entities::Tasks::value_type e);
-  void append_value(values::TaskValue e);  // overloading trouble in for_each
+  void append_value(values::ImmutableTask e);  // overloading trouble in for_each
 
   // элемент был сохранен и есть в mirror
   void update(entities::Tasks::value_type e);

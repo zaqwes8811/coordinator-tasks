@@ -9,7 +9,7 @@
 #include <stdexcept>
 
 using values::TaskViewTableIdx;
-using values::TaskValue;
+using values::ImmutableTask;
 using entities::Tasks;
 
 QMyTableView::QMyTableView(QWidget *parent)
@@ -41,7 +41,7 @@ bool QMyTableView::isEdited() const {
  else return false;
 }
 
-values::TaskValue QMyTableView::create(const int row) const {
+values::ImmutableTask QMyTableView::create(const int row) const {
   QString d(item(row, values::TaskViewTableIdx::kTaskName)->text());
   QString priority(item(row, values::TaskViewTableIdx::kPriority)->text());
 
@@ -53,7 +53,7 @@ values::TaskValue QMyTableView::create(const int row) const {
     p = priority.toInt();
 
   // FIXME: no injection bad!
-  return TaskValue(TaskValue::create(d.toUtf8().constData(), p));
+  return ImmutableTask(ImmutableTask::create(d.toUtf8().constData(), p));
 }
 
 void QMyTableView::_insertBlankRows(const int end) {

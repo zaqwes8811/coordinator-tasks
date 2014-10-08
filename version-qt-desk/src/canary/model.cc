@@ -16,7 +16,7 @@ using namespace pq_dal;
 using namespace entities;
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
-  using values::TaskValue;
+  using values::ImmutableTask;
 
 using std::cout;
 
@@ -63,7 +63,7 @@ void Model::update(Tasks::value_type e) {
   notify();  // FIXME: а нужно ли?
 }
 
-void Model::append_value(TaskValue e) {
+void Model::append_value(ImmutableTask e) {
   assert(e.id == EntitiesStates::kInActiveKey);
 
   Tasks::value_type h(new Tasks::value_type::element_type());

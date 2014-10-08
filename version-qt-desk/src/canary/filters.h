@@ -8,6 +8,8 @@
 
 #include <boost/function.hpp>
 
+#include <list>
+
 namespace filters
 {
 
@@ -28,6 +30,24 @@ public:
   virtual int get_type_id() const = 0;
 };
 typedef boost::shared_ptr<Filter> FilterPtr;
+
+// на входе весь кеш, на выходе результат собственно, может лучше через SQL?
+// Но как легко комбинировать фильтры. Откат к sql может повлиять, а может и нет на архитектуры.
+//
+// зацепаемся за типы? может еще можно как-то?
+class ChainFilters {
+public:
+  ChainFilters();
+  void add(FilterPtr e);
+
+  // FIXME: как удалить то без RTTI? Список то полиморфный
+  void remove(FilterPtr e);
+
+  entities::Tasks operator()(entities::Tasks e) const;
+
+private:
+  std::list<FilterPtr> l_;
+};
 
 }
 

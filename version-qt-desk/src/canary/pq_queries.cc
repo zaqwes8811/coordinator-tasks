@@ -91,7 +91,7 @@ void TaskTableQueries::drop(connection& C) {
   pq_lower_level::rm_table(C, table_name_);
 }
 
-void TaskLifetimeQueries::update(entities::Tasks::value_type e, pqxx::connection& C) {
+void TaskLifetimeQueries::update(const entities::Tasks::value_type e, pqxx::connection& C) {
   assert(e->get_primary_key() != EntitiesStates::kInActiveKey);
   string done("false");
   if (e->get_is_done())
@@ -114,7 +114,7 @@ void TaskLifetimeQueries::create(entities::Tasks::value_type task, pqxx::connect
   create(*task, C);
 }
 
-void TaskLifetimeQueries::create(
+int TaskLifetimeQueries::create(
     entities::Tasks::value_type::element_type& e, connection& conn) {
   // нужно получить id
   // http://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
@@ -140,13 +140,14 @@ void TaskLifetimeQueries::create(
 
   assert(new_id != entities::EntitiesStates::kInActiveKey);
   e.set_primary_key_(new_id);
+
+  return new_id;
 }
 
 entities::Tasks TaskLifetimeQueries::_pack(pqxx::result& r) {
   Tasks model;
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
     Tasks::value_type elem = TaskEntity::create("");
-        //Model::value_type::element_type::create(string());
     elem->set_primary_key_(c[TablePositions::kId].as<int>());
     elem->set_task_name(c[TablePositions::kTaskName].as<string>());
     elem->set_priority(c[TablePositions::kPriority].as<int>());

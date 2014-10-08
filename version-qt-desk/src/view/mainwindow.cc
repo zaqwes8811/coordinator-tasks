@@ -37,7 +37,7 @@
 using models::Model;
 using entities::Tasks;  // not work
 using values::TaskViewTableIdx;
-using values::TaskValue;
+using values::ImmutableTask;
 using entities::EntitiesStates;
 
 using boost::ref;
@@ -164,7 +164,7 @@ void Engine::slotRowIsChanged(QTableWidgetItem* elem)
 
       if (kId == EntitiesStates::kInActiveKey) {
         // создаем новую запись
-        TaskValue v = _grid_ptr->create(kRow);  // may throw
+        ImmutableTask v = _grid_ptr->create(kRow);  // may throw
         _model_ptr->append_value(v);
       } else {
         // просто обновляем

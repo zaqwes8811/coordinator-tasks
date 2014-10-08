@@ -28,7 +28,7 @@ public:
   void clearList();
   void update(entities::Tasks tasks);
   void update(const int row, entities::Tasks::value_type e);
-  values::TaskValue create(const int row) const;
+  values::ImmutableTask create(const int row) const;
   int getId(const int row) const;
 
 private:
