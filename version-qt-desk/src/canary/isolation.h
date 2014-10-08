@@ -28,6 +28,9 @@ public:
 private:
   virtual void update_() = 0;
 };
+
+typedef boost::shared_ptr<isolation::ModelListenerMediatorDynPolym> ModelListenerPtr;
+
 }
 
 #endif // ISOLATION_H

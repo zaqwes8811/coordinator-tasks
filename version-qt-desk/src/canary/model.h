@@ -41,7 +41,7 @@ public:
 
   // other
   // FIXME: да, лучше передать в конструкторе, но при конструировании возникает цикл.
-  void set_listener(boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> iso);
+  void set_listener(isolation::ModelListenerPtr iso);
 
   // наверное лучше сразу сохранить
   // добавлять все равно буду скорее всего по-одному
@@ -51,6 +51,7 @@ public:
   // элемент был сохранен и есть в mirror
   void update(entities::Tasks::value_type e);
 
+  // FIXME: DANGER!! при реализации фильтров сломает логику!!!
   // Жесткая привязка к списку и к цепочке фильтров
   entities::Tasks::value_type get_elem_by_pos(const int pos);
 

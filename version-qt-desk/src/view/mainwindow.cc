@@ -120,7 +120,7 @@ void Engine::redraw() {
   //
   _grid_ptr->clearList();
   Tasks records = get_model_data();  // may throw
-  _grid_ptr->update(records);
+  _grid_ptr->draw(records);
 }
 
 void Engine::slotUpdateRow() {
@@ -166,13 +166,12 @@ void Engine::slotRowIsChanged(QTableWidgetItem* elem)
         // создаем новую запись
         ImmutableTask v = _grid_ptr->create(kRow);  // may throw
         _model_ptr->append_value(v);
+
       } else {
         // Одна из видимых ячеек была обновлена
-        Tasks::value_type e(_model_ptr->get_elem_by_pos(kRow));
-
+        values::ImmutableTask v = _grid_ptr->get_elem(kRow);
+        Tasks::value_type e = entities::TaskEntity::create(v);
         assert(kId == e->get_primary_key());
-
-        _grid_ptr->get_elem(kRow, e);
         _model_ptr->update(e);
       }
     }

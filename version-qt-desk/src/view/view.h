@@ -26,12 +26,9 @@ public:
 
   // очищает список задач
   void clearList();
-  void update(entities::Tasks tasks);
+  void draw(entities::Tasks tasks);
 
-  values::ImmutableTask get_elem(const int row, const entities::Tasks::value_type e);
-
-  //void update(const int row, entities::Tasks::value_type e);
-
+  values::ImmutableTask get_elem(const int row) const;
   values::ImmutableTask create(const int row) const;
   int getId(const int row) const;
 

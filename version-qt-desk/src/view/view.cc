@@ -24,7 +24,9 @@ QMyTableView::QMyTableView(QWidget *parent)
 
   setColumnCount(column_names.size());
   setHorizontalHeaderLabels(column_names);
-  setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
+
+  //setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
+  //setColumnHidden(values::TaskViewTableIdx::kDone, true);
 
   // Style
   QHeaderView *v = verticalHeader();
@@ -39,21 +41,6 @@ QMyTableView::QMyTableView(QWidget *parent)
 bool QMyTableView::isEdited() const {
  if (state() == QAbstractItemView::EditingState) return true;
  else return false;
-}
-
-values::ImmutableTask QMyTableView::create(const int row) const {
-  QString d(item(row, values::TaskViewTableIdx::kTaskName)->text());
-  QString priority(item(row, values::TaskViewTableIdx::kPriority)->text());
-
-  if (d.isEmpty() && priority.isEmpty())
-    throw std::logic_error("Record is empty");  // FIXME: need think about error handling system
-
-  int p(entities::EntitiesStates::kDefaultPriority);
-  if (!priority.isEmpty())
-    p = priority.toInt();
-
-  // FIXME: no injection bad!
-  return ImmutableTask(ImmutableTask::create(d.toUtf8().constData(), p));
 }
 
 void QMyTableView::_insertBlankRows(const int end) {
@@ -73,7 +60,7 @@ void QMyTableView::clearList() {
     removeRow(i);
 }
 
-void QMyTableView::update(entities::Tasks tasks) {
+void QMyTableView::draw(entities::Tasks tasks) {
   // fill table
   setRowCount(tasks.size() + models::kAddedBlankLines);
 
@@ -82,6 +69,7 @@ void QMyTableView::update(entities::Tasks tasks) {
     setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number((*record)->get_primary_key())));
     setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem(QString::fromUtf8((*record)->get_task_name().c_str())));
     setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem(QString::number((*record)->get_priority())));
+    setItem(row, values::TaskViewTableIdx::kDone, new QTableWidgetItem(QString::number((*record)->get_is_done())));
     ++row;
   }
 
@@ -93,16 +81,28 @@ int QMyTableView::getId(const int row) const {
   return item(row, values::TaskViewTableIdx::kId)->text().toInt();
 }
 
-values::ImmutableTask QMyTableView::get_elem(const int row, const entities::Tasks::value_type e) {
+values::ImmutableTask QMyTableView::create(const int row) const {
+  QString d(item(row, values::TaskViewTableIdx::kTaskName)->text());
+  QString priority(item(row, values::TaskViewTableIdx::kPriority)->text());
+
+  if (d.isEmpty() && priority.isEmpty())
+    throw std::logic_error("Record is empty");  // FIXME: need think about error handling system
+
+  int p(entities::EntitiesStates::kDefaultPriority);
+  if (!priority.isEmpty())
+    p = priority.toInt();
+
+  // FIXME: no injection bad!
+  return ImmutableTask::create(d.toUtf8().constData(), p);
+}
+
+values::ImmutableTask QMyTableView::get_elem(const int row) const {
   assert(row < rowCount());
 
-  // id
+  int id = getId(row);
   QString d(item(row, values::TaskViewTableIdx::kTaskName)->text());
   int p(item(row, values::TaskViewTableIdx::kPriority)->text().toInt());
-  // done
+  bool done = item(row, values::TaskViewTableIdx::kPriority)->text().toInt();
 
-  e->set_priority(p);
-  e->set_task_name(d.toUtf8().constData());
-
-  return values::ImmutableTask::create(d.toUtf8().constData(), p);
+  return values::ImmutableTask::create(id, d.toUtf8().constData(), p, done);
 }

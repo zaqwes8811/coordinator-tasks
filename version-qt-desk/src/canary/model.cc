@@ -72,28 +72,32 @@ void Model::append_value(ImmutableTask e) {
   append(h);
 }
 
+
+// даже если исключение брошено при
+//   сохранении, а элемент добавлен, то можно потом сохр.
+// но! лучше сохранить! так мы копим несохраненные данные!
+//
+// нет, лучше транзакцией и по много не сохранять.
+//   будет зависеть от производительности.
+//   но лучше работать с
+//
+// add to container
+//
+// FIXME: может лучше исключение?
 void Model::append(Tasks::value_type e) {
-  // даже если исключение брошено при
-  //   сохранении, а элемент добавлен, то можно потом сохр.
-  // но! лучше сохранить! так мы копим несохраненные данные!
-  //
-  // нет, лучше транзакцией и по много не сохранять.
-  //   будет зависеть от производительности.
-  //   но лучше работать с
-  //
-  // add to container
-  //
-  // FIXME: может лучше исключение?
   assert(e->get_primary_key() == EntitiesStates::kInActiveKey);
 
   ScopeGuard _ = MakeObjGuard(tasks_, &Tasks::pop_back);
+
+  // FIXME: а ведь порядок операций важен, и откатить проще операцию в памяти, чем в базе данных
   tasks_.push_back(e);
 
   // persist full container
   TaskLifetimeQueries q(tasks_table_name_);
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
-  q.create(e->make_value(), *(pool_->get()));
+  ImmutableTask r = q.create(e->make_value(), *(pool_->get()));
+  e->set_primary_key(r.id());  // а ведь придется оставить!!
 
   notify();
   _.Dismiss();
