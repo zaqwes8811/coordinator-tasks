@@ -10,6 +10,10 @@
 //vector<QTableWidget*> tmp;
 //tmp.push_back();  // если будет исключение, то будет утечка памяти
 // мы во владение не передали
+//
+// надежнее всего получить ID строки, индексу я не верю.
+//   может через downcasting? RTTI in Qt кажется отключено
+// http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
 
 #include "top/config.h"
 
@@ -50,7 +54,7 @@ using std::vector;
 Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    _model_ptr(model_ptr)
+    _model(model_ptr)
 {
   ui->setupUi(this);
 
@@ -67,8 +71,8 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   connect(fake, SIGNAL(clicked(bool)), this, SLOT(slotFillFake(bool)));
   connect(mark_done, SIGNAL(clicked()), this, SLOT(slotUpdateRow()));
 
-  _grid_ptr = new QMyTableView(this);
-  connect(_grid_ptr, SIGNAL(itemChanged(QTableWidgetItem*)),
+  _table = new QMyTableView(this);
+  connect(_table, SIGNAL(itemChanged(QTableWidgetItem*)),
           this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
   // pack all
@@ -80,11 +84,11 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 
   // добавляем чекбоксы
 
-  mainLayout->addWidget(_grid_ptr);
+  mainLayout->addWidget(_table);
   mainLayout->addLayout(actions_layout);
 
 
-  connect(_grid_ptr->horizontalHeader(), SIGNAL(sectionClicked(int)),
+  connect(_table->horizontalHeader(), SIGNAL(sectionClicked(int)),
           this, SLOT(filterSortByDecPriority(int)));
 
   redraw();
@@ -106,72 +110,59 @@ entities::Tasks Engine::get_model_data() const {
   // FIXME: filtration
 
 
-  return _model_ptr->get_current_model_data();
+  return _model->get_current_model_data();
 }
 
 void Engine::slotFillFake(bool) {
   Tasks mirror(fake_store::get_all());
 
   // сохраняем все
-  adobe::for_each(mirror, bind(&Model::append, ref(*_model_ptr), _1));
+  //adobe::for_each(mirror, bind(&Model::append, ref(*_model_ptr), _1));
 
-  ::renders::render_task_store(std::cout, *_model_ptr);
+  ::renders::render_task_store(std::cout, *_model);
 }
 
 void Engine::redraw() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   // FIXME: сбивает выбранную позицию
   //
-  _grid_ptr->clearList();
+  _table->clearList();
   Tasks records = get_model_data();  // may throw
-  _grid_ptr->draw(records);
+  _table->draw(records);
 }
 
 void Engine::slotUpdateRow() {
-  QModelIndexList indexList = _grid_ptr->selectionModel()->selectedIndexes();
+  QModelIndexList indexList = _table->selectionModel()->selectedIndexes();
 
   // Должна быть выбрана одна ячейка
   if (indexList.empty() || (indexList.size() != 1))
     return;
 
-  const size_t kRow = indexList.at(0).row();
+  const size_t row = indexList.at(values::TaskViewTableIdx::kId).row();
 
-  if (kRow >= get_model_data().size())
+  if (row >= get_model_data().size())
     return;
 
   // Обновляем ячейку
-  _grid_ptr->mark_done(kRow);
-  _model_ptr->update(_grid_ptr->get_elem(kRow));
-
-  ::renders::render_task_store(std::cout, *_model_ptr);
+  _table->markDone(row);  // no throw
+  values::ImmutableTask t = _table->get_elem(row);
+  _model->update(t);  // FIXME: may throw
 }
 
-void Engine::slotRowIsChanged(QTableWidgetItem* elem)
+void Engine::slotRowIsChanged(QTableWidgetItem* widget)
 {
+  // FIXME: проблема!! изменения любые! может зациклить
   try {
-    // FIXME: проблема!! изменения любые! может зациклить
     // FIXME: а такая вот комбинация надежно то работает?
-    if (_grid_ptr->isEdited()) {
-      const int kRow = elem->row();
-
-      // надежнее всего получить ID строки, индексу я не верю.
-      //   может через downcasting? RTTI in Qt кажется отключено
-      // http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
-      const int kId = _grid_ptr->getId(kRow);
-
-      if (kId == EntitiesStates::kInActiveKey) {
-        // создаем новую запись
-        ImmutableTask v = _grid_ptr->create(kRow);  // may throw
-        _model_ptr->append_value(v);
+    if (_table->isEdited()) {
+      const int row = widget->row();
+      values::ImmutableTask v = _table->get_elem(row);
+      if (_table->isSaved(row)) {
+        // Cоздаем новую запись
+        _model->update(v);
       } else {
-
-
         // Одна из видимых ячеек была обновлена
-        values::ImmutableTask v = _grid_ptr->get_elem(kRow);
-        _model_ptr->update(v);
-
-
-
+        _model->append(v);
       }
     }
   } catch (...) {

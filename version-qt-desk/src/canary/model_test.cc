@@ -40,7 +40,7 @@ TEST(AppCore, Create) {
     Tasks data = fake_store::get_all();
 
     // как добавить пачкой?
-    std::for_each(data.begin(), data.end(), bind(&Model::append, ref(*app_ptr), _1));
+    //std::for_each(data.begin(), data.end(), bind(&Model::_append, ref(*app_ptr), _1));
 
     //renders::render_task_store(cout, *(app_ptr.get()));
   }
@@ -64,7 +64,7 @@ TEST(AppCore, UpdatePriority) {
 
     // добавляем записи
     Tasks data = fake_store::get_all();
-    adobe::for_each(data, bind(&Model::append, ref(*app_ptr), _1));
+    //adobe::for_each(data, bind(&Model::_append, ref(*app_ptr), _1));
     renders::render_task_store(cout, *app_ptr);
 
     // Change priority

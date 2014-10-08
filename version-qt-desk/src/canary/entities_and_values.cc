@@ -29,7 +29,7 @@ boost::shared_ptr<TaskEntity> TaskEntity::create(const values::ImmutableTask& v)
   return tmp;
 }
 
-void TaskEntity::assign(values::ImmutableTask& v) {
+void TaskEntity::assign(const values::ImmutableTask& v) {
   id_ = v.id();
   task_name_ = *v.description();
   priority_ = v.priority();

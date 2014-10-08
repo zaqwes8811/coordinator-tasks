@@ -45,11 +45,10 @@ public:
 
   // наверное лучше сразу сохранить
   // добавлять все равно буду скорее всего по-одному
-  void append(entities::Tasks::value_type e);
-  void append_value(values::ImmutableTask e);  // overloading trouble in for_each
+  void append(const values::ImmutableTask& e);  // overloading trouble in for_each
 
-  // элемент был сохранен и есть в mirror
-  void update(values::ImmutableTask e);
+  // Precond: элемент был сохранен
+  void update(const values::ImmutableTask& e);
 
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
   //   shared объекты превращаются в глобальные переменные.
@@ -72,8 +71,6 @@ private:
 
   boost::shared_ptr<pq_dal::PQConnectionPool> pool_;
   boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> observers_;
-  //boost::shared_ptr<const Filter> current_filter_;
-
   entities::Tasks::value_type _get_elem_by_id(const int id);
 };
 }

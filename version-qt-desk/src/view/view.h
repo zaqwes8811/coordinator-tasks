@@ -29,9 +29,9 @@ public:
   void draw(entities::Tasks tasks);
 
   values::ImmutableTask get_elem(const int row) const;
-  values::ImmutableTask create(const int row) const;
   int getId(const int row) const;
-  void mark_done(const int row);
+  bool isSaved(const int row) const;
+  void markDone(const int row);
 
 private:
   void _insertBlankRows(const int);

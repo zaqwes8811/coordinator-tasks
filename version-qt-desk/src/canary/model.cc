@@ -1,3 +1,15 @@
+// даже если исключение брошено при
+//   сохранении, а элемент добавлен, то можно потом сохр.
+// но! лучше сохранить! так мы копим несохраненные данные!
+//
+// нет, лучше транзакцией и по много не сохранять.
+//   будет зависеть от производительности.
+//   но лучше работать с
+//
+// add to container
+//
+// FIXME: может лучше исключение?
+
 #include "top/config.h"
 
 #include "canary/model.h"
@@ -30,8 +42,6 @@ Model* Model::createInHeap(
   q.createIfNotExist(*(pool->get()));
 
   Tasks t = load_all(models::kTaskTableNameRef, pool);
-
-  // build
   return new Model(t, pool);
 }
 
@@ -59,12 +69,9 @@ entities::Tasks::value_type Model::_get_elem_by_id(const int id) {
   return *it;
 }
 
-void Model::update(values::ImmutableTask e) {
+void Model::update(const values::ImmutableTask& e) {
   Tasks::value_type k = _get_elem_by_id(e.id());
   k->assign(e);
-
-  assert(k->get_primary_key() != EntitiesStates::kInActiveKey);
-  assert(tasks_.end() != adobe::find_if(tasks_, filters::get_check_contained(k->get_primary_key())));
 
   TaskLifetimeQueries q(tasks_table_name_);
   q.update(k->make_value(), *(pool_->get()));
@@ -72,29 +79,11 @@ void Model::update(values::ImmutableTask e) {
   notify();  // FIXME: а нужно ли?
 }
 
-void Model::append_value(ImmutableTask e) {
-  assert(e.id() == EntitiesStates::kInActiveKey);
+void Model::append(const ImmutableTask& v) {
+  assert(v.id() == EntitiesStates::kInActiveKey);
 
-  Tasks::value_type h(new Tasks::value_type::element_type());
-  h->set_task_name(*e.description());
-  h->set_priority(e.priority());
-  append(h);
-}
-
-
-// даже если исключение брошено при
-//   сохранении, а элемент добавлен, то можно потом сохр.
-// но! лучше сохранить! так мы копим несохраненные данные!
-//
-// нет, лучше транзакцией и по много не сохранять.
-//   будет зависеть от производительности.
-//   но лучше работать с
-//
-// add to container
-//
-// FIXME: может лучше исключение?
-void Model::append(Tasks::value_type e) {
-  assert(e->get_primary_key() == EntitiesStates::kInActiveKey);
+  Tasks::value_type e(new Tasks::value_type::element_type());
+  e->assign(v);
 
   ScopeGuard _ = MakeObjGuard(tasks_, &Tasks::pop_back);
 

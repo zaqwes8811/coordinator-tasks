@@ -47,9 +47,10 @@ void QMyTableView::_insertBlankRows(const int end) {
   // вставляем еще несколько рядов
   for (int row = end; row < end+models::kAddedBlankLines; ++row) {
       setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey)));
-      setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem);
-      setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem);
-      setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem(QString::number(entities::EntitiesStates::kNonDone)));
+      setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem(QString()));
+      setItem(row, values::TaskViewTableIdx::kPriority,
+              new QTableWidgetItem(QString::number(entities::EntitiesStates::kDefaultPriority)));
+      setItem(row, values::TaskViewTableIdx::kDone, new QTableWidgetItem(QString::number(entities::EntitiesStates::kNonDone)));
   }
 }
 
@@ -81,23 +82,12 @@ int QMyTableView::getId(const int row) const {
   return item(row, values::TaskViewTableIdx::kId)->text().toInt();
 }
 
-void QMyTableView::mark_done(const int row) {
+void QMyTableView::markDone(const int row) {
   item(row, values::TaskViewTableIdx::kDone)->setText(QString::number(!entities::EntitiesStates::kNonDone));
 }
 
-values::ImmutableTask QMyTableView::create(const int row) const {
-  QString d(item(row, values::TaskViewTableIdx::kTaskName)->text());
-  QString priority(item(row, values::TaskViewTableIdx::kPriority)->text());
-
-  if (d.isEmpty() && priority.isEmpty())
-    throw std::logic_error("Record is empty");  // FIXME: need think about error handling system
-
-  int p(entities::EntitiesStates::kDefaultPriority);
-  if (!priority.isEmpty())
-    p = priority.toInt();
-
-  // FIXME: no injection bad!
-  return ImmutableTask::create(d.toUtf8().constData(), p);
+bool QMyTableView::isSaved(const int row) const {
+  return getId(row) != entities::EntitiesStates::kInActiveKey;
 }
 
 values::ImmutableTask QMyTableView::get_elem(const int row) const {

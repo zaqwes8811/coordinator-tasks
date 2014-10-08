@@ -51,8 +51,11 @@ private:
   entities::Tasks get_model_data() const;
 
   Ui::MainWindow *ui;
-  QMyTableView* _grid_ptr;
-  models::Model* const _model_ptr;
+  QMyTableView* _table;
+  models::Model* const _model;
+
+  //boost::shared_ptr<const Filter> current_filter_;
+
 };
 
 #endif // MAINWINDOW_H
