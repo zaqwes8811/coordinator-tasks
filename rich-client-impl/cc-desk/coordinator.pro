@@ -17,7 +17,7 @@ TEMPLATE = app
 
 BOOST=/home/zaqwes/work/third_party/boost_1_55_0
 ASL=/home/zaqwes/work/third_party/asl_1.0.43
-LOCAL_3RDPARTY=../3rdparty
+LOCAL_3RDPARTY=../../3rdparty
 
 OnBoardRelease:DEFINES += G_I_WANT_USE_IT
 
@@ -47,7 +47,7 @@ SOURCES += \
   src/htable_adapt_test.cc \
   src/view/app_spec_test.cc \
   launcher.cc \
-  ../3rdparty/gmock-1.6.0/fused-src/gmock-gtest-all.cc
+  $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/gmock-gtest-all.cc
 }
 
 # Business logic
@@ -72,7 +72,7 @@ INCLUDEPATH += \
   $$BOOST \
   $$ASL \
   $$LOCAL_3RDPARTY/loki-0.1.7/include \
-  ../3rdparty/gmock-1.6.0/fused-src/
+  $$LOCAL_3RDPARTY/gmock-1.6.0/fused-src/
 
 # -lpthread -lrt
 LIBS += -lpq -lpqxx
