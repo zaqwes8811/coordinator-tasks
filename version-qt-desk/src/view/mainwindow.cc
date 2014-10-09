@@ -63,40 +63,36 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   //   http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
   //
   // table
-  QWidget* centralWidget = new QWidget(this);
-  setCentralWidget(centralWidget);
 
-  // control
-  QPushButton* mark_done = new QPushButton("Mark done", this);
-  QPushButton* fake = new QPushButton("Fake", this);
-  connect(fake, SIGNAL(clicked(bool)), this, SLOT(slotFillFake(bool)));
-  connect(mark_done, SIGNAL(clicked()), this, SLOT(slotMarkDone()));
-
-  _table = new QMyTableView(this);
-  connect(_table, SIGNAL(itemChanged(QTableWidgetItem*)),
-          this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
-
-  QCheckBox* non_done = new QCheckBox("Non Done", this);
-  QCheckBox* done = new QCheckBox("Done", this);
-
-  connect(non_done, SIGNAL(stateChanged(int)),
-          this, SLOT(filterOnOffDone(int)));
 
   // pack all
-  QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
-
   QVBoxLayout* actions_layout = new QVBoxLayout;
-  actions_layout->addWidget(mark_done);
-  actions_layout->addWidget(fake);
-  actions_layout->addWidget(non_done);
-  actions_layout->addWidget(done);
+    QPushButton* mark_done = new QPushButton("Mark done", this);
+    connect(mark_done, SIGNAL(clicked()), this, SLOT(slotMarkDone()));
+    actions_layout->addWidget(mark_done);
+
+#ifndef G_I_WANT_USE_IT
+    QPushButton* fake = new QPushButton("Fake", this);
+    connect(fake, SIGNAL(clicked(bool)), this, SLOT(slotFillFake(bool)));
+    actions_layout->addWidget(fake);
+#endif
+
+    QCheckBox* non_done = new QCheckBox("Non done only", this);
+    connect(non_done, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffDone(int)));
+    actions_layout->addWidget(non_done);
+
+    //QCheckBox* done = new QCheckBox("Done only", this);
+    //actions_layout->addWidget(done);
 
   // добавляем чекбоксы
-  mainLayout->addLayout(actions_layout);
-  mainLayout->addWidget(_table);
-
-  connect(_table->horizontalHeader(), SIGNAL(sectionClicked(int)),
-          this, SLOT(filterSortByDecPriority(int)));
+  QWidget* centralWidget = new QWidget(this);
+    setCentralWidget(centralWidget);
+    QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
+    mainLayout->addLayout(actions_layout);
+      _table = new QMyTableView(this);
+      connect(_table, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
+      connect(_table->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(filterSortByDecPriority(int)));
+      mainLayout->addWidget(_table);
 
   redraw();
 }
@@ -136,6 +132,7 @@ entities::Tasks Engine::get_model_data() const {
   return _filters_chain(_model->get_current_model_data());
 }
 
+#ifndef G_I_WANT_USE_IT
 void Engine::slotFillFake(bool) {
   Tasks mirror(fake_store::get_all());
 
@@ -145,6 +142,7 @@ void Engine::slotFillFake(bool) {
 
   ::renders::render_task_store(std::cout, *_model);
 }
+#endif
 
 void Engine::redraw() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно

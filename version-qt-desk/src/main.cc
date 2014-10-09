@@ -44,12 +44,8 @@ private:
   Engine* const view_;
 };
 
-TEST(Blocked, TestApp) {
-  // Model
-
+int main(int argc, char** argv) {
   // View
-  int argc = 1;
-  char* argv[1] = { "hello" };
   QApplication app(argc, argv);
 
   shared_ptr<pq_dal::PQConnectionPool> pool(new pq_dal::PQConnectionPool(models::kConnection));
@@ -74,5 +70,5 @@ TEST(Blocked, TestApp) {
 
   // FIXME: run event loop?
   //return
-  app.exec();
+  return app.exec();
 }

@@ -26,7 +26,7 @@ QMyTableView::QMyTableView(QWidget *parent)
   setHorizontalHeaderLabels(column_names);
 
   setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
-  setColumnHidden(values::TaskViewTableIdx::kDone, true);
+  //setColumnHidden(values::TaskViewTableIdx::kDone, true);
 
   // Style
   QHeaderView *v = verticalHeader();

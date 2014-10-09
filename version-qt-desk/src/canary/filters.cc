@@ -60,7 +60,7 @@ entities::Tasks DoneFilter::operator()(entities::Tasks e)
   return entities::Tasks(e.begin(), it);
 }
 
-int DoneFilter::get_type_id() const
+int DoneFilter::get_type_code() const
 { return 1; }
 
 
@@ -72,25 +72,25 @@ entities::Tasks SortByPriorityFilter::operator()(entities::Tasks e) {
   return e;
 }
 
-int SortByPriorityFilter::get_type_id() const
+int SortByPriorityFilter::get_type_code() const
 { return 2; }
 
 // сырые указатели лучше не передавать.
 bool operator==(const Filter& lhs, const Filter& rhs) {
   // FIXME: It is very bad! dynamic cast don't work, no info
   //return (typeid(lhs)) == (typeid(rhs));
-  return lhs.get_type_id() == rhs.get_type_id();
+  return lhs.get_type_code() == rhs.get_type_code();
 }
 
 bool operator==(FilterPtr lhs, FilterPtr rhs) {
   //return typeid(*lhs) == typeid(*rhs);  // no way
-  return lhs->get_type_id() == rhs->get_type_id();
+  return lhs->get_type_code() == rhs->get_type_code();
 }
 
 std::size_t hash_value(FilterPtr b)
 {
     boost::hash<int> hasher;
-    return hasher(b->get_type_id());
+    return hasher(b->get_type_code());
 }
 
 }  // namespace

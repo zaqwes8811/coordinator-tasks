@@ -32,7 +32,7 @@ public:
 
   // FIXME: хочется обойтись без rtti, пока так.
   //   Проблема в удалении фильтра из цепочки.
-  virtual int get_type_id() const = 0;
+  virtual int get_type_code() const = 0;
 };
 typedef boost::shared_ptr<Filter> FilterPtr;
 
@@ -46,7 +46,7 @@ struct KeyHasher
   std::size_t operator()(FilterPtr k) const
   {
     using boost::hash;
-    return hash<int>()(k->get_type_id());
+    return hash<int>()(k->get_type_code());
   }
 };
 
@@ -79,13 +79,13 @@ private:
 class DoneFilter : public Filter {
 public:
   entities::Tasks operator()(entities::Tasks e);
-  int get_type_id() const;
+  int get_type_code() const;
 };
 
 class SortByPriorityFilter : public Filter {
 public:
   entities::Tasks operator()(entities::Tasks e);
-  int get_type_id() const;
+  int get_type_code() const;
 };
 }
 

@@ -40,7 +40,10 @@ private slots:
   // FIXME: на один сигнал можно подвесить несколько слотов
   void slotRowIsChanged(QTableWidgetItem* item);
   void slotMarkDone();
+
+#ifndef G_I_WANT_USE_IT
   void slotFillFake(bool);
+#endif
 
   // FIXME: DANGER!! при реализации фильтров сломает логику!!!
   // Жесткая привязка к списку и к цепочке фильтров
