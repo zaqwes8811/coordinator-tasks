@@ -12,6 +12,8 @@ using values::TaskViewTableIdx;
 using values::ImmutableTask;
 using entities::Tasks;
 
+const QColor QMyTableView::kDoneColor = QColor(0, 0, 255, 127);
+
 QMyTableView::QMyTableView(QWidget *parent)
     : QTableWidget(parent) {
 
@@ -33,9 +35,17 @@ QMyTableView::QMyTableView(QWidget *parent)
   v->setResizeMode(QHeaderView::Fixed);
   v->setDefaultSectionSize(20);
 
-  horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+  horizontalHeader()->setResizeMode(QHeaderView
+    //::Stretch);//
+    ::ResizeToContents);
   //resizeRowToContents();
   //resizeColumnsToContents();
+  //setWordWrap(false);
+  //setTextElideMode(Qt::ElideNone);
+
+  //setRowHeight(0, 50);
+
+  // FIXME: растянутую ячейку отменяте смена фильтра
 }
 
 bool QMyTableView::isEdited() const {
@@ -68,9 +78,17 @@ void QMyTableView::draw(entities::Tasks tasks) {
   int row = 0;
   for (Tasks::const_iterator record=tasks.begin(), end=tasks.end(); record != end; ++record) {
     setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number((*record)->get_primary_key())));
-    setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem(QString::fromUtf8((*record)->get_task_name().c_str())));
     setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem(QString::number((*record)->get_priority())));
     setItem(row, values::TaskViewTableIdx::kDone, new QTableWidgetItem(QString::number((*record)->get_is_done())));
+
+    QString note = QString::fromUtf8((*record)->get_task_name().c_str());
+    QTableWidgetItem* v = new QTableWidgetItem(note);
+
+    if ((*record)->get_is_done())
+      v->setTextColor(kDoneColor);
+
+
+    setItem(row, values::TaskViewTableIdx::kTaskName, v);
     ++row;
   }
 
@@ -83,7 +101,11 @@ int QMyTableView::getId(const int row) const {
 }
 
 void QMyTableView::markDone(const int row) {
-  item(row, values::TaskViewTableIdx::kDone)->setText(QString::number(!entities::EntitiesStates::kNonDone));
+  QString v = QString::number(!entities::EntitiesStates::kNonDone);
+  item(row, values::TaskViewTableIdx::kDone)->setText(v);
+
+  // перекрашиваем
+  item(row, values::TaskViewTableIdx::kTaskName)->setTextColor(kDoneColor);
 }
 
 bool QMyTableView::isSaved(const int row) const {

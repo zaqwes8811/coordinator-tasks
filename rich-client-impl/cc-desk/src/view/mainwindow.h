@@ -31,7 +31,7 @@ public:
 private slots:
 
   // filters chain:
-  void filterSortByDecPriority(int index);
+  void filterOnOffSortByDecPriority(int index);
   void filterOnOffDone(int state);
 
   // other actions:

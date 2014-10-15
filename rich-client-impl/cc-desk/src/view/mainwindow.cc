@@ -67,32 +67,40 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 
   // pack all
   QVBoxLayout* actions_layout = new QVBoxLayout;
-    QPushButton* mark_done = new QPushButton("Mark done", this);
-    connect(mark_done, SIGNAL(clicked()), this, SLOT(slotMarkDone()));
-    actions_layout->addWidget(mark_done);
-
-#ifndef G_I_WANT_USE_IT
-    QPushButton* fake = new QPushButton("Fake", this);
-    connect(fake, SIGNAL(clicked(bool)), this, SLOT(slotFillFake(bool)));
-    actions_layout->addWidget(fake);
-#endif
-
     QCheckBox* non_done = new QCheckBox("Non done only", this);
     connect(non_done, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffDone(int)));
     actions_layout->addWidget(non_done);
 
+    QCheckBox* sort_dec = new QCheckBox("Sort dec priority", this);
+    connect(sort_dec, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffSortByDecPriority(int)));
+    actions_layout->addWidget(sort_dec);
+
     //QCheckBox* done = new QCheckBox("Done only", this);
     //actions_layout->addWidget(done);
+
+    QPushButton* mark_done = new QPushButton("Mark done", this);
+    connect(mark_done, SIGNAL(clicked()), this, SLOT(slotMarkDone()));
+    actions_layout->addWidget(mark_done);
+
+//#ifndef G_I_WANT_USE_IT
+    QPushButton* fake = new QPushButton("Reopen", this);
+    //connect(fake, SIGNAL(clicked(bool)), this, SLOT(slotFillFake(bool)));
+    actions_layout->addWidget(fake);
+//#endif
 
   // добавляем чекбоксы
   QWidget* centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
-    QHBoxLayout* mainLayout = new QHBoxLayout(centralWidget);
-    mainLayout->addLayout(actions_layout);
+    QVBoxLayout* mainLayout = new QVBoxLayout(centralWidget);
       _table = new QMyTableView(this);
       connect(_table, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
-      connect(_table->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(filterSortByDecPriority(int)));
+
+      // make checkbox
+      //connect(_table->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(filterOnOffSortByDecPriority(int)));
+
+      mainLayout->addLayout(actions_layout);
       mainLayout->addWidget(_table);
+
 
   redraw();
 }
@@ -118,14 +126,22 @@ Engine::~Engine()
     delete ui;
 }
 
-void Engine::filterSortByDecPriority(int idx) {
-  if (idx == values::TaskViewTableIdx::kPriority) {
-    filters::FilterPtr f(new filters::SortByPriorityFilter());
-    _filters_chain.add(f);
-
-    // нужно обновить вид
-    redraw();
+void Engine::filterOnOffSortByDecPriority(int state) {
+  filters::FilterPtr f(new filters::SortByPriorityFilter());
+  if (Qt::Unchecked == state) {
+    // del filter
+    _filters_chain.remove(f);
+    //return;
   }
+
+  if (Qt::Checked == state) {
+    // add filter
+      _filters_chain.add(f);
+    //return;
+  }
+
+  // нужно обновить вид
+  redraw();
 }
 
 entities::Tasks Engine::get_model_data() const {

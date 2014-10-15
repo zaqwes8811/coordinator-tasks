@@ -35,6 +35,8 @@ public:
 
 private:
   void _insertBlankRows(const int);
+
+  static const QColor kDoneColor;
 };
 
 #endif // VIEW_H
