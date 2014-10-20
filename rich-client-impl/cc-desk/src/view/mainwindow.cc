@@ -66,27 +66,32 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 
 
   // pack all
-  QVBoxLayout* actions_layout = new QVBoxLayout;
-    QCheckBox* non_done = new QCheckBox("Non done only", this);
-    connect(non_done, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffDone(int)));
-    actions_layout->addWidget(non_done);
+  QHBoxLayout* actions_layout = new QHBoxLayout;
+    // boxes
+    QVBoxLayout* checkbox_layout = new QVBoxLayout;
+    actions_layout->addLayout(checkbox_layout);
+      QCheckBox* non_done = new QCheckBox("Non done only", this);
+      connect(non_done, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffDone(int)));
+      checkbox_layout->addWidget(non_done);
 
-    QCheckBox* sort_dec = new QCheckBox("Sort dec priority", this);
-    connect(sort_dec, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffSortByDecPriority(int)));
-    actions_layout->addWidget(sort_dec);
+      QCheckBox* sort_dec = new QCheckBox("Sort dec priority", this);
+      connect(sort_dec, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffSortByDecPriority(int)));
+      checkbox_layout->addWidget(sort_dec);
 
-    QCheckBox* done = new QCheckBox("Sort by task name", this);
-    actions_layout->addWidget(done);
+      QCheckBox* done = new QCheckBox("Sort by task name", this);
+      connect(done, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffSortByTaskName(int)));
+      checkbox_layout->addWidget(done);
 
-    QPushButton* mark_done = new QPushButton("Mark done", this);
-    connect(mark_done, SIGNAL(clicked()), this, SLOT(slotMarkDone()));
-    actions_layout->addWidget(mark_done);
+    // buttons
+    QVBoxLayout* buttons_layout = new QVBoxLayout;
+    actions_layout->addLayout(buttons_layout);
+      QPushButton* mark_done = new QPushButton("Mark done", this);
+      connect(mark_done, SIGNAL(clicked()), this, SLOT(slotMarkDone()));
+      buttons_layout->addWidget(mark_done);
 
-//#ifndef G_I_WANT_USE_IT
-    QPushButton* fake = new QPushButton("Reopen", this);
-    connect(fake, SIGNAL(clicked()), this, SLOT(slotReopen()));
-    actions_layout->addWidget(fake);
-//#endif
+      QPushButton* fake = new QPushButton("Reopen", this);
+      connect(fake, SIGNAL(clicked()), this, SLOT(slotReopen()));
+      buttons_layout->addWidget(fake);
 
   // добавляем чекбоксы
   QWidget* centralWidget = new QWidget(this);
@@ -105,6 +110,8 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   redraw();
 }
 
+Engine::~Engine() { delete ui; }
+
 void Engine::slotReopen() {
   Row r = getSelectedRow();
   if (r.isPresent()) {
@@ -116,42 +123,31 @@ void Engine::slotReopen() {
   }
 }
 
-void Engine::filterOnOffDone(int state) {
-  filters::FilterPtr f(new filters::DoneFilter());
+void Engine::_processFilter(filters::FilterPtr f, int state) {
   if (Qt::Unchecked == state) {
-    // del filter
     _filters_chain.remove(f);
-    //return;
   }
 
   if (Qt::Checked == state) {
-    // add filter
-      _filters_chain.add(f);
-    //return;
+    _filters_chain.add(f);
   }
+}
+
+void Engine::filterOnOffDone(int state) {
+  filters::FilterPtr f(new filters::DoneFilter());
+  _processFilter(f, state);
   redraw();
 }
 
-Engine::~Engine()
-{
-    delete ui;
+void Engine::filterOnOffSortByTaskName(int state) {
+  filters::FilterPtr f(new filters::SortByTaskName());
+  _processFilter(f, state);
+  redraw();
 }
 
 void Engine::filterOnOffSortByDecPriority(int state) {
   filters::FilterPtr f(new filters::SortByPriorityFilter());
-  if (Qt::Unchecked == state) {
-    // del filter
-    _filters_chain.remove(f);
-    //return;
-  }
-
-  if (Qt::Checked == state) {
-    // add filter
-      _filters_chain.add(f);
-    //return;
-  }
-
-  // нужно обновить вид
+  _processFilter(f, state);
   redraw();
 }
 

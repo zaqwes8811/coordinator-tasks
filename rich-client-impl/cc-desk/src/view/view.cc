@@ -30,7 +30,7 @@ QMyTableView::QMyTableView(QWidget *parent)
   setHorizontalHeaderLabels(column_names);
 
   setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
-  //setColumnHidden(values::TaskViewTableIdx::kDone, true);
+  setColumnHidden(values::TaskViewTableIdx::kDone, true);
 
   // Style
   QHeaderView *v = verticalHeader();
@@ -113,7 +113,7 @@ void QMyTableView::markDone(const int row) {
 void QMyTableView::markReopen(const int row) {
   QString v = QString::number(entities::EntitiesStates::kNonDone);
   item(row, values::TaskViewTableIdx::kDone)->setText(v);
-  item(row, values::TaskViewTableIdx::kTaskName)->setTextColor(kReopenColor);
+  //item(row, values::TaskViewTableIdx::kTaskName)->setTextColor(kReopenColor);
 }
 
 bool QMyTableView::isSaved(const int row) const {

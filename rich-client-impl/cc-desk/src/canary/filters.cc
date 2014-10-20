@@ -103,10 +103,10 @@ entities::Tasks SortByTaskName::operator()(entities::Tasks e) {
       bind(std::greater<string>(),
            bind(&TaskEntity::get_task_name, _1),
            bind(&TaskEntity::get_task_name, _2)));
+  return e;
 }
 
 int SortByTaskName::get_type_code() const {
-
   return 3;
 }
 

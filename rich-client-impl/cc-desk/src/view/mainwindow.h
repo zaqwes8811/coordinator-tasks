@@ -65,8 +65,9 @@ public:
 private slots:
 
   // filters chain:
-  void filterOnOffSortByDecPriority(int index);
+  void filterOnOffSortByDecPriority(int state);
   void filterOnOffDone(int state);
+  void filterOnOffSortByTaskName(int state);
 
   // other actions:
   // FIXME: а есть элемент не из той таблицы?
@@ -86,6 +87,8 @@ private slots:
 
 private:
   Row getSelectedRow() const;
+
+  void _processFilter(filters::FilterPtr, int state);
 
   entities::Tasks get_model_data() const;
 
