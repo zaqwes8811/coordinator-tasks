@@ -13,6 +13,8 @@ using values::ImmutableTask;
 using entities::Tasks;
 
 const QColor QMyTableView::kDoneColor = QColor(0, 0, 255, 127);
+const QColor QMyTableView::kReopenColor = QColor(0, 0, 0, 0);  // не влияет, т.к. при перерисовке
+// учитывается только done column
 
 QMyTableView::QMyTableView(QWidget *parent)
     : QTableWidget(parent) {
@@ -106,6 +108,12 @@ void QMyTableView::markDone(const int row) {
 
   // перекрашиваем
   item(row, values::TaskViewTableIdx::kTaskName)->setTextColor(kDoneColor);
+}
+
+void QMyTableView::markReopen(const int row) {
+  QString v = QString::number(entities::EntitiesStates::kNonDone);
+  item(row, values::TaskViewTableIdx::kDone)->setText(v);
+  item(row, values::TaskViewTableIdx::kTaskName)->setTextColor(kReopenColor);
 }
 
 bool QMyTableView::isSaved(const int row) const {

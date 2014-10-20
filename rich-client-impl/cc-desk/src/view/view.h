@@ -32,11 +32,13 @@ public:
   int getId(const int row) const;
   bool isSaved(const int row) const;
   void markDone(const int row);
+  void markReopen(const int row);
 
 private:
   void _insertBlankRows(const int);
 
   static const QColor kDoneColor;
+  static const QColor kReopenColor;
 };
 
 #endif // VIEW_H

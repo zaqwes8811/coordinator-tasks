@@ -84,7 +84,7 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 
 //#ifndef G_I_WANT_USE_IT
     QPushButton* fake = new QPushButton("Reopen", this);
-    //connect(fake, SIGNAL(clicked(bool)), this, SLOT(slotFillFake(bool)));
+    connect(fake, SIGNAL(clicked()), this, SLOT(slotReopen()));
     actions_layout->addWidget(fake);
 //#endif
 
@@ -106,7 +106,14 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 }
 
 void Engine::slotReopen() {
-
+  Row r = getSelectedRow();
+  if (r.isPresent()) {
+    int row = r.get();
+    // Обновляем ячейку
+    _table->markReopen(row);  // no throw
+    values::ImmutableTask t = _table->get_elem(row);
+    _model->update(t);  // FIXME: may throw
+  }
 }
 
 void Engine::filterOnOffDone(int state) {
@@ -173,7 +180,7 @@ void Engine::redraw() {
   _table->draw(records);
 }
 
-Engine::Row Engine::getSelectedRow() const {
+Row Engine::getSelectedRow() const {
   QModelIndexList indexList = _table->selectionModel()->selectedIndexes();
 
   // Должна быть выбрана одна ячейка
@@ -189,21 +196,14 @@ Engine::Row Engine::getSelectedRow() const {
 }
 
 void Engine::slotMarkDone() {
-  QModelIndexList indexList = _table->selectionModel()->selectedIndexes();
-
-  // Должна быть выбрана одна ячейка
-  if (indexList.empty() || (indexList.size() != 1))
-    return;
-
-  const size_t row = indexList.at(values::TaskViewTableIdx::kId).row();
-
-  if (row >= get_model_data().size())
-    return;
-
-  // Обновляем ячейку
-  _table->markDone(row);  // no throw
-  values::ImmutableTask t = _table->get_elem(row);
-  _model->update(t);  // FIXME: may throw
+  Row r = getSelectedRow();
+  if (r.isPresent()) {
+    int row = r.get();
+    // Обновляем ячейку
+    _table->markDone(row);  // no throw
+    values::ImmutableTask t = _table->get_elem(row);
+    _model->update(t);  // FIXME: may throw
+  }
 }
 
 void Engine::slotRowIsChanged(QTableWidgetItem* widget)
