@@ -75,8 +75,8 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
     connect(sort_dec, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffSortByDecPriority(int)));
     actions_layout->addWidget(sort_dec);
 
-    //QCheckBox* done = new QCheckBox("Done only", this);
-    //actions_layout->addWidget(done);
+    QCheckBox* done = new QCheckBox("Sort by task name", this);
+    actions_layout->addWidget(done);
 
     QPushButton* mark_done = new QPushButton("Mark done", this);
     connect(mark_done, SIGNAL(clicked()), this, SLOT(slotMarkDone()));
@@ -103,6 +103,10 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 
 
   redraw();
+}
+
+void Engine::slotReopen() {
+
 }
 
 void Engine::filterOnOffDone(int state) {
@@ -167,6 +171,21 @@ void Engine::redraw() {
   _table->clearList();
   Tasks records = get_model_data();  // may throw
   _table->draw(records);
+}
+
+Engine::Row Engine::getSelectedRow() const {
+  QModelIndexList indexList = _table->selectionModel()->selectedIndexes();
+
+  // Должна быть выбрана одна ячейка
+  if (indexList.empty() || (indexList.size() != 1))
+    return Row::absent();
+
+  const size_t row = indexList.at(values::TaskViewTableIdx::kId).row();
+
+  if (row >= get_model_data().size())
+    return Row::absent();
+
+  return Row::of(row);
 }
 
 void Engine::slotMarkDone() {

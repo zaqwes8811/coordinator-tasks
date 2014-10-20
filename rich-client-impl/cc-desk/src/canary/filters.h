@@ -87,6 +87,12 @@ public:
   entities::Tasks operator()(entities::Tasks e);
   int get_type_code() const;
 };
+
+class SortByTaskName : public Filter {
+public:
+    entities::Tasks operator()(entities::Tasks e);
+    int get_type_code() const;
+};
 }
 
 #endif // FILTERS_H

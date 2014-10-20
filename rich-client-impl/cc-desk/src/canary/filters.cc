@@ -6,6 +6,8 @@
 #include <adobe/algorithm/sort.hpp>
 #include <adobe/algorithm/partition.hpp>
 
+#include <string>
+
 namespace filters {
 // add check non saved
 using boost::bind;
@@ -13,6 +15,8 @@ using std::equal_to;
 using entities::EntitiesStates;
 using entities::TaskEntity;
 //using boost::bind::_1;
+
+using std::string;
 
 boost::function1<bool, entities::Tasks::value_type> get_check_non_saved() {
   return bind(
@@ -92,5 +96,19 @@ std::size_t hash_value(FilterPtr b)
     boost::hash<int> hasher;
     return hasher(b->get_type_code());
 }
+
+//
+entities::Tasks SortByTaskName::operator()(entities::Tasks e) {
+  adobe::stable_sort(e,
+      bind(std::greater<string>(),
+           bind(&TaskEntity::get_task_name, _1),
+           bind(&TaskEntity::get_task_name, _2)));
+}
+
+int SortByTaskName::get_type_code() const {
+
+  return 3;
+}
+
 
 }  // namespace

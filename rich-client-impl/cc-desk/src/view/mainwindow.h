@@ -11,9 +11,17 @@
 #include <QTableWidget>
 #include <QMessageBox>
 
+#include <stdexcept>
+
 namespace Ui {
 class MainWindow;
 }
+
+// FIXME: try how in Guava
+class Optional {
+public:
+  //static Optional absent() { return -1; }
+};
 
 class Engine : public QMainWindow
 {
@@ -40,6 +48,7 @@ private slots:
   // FIXME: на один сигнал можно подвесить несколько слотов
   void slotRowIsChanged(QTableWidgetItem* item);
   void slotMarkDone();
+  void slotReopen();
 
 #ifndef G_I_WANT_USE_IT
   void slotFillFake(bool);
@@ -50,6 +59,34 @@ private slots:
   entities::Tasks::value_type get_elem_by_id(const int pos);
 
 private:
+  class Row {
+    int idx;
+    Row() : idx(-1) { }
+    explicit Row(int _idx) : idx(_idx) { }
+
+  public:
+    bool isPresent() const {
+      return idx != -1 && idx >= 0;
+    }
+
+    int get() const {
+      if (!isPresent())
+        throw std::runtime_error("absent");
+
+      return idx;
+    }
+
+    static Row absent() {
+      return Row();
+    }
+
+    static Row of(int v) {
+      return Row(v);
+    }
+  };
+
+  Engine::Row getSelectedRow() const;
+
   entities::Tasks get_model_data() const;
 
   Ui::MainWindow *ui;
