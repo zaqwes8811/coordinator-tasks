@@ -1,4 +1,0 @@
-﻿console.log()
-typeof
-
-! "high perfomance js" 

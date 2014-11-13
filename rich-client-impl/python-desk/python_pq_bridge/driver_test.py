@@ -18,6 +18,8 @@ import psycopg2
 #   http://qt-project.org/doc/qt-5/sql-driver.html#supported-databases
 #
 # http://www.youtube.com/watch?v=fBgJ9Azm_S0 - похоже нужен вариант с MinGW - WTF!? а остальные библиотеки!
+#   может и для студии нормально соберется?
+# http://www.carnero.net/en/how-to-install-qt-mysql-driver-on-windows-7-x86-x64/
 
 '''
 Joel - 2008
