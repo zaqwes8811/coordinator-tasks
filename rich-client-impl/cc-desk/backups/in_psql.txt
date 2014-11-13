@@ -11,3 +11,5 @@ psql
 # Restore:
 psql dbname < infile
 
+http://www.postgresqltutorial.com/postgresql-restore-database/
+
