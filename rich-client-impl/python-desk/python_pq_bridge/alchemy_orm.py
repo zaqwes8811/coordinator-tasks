@@ -50,6 +50,7 @@ class TaskEntity(Base):
     task_name = Column(String)
     priority = Column(String)
     done = Column(Boolean)
+    assign = Column(String)
 
 
 def main():
@@ -59,7 +60,7 @@ def main():
 
     with session_scope(Session) as session:
         for instance in session.query(TaskEntity):
-            print instance.priority, instance.task_name
+            print instance.priority, instance.task_name, instance.assign
 
 
 if __name__ == '__main__':
