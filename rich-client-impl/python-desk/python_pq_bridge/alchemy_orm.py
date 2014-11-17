@@ -47,10 +47,13 @@ def session_scope(Session):
 class TaskEntity(Base):
     __tablename__ = 'task_entity'
     id = Column(Integer, primary_key=True)
+
+    feature = Column(String)
     task_name = Column(String)
+
     priority = Column(String)
     done = Column(Boolean)
-    assign = Column(String)
+
 
 
 def main():
@@ -60,7 +63,7 @@ def main():
 
     with session_scope(Session) as session:
         for instance in session.query(TaskEntity):
-            print instance.priority, instance.task_name, instance.assign
+            print instance.priority, instance.task_name, instance.feature
 
 
 if __name__ == '__main__':
