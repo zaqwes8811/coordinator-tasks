@@ -41,7 +41,9 @@ def session_scope(Session):
     finally:
         session.close()
 
-
+# Migration
+#  !! http://stackoverflow.com/questions/4209705/is-it-worth-using-sqlalchemy-migrate
+#   https://sqlalchemy-migrate.readthedocs.org/en/latest/
 class TaskEntity(Base):
     __tablename__ = 'task_entity'
     id = Column(Integer, primary_key=True)
@@ -56,7 +58,8 @@ def main():
     Base.metadata.create_all(engine)
 
     with session_scope(Session) as session:
-        pass
+        for instance in session.query(TaskEntity):
+            print instance.priority, instance.task_name
 
 
 if __name__ == '__main__':
