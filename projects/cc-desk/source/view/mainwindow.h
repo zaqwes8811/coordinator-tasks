@@ -94,7 +94,7 @@ private:
 
   Ui::MainWindow *ui;
   QMyTableView* _table;
-  models::Model* const _model;
+  models::Model* _model;
 
   filters::ChainFilters _filters_chain;
 };

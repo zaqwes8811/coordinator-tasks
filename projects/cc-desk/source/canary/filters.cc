@@ -3,10 +3,11 @@
 #include "canary/filters.h"
 
 #include <boost/bind.hpp>
-#include <adobe/algorithm/sort.hpp>
-#include <adobe/algorithm/partition.hpp>
+//#include <adobe/algorithm/sort.hpp>
+//#include <adobe/algorithm/partition.hpp>
 
 #include <string>
+#include <algorithm>
 
 namespace filters {
 // add check non saved
@@ -60,7 +61,8 @@ entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
 
 entities::Tasks DoneFilter::operator()(entities::Tasks e)
 {
-  entities::Tasks::iterator it = adobe::stable_partition(e, get_is_non_done());
+  entities::Tasks::iterator it = std::stable_partition(e.begin(), e.end()
+                                                       , get_is_non_done());
   return entities::Tasks(e.begin(), it);
 }
 
@@ -69,7 +71,7 @@ int DoneFilter::get_type_code() const
 
 
 entities::Tasks SortByPriorityFilter::operator()(entities::Tasks e) {
-  adobe::stable_sort(e,
+  std::stable_sort(e.begin(), e.end(),
       bind(std::greater<int>(),
            bind(&TaskEntity::get_priority, _1),
            bind(&TaskEntity::get_priority, _2)));
@@ -99,7 +101,7 @@ std::size_t hash_value(FilterPtr b)
 
 //
 entities::Tasks SortByTaskName::operator()(entities::Tasks e) {
-  adobe::stable_sort(e,
+  std::stable_sort(e.begin(), e.end(),
       bind(std::greater<string>(),
            bind(&TaskEntity::get_task_name, _1),
            bind(&TaskEntity::get_task_name, _2)));

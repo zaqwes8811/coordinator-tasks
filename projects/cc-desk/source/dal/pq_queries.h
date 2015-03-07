@@ -5,7 +5,9 @@
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
-#include <pqxx/pqxx>
+#ifdef G_USE_PSQL
+#  include <pqxx/pqxx>
+#endif
 
 #include <string>
 #include <vector>

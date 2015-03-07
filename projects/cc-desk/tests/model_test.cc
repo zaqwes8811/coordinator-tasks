@@ -1,7 +1,7 @@
 #include "top/config.h"
 
 #include "canary/entities_and_values.h"
-#include "canary/pq_queries.h"  // BAD!! too low level
+#include "dal/pq_queries.h"  // BAD!! too low level
 #include "canary/model.h"
 #include "fake_store.h"
 #include "canary/renders.h"
@@ -11,7 +11,7 @@
 #include <boost/make_shared.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
-#include <adobe/algorithm/for_each.hpp>
+//#include <adobe/algorithm/for_each.hpp>
 #include <loki/ScopeGuard.h>
 
 #include <memory>

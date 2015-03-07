@@ -15,10 +15,10 @@
 #include "canary/model.h"
 #include "canary/filters.h"
 
-#include <adobe/algorithm/find.hpp>
+//#include <adobe/algorithm/find.hpp>
 #include <loki/ScopeGuard.h>
-#include <adobe/algorithm/sort.hpp>
-#include <adobe/algorithm/find.hpp>
+//#include <adobe/algorithm/sort.hpp>
+//#include <adobe/algorithm/find.hpp>
 #include <boost/bind.hpp>
 
 #include <iostream>
@@ -64,7 +64,8 @@ Tasks Model::load_all(const std::string& table_name,
 }
 
 entities::Tasks::value_type Model::_get_elem_by_id(const int id) {
-  Tasks::iterator it = adobe::find_if(tasks_, filters::get_check_contained(id));
+  Tasks::iterator it = std::find_if(tasks_.begin(), tasks_.end()
+                                    , filters::get_check_contained(id));
   assert(it != tasks_.end());
   return *it;
 }

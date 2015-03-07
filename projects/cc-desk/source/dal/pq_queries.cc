@@ -6,7 +6,7 @@
 
 #include "top/config.h"
 
-#include "canary/pq_queries.h"
+#include "dal/pq_queries.h"
 #include "canary/entities_and_values.h"
 #include "canary/filters.h"
 #include "top/common.h"
@@ -19,7 +19,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 
-#include <adobe/algorithm/partition.hpp>
+//#include <adobe/algorithm/partition.hpp>
 
 #include <iostream>
 #include <cassert>

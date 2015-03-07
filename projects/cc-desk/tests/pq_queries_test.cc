@@ -5,21 +5,19 @@
 
 #include "top/config.h"
 
-#include "canary/pq_queries.h"
+#include "dal/pq_queries.h"
 #include "canary/entities_and_values.h"
 
 #include <loki/ScopeGuard.h>
 #include <pqxx/pqxx> 
 #include <gtest/gtest.h>
 
-// C++
 #include <iostream>
 #include <set>
 #include <string>
 #include <vector>
 #include <stdexcept>
 
-// C
 #include <cassert>
 
 namespace {

@@ -6,21 +6,17 @@
 // Store:
 #include "top/config.h"
 
-/*
 #include "view/mainwindow.h"
 #include "canary/model.h"
-#include "canary/pq_queries.h"
+#include "dal/pq_queries.h"
 #include "top/app_types.h"
 #include "canary/isolation.h"
-*/
 
-/*
 #include <QApplication>
 #include <QLabel>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QTableWidget>
-*/
 
 #include <boost/shared_ptr.hpp>
 #include <loki/ScopeGuard.h>
@@ -33,7 +29,6 @@ using namespace boost;
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
 
-/*
 using ::isolation::ModelListenerMediatorDynPolym;
 
 class ModelListenerMediator : public ModelListenerMediatorDynPolym {
@@ -50,14 +45,13 @@ private:
 
   Engine* const view_;
 };
-*/
 
 TEST(Blocked, TestApp) {
   // Model
-/*
+
   // View
   int argc = 1;
-  char* argv[1] = { "hello" };
+  char* argv[1] = { "none" };
   QApplication app(argc, argv);
 
   shared_ptr<pq_dal::PQConnectionPool> pool(new pq_dal::PQConnectionPool(models::kConnection));
@@ -83,5 +77,4 @@ TEST(Blocked, TestApp) {
   // FIXME: run event loop?
   //return
   app.exec();
-  */
 }

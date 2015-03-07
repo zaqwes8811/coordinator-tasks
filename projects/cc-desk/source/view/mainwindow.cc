@@ -17,23 +17,17 @@
 
 #include "top/config.h"
 
-// App
 #include "mainwindow.h"
-
 #include "ui_mainwindow.h"
-
 #include "fake_store.h"
 #include "canary/entities_and_values.h"
 
-//
 #include <QPushButton>
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QCheckBox>
 #include <boost/bind.hpp>
-#include <adobe/algorithm/for_each.hpp>
-#include <adobe/algorithm/find.hpp>
 
 #include <string>
 #include <vector>
@@ -53,11 +47,12 @@ using std::string;
 using std::vector;
 
 Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    _model(model_ptr)
+    QMainWindow(parent)
 {
   ui->setupUi(this);
+
+  _model = model_ptr;
+  ui = new Ui::MainWindow;
 
   // FIXME: сделать что-то через editor - пока тщетно. Например как сконнектиться с отнасл. таблицей?
   //   http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
@@ -160,7 +155,8 @@ void Engine::slotFillFake(bool) {
   Tasks mirror(fake_store::get_all());
 
   // сохраняем все
-  adobe::for_each(mirror, bind(&Model::append, ref(*_model),
+  std::for_each(mirror.begin(), mirror.end()
+                , bind(&Model::append, ref(*_model),
                                bind(&entities::TaskEntity::make_value, _1)));
 
   ::renders::render_task_store(std::cout, *_model);
@@ -225,7 +221,8 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
 
 entities::Tasks::value_type Engine::get_elem_by_id(const int id) {
   Tasks r = this->get_model_data();
-  Tasks::iterator it = adobe::find_if(r, bind(&entities::TaskEntity::get_primary_key, _1));
+  Tasks::iterator it = std::find_if(r.begin(), r.end()
+                                    , bind(&entities::TaskEntity::get_primary_key, _1));
 
   assert(it != r.end());  // должен быть
   return *it;

@@ -28,12 +28,12 @@
 #include "top/config.h"
 
 #include "canary/entities_and_values.h"
-#include "canary/pq_queries.h"
+#include "dal/pq_queries.h"
 #include "canary/renders.h"
 #include "fake_store.h"
 #include "canary/filters.h"
 
-#include <adobe/algorithm/find.hpp>  // удобно если работа с целым контейнером, иначе лучше std
+//#include <adobe/algorithm/find.hpp>  // удобно если работа с целым контейнером, иначе лучше std
 #include <boost/bind.hpp>
 #include <boost/bind/make_adaptable.hpp>
 #include <boost/function.hpp>

@@ -2,6 +2,7 @@
 #define TOP_CONFIG_H_
 
 //#define G_I_WANT_USE_IT  // external
+#define G_USE_PSQL
 
 namespace models {
 const char* const kConnection = "dbname=mydb user=postgres password=postgres hostaddr=127.0.0.1 port=5432";

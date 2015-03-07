@@ -6,13 +6,21 @@
 #
 # Trouble:
 #   https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
+#   http://stackoverflow.com/questions/19761767/qt-5-cmake-fails-with-undefined-reference-to-vtable-on-hello-world-with-inc-sr
 
 project(coordinator_tasks)
 cmake_minimum_required(VERSION 2.8)
 
-set( LCB_USE_ASAN Y)
+# http://www.qtcentre.org/wiki/?title=Compiling_Qt4_apps_with_CMake
+# by default only QtCore and QtGui modules are enabled
+# other modules must be enabled like this:
+SET( QT_USE_QT3SUPPORT TRUE )
+SET( QT_USE_QTXML TRUE )
 
-#Message(${CMAKE_CURRENT_LIST_DIR})
+FIND_PACKAGE(Qt4 REQUIRED)
+INCLUDE( ${QT_USE_FILE} )
+
+set( LCB_USE_ASAN Y)
 
 set(Extern "../../extern/")
 set(Export "../../export/")
@@ -29,7 +37,6 @@ include_directories(${Source})
 include_directories(${Extern}/loki-0.1.7/include)
 include_directories(${Extern})
 include_directories(${Source}/../../std_own_ext)
-include_directories(${Intern}/reuse)
 include_directories(${BigExtern}/boost_1_57_0)
 
 
@@ -94,21 +101,39 @@ elseif (UNIX)
         link_libraries(boost_system boost_thread pthread rt)  # !! pthread and rt last!!
     else()
         link_directories(${BigExtern}/boost_1_57_0/stage_x64/lib)
-        link_libraries(boost_system boost_thread pthread rt)  # !! pthread and rt last!!
+        link_libraries(
+            pqxx pq
+            boost_system boost_thread
+            pthread rt)  # !! pthread and rt last!!
     endif()
 endif()
 
-message("CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+# some .ui files
+SET( SAMPLE_UIS
+   ${Source}/view/mainwindow.ui
+)
+
+SET( SAMPLE_MOC_HDRS
+   ${Source}/view/mainwindow.h
+)
+
+QT4_ADD_RESOURCES( SAMPLE_RC_SRCS ${SAMPLE_RCS} )
+
+# this will run uic on .ui files:
+QT4_WRAP_UI( SAMPLE_UI_HDRS ${SAMPLE_UIS} )
+
+# and finally this will run moc:
+QT4_WRAP_CPP( SAMPLE_MOC_SRCS ${SAMPLE_MOC_HDRS} )
 
 file( GLOB proTests
-    ${testsRoot}/sean_parent/*.cc
+    ${Source}/view/*.cc
     ${Extern}/hypertable-fix/Common/*.cc
     ${Source}/../../std_own_ext/*.h
-    ${testsRoot}/sutter/*.cc
-    ${testsRoot}/gotchas/*.cc
-    ${testsRoot}/sutter_tasks/*.cc
-    ${testsRoot}/sutter_tasks_new/*.cc
-    ${testsRoot}/tricks_intermediate/*.cc
+    ${Source}/dal/*.cc
+    ${Source}/dal/*.h
+    ${Source}/top/*.h
+    ${Source}/canary/*.cc
+    ${Source}/*.cc
     ${testsRoot}/lang_core/*.cc
     ${testsRoot}/mem_heap_stack/*.cc
     ${testsRoot}/extern/*.cc
@@ -117,9 +142,17 @@ file( GLOB proTests
     ${testsRoot}/*.cc
     ${testsRoot}/stl/algorithms/*.cc)
 
+# we need this to be able to include headers produced by uic in our code
+# (CMAKE_BINARY_DIR holds a path to the build directory, while INCLUDE_DIRECTORIES()
+# works just like INCLUDEPATH from qmake)
+INCLUDE_DIRECTORIES( ${CMAKE_BINARY_DIR} )
+
 add_executable(unittest.bin
     ${Source}/mains/launcher_tests.cc
     ${GMock}/gmock-gtest-all.cc
     ${proTests}
+    ${SAMPLE_MOC_SRCS} ${SAMPLE_RC_SRCS} ${SAMPLE_UI_HDRS}
 )
+
+TARGET_LINK_LIBRARIES( unittest.bin ${QT_LIBRARIES} )
 
