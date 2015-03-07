@@ -5,7 +5,7 @@
 #define G_USE_PSQL
 
 namespace models {
-const char* const kConnection = "dbname=mydb user=postgres password=postgres hostaddr=127.0.0.1 port=5432";
+const char* const kConnection = "dbname=mydb user=postgres password=apassword hostaddr=127.0.0.1 port=5432";
 #ifdef G_I_WANT_USE_IT
 const char* const kTaskTableNameRef = "task_entity";
 #else

@@ -49,10 +49,10 @@ using std::vector;
 Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
     QMainWindow(parent)
 {
-  ui->setupUi(this);
-
-  _model = model_ptr;
   ui = new Ui::MainWindow;
+  ui->setupUi(this);
+  _model = model_ptr;
+
 
   // FIXME: сделать что-то через editor - пока тщетно. Например как сконнектиться с отнасл. таблицей?
   //   http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
