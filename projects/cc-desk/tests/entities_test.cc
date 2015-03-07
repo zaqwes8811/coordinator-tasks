@@ -106,11 +106,11 @@ TEST(ModelTest, Create) {
     ScopeGuard conn_guard = MakeObjGuard(C, &connection::disconnect);
 
     // Tasks
-    TaskTableQueries q(kTaskTableNameRef);
-    q.createIfNotExist(C);
+    TaskTableQueries q(kTaskTableNameRef, &C);
+    q.createIfNotExist();
     // Если не создано, то нет смысла
     // а если не создасться? Тут похоже все равно.
-    ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop, ByRef(C));
+    ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop);
     
     {
       // Create records
@@ -122,7 +122,7 @@ TEST(ModelTest, Create) {
       //EXPECT_EQ(it, model.end());  // все сохранили и исключение не выскочило
 
       // View
-      q.print(cout, C);
+      q.print(cout);
     }
   }
   EXPECT_FALSE(C.is_open());

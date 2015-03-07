@@ -10,6 +10,7 @@
 #include "canary/entities_and_values.h"
 #include "canary/filters.h"
 #include "top/common.h"
+#include "db_indep.h"
 
 #include <boost/bind.hpp>
 #include <boost/bind/make_adaptable.hpp>
@@ -19,21 +20,14 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
 
-//#include <adobe/algorithm/partition.hpp>
-
 #include <iostream>
 #include <cassert>
 #include <sstream>
 
 namespace pq_dal {
-struct TablePositions {
-  const static int kId = 0;
-  const static int kTaskName = 1;
-  const static int kPriority = 2;
-  const static int kDone = 3;
-};
 
 using namespace boost;
+using namespace storages;
 
 using std::string;
 using std::cout;
@@ -49,20 +43,20 @@ using entities::EntitiesStates;
 using values::ImmutableTask;
 
 PQConnectionPool::PQConnectionPool(const std::string& conn_info)
-  : conn_(new pqxx::connection(conn_info)) {
-  assert(conn_->is_open());
+  : m_conn_ptr(new pqxx::connection(conn_info)) {
+  assert(m_conn_ptr->is_open());
 }
 
 PQConnectionPool::~PQConnectionPool() {
   try {
-    conn_->disconnect();
+    m_conn_ptr->disconnect();
   } catch (...) {}
 }
 
 
-void TaskTableQueries::print(std::ostream& o, connection& conn) const {
-  nontransaction no_tr_w(conn);
-  string sql("SELECT * FROM " + table_name_ + " ORDER BY ID;");
+void TaskTableQueries::print(std::ostream& o) const {
+  nontransaction no_tr_w(*m_conn_ptr);
+  string sql("SELECT * FROM " + m_table_name + " ORDER BY ID;");
   result r( no_tr_w.exec( sql ));
 
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
@@ -74,11 +68,11 @@ void TaskTableQueries::print(std::ostream& o, connection& conn) const {
   }
 }
 
-void TaskTableQueries::createIfNotExist(connection& C) {
+void TaskTableQueries::createIfNotExist() {
   string sql(
     "CREATE TABLE " \
     "IF NOT EXISTS "+ // v9.1 >=
-    table_name_ +
+    m_table_name +
     "(" \
     // сделать чтобы было >0
     "ID         SERIAL PRIMARY KEY NOT NULL," \
@@ -86,15 +80,15 @@ void TaskTableQueries::createIfNotExist(connection& C) {
     "PRIORITY   INT                NOT NULL, " \
     "DONE BOOLEAN DEFAULT FALSE);");
 
-  pq_lower_level::run_transaction(sql, C);
+  pq_lower_level::run_transaction(sql, *m_conn_ptr);
 }
 
-void TaskTableQueries::drop(connection& C) {
-  pq_lower_level::rm_table(C, table_name_);
+void TaskTableQueries::drop() {
+  pq_lower_level::rm_table(*m_conn_ptr, m_table_name);
 }
 
-/// Objects
-TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name) : _table_name(table_name) { }
+TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name) : m_table_name(table_name)
+{ }
 
 void TaskLifetimeQueries::update(const values::ImmutableTask& v, pqxx::connection& C) {
 
@@ -105,7 +99,7 @@ void TaskLifetimeQueries::update(const values::ImmutableTask& v, pqxx::connectio
 
   string sql(
   "UPDATE "
-        + _table_name + " SET "
+        + m_table_name + " SET "
         + "TASK_NAME = '" + *v.description()
         + "', PRIORITY = " + common::to_string(v.priority())
         + ", DONE = " + done
@@ -122,7 +116,7 @@ values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v
   assert(!v.done());
 
   string sql(
-      "INSERT INTO " + _table_name + " (TASK_NAME, PRIORITY) " \
+      "INSERT INTO " + m_table_name + " (TASK_NAME, PRIORITY) " \
         "VALUES ('"
         + *v.description()+"', "
         + common::to_string(v.priority()) + ") RETURNING ID; ");
@@ -148,7 +142,7 @@ values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v
 
 entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
   work w(conn);
-  string sql("SELECT * FROM " + _table_name + ";");// WHERE DONE = FALSE;");
+  string sql("SELECT * FROM " + m_table_name + ";");// WHERE DONE = FALSE;");
   result r( w.exec( sql ));
   w.commit();
 

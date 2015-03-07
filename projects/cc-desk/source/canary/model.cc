@@ -15,10 +15,7 @@
 #include "canary/model.h"
 #include "canary/filters.h"
 
-//#include <adobe/algorithm/find.hpp>
 #include <loki/ScopeGuard.h>
-//#include <adobe/algorithm/sort.hpp>
-//#include <adobe/algorithm/find.hpp>
 #include <boost/bind.hpp>
 
 #include <iostream>
@@ -38,23 +35,23 @@ Model* Model::createInHeap(
   {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
-  TaskTableQueries q(models::kTaskTableNameRef);
-  q.createIfNotExist(*(pool->get()));
+  TaskTableQueries q(models::kTaskTableNameRef, &(*(pool->get())));
+  q.createIfNotExist();
 
   Tasks t = load_all(models::kTaskTableNameRef, pool);
   return new Model(t, pool);
 }
 
 void Model::draw_task_store(std::ostream& o) const {
-  TaskTableQueries q(tasks_table_name_);
-  q.print(o, *(pool_->get()));
+  TaskTableQueries q(tasks_table_name_, &(*(pool_->get())));
+  q.print(o);
 }
 
 Model::~Model() { }
 
 void Model::clear_store() {
-  TaskTableQueries q(tasks_table_name_);
-  q.drop(*(pool_->get()));
+  TaskTableQueries q(tasks_table_name_, &(*(pool_->get())));
+  q.drop();
 }
 
 Tasks Model::load_all(const std::string& table_name,

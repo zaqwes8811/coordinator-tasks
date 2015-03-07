@@ -33,14 +33,14 @@ void do_something(pqxx::connection& C)
   using models::kTaskTableNameRef;
   
   // Tasks
-  TaskTableQueries q(kTaskTableNameRef);
-  q.createIfNotExist(C);  // clang segfault
+  TaskTableQueries q(kTaskTableNameRef, &C);
+  q.createIfNotExist();  // clang segfault
 
   cout << "create table\n";
 
   // Если не создано, то нет смысла
   // а если не создасться? Тут похоже все равно.
-  ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop, ByRef(C));
+  ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop);
 
   // Create records
   TaskLifetimeQueries q_insert(kTaskTableNameRef);
@@ -52,7 +52,7 @@ void do_something(pqxx::connection& C)
   // Tags
 
   // View
-  q.print(cout, C);
+  q.print(cout);
 }
 
 TEST(postgres, all) {
