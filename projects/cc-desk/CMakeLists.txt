@@ -103,6 +103,7 @@ elseif (UNIX)
         link_directories(${BigExtern}/boost_1_57_0/stage_x64/lib)
         link_libraries(
             pqxx pq
+            sqlite3
             boost_system boost_thread
             pthread rt)  # !! pthread and rt last!!
     endif()

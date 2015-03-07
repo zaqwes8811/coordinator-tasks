@@ -11,3 +11,4 @@ tests-medium/node_modules
 *build*
 /version-qt-desk/build/
 *.user
+*.db
