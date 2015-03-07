@@ -53,7 +53,7 @@ TEST(AppCore, Create) {
   }
 
   pq_dal::TaskTableQueries q(models::kTaskTableNameRef, &(*(pool->get())));
-  EXPECT_THROW(q.print(cout), pqxx::undefined_table);
+  EXPECT_THROW(q.draw(cout), pqxx::undefined_table);
 }
 
 TEST(AppCore, UpdatePriority) {
@@ -74,7 +74,7 @@ TEST(AppCore, UpdatePriority) {
   }
 
   pq_dal::TaskTableQueries q(models::kTaskTableNameRef, &(*(pool->get())));
-  EXPECT_THROW(q.print(cout), pqxx::undefined_table);
+  EXPECT_THROW(q.draw(cout), pqxx::undefined_table);
 }
 
 TEST(AppCore, SelectionByPriority) {

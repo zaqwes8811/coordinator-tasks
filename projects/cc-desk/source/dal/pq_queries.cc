@@ -54,7 +54,7 @@ PQConnectionPool::~PQConnectionPool() {
 }
 
 
-void TaskTableQueries::print(std::ostream& o) const {
+void TaskTableQueries::draw(std::ostream& o) const {
   nontransaction no_tr_w(*m_conn_ptr);
   string sql("SELECT * FROM " + m_table_name + " ORDER BY ID;");
   result r( no_tr_w.exec( sql ));

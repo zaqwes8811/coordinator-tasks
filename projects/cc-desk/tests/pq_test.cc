@@ -52,7 +52,7 @@ void do_something(pqxx::connection& C)
   // Tags
 
   // View
-  q.print(cout);
+  q.draw(cout);
 }
 
 TEST(postgres, all) {

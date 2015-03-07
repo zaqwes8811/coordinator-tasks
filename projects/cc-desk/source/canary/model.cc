@@ -44,7 +44,7 @@ Model* Model::createInHeap(
 
 void Model::draw_task_store(std::ostream& o) const {
   TaskTableQueries q(tasks_table_name_, &(*(pool_->get())));
-  q.print(o);
+  q.draw(o);
 }
 
 Model::~Model() { }
