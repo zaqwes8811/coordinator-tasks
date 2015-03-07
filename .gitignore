@@ -10,3 +10,4 @@ tests-medium/node_modules
 *.app
 *build*
 /version-qt-desk/build/
+*.user
