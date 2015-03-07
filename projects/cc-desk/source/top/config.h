@@ -15,7 +15,9 @@ const char* const kTaskTableNameRef = "task_fake_entity";
 const int kAddedBlankLines = 10;
 }
 
-
+#ifndef FROM_HERE
+#  define FROM_HERE ""
+#endif
 
 #endif   
 // TOP_CONFIG_H_
