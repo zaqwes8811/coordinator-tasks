@@ -3,6 +3,9 @@
 # http://www.cmake.org/Wiki/CMake_Useful_Variables
 # -DCMAKE_BUILD_TYPE=Debug
 # -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++
+#
+# Trouble:
+#   https://qt-project.org/quarterly/view/using_cmake_to_build_qt_projects
 
 project(coordinator_tasks)
 cmake_minimum_required(VERSION 2.8)
