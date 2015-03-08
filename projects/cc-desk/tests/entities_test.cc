@@ -58,7 +58,7 @@ using namespace pq_dal;
 using namespace entities;
 using namespace Loki;
 using namespace pqxx;
-using namespace pq_lower_level;
+//using namespace pq_lower_level;
 using namespace fake_store;
 using entities::Tasks;
 
@@ -97,24 +97,24 @@ TEST(ModelTest, Create) {
   cout << model;  
 
   // save
-  connection C(models::kConnection);
+  auto C = boost::make_shared<connection>(models::kConnection);
   {
     using models::kTaskTableNameRef;
 
-    EXPECT_TRUE(C.is_open());
+    EXPECT_TRUE(C->is_open());
     
-    ScopeGuard conn_guard = MakeObjGuard(C, &connection::disconnect);
+    auto conn_guard = MakeObjGuard(*C, &connection::disconnect);
 
     // Tasks
-    TaskTableQueries q(kTaskTableNameRef, &C);
+    TaskTableQueries q(kTaskTableNameRef, C);
     q.createIfNotExist();
     // Если не создано, то нет смысла
     // а если не создасться? Тут похоже все равно.
-    ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop);
+    auto table_guard = MakeObjGuard(q, &TaskTableQueries::drop);
     
     {
       // Create records
-      TaskLifetimeQueries q_insert(kTaskTableNameRef, &C);
+      TaskLifetimeQueries q_insert(kTaskTableNameRef, C);
       //q_insert.create(model, C);
 
       //Tasks::iterator it = adobe::find_if(model, filters::get_check_non_saved());
@@ -125,7 +125,7 @@ TEST(ModelTest, Create) {
       q.draw(cout);
     }
   }
-  EXPECT_FALSE(C.is_open());
+  EXPECT_FALSE(C->is_open());
 
 }
 

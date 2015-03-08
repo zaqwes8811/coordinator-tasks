@@ -31,47 +31,47 @@ using values::ImmutableTask;
 using std::cout;
 
 Model* Model::createInHeap(
-    boost::shared_ptr<pq_dal::PQConnectionPool> pool)
+    boost::shared_ptr<pq_dal::ConnectionsPool> pool)
   {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
-  TaskTableQueries q(models::kTaskTableNameRef, &(*(pool->get())));
+  auto q = pool->createTaskTableQueries(models::kTaskTableNameRef);
   q.createIfNotExist();
 
-  Tasks t = load_all(models::kTaskTableNameRef, pool);
+  auto t = load_all(models::kTaskTableNameRef, pool);
   return new Model(t, pool);
 }
 
 void Model::draw_task_store(std::ostream& o) const {
-  TaskTableQueries q(tasks_table_name_, &(*(pool_->get())));
+  auto q = pool_->createTaskTableQueries(tasks_table_name_);
   q.draw(o);
 }
 
 Model::~Model() { }
 
 void Model::clear_store() {
-  TaskTableQueries q(tasks_table_name_, &(*(pool_->get())));
+  auto q = pool_->createTaskTableQueries(tasks_table_name_);
   q.drop();
 }
 
 Tasks Model::load_all(const std::string& table_name,
-                         boost::shared_ptr<pq_dal::PQConnectionPool> pool) {
-  TaskLifetimeQueries q_live(table_name, &(*(pool->get())));
+                         boost::shared_ptr<pq_dal::ConnectionsPool> pool) {
+  auto q_live = pool->createTaskLifetimeQueries(table_name);
   return Tasks(q_live.get_all());
 }
 
 entities::Tasks::value_type Model::_get_elem_by_id(const int id) {
-  Tasks::iterator it = std::find_if(tasks_.begin(), tasks_.end()
+  auto it = std::find_if(tasks_.begin(), tasks_.end()
                                     , filters::get_check_contained(id));
   assert(it != tasks_.end());
   return *it;
 }
 
 void Model::update(const values::ImmutableTask& e) {
-  Tasks::value_type k = _get_elem_by_id(e.id());
+  auto k = _get_elem_by_id(e.id());
   k->assign(e);
 
-  TaskLifetimeQueries q(tasks_table_name_, &(*(pool_->get())));
+  auto q = pool_->createTaskLifetimeQueries(tasks_table_name_);
   q.update(k->make_value());
 
   notify();  // FIXME: а нужно ли?
@@ -89,7 +89,7 @@ void Model::append(const ImmutableTask& v) {
   tasks_.push_back(e);
 
   // persist full container
-  TaskLifetimeQueries q(tasks_table_name_, &(*(pool_->get())));
+  auto q = pool_->createTaskLifetimeQueries(tasks_table_name_);
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
   ImmutableTask r = q.create(e->make_value());
@@ -100,7 +100,7 @@ void Model::append(const ImmutableTask& v) {
 }
 
 Model::Model(entities::Tasks _tasks,
-             boost::shared_ptr<pq_dal::PQConnectionPool> _pool)
+             boost::shared_ptr<pq_dal::ConnectionsPool> _pool)
     : tasks_table_name_(models::kTaskTableNameRef)
     , tasks_(_tasks)
     , pool_(_pool) {  }

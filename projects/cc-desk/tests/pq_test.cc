@@ -11,6 +11,8 @@
 #include <loki/ScopeGuard.h>
 #include <pqxx/pqxx> 
 #include <gtest/gtest.h>
+#include <boost/weak_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 #include <iostream>
 #include <set>
@@ -25,15 +27,15 @@ using namespace pq_dal;
 using namespace entities;
 using namespace Loki;
 using namespace pqxx;
-using namespace pq_lower_level;
+//using namespace pq_lower_level;
 using namespace std;
 
-void do_something(pqxx::connection& C)
+void do_something(boost::weak_ptr<pqxx::connection> C)
 {
   using models::kTaskTableNameRef;
   
   // Tasks
-  TaskTableQueries q(kTaskTableNameRef, &C);
+  TaskTableQueries q(kTaskTableNameRef, C);
   q.createIfNotExist();  // clang segfault
 
   cout << "create table\n";
@@ -43,7 +45,7 @@ void do_something(pqxx::connection& C)
   ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop);
 
   // Create records
-  TaskLifetimeQueries q_insert(kTaskTableNameRef, &C);
+  TaskLifetimeQueries q_insert(kTaskTableNameRef, C);
   TaskEntity t;
  // q_insert.create(t, C);
  // assert(t.get_primary_key() != EntitiesStates::kInActiveKey);
@@ -56,17 +58,17 @@ void do_something(pqxx::connection& C)
 }
 
 TEST(postgres, all) {
-  connection C(models::kConnection);
+  auto C = boost::make_shared<connection>(models::kConnection);
   cout << "conn" << endl;
   {
-    if (!C.is_open()) {
+    if (!C->is_open()) {
       throw runtime_error("Can't open database");
     }
     
-    ScopeGuard guard = MakeObjGuard(C, &connection::disconnect);
+    ScopeGuard guard = MakeObjGuard(*C, &connection::disconnect);
     EXPECT_NO_THROW(do_something(C));
   }
-  assert(!C.is_open());
+  assert(!C->is_open());
 }
 
 TEST(postgres, error_codes) {

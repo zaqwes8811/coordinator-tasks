@@ -24,6 +24,11 @@
 #include <cassert>
 #include <sstream>
 
+namespace pq_lower_level {
+void rm_table(pqxx::connection& C, const std::string& table_name);
+void run_transaction(const std::string& sql, /*const*/ pqxx::connection& C);
+}
+
 namespace pq_dal {
 
 using namespace boost;
@@ -42,12 +47,12 @@ using entities::EntitiesStates;
 
 using values::ImmutableTask;
 
-PQConnectionPool::PQConnectionPool(const std::string& conn_info)
+ConnectionsPool::ConnectionsPool(const std::string& conn_info)
   : m_conn_ptr(new pqxx::connection(conn_info)) {
   assert(m_conn_ptr->is_open());
 }
 
-PQConnectionPool::~PQConnectionPool() {
+ConnectionsPool::~ConnectionsPool() {
   try {
     m_conn_ptr->disconnect();
   } catch (...) {}
@@ -55,7 +60,11 @@ PQConnectionPool::~PQConnectionPool() {
 
 
 void TaskTableQueries::draw(std::ostream& o) const {
-  nontransaction no_tr_w(*m_conn_ptr);
+  auto c = m_conn_ptr.lock();
+  if (!c)
+    return;
+
+  nontransaction no_tr_w(*c);
   string sql("SELECT * FROM " + m_table_name + " ORDER BY ID;");
   result r( no_tr_w.exec( sql ));
 
@@ -80,15 +89,23 @@ void TaskTableQueries::createIfNotExist() {
     "PRIORITY   INT                NOT NULL, " \
     "DONE BOOLEAN DEFAULT FALSE);");
 
-  pq_lower_level::run_transaction(sql, *m_conn_ptr);
+  auto c = m_conn_ptr.lock();
+
+  if (!c)
+    return;
+  pq_lower_level::run_transaction(sql, *c);
 }
 
 void TaskTableQueries::drop() {
-  pq_lower_level::rm_table(*m_conn_ptr, m_table_name);
+  auto c = m_conn_ptr.lock();
+  if(!c)
+    return;
+
+  pq_lower_level::rm_table(*c, m_table_name);
 }
 
 TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
-                                         , pqxx::connection* p)
+                                         , boost::weak_ptr<pqxx::connection>  p)
     : m_table_name(table_name)
     , m_conn_ptr(p)
 { }
@@ -108,7 +125,11 @@ void TaskLifetimeQueries::update(const values::ImmutableTask& v) {
         + ", DONE = " + done
         + " WHERE ID = " + common::to_string(v.id()) + ";");
   
-  work w(*m_conn_ptr);
+  auto c = m_conn_ptr.lock();
+  if (!c)
+    return;
+
+  work w(*c);
   w.exec(sql);
   w.commit();
 }
@@ -124,7 +145,11 @@ values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v
         + *v.description()+"', "
         + common::to_string(v.priority()) + ") RETURNING ID; ");
 
-  work w(*m_conn_ptr);
+  auto c = m_conn_ptr.lock();
+  if (!c)
+    throw std::runtime_error(FROM_HERE);
+
+  work w(*c);
   result r( w.exec( sql ));  // похоже нельзя выполнить два запроса
   w.commit();
   assert(r.size() == 1);
@@ -144,8 +169,13 @@ values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v
 
 
 entities::Tasks TaskLifetimeQueries::get_all() const {
-  work w(*m_conn_ptr);
   string sql("SELECT * FROM " + m_table_name + ";");// WHERE DONE = FALSE;");
+
+  auto c = m_conn_ptr.lock();
+  if (!c)
+    throw std::runtime_error(FROM_HERE);
+
+  work w(*c);
   result r( w.exec( sql ));
   w.commit();
 

@@ -54,7 +54,7 @@ TEST(Blocked, TestApp) {
   char* argv[1] = { "none" };
   QApplication app(argc, argv);
 
-  shared_ptr<pq_dal::PQConnectionPool> pool(new pq_dal::PQConnectionPool(models::kConnection));
+  shared_ptr<pq_dal::ConnectionsPool> pool(new pq_dal::ConnectionsPool(models::kConnection));
   //shared_ptr
   std::auto_ptr<models::Model> a(models::Model::createInHeap(pool));
 

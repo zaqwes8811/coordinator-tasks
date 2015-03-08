@@ -23,7 +23,7 @@ using boost::shared_ptr;
 using Loki::MakeObjGuard;
 using Loki::ScopeGuard;
 
-using pq_dal::PQConnectionPool;
+using pq_dal::ConnectionsPool;
 using models::Model;
 using entities::Tasks;
 using std::cout;
@@ -31,8 +31,8 @@ using renders::render_task_store;
 
 TEST(AppCore, Create) {
   // make_shared получает по копии - проблема с некопируемыми объектами
-  shared_ptr<PQConnectionPool> pool(
-        new PQConnectionPool(models::kConnection));
+  shared_ptr<ConnectionsPool> pool(
+        new ConnectionsPool(models::kConnection));
   {
     std::auto_ptr<Model> app_ptr(Model::createInHeap(pool));
 
@@ -52,12 +52,12 @@ TEST(AppCore, Create) {
     //renders::render_task_store(cout, *(app_ptr.get()));
   }
 
-  pq_dal::TaskTableQueries q(models::kTaskTableNameRef, &(*(pool->get())));
+  pq_dal::TaskTableQueries q = pool->createTaskTableQueries(models::kTaskTableNameRef);
   EXPECT_THROW(q.draw(cout), pqxx::undefined_table);
 }
 
 TEST(AppCore, UpdatePriority) {
-  shared_ptr<PQConnectionPool> pool(new PQConnectionPool(models::kConnection));
+  shared_ptr<ConnectionsPool> pool(new ConnectionsPool(models::kConnection));
   {
     std::auto_ptr<Model> app_ptr(Model::createInHeap(pool));
     ScopeGuard _ = MakeObjGuard(*app_ptr, &Model::clear_store);
@@ -73,7 +73,7 @@ TEST(AppCore, UpdatePriority) {
     renders::render_task_store(cout, *app_ptr);
   }
 
-  pq_dal::TaskTableQueries q(models::kTaskTableNameRef, &(*(pool->get())));
+  pq_dal::TaskTableQueries q = pool->createTaskTableQueries(models::kTaskTableNameRef);
   EXPECT_THROW(q.draw(cout), pqxx::undefined_table);
 }
 
