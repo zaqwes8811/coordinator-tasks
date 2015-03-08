@@ -10,8 +10,10 @@
 #include <QMainWindow>
 #include <QTableWidget>
 #include <QMessageBox>
+#include <QTimer>
 
 #include <stdexcept>
+#include <functional>
 
 namespace Ui {
 class MainWindow;
@@ -54,6 +56,9 @@ class Engine : public QMainWindow
   Q_OBJECT
 
 public:
+  // typedefs
+  typedef std::function<void(void)> Callable;
+
   // ctor/dtor/assign/copy
   Engine(models::Model* const app_ptr,
        QWidget *parent = 0);
@@ -77,6 +82,10 @@ private slots:
   void slotMarkDone();
   void slotReopen();
 
+  void doWork() {
+     /* ... */
+  }
+
 #ifndef G_I_WANT_USE_IT
   void slotFillFake(bool);
 #endif
@@ -97,6 +106,8 @@ private:
   models::Model* _model;
 
   filters::ChainFilters _filters_chain;
+
+  QTimer m_timer;
 };
 
 #endif // MAINWINDOW_H

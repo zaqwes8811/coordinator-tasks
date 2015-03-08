@@ -51,34 +51,24 @@ private:
 //   https://www.qtdeveloperdays.com/2013/sites/default/files/presentation_pdf/Qt_Event_Loop.pdf
 //   http://blog.bbv.ch/2012/10/03/multithreaded-programming-with-qt/
 TEST(Blocked, TestApp) {
-  // Model
-
-  // View
   int argc = 1;
   char* argv[1] = { "none" };
   QApplication app(argc, argv);
 
   shared_ptr<pq_dal::ConnectionsPool> pool(new pq_dal::ConnectionsPool(models::kConnection));
-  //shared_ptr
-  std::auto_ptr<models::Model> a(models::Model::createInHeap(pool));
 
-#ifndef G_I_WANT_USE_IT
-  // Пока очищаем хранилище
-  ScopeGuard _ = MakeObjGuard(*a, &models::Model::clear_store);
-#endif
+  std::unique_ptr<models::Model> a(models::Model::createForOwn(pool));
 
-  Engine *window = new Engine(a.get());
+  auto _ = MakeObjGuard(*a, &models::Model::clear_store);
 
-  //ModelListenerStaticPolym<QWidget> listener(window);
+  auto window = new Engine(a.get());
+
   shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));
   a->set_listener(listener);
 
   window->show();
-
-  // Пакуем вид и передаем модели
-  // Patterns: Observer and Mediator
-
-  // FIXME: run event loop?
-  //return
   app.exec();
 }
+
+// FIXME: posting from other threads
+//   http://qt-project.org/wiki/ThreadsEventsQObjects

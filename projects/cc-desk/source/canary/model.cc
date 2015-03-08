@@ -30,7 +30,7 @@ using values::ImmutableTask;
 
 using std::cout;
 
-Model* Model::createInHeap(
+Model* Model::createForOwn(
     boost::shared_ptr<pq_dal::ConnectionsPool> pool)
   {
   // FIXME: дублирование. как быть с именем таблицы?

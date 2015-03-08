@@ -35,7 +35,7 @@ class Model
 
 public:
   // create/destory
-  static Model* createInHeap(pq_dal::PQConnectionPoolPtr);
+  static Model* createForOwn(pq_dal::PQConnectionPoolPtr);
   Model(entities::Tasks _model, pq_dal::PQConnectionPoolPtr _pool);
   ~Model();
 

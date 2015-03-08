@@ -11,7 +11,6 @@
 #include <boost/make_shared.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
-//#include <adobe/algorithm/for_each.hpp>
 #include <loki/ScopeGuard.h>
 
 #include <memory>
@@ -34,7 +33,7 @@ TEST(AppCore, Create) {
   shared_ptr<ConnectionsPool> pool(
         new ConnectionsPool(models::kConnection));
   {
-    std::auto_ptr<Model> app_ptr(Model::createInHeap(pool));
+    std::auto_ptr<Model> app_ptr(Model::createForOwn(pool));
 
     // добавляем записи
     Tasks data = fake_store::get_all();
@@ -46,7 +45,7 @@ TEST(AppCore, Create) {
   }
 
   {
-    std::auto_ptr<Model> app_ptr(Model::createInHeap(pool));
+    std::auto_ptr<Model> app_ptr(Model::createForOwn(pool));
     ScopeGuard _ = MakeObjGuard(*app_ptr, &Model::clear_store);
 
     //renders::render_task_store(cout, *(app_ptr.get()));
@@ -59,7 +58,7 @@ TEST(AppCore, Create) {
 TEST(AppCore, UpdatePriority) {
   shared_ptr<ConnectionsPool> pool(new ConnectionsPool(models::kConnection));
   {
-    std::auto_ptr<Model> app_ptr(Model::createInHeap(pool));
+    std::auto_ptr<Model> app_ptr(Model::createForOwn(pool));
     ScopeGuard _ = MakeObjGuard(*app_ptr, &Model::clear_store);
 
     // добавляем записи
