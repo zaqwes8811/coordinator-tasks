@@ -66,6 +66,30 @@ private:
   virtual void updateImpl(const values::ImmutableTask& v) = 0;
   virtual entities::Tasks get_allImpl() const = 0;
 };
+
+/**
+  \attention Only in single thread! Actors Model can help
+
+  http://herbsutter.com/2013/05/30/gotw-90-solution-factories/
+*/
+class ConnectionsPool : public boost::noncopyable {
+public:
+  virtual ~ConnectionsPool() { }
+
+  /**
+    \fixme: strange design. May be bad lifetimes
+
+    http://www.drdobbs.com/cpp/c11-uniqueptr/240002708
+  */
+  virtual
+  std::unique_ptr<storages::TaskTableQueries> createTaskTableQueries(const std::string& tablename) = 0;
+
+  virtual
+  std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQueries(const std::string& tablename) = 0;
+};
+
+
+typedef boost::shared_ptr<storages::ConnectionsPool> ConnectionPoolPtr;
 }
 
 #endif

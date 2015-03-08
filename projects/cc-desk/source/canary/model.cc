@@ -31,7 +31,7 @@ using values::ImmutableTask;
 using std::cout;
 
 Model* Model::createForOwn(
-    boost::shared_ptr<pq_dal::ConnectionsPool> pool)
+    boost::shared_ptr<storages::ConnectionsPool> pool)
   {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
@@ -55,7 +55,7 @@ void Model::clear_store() {
 }
 
 Tasks Model::load_all(const std::string& table_name,
-                         boost::shared_ptr<pq_dal::ConnectionsPool> pool) {
+                         boost::shared_ptr<storages::ConnectionsPool> pool) {
   auto q_live = pool->createTaskLifetimeQueries(table_name);
   return Tasks(q_live->get_all());
 }
@@ -100,7 +100,7 @@ void Model::append(const ImmutableTask& v) {
 }
 
 Model::Model(entities::Tasks _tasks,
-             boost::shared_ptr<pq_dal::ConnectionsPool> _pool)
+             boost::shared_ptr<storages::ConnectionsPool> _pool)
     : tasks_table_name_(models::kTaskTableNameRef)
     , tasks_(_tasks)
     , pool_(_pool) {  }

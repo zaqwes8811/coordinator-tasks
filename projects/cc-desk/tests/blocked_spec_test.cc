@@ -58,12 +58,14 @@ private:
 // Actor model troubles:
 //   https://www.qtdeveloperdays.com/2013/sites/default/files/presentation_pdf/Qt_Event_Loop.pdf
 //   http://blog.bbv.ch/2012/10/03/multithreaded-programming-with-qt/
+//
+//   http://www.christeck.de/wp/2010/10/23/the-great-qthread-mess/
 TEST(Blocked, TestApp) {
   int argc = 1;
   char* argv[1] = { "none" };
   QApplication app(argc, argv);
 
-  shared_ptr<pq_dal::ConnectionsPool> pool(new pq_dal::ConnectionsPool(models::kConnection));
+  storages::ConnectionPoolPtr pool(new pq_dal::PQConnectionsPool(models::kConnection));
 
   std::unique_ptr<models::Model> a(models::Model::createForOwn(pool));
 

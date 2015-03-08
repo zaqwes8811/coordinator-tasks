@@ -22,7 +22,7 @@ using boost::shared_ptr;
 using Loki::MakeObjGuard;
 using Loki::ScopeGuard;
 
-using pq_dal::ConnectionsPool;
+using pq_dal::PQConnectionsPool;
 using models::Model;
 using entities::Tasks;
 using std::cout;
@@ -30,8 +30,8 @@ using renders::render_task_store;
 
 TEST(AppCore, Create) {
   // make_shared получает по копии - проблема с некопируемыми объектами
-  shared_ptr<ConnectionsPool> pool(
-        new ConnectionsPool(models::kConnection));
+  shared_ptr<PQConnectionsPool> pool(
+        new PQConnectionsPool(models::kConnection));
   {
     std::auto_ptr<Model> app_ptr(Model::createForOwn(pool));
 
@@ -56,7 +56,7 @@ TEST(AppCore, Create) {
 }
 
 TEST(AppCore, UpdatePriority) {
-  shared_ptr<ConnectionsPool> pool(new ConnectionsPool(models::kConnection));
+  shared_ptr<PQConnectionsPool> pool(new PQConnectionsPool(models::kConnection));
   {
     std::auto_ptr<Model> app_ptr(Model::createForOwn(pool));
     ScopeGuard _ = MakeObjGuard(*app_ptr, &Model::clear_store);

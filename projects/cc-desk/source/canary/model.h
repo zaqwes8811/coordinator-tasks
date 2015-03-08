@@ -35,8 +35,8 @@ class Model
 
 public:
   // create/destory
-  static Model* createForOwn(pq_dal::PQConnectionPoolPtr);
-  Model(entities::Tasks _model, pq_dal::PQConnectionPoolPtr _pool);
+  static Model* createForOwn(storages::ConnectionPoolPtr);
+  Model(entities::Tasks _model, storages::ConnectionPoolPtr _pool);
   ~Model();
 
   // other
@@ -62,13 +62,13 @@ private:
   void draw_task_store(std::ostream& o) const;
 
   // persist filters:
-  static entities::Tasks load_all(const std::string& table_name, pq_dal::PQConnectionPoolPtr pool);
+  static entities::Tasks load_all(const std::string& table_name, storages::ConnectionPoolPtr pool);
 
   std::string tasks_table_name_;
   entities::Tasks tasks_;  //
 
   // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
-  pq_dal::PQConnectionPoolPtr pool_;
+  storages::ConnectionPoolPtr pool_;
   isolation::ModelListenerPtr observers_;
   entities::Tasks::value_type _get_elem_by_id(const int id);
 };

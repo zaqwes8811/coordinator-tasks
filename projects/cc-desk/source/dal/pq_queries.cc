@@ -71,24 +71,24 @@ using entities::EntitiesStates;
 using values::ImmutableTask;
 
 
-ConnectionsPool::ConnectionsPool(const std::string& conn_info)
+PQConnectionsPool::PQConnectionsPool(const std::string& conn_info)
   : m_conn_ptr(new pqxx::connection(conn_info)) {
   assert(m_conn_ptr->is_open());
 }
 
-ConnectionsPool::~ConnectionsPool() {
+PQConnectionsPool::~PQConnectionsPool() {
   try {
     m_conn_ptr->disconnect();
   } catch (...) {}
 }
 
 std::unique_ptr<storages::TaskTableQueries>
-ConnectionsPool::createTaskTableQueries(const std::string& tablename) {
+PQConnectionsPool::createTaskTableQueries(const std::string& tablename) {
   return std::unique_ptr<storages::TaskTableQueries>(new TaskTableQueries(tablename, m_conn_ptr));
 }
 
 std::unique_ptr<storages::TaskLifetimeQueries>
-ConnectionsPool::createTaskLifetimeQueries(const std::string& tablename) {
+PQConnectionsPool::createTaskLifetimeQueries(const std::string& tablename) {
   return std::unique_ptr<storages::TaskLifetimeQueries>(new TaskLifetimeQueries(tablename, m_conn_ptr));
 }
 

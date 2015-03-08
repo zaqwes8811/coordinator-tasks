@@ -55,14 +55,12 @@ private:
 };
 
 /**
-  \attention Only in single thread! Actors Model can help
 
-  http://herbsutter.com/2013/05/30/gotw-90-solution-factories/
 */
-class ConnectionsPool : public boost::noncopyable {
+class PQConnectionsPool : public storages::ConnectionsPool {
 public:
-  explicit ConnectionsPool(const std::string& conn_info);
-  ~ConnectionsPool();
+  explicit PQConnectionsPool(const std::string& conn_info);
+  ~PQConnectionsPool();
 
   /**
     \fixme: strange design. May be bad lifetimes
@@ -76,8 +74,6 @@ private:
   // FIXME: important not only lifetime, but connection state to!
   boost::shared_ptr<pqxx::connection> m_conn_ptr;
 };
-
-typedef boost::shared_ptr<pq_dal::ConnectionsPool> PQConnectionPoolPtr;
 }  // space
 
 
