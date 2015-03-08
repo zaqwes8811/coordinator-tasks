@@ -65,18 +65,20 @@ class TaskLifetimeQueries
     : public boost::noncopyable
 {
 public:
-  explicit TaskLifetimeQueries(const std::string& table_name);
+   TaskLifetimeQueries(const std::string& table_name
+                               , pqxx::connection* p);
 
   // values op.
-  values::ImmutableTask create(const values::ImmutableTask& v, pqxx::connection& C);
+  values::ImmutableTask create(const values::ImmutableTask& v);
 
-  void update(const values::ImmutableTask& v, pqxx::connection& C);
+  void update(const values::ImmutableTask& v);
 
   // entities op.
-  entities::Tasks get_all(pqxx::connection& C) const;
+  entities::Tasks get_all() const;
 
 private:
   const std::string m_table_name;
+  pqxx::connection* const m_conn_ptr;
 };
 }  // ns
 

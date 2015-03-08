@@ -87,10 +87,13 @@ void TaskTableQueries::drop() {
   pq_lower_level::rm_table(*m_conn_ptr, m_table_name);
 }
 
-TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name) : m_table_name(table_name)
+TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
+                                         , pqxx::connection* p)
+    : m_table_name(table_name)
+    , m_conn_ptr(p)
 { }
 
-void TaskLifetimeQueries::update(const values::ImmutableTask& v, pqxx::connection& C) {
+void TaskLifetimeQueries::update(const values::ImmutableTask& v) {
 
   assert(v.id() != EntitiesStates::kInActiveKey);
   string done("false");
@@ -105,12 +108,12 @@ void TaskLifetimeQueries::update(const values::ImmutableTask& v, pqxx::connectio
         + ", DONE = " + done
         + " WHERE ID = " + common::to_string(v.id()) + ";");
   
-  work w(C);
+  work w(*m_conn_ptr);
   w.exec(sql);
   w.commit();
 }
 
-values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v, pqxx::connection& conn)
+values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v)
 {
   assert(v.id() == entities::EntitiesStates::kInActiveKey);
   assert(!v.done());
@@ -121,7 +124,7 @@ values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v
         + *v.description()+"', "
         + common::to_string(v.priority()) + ") RETURNING ID; ");
 
-  work w(conn);
+  work w(*m_conn_ptr);
   result r( w.exec( sql ));  // похоже нельзя выполнить два запроса
   w.commit();
   assert(r.size() == 1);
@@ -140,8 +143,8 @@ values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v
 }
 
 
-entities::Tasks TaskLifetimeQueries::get_all(pqxx::connection& conn) const {
-  work w(conn);
+entities::Tasks TaskLifetimeQueries::get_all() const {
+  work w(*m_conn_ptr);
   string sql("SELECT * FROM " + m_table_name + ";");// WHERE DONE = FALSE;");
   result r( w.exec( sql ));
   w.commit();

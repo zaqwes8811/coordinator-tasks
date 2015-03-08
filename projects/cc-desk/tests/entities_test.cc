@@ -114,7 +114,7 @@ TEST(ModelTest, Create) {
     
     {
       // Create records
-      TaskLifetimeQueries q_insert(kTaskTableNameRef);
+      TaskLifetimeQueries q_insert(kTaskTableNameRef, &C);
       //q_insert.create(model, C);
 
       //Tasks::iterator it = adobe::find_if(model, filters::get_check_non_saved());

@@ -43,7 +43,7 @@ void do_something(pqxx::connection& C)
   ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop);
 
   // Create records
-  TaskLifetimeQueries q_insert(kTaskTableNameRef);
+  TaskLifetimeQueries q_insert(kTaskTableNameRef, &C);
   TaskEntity t;
  // q_insert.create(t, C);
  // assert(t.get_primary_key() != EntitiesStates::kInActiveKey);

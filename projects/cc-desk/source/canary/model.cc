@@ -56,8 +56,8 @@ void Model::clear_store() {
 
 Tasks Model::load_all(const std::string& table_name,
                          boost::shared_ptr<pq_dal::PQConnectionPool> pool) {
-  TaskLifetimeQueries q_live(table_name);
-  return Tasks(q_live.get_all(*(pool->get())));
+  TaskLifetimeQueries q_live(table_name, &(*(pool->get())));
+  return Tasks(q_live.get_all());
 }
 
 entities::Tasks::value_type Model::_get_elem_by_id(const int id) {
@@ -71,8 +71,8 @@ void Model::update(const values::ImmutableTask& e) {
   Tasks::value_type k = _get_elem_by_id(e.id());
   k->assign(e);
 
-  TaskLifetimeQueries q(tasks_table_name_);
-  q.update(k->make_value(), *(pool_->get()));
+  TaskLifetimeQueries q(tasks_table_name_, &(*(pool_->get())));
+  q.update(k->make_value());
 
   notify();  // FIXME: а нужно ли?
 }
@@ -89,10 +89,10 @@ void Model::append(const ImmutableTask& v) {
   tasks_.push_back(e);
 
   // persist full container
-  TaskLifetimeQueries q(tasks_table_name_);
+  TaskLifetimeQueries q(tasks_table_name_, &(*(pool_->get())));
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
-  ImmutableTask r = q.create(e->make_value(), *(pool_->get()));
+  ImmutableTask r = q.create(e->make_value());
   e->set_primary_key(r.id());  // а ведь придется оставить!!
 
   notify();
