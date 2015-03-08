@@ -24,6 +24,7 @@
 
 #include <memory>
 #include <cassert>
+#include <iostream>
 
 using namespace boost;
 using Loki::ScopeGuard;
@@ -46,6 +47,13 @@ private:
   Engine* const view_;
 };
 
+class UIActor
+{
+public:
+
+private:
+
+};
 
 // Actor model troubles:
 //   https://www.qtdeveloperdays.com/2013/sites/default/files/presentation_pdf/Qt_Event_Loop.pdf
@@ -67,7 +75,13 @@ TEST(Blocked, TestApp) {
   a->set_listener(listener);
 
   window->show();
-  app.exec();
+  //app.exec();  // it's trouble for Actors usige
+
+  // http://qt-project.org/doc/qt-4.8/qeventloop.html#processEvents
+  while(true) {
+    // ! can't sleep or wait!
+    app.processEvents();  // hat processor!
+  }
 }
 
 // FIXME: posting from other threads
