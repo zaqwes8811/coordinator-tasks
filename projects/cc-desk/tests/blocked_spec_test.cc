@@ -46,6 +46,10 @@ private:
   Engine* const view_;
 };
 
+
+// Actor model troubles:
+//   https://www.qtdeveloperdays.com/2013/sites/default/files/presentation_pdf/Qt_Event_Loop.pdf
+//   http://blog.bbv.ch/2012/10/03/multithreaded-programming-with-qt/
 TEST(Blocked, TestApp) {
   // Model
 

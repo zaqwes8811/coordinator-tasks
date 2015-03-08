@@ -52,8 +52,8 @@ TEST(AppCore, Create) {
     //renders::render_task_store(cout, *(app_ptr.get()));
   }
 
-  pq_dal::TaskTableQueries q = pool->createTaskTableQueries(models::kTaskTableNameRef);
-  EXPECT_THROW(q.draw(cout), pqxx::undefined_table);
+  auto q = pool->createTaskTableQueries(models::kTaskTableNameRef);
+  EXPECT_THROW(q->draw(cout), pqxx::undefined_table);
 }
 
 TEST(AppCore, UpdatePriority) {
@@ -73,8 +73,8 @@ TEST(AppCore, UpdatePriority) {
     renders::render_task_store(cout, *app_ptr);
   }
 
-  pq_dal::TaskTableQueries q = pool->createTaskTableQueries(models::kTaskTableNameRef);
-  EXPECT_THROW(q.draw(cout), pqxx::undefined_table);
+  auto q = pool->createTaskTableQueries(models::kTaskTableNameRef);
+  EXPECT_THROW(q->draw(cout), pqxx::undefined_table);
 }
 
 TEST(AppCore, SelectionByPriority) {

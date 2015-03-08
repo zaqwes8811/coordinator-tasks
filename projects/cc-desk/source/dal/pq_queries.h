@@ -2,6 +2,7 @@
 #define DAL_H
 
 #include "canary/entities_and_values.h"
+#include "db_indep.h"
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
@@ -12,25 +13,13 @@
 #include <string>
 #include <vector>
 #include <cassert>
+#include <memory>
 
 namespace pq_dal {
-class ConnectionsPool;
 
-/**
-  \attention Small life time!
-*/
 class TaskTableQueries
-    //: public boost::noncopyable
+    : public storages::TaskTableQueries
 {
-public:
-  void createIfNotExist();
-  void drop();
-
-  void draw(std::ostream& o) const;
-
-private:
-  friend class ConnectionsPool;
-
 public:
   TaskTableQueries(const std::string& name, boost::weak_ptr<pqxx::connection> p)
     : m_table_name(name)
@@ -39,43 +28,30 @@ public:
 private:
   const std::string m_table_name;
   boost::weak_ptr<pqxx::connection> m_conn_ptr;
+
+  void createIfNotExistImpl();
+  void dropImpl();
+
+  void drawImpl(std::ostream& o) const;
 };
 
-/**
-  \attention Small life time!
-
-  Делать один репозиторий не советуют
-  TODO: Может DI какой сделать, или все равно?
-  FIXME: как то объединить create, update, etc. в persist
-
-  Назначет id!! очень важно! объекты уникальные
-  Создает, если еще не был создан, либо обновляет всю запись
-  by value
-  На групповую вставку могут быть ограничения, но в данной задаче
-   пока не нужно, если не нужно будет что-то куда-то автоматически переливать.
-
-  FIXME: с умными указателями возникают проблемы с константростью!
-*/
 class TaskLifetimeQueries
-    //: public boost::noncopyable
+    : public storages::TaskLifetimeQueries
 {
-public:
-  // values op.
-  values::ImmutableTask create(const values::ImmutableTask& v);
-
-  void update(const values::ImmutableTask& v);
-
-  // entities op.
-  entities::Tasks get_all() const;
-
-private:
-  friend class ConnectionsPool;
 public:
   TaskLifetimeQueries(const std::string& table_name
                               , boost::weak_ptr<pqxx::connection> p);
 private:
   const std::string m_table_name;
   boost::weak_ptr<pqxx::connection> m_conn_ptr;
+
+  // values op.
+  values::ImmutableTask createImpl(const values::ImmutableTask& v);
+
+  void updateImpl(const values::ImmutableTask& v);
+
+  // entities op.
+  entities::Tasks get_allImpl() const;
 };
 
 /**
@@ -90,14 +66,11 @@ public:
 
   /**
     \fixme: strange design. May be bad lifetimes
-  */
-  TaskTableQueries createTaskTableQueries(const std::string& tablename) {
-    return TaskTableQueries(tablename, m_conn_ptr);
-  }
 
-  TaskLifetimeQueries createTaskLifetimeQueries(const std::string& tablename) {
-    return TaskLifetimeQueries(tablename, m_conn_ptr);
-  }
+    http://www.drdobbs.com/cpp/c11-uniqueptr/240002708
+  */
+  std::unique_ptr<storages::TaskTableQueries> createTaskTableQueries(const std::string& tablename);
+  std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQueries(const std::string& tablename);
 
 private:
   // FIXME: important not only lifetime, but connection state to!

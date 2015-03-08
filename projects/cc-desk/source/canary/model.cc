@@ -36,7 +36,7 @@ Model* Model::createInHeap(
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
   auto q = pool->createTaskTableQueries(models::kTaskTableNameRef);
-  q.createIfNotExist();
+  q->createIfNotExist();
 
   auto t = load_all(models::kTaskTableNameRef, pool);
   return new Model(t, pool);
@@ -44,20 +44,20 @@ Model* Model::createInHeap(
 
 void Model::draw_task_store(std::ostream& o) const {
   auto q = pool_->createTaskTableQueries(tasks_table_name_);
-  q.draw(o);
+  q->draw(o);
 }
 
 Model::~Model() { }
 
 void Model::clear_store() {
   auto q = pool_->createTaskTableQueries(tasks_table_name_);
-  q.drop();
+  q->drop();
 }
 
 Tasks Model::load_all(const std::string& table_name,
                          boost::shared_ptr<pq_dal::ConnectionsPool> pool) {
   auto q_live = pool->createTaskLifetimeQueries(table_name);
-  return Tasks(q_live.get_all());
+  return Tasks(q_live->get_all());
 }
 
 entities::Tasks::value_type Model::_get_elem_by_id(const int id) {
@@ -72,7 +72,7 @@ void Model::update(const values::ImmutableTask& e) {
   k->assign(e);
 
   auto q = pool_->createTaskLifetimeQueries(tasks_table_name_);
-  q.update(k->make_value());
+  q->update(k->make_value());
 
   notify();  // FIXME: а нужно ли?
 }
@@ -92,7 +92,7 @@ void Model::append(const ImmutableTask& v) {
   auto q = pool_->createTaskLifetimeQueries(tasks_table_name_);
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
-  ImmutableTask r = q.create(e->make_value());
+  ImmutableTask r = q->create(e->make_value());
   e->set_primary_key(r.id());  // а ведь придется оставить!!
 
   notify();

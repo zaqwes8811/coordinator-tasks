@@ -25,9 +25,32 @@
 #include <sstream>
 
 namespace pq_lower_level {
-void rm_table(pqxx::connection& C, const std::string& table_name);
-void run_transaction(const std::string& sql, /*const*/ pqxx::connection& C);
+using std::string;
+using pqxx::connection;
+using pqxx::work;
+
+// можно было использовать ссылку и ByRef()
+void rm_table(connection& conn, const string& table_name)
+{
+  // Если таблицы нет, то просто ничего не происходит.
+  string sql("DROP TABLE " + table_name + ";");
+
+  // создаем транзакционный объект
+  work w(conn);
+
+  // Exec
+  w.exec(sql);
+  w.commit();
 }
+
+void run_transaction(const string& sql, /*const*/ connection& C)
+{
+  work W(C);
+  W.exec(sql);
+  W.commit();
+}
+}  // ns
+
 
 namespace pq_dal {
 
@@ -47,6 +70,7 @@ using entities::EntitiesStates;
 
 using values::ImmutableTask;
 
+
 ConnectionsPool::ConnectionsPool(const std::string& conn_info)
   : m_conn_ptr(new pqxx::connection(conn_info)) {
   assert(m_conn_ptr->is_open());
@@ -58,8 +82,18 @@ ConnectionsPool::~ConnectionsPool() {
   } catch (...) {}
 }
 
+std::unique_ptr<storages::TaskTableQueries>
+ConnectionsPool::createTaskTableQueries(const std::string& tablename) {
+  return std::unique_ptr<storages::TaskTableQueries>(new TaskTableQueries(tablename, m_conn_ptr));
+}
 
-void TaskTableQueries::draw(std::ostream& o) const {
+std::unique_ptr<storages::TaskLifetimeQueries>
+ConnectionsPool::createTaskLifetimeQueries(const std::string& tablename) {
+  return std::unique_ptr<storages::TaskLifetimeQueries>(new TaskLifetimeQueries(tablename, m_conn_ptr));
+}
+
+
+void TaskTableQueries::drawImpl(std::ostream& o) const {
   auto c = m_conn_ptr.lock();
   if (!c)
     return;
@@ -77,7 +111,7 @@ void TaskTableQueries::draw(std::ostream& o) const {
   }
 }
 
-void TaskTableQueries::createIfNotExist() {
+void TaskTableQueries::createIfNotExistImpl() {
   string sql(
     "CREATE TABLE " \
     "IF NOT EXISTS "+ // v9.1 >=
@@ -96,7 +130,7 @@ void TaskTableQueries::createIfNotExist() {
   pq_lower_level::run_transaction(sql, *c);
 }
 
-void TaskTableQueries::drop() {
+void TaskTableQueries::dropImpl() {
   auto c = m_conn_ptr.lock();
   if(!c)
     return;
@@ -110,7 +144,7 @@ TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
     , m_conn_ptr(p)
 { }
 
-void TaskLifetimeQueries::update(const values::ImmutableTask& v) {
+void TaskLifetimeQueries::updateImpl(const values::ImmutableTask& v) {
 
   assert(v.id() != EntitiesStates::kInActiveKey);
   string done("false");
@@ -134,7 +168,7 @@ void TaskLifetimeQueries::update(const values::ImmutableTask& v) {
   w.commit();
 }
 
-values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v)
+values::ImmutableTask TaskLifetimeQueries::createImpl(const values::ImmutableTask& v)
 {
   assert(v.id() == entities::EntitiesStates::kInActiveKey);
   assert(!v.done());
@@ -168,7 +202,7 @@ values::ImmutableTask TaskLifetimeQueries::create(const values::ImmutableTask& v
 }
 
 
-entities::Tasks TaskLifetimeQueries::get_all() const {
+entities::Tasks TaskLifetimeQueries::get_allImpl() const {
   string sql("SELECT * FROM " + m_table_name + ";");// WHERE DONE = FALSE;");
 
   auto c = m_conn_ptr.lock();
@@ -193,33 +227,6 @@ entities::Tasks TaskLifetimeQueries::get_all() const {
   return model;
 }
 
-}  // ns
-
-namespace pq_lower_level {
-using std::string;
-using pqxx::connection;
-using pqxx::work;
-
-// можно было использовать ссылку и ByRef()
-void rm_table(connection& conn, const string& table_name)
-{
-  // Если таблицы нет, то просто ничего не происходит.
-  string sql("DROP TABLE " + table_name + ";");
-
-  // создаем транзакционный объект
-  work w(conn);
-
-  // Exec
-  w.exec(sql);
-  w.commit();
-}
-
-void run_transaction(const string& sql, /*const*/ connection& C)
-{
-  work W(C);
-  W.exec(sql);
-  W.commit();
-}
 }  // ns
 
 
