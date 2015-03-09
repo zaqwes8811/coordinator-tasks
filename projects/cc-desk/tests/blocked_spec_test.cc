@@ -86,12 +86,12 @@ private:
     int argc = 1;
     char* argv[1] = { "none" };
     QApplication app(argc, argv);
-    auto window = new Engine(model_ptr.get());
+    auto engine_ptr = new Engine(model_ptr.get());
 
-    boost::shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));
+    boost::shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(engine_ptr));
     model_ptr->set_listener(listener);
 
-    window->show();
+    engine_ptr->show();
 
     // http://qt-project.org/doc/qt-4.8/qeventloop.html#processEvents
     //app.exec();  // it's trouble for Actors usige
@@ -149,6 +149,9 @@ TEST(Blocked, TestApp) {
 
 // FIXME: posting from other threads
 //   http://qt-project.org/wiki/ThreadsEventsQObjects
+//
+// Trouble:
+// http://stackoverflow.com/questions/3629557/boost-shared-from-this
 TEST(Blocked, UIActorTest) {
   // work in DB thread
   storages::ConnectionPoolPtr pool(
@@ -157,7 +160,7 @@ TEST(Blocked, UIActorTest) {
 
   // work in UI thread
   auto model_ptr = boost::shared_ptr<models::Model>(models::Model::createForOwn(pool));
-  auto _ = MakeObjGuard(*model_ptr, &models::Model::clear_store);
+  //auto _ = MakeObjGuard(*model_ptr, &models::Model::clear_store);
 
   UIActor ui(model_ptr);  // dtor will call and app out
 

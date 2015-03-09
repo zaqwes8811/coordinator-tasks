@@ -95,14 +95,14 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   QWidget* centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
     QVBoxLayout* mainLayout = new QVBoxLayout(centralWidget);
-      _table = new QMyTableView(this);
-      connect(_table, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
+      m_table_ptr = new QMyTableView(this);
+      connect(m_table_ptr, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
       // make checkbox
       //connect(_table->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(filterOnOffSortByDecPriority(int)));
 
       mainLayout->addLayout(actions_layout);
-      mainLayout->addWidget(_table);
+      mainLayout->addWidget(m_table_ptr);
 
 
   redraw();
@@ -115,13 +115,13 @@ void Engine::slotReopen() {
   if (r.isPresent()) {
     int row = r.get();
     // Обновляем ячейку
-    _table->markReopen(row);  // no throw
-    values::ImmutableTask t = _table->get_elem(row);
+    m_table_ptr->markReopen(row);  // no throw
+    values::ImmutableTask t = m_table_ptr->get_elem(row);
     m_model_ptr->update(t);  // FIXME: may throw
   }
 }
 
-void Engine::_processFilter(filters::FilterPtr f, int state) {
+void Engine::processFilter(filters::FilterPtr f, int state) {
   if (Qt::Unchecked == state) {
     m_filters_chain.remove(f);
   }
@@ -133,19 +133,19 @@ void Engine::_processFilter(filters::FilterPtr f, int state) {
 
 void Engine::filterOnOffDone(int state) {
   filters::FilterPtr f(new filters::DoneFilter());
-  _processFilter(f, state);
+  processFilter(f, state);
   redraw();
 }
 
 void Engine::filterOnOffSortByTaskName(int state) {
   filters::FilterPtr f(new filters::SortByTaskName());
-  _processFilter(f, state);
+  processFilter(f, state);
   redraw();
 }
 
 void Engine::filterOnOffSortByDecPriority(int state) {
   filters::FilterPtr f(new filters::SortByPriorityFilter());
-  _processFilter(f, state);
+  processFilter(f, state);
   redraw();
 }
 
@@ -170,13 +170,13 @@ void Engine::redraw() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   // FIXME: сбивает выбранную позицию
   //
-  _table->clearList();
+  m_table_ptr->clearList();
   Tasks records = get_model_data();  // may throw
-  _table->draw(records);
+  m_table_ptr->draw(records);
 }
 
 Row Engine::getSelectedRow() const {
-  QModelIndexList indexList = _table->selectionModel()->selectedIndexes();
+  QModelIndexList indexList = m_table_ptr->selectionModel()->selectedIndexes();
 
   // Должна быть выбрана одна ячейка
   if (indexList.empty() || (indexList.size() != 1))
@@ -195,8 +195,8 @@ void Engine::slotMarkDone() {
   if (r.isPresent()) {
     int row = r.get();
     // Обновляем ячейку
-    _table->markDone(row);  // no throw
-    values::ImmutableTask t = _table->get_elem(row);
+    m_table_ptr->markDone(row);  // no throw
+    values::ImmutableTask t = m_table_ptr->get_elem(row);
     m_model_ptr->update(t);  // FIXME: may throw
   }
 }
@@ -206,10 +206,10 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
   // FIXME: проблема!! изменения любые! может зациклить
   try {
     // FIXME: а такая вот комбинация надежно то работает?
-    if (_table->isEdited()) {
+    if (m_table_ptr->isEdited()) {
       const int row = widget->row();
-      values::ImmutableTask v = _table->get_elem(row);
-      if (_table->isSaved(row)) {
+      values::ImmutableTask v = m_table_ptr->get_elem(row);
+      if (m_table_ptr->isSaved(row)) {
         // Cоздаем новую запись
         m_model_ptr->update(v);
       } else {
