@@ -17,16 +17,17 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QTableWidget>
-
 #include <boost/shared_ptr.hpp>
 #include <loki/ScopeGuard.h>
 #include <gtest/gtest.h>
+#include <boost/make_shared.hpp>
+#include <actors_and_workers/concurent_queues.h>
 
 #include <memory>
 #include <cassert>
 #include <iostream>
+#include <thread>
 
-using namespace boost;
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
 
@@ -47,12 +48,60 @@ private:
   Engine* const view_;
 };
 
-class UIActor
-{
+
+class UIActor {
 public:
+    typedef std::function<void()> Message;
+
+    explicit UIActor(boost::shared_ptr<models::Model> model_ptr)
+      : done(false), mq(100)
+    { thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) ); }
+
+    ~UIActor() {
+      Send( [&]{
+        done = true;
+      } ); ;
+      thd->join();
+    }
+
+    void Send( Message m )
+    {
+      auto r = mq.try_push( m );
+    }
 
 private:
 
+  UIActor( const UIActor& );           // no copying
+  void operator=( const UIActor& );    // no copying
+
+  bool done;                         // le flag
+  //concurent::message_queue<Message> mq;        // le queue
+  fix_extern_concurent::concurent_bounded_try_queue<Message> mq;
+  std::unique_ptr<std::thread> thd;          // le thread
+
+  void Run(boost::shared_ptr<models::Model> model_ptr) {
+    int argc = 1;
+    char* argv[1] = { "none" };
+    QApplication app(argc, argv);
+    auto window = new Engine(model_ptr.get());
+
+    boost::shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));
+    model_ptr->set_listener(listener);  // bad!
+
+    window->show();
+
+    // http://qt-project.org/doc/qt-4.8/qeventloop.html#processEvents
+    //app.exec();  // it's trouble for Actors usige
+    while( !done ) {
+      // ! can't sleep or wait!
+      Message msg;
+      if (mq.try_pop(msg))
+        msg();            // execute message
+
+      // main event loop
+      app.processEvents();  // hat processor!
+    } // note: last message sets done to true
+  }
 };
 
 // Actor model troubles:
@@ -60,31 +109,56 @@ private:
 //   http://blog.bbv.ch/2012/10/03/multithreaded-programming-with-qt/
 //
 //   http://www.christeck.de/wp/2010/10/23/the-great-qthread-mess/
+//
+// Why not Qt?
+//   http://programmers.stackexchange.com/questions/88685/why-arent-more-desktop-apps-written-with-qt
 TEST(Blocked, TestApp) {
-  int argc = 1;
-  char* argv[1] = { "none" };
-  QApplication app(argc, argv);
+  // work in DB thread
+  storages::ConnectionPoolPtr pool(
+        new pq_dal::PQConnectionsPool(models::kConnection, models::kTaskTableNameRef));
 
-  storages::ConnectionPoolPtr pool(new pq_dal::PQConnectionsPool(models::kConnection));
 
-  std::unique_ptr<models::Model> a(models::Model::createForOwn(pool));
+  // work in UI thread
+  auto model_ptr = boost::shared_ptr<models::Model>(models::Model::createForOwn(pool));
+  auto _ = MakeObjGuard(*model_ptr, &models::Model::clear_store);
 
-  auto _ = MakeObjGuard(*a, &models::Model::clear_store);
+  {
+    int argc = 1;
+    char* argv[1] = { "none" };
+    QApplication app(argc, argv);
+    auto window = new Engine(model_ptr.get());
 
-  auto window = new Engine(a.get());
+    boost::shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));
+    model_ptr->set_listener(listener);  // bad!
 
-  shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));
-  a->set_listener(listener);
+    window->show();
 
-  window->show();
-  //app.exec();  // it's trouble for Actors usige
-
-  // http://qt-project.org/doc/qt-4.8/qeventloop.html#processEvents
-  while(true) {
-    // ! can't sleep or wait!
-    app.processEvents();  // hat processor!
+    // http://qt-project.org/doc/qt-4.8/qeventloop.html#processEvents
+    //app.exec();  // it's trouble for Actors usige
+    while(true) {
+      // ! can't sleep or wait!
+      app.processEvents();  // hat processor!
+    }
   }
 }
 
 // FIXME: posting from other threads
 //   http://qt-project.org/wiki/ThreadsEventsQObjects
+TEST(Blocked, UIActorTest) {
+  // work in DB thread
+  storages::ConnectionPoolPtr pool(
+        new pq_dal::PQConnectionsPool(models::kConnection, models::kTaskTableNameRef));
+
+
+  // work in UI thread
+  auto model_ptr = boost::shared_ptr<models::Model>(models::Model::createForOwn(pool));
+  auto _ = MakeObjGuard(*model_ptr, &models::Model::clear_store);
+
+  UIActor ui(model_ptr);  // dtor will call and app out
+
+  // FIXME: troubles with out appl.
+  while(true) { std::this_thread::sleep_for(std::chrono::milliseconds(50)); }  // bad!
+}
+
+
+

@@ -128,7 +128,8 @@ QT4_WRAP_CPP( SAMPLE_MOC_SRCS ${SAMPLE_MOC_HDRS} )
 
 file( GLOB proTests
     ${Source}/view/*.cc
-    ${Extern}/hypertable-fix/Common/*.cc
+    ${Extern}/actors_and_workers/*.cc
+    ${Extern}/actors_and_workers/*.h
     ${Source}/../../std_own_ext/*.h
     ${Source}/dal/*.cc
     ${Source}/dal/*.h

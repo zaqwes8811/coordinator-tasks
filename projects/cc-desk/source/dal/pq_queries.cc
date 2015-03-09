@@ -71,8 +71,12 @@ using entities::EntitiesStates;
 using values::ImmutableTask;
 
 
-PQConnectionsPool::PQConnectionsPool(const std::string& conn_info)
-  : m_conn_ptr(new pqxx::connection(conn_info)) {
+PQConnectionsPool::PQConnectionsPool(const std::string& conn_info
+                                     , const std::string& table_name)
+  : m_conn_ptr(new pqxx::connection(conn_info))
+  , m_table_name(table_name)
+
+{
   assert(m_conn_ptr->is_open());
 }
 
@@ -83,13 +87,13 @@ PQConnectionsPool::~PQConnectionsPool() {
 }
 
 std::unique_ptr<storages::TaskTableQueries>
-PQConnectionsPool::createTaskTableQueries(const std::string& tablename) {
-  return std::unique_ptr<storages::TaskTableQueries>(new TaskTableQueries(tablename, m_conn_ptr));
+PQConnectionsPool::createTaskTableQueries() {
+  return std::unique_ptr<storages::TaskTableQueries>(new TaskTableQueries(m_table_name, m_conn_ptr));
 }
 
 std::unique_ptr<storages::TaskLifetimeQueries>
-PQConnectionsPool::createTaskLifetimeQueries(const std::string& tablename) {
-  return std::unique_ptr<storages::TaskLifetimeQueries>(new TaskLifetimeQueries(tablename, m_conn_ptr));
+PQConnectionsPool::createTaskLifetimeQueries() {
+  return std::unique_ptr<storages::TaskLifetimeQueries>(new TaskLifetimeQueries(m_table_name, m_conn_ptr));
 }
 
 

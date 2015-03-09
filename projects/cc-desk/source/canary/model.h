@@ -29,10 +29,8 @@ namespace models
 //   похоже есть зависимость от текущего фильтра. А если отред. и теперь в фильтр не попадает?
 //
 // FIXME: утекают хендлы!! make ImmutableTask. причем утекают как на нижние уровни, так и на верхние
-class Model
-   : boost::noncopyable {
-  void notify();  // Нужно было открыть для обновления при семене фильтров
-
+class Model : public boost::noncopyable
+{
 public:
   // create/destory
   static Model* createForOwn(storages::ConnectionPoolPtr);
@@ -52,7 +50,7 @@ public:
 
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
   //   shared объекты превращаются в глобальные переменные.
-  entities::Tasks get_current_model_data();
+  entities::Tasks getCurrentModelData();
 
   void clear_store();
 
@@ -61,15 +59,16 @@ private:
   friend void renders::render_task_store(std::ostream& o, const U& a);
   void draw_task_store(std::ostream& o) const;
 
-  // persist filters:
-  static entities::Tasks load_all(const std::string& table_name, storages::ConnectionPoolPtr pool);
+  void notify();  // Нужно было открыть для обновления при семене фильтров
 
-  std::string tasks_table_name_;
-  entities::Tasks tasks_;  //
+  // persist filters:
+  static entities::Tasks load_all(storages::ConnectionPoolPtr pool);
+
+  entities::Tasks tasks_;
 
   // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
-  storages::ConnectionPoolPtr pool_;
-  isolation::ModelListenerPtr observers_;
+  storages::ConnectionPoolPtr m_db_ptr;
+  isolation::ModelListenerPtr m_observers;
   entities::Tasks::value_type _get_elem_by_id(const int id);
 };
 }

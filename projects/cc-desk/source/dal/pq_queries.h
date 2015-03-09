@@ -59,20 +59,16 @@ private:
 */
 class PQConnectionsPool : public storages::ConnectionsPool {
 public:
-  explicit PQConnectionsPool(const std::string& conn_info);
+  PQConnectionsPool(const std::string& conn_info, const std::string& table_name);
   ~PQConnectionsPool();
 
-  /**
-    \fixme: strange design. May be bad lifetimes
-
-    http://www.drdobbs.com/cpp/c11-uniqueptr/240002708
-  */
-  std::unique_ptr<storages::TaskTableQueries> createTaskTableQueries(const std::string& tablename);
-  std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQueries(const std::string& tablename);
+  std::unique_ptr<storages::TaskTableQueries> createTaskTableQueries();
+  std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQueries();
 
 private:
   // FIXME: important not only lifetime, but connection state to!
   boost::shared_ptr<pqxx::connection> m_conn_ptr;
+  const std::string m_table_name;
 };
 }  // space
 

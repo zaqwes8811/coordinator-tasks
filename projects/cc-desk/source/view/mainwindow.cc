@@ -51,7 +51,7 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 {
   ui = new Ui::MainWindow;
   ui->setupUi(this);
-  _model = model_ptr;
+  m_model_ptr = model_ptr;
 
   connect(&m_timer, SIGNAL(timeout()), this, SLOT(doWork()));
   m_timer.start(1000);
@@ -117,17 +117,17 @@ void Engine::slotReopen() {
     // Обновляем ячейку
     _table->markReopen(row);  // no throw
     values::ImmutableTask t = _table->get_elem(row);
-    _model->update(t);  // FIXME: may throw
+    m_model_ptr->update(t);  // FIXME: may throw
   }
 }
 
 void Engine::_processFilter(filters::FilterPtr f, int state) {
   if (Qt::Unchecked == state) {
-    _filters_chain.remove(f);
+    m_filters_chain.remove(f);
   }
 
   if (Qt::Checked == state) {
-    _filters_chain.add(f);
+    m_filters_chain.add(f);
   }
 }
 
@@ -150,7 +150,7 @@ void Engine::filterOnOffSortByDecPriority(int state) {
 }
 
 entities::Tasks Engine::get_model_data() const {
-  return _filters_chain(_model->get_current_model_data());
+  return m_filters_chain(m_model_ptr->getCurrentModelData());
 }
 
 #ifndef G_I_WANT_USE_IT
@@ -159,10 +159,10 @@ void Engine::slotFillFake(bool) {
 
   // сохраняем все
   std::for_each(mirror.begin(), mirror.end()
-                , bind(&Model::append, ref(*_model),
+                , bind(&Model::append, ref(*m_model_ptr),
                                bind(&entities::TaskEntity::make_value, _1)));
 
-  ::renders::render_task_store(std::cout, *_model);
+  ::renders::render_task_store(std::cout, *m_model_ptr);
 }
 #endif
 
@@ -197,7 +197,7 @@ void Engine::slotMarkDone() {
     // Обновляем ячейку
     _table->markDone(row);  // no throw
     values::ImmutableTask t = _table->get_elem(row);
-    _model->update(t);  // FIXME: may throw
+    m_model_ptr->update(t);  // FIXME: may throw
   }
 }
 
@@ -211,10 +211,10 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
       values::ImmutableTask v = _table->get_elem(row);
       if (_table->isSaved(row)) {
         // Cоздаем новую запись
-        _model->update(v);
+        m_model_ptr->update(v);
       } else {
         // Одна из видимых ячеек была обновлена
-        _model->append(v);
+        m_model_ptr->append(v);
       }
     }
   } catch (...) {

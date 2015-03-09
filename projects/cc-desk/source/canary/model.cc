@@ -35,28 +35,27 @@ Model* Model::createForOwn(
   {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
-  auto q = pool->createTaskTableQueries(models::kTaskTableNameRef);
+  auto q = pool->createTaskTableQueries();
   q->createIfNotExist();
 
-  auto t = load_all(models::kTaskTableNameRef, pool);
+  auto t = load_all(pool);
   return new Model(t, pool);
 }
 
 void Model::draw_task_store(std::ostream& o) const {
-  auto q = pool_->createTaskTableQueries(tasks_table_name_);
+  auto q = m_db_ptr->createTaskTableQueries();
   q->draw(o);
 }
 
 Model::~Model() { }
 
 void Model::clear_store() {
-  auto q = pool_->createTaskTableQueries(tasks_table_name_);
+  auto q = m_db_ptr->createTaskTableQueries();
   q->drop();
 }
 
-Tasks Model::load_all(const std::string& table_name,
-                         boost::shared_ptr<storages::ConnectionsPool> pool) {
-  auto q_live = pool->createTaskLifetimeQueries(table_name);
+Tasks Model::load_all(storages::ConnectionPoolPtr pool) {
+  auto q_live = pool->createTaskLifetimeQueries();
   return Tasks(q_live->get_all());
 }
 
@@ -71,7 +70,7 @@ void Model::update(const values::ImmutableTask& e) {
   auto k = _get_elem_by_id(e.id());
   k->assign(e);
 
-  auto q = pool_->createTaskLifetimeQueries(tasks_table_name_);
+  auto q = m_db_ptr->createTaskLifetimeQueries();
   q->update(k->make_value());
 
   notify();  // FIXME: а нужно ли?
@@ -89,7 +88,7 @@ void Model::append(const ImmutableTask& v) {
   tasks_.push_back(e);
 
   // persist full container
-  auto q = pool_->createTaskLifetimeQueries(tasks_table_name_);
+  auto q = m_db_ptr->createTaskLifetimeQueries();
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
   ImmutableTask r = q->create(e->make_value());
@@ -101,19 +100,18 @@ void Model::append(const ImmutableTask& v) {
 
 Model::Model(entities::Tasks _tasks,
              boost::shared_ptr<storages::ConnectionsPool> _pool)
-    : tasks_table_name_(models::kTaskTableNameRef)
-    , tasks_(_tasks)
-    , pool_(_pool) {  }
+    : tasks_(_tasks)
+    , m_db_ptr(_pool) {  }
 
 void Model::notify()
 {
-  observers_->update();
+  m_observers->update();
 }
 
 void Model::set_listener(boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> iso)
-{ observers_ = iso; }
+{ m_observers = iso; }
 
-entities::Tasks Model::get_current_model_data()
+entities::Tasks Model::getCurrentModelData()
 { return tasks_; }
 
 }

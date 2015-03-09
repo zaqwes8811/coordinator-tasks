@@ -31,7 +31,7 @@ using renders::render_task_store;
 TEST(AppCore, Create) {
   // make_shared получает по копии - проблема с некопируемыми объектами
   shared_ptr<PQConnectionsPool> pool(
-        new PQConnectionsPool(models::kConnection));
+        new PQConnectionsPool(models::kConnection, models::kTaskTableNameRef));
   {
     std::auto_ptr<Model> app_ptr(Model::createForOwn(pool));
 
@@ -51,12 +51,12 @@ TEST(AppCore, Create) {
     //renders::render_task_store(cout, *(app_ptr.get()));
   }
 
-  auto q = pool->createTaskTableQueries(models::kTaskTableNameRef);
+  auto q = pool->createTaskTableQueries();
   EXPECT_THROW(q->draw(cout), pqxx::undefined_table);
 }
 
 TEST(AppCore, UpdatePriority) {
-  shared_ptr<PQConnectionsPool> pool(new PQConnectionsPool(models::kConnection));
+  shared_ptr<PQConnectionsPool> pool(new PQConnectionsPool(models::kConnection, models::kTaskTableNameRef));
   {
     std::auto_ptr<Model> app_ptr(Model::createForOwn(pool));
     ScopeGuard _ = MakeObjGuard(*app_ptr, &Model::clear_store);
@@ -72,7 +72,7 @@ TEST(AppCore, UpdatePriority) {
     renders::render_task_store(cout, *app_ptr);
   }
 
-  auto q = pool->createTaskTableQueries(models::kTaskTableNameRef);
+  auto q = pool->createTaskTableQueries();
   EXPECT_THROW(q->draw(cout), pqxx::undefined_table);
 }
 

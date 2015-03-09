@@ -103,9 +103,9 @@ private:
 
   Ui::MainWindow *ui;
   QMyTableView* _table;
-  models::Model* _model;
+  models::Model* m_model_ptr;
 
-  filters::ChainFilters _filters_chain;
+  filters::ChainFilters m_filters_chain;
 
   QTimer m_timer;
 };

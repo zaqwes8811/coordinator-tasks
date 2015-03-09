@@ -81,11 +81,9 @@ public:
 
     http://www.drdobbs.com/cpp/c11-uniqueptr/240002708
   */
-  virtual
-  std::unique_ptr<storages::TaskTableQueries> createTaskTableQueries(const std::string& tablename) = 0;
+  virtual std::unique_ptr<storages::TaskTableQueries> createTaskTableQueries() = 0;
 
-  virtual
-  std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQueries(const std::string& tablename) = 0;
+  virtual std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQueries() = 0;
 };
 
 
