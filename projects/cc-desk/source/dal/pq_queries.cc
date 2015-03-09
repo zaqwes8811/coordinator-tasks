@@ -98,12 +98,13 @@ PQConnectionsPool::createTaskLifetimeQueries() {
 
 
 void TaskTableQueries::drawImpl(std::ostream& o) const {
+  string sql("SELECT * FROM " + m_table_name + " ORDER BY ID;");
+
   auto c = m_conn_ptr.lock();
   if (!c)
     return;
 
   nontransaction no_tr_w(*c);
-  string sql("SELECT * FROM " + m_table_name + " ORDER BY ID;");
   result r( no_tr_w.exec( sql ));
 
   for (result::const_iterator c = r.begin(); c != r.end(); ++c) {

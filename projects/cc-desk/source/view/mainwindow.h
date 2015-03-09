@@ -97,12 +97,12 @@ private slots:
 private:
   Row getSelectedRow() const;
 
-  void _processFilter(filters::FilterPtr, int state);
+  void processFilter(filters::FilterPtr, int state);
 
   entities::Tasks get_model_data() const;
 
   Ui::MainWindow *ui;
-  QMyTableView* _table;
+  QMyTableView* m_table_ptr;
   models::Model* m_model_ptr;
 
   filters::ChainFilters m_filters_chain;

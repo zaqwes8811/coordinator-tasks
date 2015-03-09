@@ -117,7 +117,7 @@ private:
 //   http://programmers.stackexchange.com/questions/88685/why-arent-more-desktop-apps-written-with-qt
 TEST(Blocked, TestApp) {
   // work in DB thread
-  storages::ConnectionPoolPtr pool(
+  storages::DataBaseDriverPtr pool(
         new pq_dal::PQConnectionsPool(models::kConnection, models::kTaskTableNameRef));
 
 
@@ -154,7 +154,7 @@ TEST(Blocked, TestApp) {
 // http://stackoverflow.com/questions/3629557/boost-shared-from-this
 TEST(Blocked, UIActorTest) {
   // work in DB thread
-  storages::ConnectionPoolPtr pool(
+  storages::DataBaseDriverPtr pool(
         new pq_dal::PQConnectionsPool(models::kConnection, models::kTaskTableNameRef));
 
 

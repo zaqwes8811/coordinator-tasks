@@ -72,9 +72,9 @@ private:
 
   http://herbsutter.com/2013/05/30/gotw-90-solution-factories/
 */
-class ConnectionsPool : public boost::noncopyable {
+class DataBaseDriver : public boost::noncopyable {
 public:
-  virtual ~ConnectionsPool() { }
+  virtual ~DataBaseDriver() { }
 
   /**
     \fixme: strange design. May be bad lifetimes
@@ -87,7 +87,7 @@ public:
 };
 
 
-typedef boost::shared_ptr<storages::ConnectionsPool> ConnectionPoolPtr;
+typedef boost::shared_ptr<storages::DataBaseDriver> DataBaseDriverPtr;
 }
 
 #endif

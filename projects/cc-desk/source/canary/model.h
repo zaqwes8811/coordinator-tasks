@@ -33,8 +33,8 @@ class Model : public boost::noncopyable
 {
 public:
   // create/destory
-  static Model* createForOwn(storages::ConnectionPoolPtr);
-  Model(entities::Tasks _model, storages::ConnectionPoolPtr _pool);
+  static Model* createForOwn(storages::DataBaseDriverPtr);
+  Model(entities::Tasks _model, storages::DataBaseDriverPtr _pool);
   ~Model();
 
   // other
@@ -62,12 +62,12 @@ private:
   void notify();  // Нужно было открыть для обновления при семене фильтров
 
   // persist filters:
-  static entities::Tasks load_all(storages::ConnectionPoolPtr pool);
+  static entities::Tasks load_all(storages::DataBaseDriverPtr pool);
 
   entities::Tasks tasks_;
 
   // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
-  storages::ConnectionPoolPtr m_db_ptr;
+  storages::DataBaseDriverPtr m_db_ptr;
   isolation::ModelListenerPtr m_observers;
   entities::Tasks::value_type _get_elem_by_id(const int id);
 };

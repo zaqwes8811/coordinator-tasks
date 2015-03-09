@@ -57,7 +57,7 @@ private:
 /**
 
 */
-class PQConnectionsPool : public storages::ConnectionsPool {
+class PQConnectionsPool : public storages::DataBaseDriver {
 public:
   PQConnectionsPool(const std::string& conn_info, const std::string& table_name);
   ~PQConnectionsPool();

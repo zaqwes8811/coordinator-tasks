@@ -31,7 +31,7 @@ using values::ImmutableTask;
 using std::cout;
 
 Model* Model::createForOwn(
-    boost::shared_ptr<storages::ConnectionsPool> pool)
+    boost::shared_ptr<storages::DataBaseDriver> pool)
   {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
@@ -54,7 +54,7 @@ void Model::clear_store() {
   q->drop();
 }
 
-Tasks Model::load_all(storages::ConnectionPoolPtr pool) {
+Tasks Model::load_all(storages::DataBaseDriverPtr pool) {
   auto q_live = pool->createTaskLifetimeQueries();
   return Tasks(q_live->get_all());
 }
@@ -99,7 +99,7 @@ void Model::append(const ImmutableTask& v) {
 }
 
 Model::Model(entities::Tasks _tasks,
-             boost::shared_ptr<storages::ConnectionsPool> _pool)
+             boost::shared_ptr<storages::DataBaseDriver> _pool)
     : tasks_(_tasks)
     , m_db_ptr(_pool) {  }
 
