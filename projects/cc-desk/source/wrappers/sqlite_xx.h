@@ -10,7 +10,6 @@
 
 namespace sqlite3_cc {
 typedef std::vector<std::map<std::string, std::string>> Result;
-static const int sqlite_ok = SQLITE_OK;
 static const char* const null_value = "NULL";
 
 template <typename R>

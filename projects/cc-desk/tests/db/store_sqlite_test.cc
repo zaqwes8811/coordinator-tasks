@@ -1,10 +1,11 @@
 #include "top/config.h"
 
 #include "wrappers/sqlite_xx.h"
+#include "dal/db_indep.h"
 
 #include <gtest/gtest.h>
+#include <boost/make_shared.hpp>
 #include <boost/lexical_cast.hpp>
-
 #include <sqlite3.h>
 
 #include <string>
@@ -12,8 +13,6 @@
 #include <vector>
 #include <map>
 #include <iostream>
-
-
 
 // http://www.tutorialspoint.com/sqlite/sqlite_c_cpp.htm
 TEST(SQLiteTest, Base) {
@@ -57,4 +56,32 @@ TEST(SQLiteTest, Base) {
   }
 
   sqlite3_cc::sqlite3_exec(h, "drop table COMPANY;");
+}
+
+
+class SQLiteTaskTableQueries : public storages::TaskTableQueries
+{
+public:
+  explicit TaskTableQueries(boost::weak_ptr<sqlite3_cc::sqlite3> h)
+    : m_table_name()
+    , m_conn_ptr(h) { }
+
+private:
+  virtual void createIfNotExistImpl() {
+
+  }
+  virtual void dropImpl() {
+
+  }
+  virtual void drawImpl(std::ostream& o) const {
+
+  }
+
+  const std::string m_table_name;
+  boost::weak_ptr<sqlite3_cc::sqlite3> m_conn_ptr;
+};
+
+
+TEST(SQLite, TasksTable) {
+  auto h = boost::make_shared<sqlite3_cc::sqlite3>
 }

@@ -143,6 +143,7 @@ file( GLOB proTests
     ${testsRoot}/stl/*.cc
     ${testsRoot}/stl/stephan_t_lavavej_hw/*.cc
     ${testsRoot}/*.cc
+    ${testsRoot}/db/*.cc
     ${testsRoot}/stl/algorithms/*.cc)
 
 # we need this to be able to include headers produced by uic in our code

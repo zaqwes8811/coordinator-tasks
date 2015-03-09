@@ -9,6 +9,8 @@
 #include <map>
 
 namespace sqlite3_cc {
+static const int sqlite_ok = SQLITE_OK;
+
 // https://www.sqlite.org/threadsafe.html
 sqlite3::~sqlite3() {
   sqlite3_close(m_db_ptr);
