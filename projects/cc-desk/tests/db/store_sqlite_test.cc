@@ -69,7 +69,9 @@ TEST(SQLiteTest, Base) {
 class SQLiteTagTableQuery
 {
 public:
-  void createIfNotExist() : m_table_name("TAGS") {
+  SQLiteTagTableQuery() : m_table_name("TAGS") { }
+
+  void createIfNotExist()  {
 
   }
 

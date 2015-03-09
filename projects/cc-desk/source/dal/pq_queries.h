@@ -29,7 +29,7 @@ private:
   const std::string m_table_name;
   boost::weak_ptr<pqxx::connection> m_conn_ptr;
 
-  void createIfNotExistImpl();
+  void createIfNotExistImpl() override;
   void dropImpl();
 
   std::string getTableName() const
