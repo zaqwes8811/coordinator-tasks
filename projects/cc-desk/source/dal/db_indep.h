@@ -27,10 +27,15 @@ public:
   { drawImpl(o); }
 
   virtual ~TaskTableQueries() { }
+
+
+
 private:
   virtual void createIfNotExistImpl() = 0;
   virtual void dropImpl() = 0;
   virtual void drawImpl(std::ostream& o) const = 0;
+
+  virtual std::string getTableName() const = 0;
 };
 
 /**

@@ -32,6 +32,9 @@ private:
   void createIfNotExistImpl();
   void dropImpl();
 
+  std::string getTableName() const
+  { return m_table_name; }
+
   void drawImpl(std::ostream& o) const;
 };
 
