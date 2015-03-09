@@ -51,23 +51,26 @@ private:
 
 class UIActor {
 public:
-    typedef std::function<void()> Message;
+  typedef std::function<void()> Message;
 
-    explicit UIActor(boost::shared_ptr<models::Model> model_ptr)
-      : done(false), mq(100)
-    { thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) ); }
+  // FIXME: trouble is not non-arg ctor
+  explicit UIActor(boost::shared_ptr<models::Model> model_ptr)
+    : done(false), mq(100)
+  {
+    thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) );
+  }
 
-    ~UIActor() {
-      Send( [&]{
-        done = true;
-      } ); ;
-      thd->join();
-    }
+  ~UIActor() {
+    Send( [&]{
+      done = true;
+    } ); ;
+    thd->join();
+  }
 
-    void Send( Message m )
-    {
-      auto r = mq.try_push( m );
-    }
+  void Send( Message m )
+  {
+    auto r = mq.try_push( m );
+  }
 
 private:
 
@@ -86,7 +89,7 @@ private:
     auto window = new Engine(model_ptr.get());
 
     boost::shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));
-    model_ptr->set_listener(listener);  // bad!
+    model_ptr->set_listener(listener);
 
     window->show();
 
@@ -122,6 +125,8 @@ TEST(Blocked, TestApp) {
   auto model_ptr = boost::shared_ptr<models::Model>(models::Model::createForOwn(pool));
   auto _ = MakeObjGuard(*model_ptr, &models::Model::clear_store);
 
+  // FIXME: can't post to exist actor - it block it!
+  //   May be can, but UI may be will be slow.
   {
     int argc = 1;
     char* argv[1] = { "none" };
@@ -155,6 +160,10 @@ TEST(Blocked, UIActorTest) {
   auto _ = MakeObjGuard(*model_ptr, &models::Model::clear_store);
 
   UIActor ui(model_ptr);  // dtor will call and app out
+
+  ui.Send([model_ptr] {
+    model_ptr->getCurrentModelData();
+  });
 
   // FIXME: troubles with out appl.
   while(true) { std::this_thread::sleep_for(std::chrono::milliseconds(50)); }  // bad!
