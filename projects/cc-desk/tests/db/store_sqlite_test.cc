@@ -2,6 +2,7 @@
 
 #include "wrappers/sqlite_xx.h"
 #include "dal/db_indep.h"
+#include "dal/sqlite_queries.h"
 
 #include <gtest/gtest.h>
 #include <boost/make_shared.hpp>
@@ -65,50 +66,25 @@ TEST(SQLiteTest, Base) {
   sqlite3_cc::sqlite3_exec(h, "drop table COMPANY;");
 }
 
-
-class SQLiteTaskTableQueries : public storages::TaskTableQueries
+class SQLiteTagTableQuery
 {
 public:
-  explicit SQLiteTaskTableQueries(boost::weak_ptr<sqlite3_cc::sqlite3> h)
-    : m_table_name("h")
-    , m_conn_ptr(h) { }
+  void createIfNotExist() {
+
+  }
 
 private:
-  virtual void createIfNotExistImpl() {
-    std::string sql(
-      "CREATE TABLE " \
-      "IF NOT EXISTS "+
-      m_table_name +
-      "(" \
-      "ID         SERIAL PRIMARY KEY NOT NULL," \
-      "TASK_NAME  TEXT               NOT NULL, " \
-      "PRIORITY   INT                NOT NULL, " \
-      "DONE BOOLEAN DEFAULT FALSE);");
-
-    auto c = m_conn_ptr.lock();
-
-    if (!c)
-      return;
-
-    sqlite3_cc::sqlite3_exec(*c, sql);
-  }
-  virtual void dropImpl() {
-
-  }
-  virtual void drawImpl(std::ostream& o) const {
-
-  }
-
-  std::string getTableName() const
-  { return m_table_name; }
-
   const std::string m_table_name;
-  boost::weak_ptr<sqlite3_cc::sqlite3> m_conn_ptr;
 };
 
-
-TEST(SQLite, TasksTable) {
-  auto h = boost::make_shared<sqlite3_cc::sqlite3>("test.db");
-  auto table = SQLiteTaskTableQueries(h);
+TEST(SQLite, TaskTable) {
+  auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
+  auto table = sqlite_queries::SQLiteTaskTableQueries(h);
   table.createIfNotExist();
+}
+
+TEST(SQLite, TagAndTaskTables) {
+  auto h = boost::make_shared<sqlite3_cc::sqlite3>("test.db");
+  //auto table = SQLiteTagTableQuery(h);
+  //table.createIfNotExist();
 }

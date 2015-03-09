@@ -79,28 +79,28 @@ namespace values {
 // FIXME: Immutable now?
 class ImmutableTask {
 public:
-    static ImmutableTask create();
-    static ImmutableTask create(const std::string& d, const int p);
-    static ImmutableTask create(const int id, const std::string& d, const int p);
-    static ImmutableTask create(const int id, const std::string& d, const int p, const bool _done);
+  static ImmutableTask create();
+  static ImmutableTask create(const std::string& d, const int p);
+  static ImmutableTask create(const int id, const std::string& d, const int p);
+  static ImmutableTask create(const int id, const std::string& d, const int p, const bool _done);
 
-    // copy/assign
-    ImmutableTask(const ImmutableTask& v);
-    ImmutableTask& operator=(const ImmutableTask& v);
+  // copy/assign
+  ImmutableTask(const ImmutableTask& v);
+  ImmutableTask& operator=(const ImmutableTask& v);
 
-    // accessors
-    int id() const;
-    boost::shared_ptr<const std::string> description() const;
-    int priority() const;
-    bool done() const;
+  // accessors
+  int id() const;
+  boost::shared_ptr<const std::string> description() const;
+  int priority() const;
+  bool done() const;
 
 private:
-    int _id;
-    boost::shared_ptr<const std::string> _description;  // FIXME: NonImmutable really
-    int _priority;
-    bool _done;  // need store
+  int _id;
+  boost::shared_ptr<const std::string> _description;  // FIXME: NonImmutable really
+  int _priority;
+  bool _done;  // need store
 
-    ImmutableTask(const int _id, const std::string& d, const int p, const bool);
+  ImmutableTask(const int _id, const std::string& d, const int p, const bool);
 };
 
 // По идее это указание Виду снизу. Это плохо
@@ -120,12 +120,12 @@ namespace canary {
 // TODO: Как быть при обновлении имени или цвета? Возможно нужно хранить shared_ptrs не на константу.
 class Tag {
 public:
-  Tag(const std::string& name) : primary_key_(), name_(name) { }
+  Tag(const std::string& name) : m_primary_key(), m_name(name) { }
 
-private:
-  int primary_key_;
-  std::string name_;
-  std::string color_;
+//private:
+  size_t m_primary_key;
+  std::string m_name;
+  std::string m_color;
 };
 }
 

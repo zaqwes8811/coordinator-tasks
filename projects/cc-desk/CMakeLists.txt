@@ -135,6 +135,7 @@ file( GLOB proTests
     ${Source}/dal/*.h
     ${Source}/top/*.h
     ${Source}/canary/*.cc
+    ${Source}/canary/*.h
     ${Source}/wrappers/*.cc
     ${Source}/*.cc
     ${testsRoot}/lang_core/*.cc
