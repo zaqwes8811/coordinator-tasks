@@ -1,13 +1,9 @@
 #ifndef AP_DS_H_
 #define AP_DS_H_
 
-#include <boost/noncopyable.hpp>
-#include <boost/thread/mutex.hpp>
-//#include <boost/thread.hpp>
-#include <boost/thread/lock_guard.hpp>
-#include <boost/thread/condition_variable.hpp>
-
 #include <list>
+#include <mutex>
+#include <condition_variable>
 
 namespace fix_extern_concurent {
 // Существующие интерфейсы
@@ -18,7 +14,9 @@ namespace fix_extern_concurent {
 
 // Intel TBB
 template <typename T>
-class concurent_queue_ : public boost::noncopyable {
+class concurent_queue_
+    //: public boost::noncopyable
+{
 public:
   concurent_queue_() {}
 
@@ -29,7 +27,9 @@ public:
 };
 
 template <typename T>
-class concurent_bounded_queue : public boost::noncopyable  {
+class concurent_bounded_queue
+    //: public boost::noncopyable
+{
 public:
   concurent_bounded_queue() {}
 
@@ -47,7 +47,7 @@ public:
 template <typename T>
 class concurent_queue
 {
-  boost::mutex mutex_;
+  std::mutex mutex_;
   std::list<T> q_;
 public:
   void enqueue(T x) {
@@ -57,7 +57,7 @@ public:
 
     // threading
     {
-      boost::lock_guard<boost::mutex> lock(mutex_);
+      std::lock_guard<std::mutex> lock(mutex_);
       // вроде бы константное время
       q_.splice(end(q_), tmp);
 
@@ -77,8 +77,9 @@ public:
   http://www.boost.org/doc/libs/1_35_0/doc/html/thread/synchronization.html#thread.synchronization.condvar_ref.condition_variable_any
 */
 struct BoundedBlockingQueueTerminateException
-    : virtual std::exception,
-      virtual boost::exception { };
+    : virtual std::exception
+    //, virtual boost::exception
+{ };
 
 // http://stackoverflow.com/questions/5018783/c-pthread-blocking-queue-deadlock-i-think
 /**
@@ -87,7 +88,9 @@ struct BoundedBlockingQueueTerminateException
   \fixme exception safty!!
 */
 template<typename T>
-class concurent_bounded_try_queue : public boost::noncopyable {
+class concurent_bounded_try_queue
+    //: public boost::noncopyable
+{
 public:
   // types
   typedef T value_type;
@@ -114,12 +117,15 @@ public:
   }
 
   bool empty() {
-    boost::mutex::scoped_lock lock(m_mtx);
+    // http://stackoverflow.com/questions/22676871/boost-scoped-lock-replacement-in-c11
+    std::unique_lock<std::mutex>
+        //mutex::scoped_lock
+        lock(m_mtx);
     return m_q.empty();
   }
 
   std::size_t size() {
-    boost::mutex::scoped_lock lock(m_mtx);
+    std::unique_lock<std::mutex> lock(m_mtx);
     return m_current_size;
     //return m_q.size();  // O(n) for list
   }
@@ -129,7 +135,7 @@ public:
     tmp.push_back(x);
 
     {
-      boost::mutex::scoped_lock lock(m_mtx);
+      std::unique_lock<std::mutex> lock(m_mtx);
       //if (m_q.size() == cm_size)//size)
       //if (size() == cm_size)//size)  // self deadlock
       if (m_current_size == cm_size)//size)
@@ -146,7 +152,7 @@ public:
 
   bool try_pop(T& popped) {
     {
-      boost::mutex::scoped_lock lock(m_mtx);
+      std::unique_lock<std::mutex> lock(m_mtx);
       if (m_q.empty())
           return false;
 
@@ -161,7 +167,7 @@ public:
 
 private:
   void stop(bool wait) {
-    boost::mutex::scoped_lock lock(m_mtx);
+    std::unique_lock<std::mutex> lock(m_mtx);
     m_stopped = true;
     m_pop_cv.notify_all();
     m_push_cv.notify_all();
@@ -178,7 +184,7 @@ private:
     \brief blocked call
   */
   void wait_and_pop(T& popped) {
-    boost::mutex::scoped_lock lock(m_mtx);
+    std::unique_lock<std::mutex> lock(m_mtx);
 
     ++m_nblocked_pop;
 
@@ -189,7 +195,8 @@ private:
 
     if (m_stopped) {
       m_pop_cv.notify_all();
-      BOOST_THROW_EXCEPTION(BoundedBlockingQueueTerminateException());
+      //BOOST_THROW_EXCEPTION(
+            throw BoundedBlockingQueueTerminateException();//);
     }
 
     popped = m_q.front();
@@ -200,7 +207,7 @@ private:
 
   void wait_and_push(const T& item) {
     {
-      boost::mutex::scoped_lock lock(m_mtx);
+      std::unique_lock<std::mutex> lock(m_mtx);
 
       ++m_nblocked_push;
       while (!m_stopped && m_q.size() == size())
@@ -209,7 +216,8 @@ private:
 
       if (m_stopped) {
         m_push_cv.notify_all();
-        BOOST_THROW_EXCEPTION(BoundedBlockingQueueTerminateException());
+        //BOOST_THROW_EXCEPTION(
+              throw BoundedBlockingQueueTerminateException();//);
       }
 
       m_q.push(item);
@@ -223,9 +231,9 @@ private:
   //queue  // FIXME: back to deque
   list
   <T> m_q;  // FIXME: to list
-  boost::mutex m_mtx;
-  boost::condition_variable_any m_pop_cv; // q.empty() condition
-  boost::condition_variable_any m_push_cv; // q.size() == size condition
+  std::mutex m_mtx;
+  std::condition_variable_any m_pop_cv; // q.empty() condition
+  std::condition_variable_any m_push_cv; // q.size() == size condition
   int m_nblocked_pop;
   int m_nblocked_push;
   bool m_stopped;

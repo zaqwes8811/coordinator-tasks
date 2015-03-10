@@ -2,36 +2,31 @@
 
 #include "canary/filters.h"
 
-#include <boost/bind.hpp>
-//#include <adobe/algorithm/sort.hpp>
-//#include <adobe/algorithm/partition.hpp>
-
 #include <string>
 #include <algorithm>
 
 namespace filters {
-// add check non saved
-using boost::bind;
+using namespace std::placeholders;
+using std::bind;
 using std::equal_to;
 using entities::EntitiesStates;
 using entities::TaskEntity;
-//using boost::bind::_1;
 
 using std::string;
 
-boost::function1<bool, entities::Tasks::value_type> get_check_non_saved() {
+std::function<bool(entities::Tasks::value_type)> get_check_non_saved() {
   return bind(
       bind(equal_to<int>(), _1, EntitiesStates::kInActiveKey),
       bind(&TaskEntity::get_primary_key, _1)) ;
 }
 
-boost::function1<bool, entities::Tasks::value_type> get_check_contained(const int id) {
+std::function<bool(entities::Tasks::value_type)> get_check_contained(const int id) {
   return bind(
       bind(equal_to<int>(), _1, id),
       bind(&TaskEntity::get_primary_key, _1)) ;
 }
 
-boost::function1<bool, entities::Tasks::value_type> get_is_non_done() {
+std::function<bool(entities::Tasks::value_type)> get_is_non_done() {
   return bind(
       bind(equal_to<int>(), _1, entities::EntitiesStates::kNonDone),
       bind(&TaskEntity::get_is_done, _1)) ;
@@ -50,8 +45,7 @@ entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
   entities::Tasks r = e;  // impl. empty filter
 
   // фильтруем
-  for (boost::unordered_set<FilterPtr, KeyHasher, KeyEqual>
-          ::const_iterator it = s_.begin(); it != s_.end(); ++it) {
+  for (auto it = s_.begin(); it != s_.end(); ++it) {
     FilterPtr action = *it;
     r = (*action)(r);
   }
@@ -95,7 +89,7 @@ bool operator==(FilterPtr lhs, FilterPtr rhs) {
 
 std::size_t hash_value(FilterPtr b)
 {
-    boost::hash<int> hasher;
+    std::hash<int> hasher;
     return hasher(b->get_type_code());
 }
 

@@ -1,8 +1,7 @@
 #ifndef DOMAIN_H_
 #define DOMAIN_H_
 
-#include <boost/shared_ptr.hpp>
-#include <boost/noncopyable.hpp>
+#include "top/app_types.h"
 
 #include <set>
 #include <string>
@@ -16,9 +15,9 @@ namespace entities {
 const std::string gTableName = "tasks";
 
 struct EntitiesStates {
-  static const int kInActiveKey = -1;
-  static const int kDefaultPriority = 0;
-  static const bool kNonDone = false;
+  static const int kInActiveKey;
+  static const int kDefaultPriority;
+  static const bool kNonDone;
 };
 
 // раз обрабатываем пачкой, то наверное нужны метки
@@ -34,23 +33,30 @@ public:
   // ctor/dtor/assign/copy
   // FIXME: конструктор лучше закрыть
   TaskEntity();
-  static boost::shared_ptr<TaskEntity> create(const std::string& task_name);
-  static boost::shared_ptr<TaskEntity> create(const values::ImmutableTask& v);
+
+  static app::SharedPtr<TaskEntity> create(const std::string& task_name);
+
+  static app::SharedPtr<TaskEntity> create(const values::ImmutableTask& v);
+
   values::ImmutableTask make_value() const;
-  //static values::ImmutableTask make_value(boost::shared_ptr<TaskEntity> e) const;
+
   void assign(const values::ImmutableTask& v);
 
   // accessors
   int get_primary_key() const;
+
   void set_primary_key(int val);
 
   std::string get_task_name() const;
+
   void set_task_name(const std::string& value);
 
   int get_priority() const;
+
   void set_priority(const int val);
 
   bool get_is_done() const;
+
   void set_is_done(bool val);
 
 private:
@@ -62,8 +68,8 @@ private:
 };
 
 // set лучше, но до сохранения индекс может быть не уникальным
-typedef boost::shared_ptr<TaskEntity> TaskEntityPtr;
-typedef boost::shared_ptr<const TaskEntity> ImmutableTaskEntityPtr;
+typedef app::SharedPtr<TaskEntity> TaskEntityPtr;
+typedef app::SharedPtr<const TaskEntity> ImmutableTaskEntityPtr;
 typedef std::vector<entities::TaskEntityPtr> Tasks;
 }  // namespace..
 
@@ -90,13 +96,13 @@ public:
 
   // accessors
   int id() const;
-  boost::shared_ptr<const std::string> description() const;
+  app::SharedPtr<const std::string> description() const;
   int priority() const;
   bool done() const;
 
 private:
   int _id;
-  boost::shared_ptr<const std::string> _description;  // FIXME: NonImmutable really
+  app::SharedPtr<const std::string> _description;  // FIXME: NonImmutable really
   int _priority;
   bool _done;  // need store
 

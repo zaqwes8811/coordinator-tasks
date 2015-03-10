@@ -1,9 +1,7 @@
 #ifndef AAW_ARCH_H_
 #define AAW_ARCH_H_
 
-#include "actors_cc98.h"
-
-#include <boost/shared_ptr.hpp>
+//#include "actors_cc98.h"
 
 #include <algorithm>
 #include <map>

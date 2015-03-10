@@ -17,18 +17,17 @@
 #ifndef FILTERS_H
 #define FILTERS_H
 
-#include "canary/entities_and_values.h"
-
-#include <boost/function.hpp>
-#include <boost/unordered_set.hpp>
+#include "things/entities_and_values.h"
 
 #include <list>
+#include <functional>
+#include <unordered_set>
 
 namespace filters
 {
 
-boost::function1<bool, entities::Tasks::value_type> get_check_non_saved();
-boost::function1<bool, entities::Tasks::value_type> get_check_contained(const int id);
+std::function<bool(entities::Tasks::value_type)> get_check_non_saved();
+std::function<bool(entities::Tasks::value_type)> get_check_contained(const int id);
 
 // могли бы вставляться друг в друга
 class Filter {
@@ -41,7 +40,7 @@ public:
   //   Проблема в удалении фильтра из цепочки.
   virtual int get_type_code() const = 0;
 };
-typedef boost::shared_ptr<Filter> FilterPtr;
+typedef app::SharedPtr<Filter> FilterPtr;
 
 // сырые указатели лучше не передавать.
 bool operator==(const Filter& lhs, const Filter& rhs);
@@ -52,7 +51,7 @@ struct KeyHasher
 {
   std::size_t operator()(FilterPtr k) const
   {
-    using boost::hash;
+    using std::hash;
     return hash<int>()(k->get_type_code());
   }
 };
@@ -80,7 +79,7 @@ public:
 
 private:
   // FIXME: можно вообще тупо массив, фильтров все равно не 100500
-  boost::unordered_set<FilterPtr, KeyHasher, KeyEqual> s_;  // need own hasher
+  std::unordered_set<FilterPtr, KeyHasher, KeyEqual> s_;  // need own hasher
 };
 
 class DoneFilter : public Filter {

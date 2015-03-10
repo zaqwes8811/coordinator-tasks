@@ -5,10 +5,8 @@
 #include "dal/sqlite_queries.h"
 
 #include <gtest/gtest.h>
-#include <boost/make_shared.hpp>
-#include <boost/lexical_cast.hpp>
 #include <sqlite3.h>
-#include <boost/weak_ptr.hpp>
+#include <std_own_ext-fix/std_own_ext.h>
 
 #include <string>
 #include <stdexcept>
@@ -86,7 +84,7 @@ TEST(SQLite, TaskTable) {
 }
 
 TEST(SQLite, TagAndTaskTables) {
-  auto h = boost::make_shared<sqlite3_cc::sqlite3>("test.db");
+  auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
   //auto table = SQLiteTagTableQuery(h);
   //table.createIfNotExist();
 }

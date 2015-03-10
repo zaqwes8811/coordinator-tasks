@@ -7,18 +7,10 @@
 #include "top/config.h"
 
 #include "dal/pq_queries.h"
-#include "canary/entities_and_values.h"
+#include "things/entities_and_values.h"
 #include "canary/filters.h"
 #include "top/common.h"
 #include "db_indep.h"
-
-#include <boost/bind.hpp>
-#include <boost/bind/make_adaptable.hpp>
-#include <boost/function.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/mem_fn.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
 
 #include <iostream>
 #include <cassert>
@@ -53,8 +45,6 @@ void run_transaction(const string& sql, /*const*/ connection& C)
 
 
 namespace pq_dal {
-
-using namespace boost;
 using namespace storages;
 
 using std::string;
@@ -144,7 +134,7 @@ void TaskTableQueries::dropImpl() {
 }
 
 TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
-                                         , boost::weak_ptr<pqxx::connection>  p)
+                                         , app::WeakPtr<pqxx::connection>  p)
     : m_table_name(table_name)
     , m_conn_ptr(p)
 { }

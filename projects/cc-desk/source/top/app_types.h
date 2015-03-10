@@ -1,15 +1,22 @@
 #ifndef CANARY_APP_TYPES_H
 #define CANARY_APP_TYPES_H
 
-//#include "canary/entities.h"
-
-#include <boost/shared_ptr.hpp>
-
-#include <vector>
+#include <memory>
 
 namespace app {
 
-//typedef std::vector<boost::shared_ptr<domain::TaskEntity> > Model;
+// http://en.cppreference.com/w/cpp/language/type_alias
+template<typename T> using SharedPtr =
+  //boost
+  std
+  ::shared_ptr<T>;
+template<typename T> using WeakPtr =
+  std
+  //boost
+  ::weak_ptr<T>;
+
+// Trouble with xxx::make_shared<T>
+//   http://stackoverflow.com/questions/19572512/c11-template-function-aliases-vs-wrappers
 
 }
 

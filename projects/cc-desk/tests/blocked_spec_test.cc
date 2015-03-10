@@ -17,10 +17,8 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QTableWidget>
-#include <boost/shared_ptr.hpp>
 #include <loki/ScopeGuard.h>
 #include <gtest/gtest.h>
-#include <boost/make_shared.hpp>
 #include <actors_and_workers/concurent_queues.h>
 
 #include <memory>
@@ -54,7 +52,7 @@ public:
   typedef std::function<void()> Message;
 
   // FIXME: trouble is not non-arg ctor
-  explicit UIActor(boost::shared_ptr<models::Model> model_ptr)
+  explicit UIActor(app::SharedPtr<models::Model> model_ptr)
     : done(false), mq(100)
   {
     thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) );
@@ -82,13 +80,13 @@ private:
   fix_extern_concurent::concurent_bounded_try_queue<Message> mq;
   std::unique_ptr<std::thread> thd;          // le thread
 
-  void Run(boost::shared_ptr<models::Model> model_ptr) {
+  void Run(app::SharedPtr<models::Model> model_ptr) {
     int argc = 1;
     char* argv[1] = { "none" };
     QApplication app(argc, argv);
     auto engine_ptr = new Engine(model_ptr.get());
 
-    boost::shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(engine_ptr));
+    app::SharedPtr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(engine_ptr));
     model_ptr->set_listener(listener);
 
     engine_ptr->show();
@@ -122,7 +120,7 @@ TEST(Blocked, TestApp) {
 
 
   // work in UI thread
-  auto model_ptr = boost::shared_ptr<models::Model>(models::Model::createForOwn(pool));
+  auto model_ptr = app::SharedPtr<models::Model>(models::Model::createForOwn(pool));
   auto _ = MakeObjGuard(*model_ptr, &models::Model::clear_store);
 
   // FIXME: can't post to exist actor - it block it!
@@ -133,7 +131,7 @@ TEST(Blocked, TestApp) {
     QApplication app(argc, argv);
     auto window = new Engine(model_ptr.get());
 
-    boost::shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));
+    app::SharedPtr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));
     model_ptr->set_listener(listener);  // bad!
 
     window->show();
@@ -159,7 +157,7 @@ TEST(Blocked, UIActorTest) {
 
 
   // work in UI thread
-  auto model_ptr = boost::shared_ptr<models::Model>(models::Model::createForOwn(pool));
+  auto model_ptr = app::SharedPtr<models::Model>(models::Model::createForOwn(pool));
   //auto _ = MakeObjGuard(*model_ptr, &models::Model::clear_store);
 
   UIActor ui(model_ptr);  // dtor will call and app out

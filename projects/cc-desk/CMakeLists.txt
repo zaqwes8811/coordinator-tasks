@@ -23,6 +23,7 @@ INCLUDE( ${QT_USE_FILE} )
 set( LCB_USE_ASAN Y)
 
 set(Extern "../../extern/")
+set(ExternLocal "./extern/")
 set(Export "../../export/")
 set(GMock "../../extern/gmock-1.6.0/fused-src")
 set(Source "source/")
@@ -36,8 +37,9 @@ include_directories(${GMock})
 include_directories(${Source})
 include_directories(${Extern}/loki-0.1.7/include)
 include_directories(${Extern})
+include_directories(${ExternLocal})
 include_directories(${Source}/../../std_own_ext)
-include_directories(${BigExtern}/boost_1_57_0)
+#include_directories(${BigExtern}/boost_1_57_0)
 
 
 # ASan,TSan and MSan
@@ -81,7 +83,7 @@ if (MSVC90)
     #
     # http://rsdn.ru/forum/cpp.applied/2843738.hot
     # /MT
-    link_directories(${BigExtern}/boost_1_57_0/stage/lib)
+    #link_directories(${BigExtern}/boost_1_57_0/stage/lib)
     add_definitions( -D_CRT_SECURE_NO_WARNINGS)# /showIncludes)#D)#T)
     #set(CMAKE_CXX_FLAGS_RELEASE "/MT")
     #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
@@ -97,14 +99,16 @@ elseif (UNIX)
 
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         message("I'm clang")
-        link_directories(${BigExtern}/boost_1_57_0/stage_gcc/lib)
-        link_libraries(boost_system boost_thread pthread rt)  # !! pthread and rt last!!
+        #link_directories(${BigExtern}/boost_1_57_0/stage_gcc/lib)
+        link_libraries(
+            #boost_system boost_thread
+            pthread rt)  # !! pthread and rt last!!
     else()
-        link_directories(${BigExtern}/boost_1_57_0/stage_x64/lib)
+        #link_directories(${BigExtern}/boost_1_57_0/stage_x64/lib)
         link_libraries(
             pqxx pq
             sqlite3
-            boost_system boost_thread
+            #boost_system boost_thread
             pthread rt)  # !! pthread and rt last!!
     endif()
 endif()
@@ -128,14 +132,17 @@ QT4_WRAP_CPP( SAMPLE_MOC_SRCS ${SAMPLE_MOC_HDRS} )
 
 file( GLOB proTests
     ${Source}/view/*.cc
-    ${Extern}/actors_and_workers/*.cc
-    ${Extern}/actors_and_workers/*.h
+    ${ExternLocal}/actors_and_workers/*.cc
+    ${ExternLocal}/actors_and_workers/*.h
+    ${ExternLocal}/std_own_ext-fix/*.h
     ${Source}/../../std_own_ext/*.h
     ${Source}/dal/*.cc
     ${Source}/dal/*.h
     ${Source}/top/*.h
     ${Source}/canary/*.cc
     ${Source}/canary/*.h
+    ${Source}/things/*.cc
+    ${Source}/things/*.h
     ${Source}/wrappers/*.cc
     ${Source}/*.cc
     ${testsRoot}/lang_core/*.cc

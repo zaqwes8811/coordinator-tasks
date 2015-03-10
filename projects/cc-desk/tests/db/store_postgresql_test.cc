@@ -6,13 +6,11 @@
 #include "top/config.h"
 
 #include "dal/pq_queries.h"
-#include "canary/entities_and_values.h"
+#include "things/entities_and_values.h"
 
 #include <loki/ScopeGuard.h>
 #include <pqxx/pqxx> 
 #include <gtest/gtest.h>
-#include <boost/weak_ptr.hpp>
-#include <boost/make_shared.hpp>
 
 #include <iostream>
 #include <set>
@@ -27,10 +25,9 @@ using namespace pq_dal;
 using namespace entities;
 using namespace Loki;
 using namespace pqxx;
-//using namespace pq_lower_level;
 using namespace std;
 
-void do_something(boost::weak_ptr<pqxx::connection> C)
+void do_something(app::WeakPtr<pqxx::connection> C)
 {
   using models::kTaskTableNameRef;
   
@@ -58,7 +55,7 @@ void do_something(boost::weak_ptr<pqxx::connection> C)
 }
 
 TEST(postgres, all) {
-  auto C = boost::make_shared<connection>(models::kConnection);
+  auto C = std::make_shared<connection>(models::kConnection);
   cout << "conn" << endl;
   {
     if (!C->is_open()) {

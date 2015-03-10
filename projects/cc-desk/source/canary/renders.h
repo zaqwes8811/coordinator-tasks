@@ -1,9 +1,7 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-#include "canary/entities_and_values.h"
-
-#include <boost/shared_ptr.hpp>
+#include "things/entities_and_values.h"
 
 #include <ostream>
 #include <vector>
@@ -16,7 +14,7 @@ template <class T>
 class _ActionSmart {
 public:
   explicit _ActionSmart(std::ostream* o_) : o(o_) { }
-  void operator()(const boost::shared_ptr<T>& elem) const {
+  void operator()(const app::SharedPtr<T>& elem) const {
     *o << *elem;// << ", ";
   }
   std::ostream* const o;
@@ -24,7 +22,7 @@ public:
 
 template <class T>
 std::ostream& operator<<(std::ostream& o,
-                         const std::vector<boost::shared_ptr<T> >& a)
+                         const std::vector<app::SharedPtr<T> >& a)
 {
   std::for_each(a.begin(), a.end(),
       //view::ActionSmart<T>(&o));  // FIXME: не видит.

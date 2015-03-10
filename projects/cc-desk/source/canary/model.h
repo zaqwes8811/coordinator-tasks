@@ -1,14 +1,12 @@
 #ifndef BUSI_H
 #define BUSI_H
 
-#include "canary/entities_and_values.h"
+#include "things/entities_and_values.h"
 #include "dal/pq_queries.h"
 #include "canary/renders.h"
 #include "canary/model.h"
 #include "canary/isolation.h"
 
-#include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
 
 #include <string>
 
@@ -29,7 +27,8 @@ namespace models
 //   похоже есть зависимость от текущего фильтра. А если отред. и теперь в фильтр не попадает?
 //
 // FIXME: утекают хендлы!! make ImmutableTask. причем утекают как на нижние уровни, так и на верхние
-class Model : public boost::noncopyable
+class Model
+    //: public boost::noncopyable
 {
 public:
   // create/destory

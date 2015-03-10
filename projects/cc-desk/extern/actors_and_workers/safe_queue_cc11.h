@@ -3,8 +3,6 @@
 #ifndef SAFE_QUEUE
 #define SAFE_QUEUE
 
-#include <boost/noncopyable.hpp>
-
 #include <queue>
 #include <mutex>
 #include <condition_variable>
@@ -22,7 +20,8 @@ namespace concurent {
 
 */
 template <class T>
-class message_queue : public boost::noncopyable
+class message_queue
+    //: public boost::noncopyable
 {
 public:
 	// FIXME: need done() method

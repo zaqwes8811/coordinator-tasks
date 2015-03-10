@@ -1,7 +1,7 @@
 #ifndef WR_SQLITE_XX_H_
 #define WR_SQLITE_XX_H_
 
-#include <boost/lexical_cast.hpp>
+#include <std_own_ext-fix/std_own_ext.h>
 #include <sqlite3.h>
 
 #include <string>
@@ -14,7 +14,7 @@ static const char* const null_value = "NULL";
 
 template <typename R>
 R as(const std::string& arg) {
-  return boost::lexical_cast<R>(arg);
+  return std_own_ext::lexical_cast<R>(arg);
 }
 
 class sqlite3

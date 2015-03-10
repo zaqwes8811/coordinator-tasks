@@ -19,32 +19,30 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "fake_store.h"
-#include "canary/entities_and_values.h"
+#include "canary/fake_store.h"
+#include "things/entities_and_values.h"
 
 #include <QPushButton>
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QCheckBox>
-#include <boost/bind.hpp>
 
 #include <string>
 #include <vector>
 #include <stdexcept>
 #include <iostream>
+#include <functional>
 
 using models::Model;
 using entities::Tasks;  // not work
 using values::TaskViewTableIdx;
 using values::ImmutableTask;
 using entities::EntitiesStates;
-
-using boost::ref;
-using boost::bind;
-
 using std::string;
 using std::vector;
+using std::ref;
+using std::bind;
 
 Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
     QMainWindow(parent)
@@ -155,6 +153,7 @@ entities::Tasks Engine::get_model_data() const {
 
 #ifndef G_I_WANT_USE_IT
 void Engine::slotFillFake(bool) {
+  using namespace std::placeholders;
   Tasks mirror(fake_store::get_all());
 
   // сохраняем все
@@ -223,9 +222,9 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
 }
 
 entities::Tasks::value_type Engine::get_elem_by_id(const int id) {
-  Tasks r = this->get_model_data();
-  Tasks::iterator it = std::find_if(r.begin(), r.end()
-                                    , bind(&entities::TaskEntity::get_primary_key, _1));
+  using namespace std::placeholders;
+  auto r = get_model_data();
+  auto it = std::find_if(r.begin(), r.end(), bind(&entities::TaskEntity::get_primary_key, _1));
 
   assert(it != r.end());  // должен быть
   return *it;

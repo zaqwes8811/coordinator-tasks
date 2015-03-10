@@ -1,13 +1,9 @@
 #ifndef DAL_H
 #define DAL_H
 
-#include "canary/entities_and_values.h"
+#include "things/entities_and_values.h"
 #include "db_indep.h"
 
-#include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/scoped_ptr.hpp>
-#include <boost/weak_ptr.hpp>
 #include <pqxx/pqxx>
 
 #include <string>
@@ -21,13 +17,13 @@ class TaskTableQueries
     : public storages::TaskTableQueries
 {
 public:
-  TaskTableQueries(const std::string& name, boost::weak_ptr<pqxx::connection> p)
+  TaskTableQueries(const std::string& name, app::WeakPtr<pqxx::connection> p)
     : m_table_name(name)
     , m_conn_ptr(p) { }
 
 private:
   const std::string m_table_name;
-  boost::weak_ptr<pqxx::connection> m_conn_ptr;
+  app::WeakPtr<pqxx::connection> m_conn_ptr;
 
   void createIfNotExistImpl() override;
   void dropImpl();
@@ -43,10 +39,10 @@ class TaskLifetimeQueries
 {
 public:
   TaskLifetimeQueries(const std::string& table_name
-                              , boost::weak_ptr<pqxx::connection> p);
+                              , app::WeakPtr<pqxx::connection> p);
 private:
   const std::string m_table_name;
-  boost::weak_ptr<pqxx::connection> m_conn_ptr;
+  app::WeakPtr<pqxx::connection> m_conn_ptr;
 
   // values op.
   values::ImmutableTask createImpl(const values::ImmutableTask& v);
@@ -70,7 +66,7 @@ public:
 
 private:
   // FIXME: important not only lifetime, but connection state to!
-  boost::shared_ptr<pqxx::connection> m_conn_ptr;
+  app::SharedPtr<pqxx::connection> m_conn_ptr;
   const std::string m_table_name;
 };
 }  // space

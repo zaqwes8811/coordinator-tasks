@@ -1,12 +1,13 @@
 #include "top/config.h"
 
 #include "view.h"
-#include "canary/entities_and_values.h"
+#include "things/entities_and_values.h"
 
 #include <QWidget>
 #include <QHeaderView>
 
 #include <stdexcept>
+#include <cassert>
 
 using values::TaskViewTableIdx;
 using values::ImmutableTask;

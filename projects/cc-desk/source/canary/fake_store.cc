@@ -1,6 +1,6 @@
 #include "top/config.h"
 
-#include "canary/entities_and_values.h"
+#include "things/entities_and_values.h"
 #include "top/common.h"
 
 #include <cstdlib>
@@ -9,7 +9,6 @@
 namespace fake_store {
 using std::vector;
 using std::string;
-using namespace boost;
 using namespace entities;
 
 // FIXME: на русском тоже нужно!! и это может стать проблемой
@@ -28,7 +27,7 @@ Tasks get_all() {
   for (int i = 0; i < 5; ++i) {
     string message(events[i]);
     int p = rand() % 10 + 1;
-    Tasks::value_type tmp = TaskEntity::create(
+    auto tmp = TaskEntity::create(
           common::to_string(p)
           //message
           );
@@ -46,7 +45,7 @@ std::vector<values::ImmutableTask> get_all_values() {
   std::vector<values::ImmutableTask> v;
   for (int i = 0; i < 5; ++i) {
     int p = rand() % 10 + 1;
-    values::ImmutableTask tmp = values::ImmutableTask::create(common::to_string(p), p);
+    auto tmp = values::ImmutableTask::create(common::to_string(p), p);
     v.push_back(tmp);
   }
 

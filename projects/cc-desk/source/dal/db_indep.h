@@ -1,7 +1,7 @@
 #ifndef DB_INDEP_H_
 #define DB_INDEP_H_
 
-#include "canary/entities_and_values.h"
+#include "things/entities_and_values.h"
 
 #include <ostream>
 
@@ -76,8 +76,12 @@ private:
   \attention Only in single thread! Actors Model can help
 
   http://herbsutter.com/2013/05/30/gotw-90-solution-factories/
+
+  \fixme How make noncopyble in C++11
 */
-class DataBaseDriver : public boost::noncopyable {
+class DataBaseDriver
+    //: public boost::noncopyable
+{
 public:
   virtual ~DataBaseDriver() { }
 
@@ -89,10 +93,12 @@ public:
   virtual std::unique_ptr<storages::TaskTableQueries> createTaskTableQueries() = 0;
 
   virtual std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQueries() = 0;
+
+  //DataBaseDriver(const DataBaseDriver&) = delete;
 };
 
 
-typedef boost::shared_ptr<storages::DataBaseDriver> DataBaseDriverPtr;
+typedef app::SharedPtr<storages::DataBaseDriver> DataBaseDriverPtr;
 }
 
 #endif

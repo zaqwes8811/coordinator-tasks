@@ -16,7 +16,6 @@
 #include "canary/filters.h"
 
 #include <loki/ScopeGuard.h>
-#include <boost/bind.hpp>
 
 #include <iostream>
 #include <functional>
@@ -30,9 +29,7 @@ using values::ImmutableTask;
 
 using std::cout;
 
-Model* Model::createForOwn(
-    boost::shared_ptr<storages::DataBaseDriver> pool)
-  {
+Model* Model::createForOwn(app::SharedPtr<storages::DataBaseDriver> pool) {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
   auto q = pool->createTaskTableQueries();
@@ -91,7 +88,7 @@ void Model::append(const ImmutableTask& v) {
   auto q = m_db_ptr->createTaskLifetimeQueries();
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
-  ImmutableTask r = q->create(e->make_value());
+  auto r = q->create(e->make_value());
   e->set_primary_key(r.id());  // а ведь придется оставить!!
 
   notify();
@@ -99,7 +96,7 @@ void Model::append(const ImmutableTask& v) {
 }
 
 Model::Model(entities::Tasks _tasks,
-             boost::shared_ptr<storages::DataBaseDriver> _pool)
+             app::SharedPtr<storages::DataBaseDriver> _pool)
     : tasks_(_tasks)
     , m_db_ptr(_pool) {  }
 
@@ -108,7 +105,7 @@ void Model::notify()
   m_observers->update();
 }
 
-void Model::set_listener(boost::shared_ptr< ::isolation::ModelListenerMediatorDynPolym> iso)
+void Model::set_listener(app::SharedPtr< ::isolation::ModelListenerMediatorDynPolym> iso)
 { m_observers = iso; }
 
 entities::Tasks Model::getCurrentModelData()

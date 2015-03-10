@@ -27,38 +27,29 @@
 
 #include "top/config.h"
 
-#include "canary/entities_and_values.h"
+#include "things/entities_and_values.h"
 #include "dal/pq_queries.h"
 #include "canary/renders.h"
-#include "fake_store.h"
+#include "canary/fake_store.h"
 #include "canary/filters.h"
+#include "top/app_types.h"
 
-//#include <adobe/algorithm/find.hpp>  // удобно если работа с целым контейнером, иначе лучше std
-#include <boost/bind.hpp>
-#include <boost/bind/make_adaptable.hpp>
-#include <boost/function.hpp>
-#include <boost/make_shared.hpp>
-#include <boost/mem_fn.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/weak_ptr.hpp>
 #include <gtest/gtest.h>
 #include <loki/ScopeGuard.h>
 #include <pqxx/pqxx> 
-//#include <boost/tr1/functional.hpp>  // compilation problems
 
 #include <algorithm>
 #include <cassert>
 #include <functional>
 #include <stdexcept>
 #include <vector>
+#include <memory>
 
 namespace {
-using namespace boost;
 using namespace pq_dal;
 using namespace entities;
 using namespace Loki;
 using namespace pqxx;
-//using namespace pq_lower_level;
 using namespace fake_store;
 using entities::Tasks;
 
@@ -69,15 +60,14 @@ using std::equal_to;
 using renders::operator <<;
 
 TEST(ModelTest, BaseCase) {
-  typedef vector<weak_ptr<TaskEntity> > ModelWeakSlice;
+  using namespace std::placeholders;
+  typedef vector<app::WeakPtr<TaskEntity> > ModelWeakSlice;
 
   // пока храним все в памяти - активные только
   // ссылки не должны утечь, но как удалять из хранилища?
   Tasks model;
 
-  model.push_back(
-    make_shared<Tasks::value_type::element_type>(
-      Tasks::value_type::element_type()));
+  model.push_back(std::make_shared<Tasks::value_type::element_type>(Tasks::value_type::element_type()));
 
   // only tmp!!! maybe weak? - тогда копия не владеет, хотя и работать не очень удобно
   // weak_ptr - неожиданно влядеет
@@ -97,7 +87,7 @@ TEST(ModelTest, Create) {
   cout << model;  
 
   // save
-  auto C = boost::make_shared<connection>(models::kConnection);
+  auto C = std::make_shared<connection>(models::kConnection);
   {
     using models::kTaskTableNameRef;
 

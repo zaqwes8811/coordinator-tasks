@@ -32,20 +32,15 @@
 #include <algorithm>
 #include <list>
 
-#include "boost/bind.hpp"
-#include <boost/lambda/lambda.hpp>
-#include <boost/foreach.hpp>
-
 #include <gtest/gtest.h>
 
-#define foreach_         BOOST_FOREACH
+#include <functional>
 
 using std::cout;
 using std::vector;
 using std::for_each;
 using std::list;
-
-using boost::bind;
+using std::bind;
 
 //TODO: http://www.informit.com/articles/article.aspx?p=412354&seqNum=4
 //TODO: http://stackoverflow.com/questions/10555566/is-there-any-difference-between-c11-stdbind-and-boostbind
@@ -56,6 +51,7 @@ void five_args(int i1, int i2, int i3)
 }
 
 TEST(BindWithBoost, App) {
+  using namespace std::placeholders;
   (bind(&five_args, _1, _2,_3))(0, 1, 1);
 }
 
@@ -84,7 +80,7 @@ TEST(BindWithoutBoost, App) {
 }
 
 TEST(BoostLambdas, App) {
-  using boost::lambda::_1;
+  using namespace std::placeholders;
   // http://www.boost.org/doc/libs/1_31_0/libs/lambda/doc/lambda_docs_as_one_file.html
 
   list<int> v(10);

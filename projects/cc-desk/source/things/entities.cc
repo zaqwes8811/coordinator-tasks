@@ -1,28 +1,27 @@
 #include "top/config.h"
 
-#include "canary/entities_and_values.h"
+#include "things/entities_and_values.h"
 #include "dal/pq_queries.h"
 
-#include <boost/make_shared.hpp>
-
 #include <vector>
-
 
 namespace entities {
 using namespace pq_dal;
 
-boost::shared_ptr<TaskEntity> TaskEntity::create(const std::string& task_name) {
-  boost::shared_ptr<TaskEntity> tmp = boost::make_shared<TaskEntity>(TaskEntity());
+const int EntitiesStates::kInActiveKey = -1;
+const int EntitiesStates::kDefaultPriority = 0;
+const bool EntitiesStates::kNonDone = false;
+
+app::SharedPtr<TaskEntity> TaskEntity::create(const std::string& task_name)
+{
+  app::SharedPtr<TaskEntity> tmp = std::make_shared<TaskEntity>(TaskEntity());
   tmp->task_name_ = task_name;
-
-  //const boost::shared_ptr<const TaskEntity> tmp_ = tmp;
-
   return tmp;
 }
 
-boost::shared_ptr<TaskEntity> TaskEntity::create(const values::ImmutableTask& v)
+app::SharedPtr<TaskEntity> TaskEntity::create(const values::ImmutableTask& v)
 {
-  boost::shared_ptr<TaskEntity> tmp = TaskEntity::create(*v.description());
+  app::SharedPtr<TaskEntity> tmp = TaskEntity::create(*v.description());
   tmp->set_primary_key(v.id());
   tmp->set_priority(v.priority());
   tmp->set_is_done(v.done());

@@ -1,9 +1,6 @@
 #include "top/config.h"
 
-#include "canary/entities_and_values.h"
-
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
+#include "things/entities_and_values.h"
 
 #include "values.h"
 
@@ -28,7 +25,7 @@ ImmutableTask& ImmutableTask::operator=(const ImmutableTask& v) {
 
 ImmutableTask::ImmutableTask(const int _id, const std::string& d, const int p, const bool _d)
   : _id(_id)
-  , _description(boost::make_shared<std::string>(d))
+  , _description(std::make_shared<std::string>(d))
   , _priority(p)
   , _done(_d)
 { }
@@ -55,7 +52,7 @@ ImmutableTask ImmutableTask::create(
 int ImmutableTask::id() const
 { return _id; }
 
-boost::shared_ptr<const std::string> ImmutableTask::description() const
+app::SharedPtr<const std::string> ImmutableTask::description() const
 { return _description; }
 
 int ImmutableTask::priority() const
