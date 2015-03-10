@@ -97,7 +97,7 @@ void TaskTableQueries::drawImpl(std::ostream& o) const {
   nontransaction no_tr_w(*c);
   result r( no_tr_w.exec( sql ));
 
-  for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
+  for (auto c = r.begin(); c != r.end(); ++c) {
     o << "ID = " << c[TablePositions::kId].as<int>()
          << " Name = " << c[TablePositions::kTaskName].as<string>()
          << " Priority = "  << c[TablePositions::kPriority].as<int>()
@@ -122,6 +122,7 @@ void TaskTableQueries::createIfNotExistImpl() {
 
   if (!c)
     return;
+
   pq_lower_level::run_transaction(sql, *c);
 }
 
@@ -142,6 +143,7 @@ TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
 void TaskLifetimeQueries::updateImpl(const values::ImmutableTask& v) {
 
   assert(v.id() != EntitiesStates::kInActiveKey);
+
   string done("false");
   if (v.done())
     done = "true";
@@ -185,7 +187,7 @@ values::ImmutableTask TaskLifetimeQueries::createImpl(const values::ImmutableTas
 
   // Узнаем что за ключ получили
   int id(entities::EntitiesStates::kInActiveKey);
-  for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
+  for (auto c = r.begin(); c != r.end(); ++c) {
     id = c[TablePositions::kId].as<int>();
     break;
   }
@@ -210,11 +212,11 @@ entities::Tasks TaskLifetimeQueries::get_allImpl() const {
 
   // pack
   Tasks model;
-  for (result::const_iterator c = r.begin(); c != r.end(); ++c) {
-    Tasks::value_type elem = TaskEntity::create("");
+  for (auto c = r.begin(); c != r.end(); ++c) {
+    auto elem = TaskEntity::create("");
     elem->set_primary_key(c[TablePositions::kId].as<int>());
     elem->set_task_name(c[TablePositions::kTaskName].as<string>());
-    elem->set_priority(c[TablePositions::kPriority].as<int>());
+    elem->setPriority(c[TablePositions::kPriority].as<int>());
     elem->set_is_done(c[TablePositions::kDone].as<bool>());
 
     model.push_back(elem);

@@ -79,7 +79,7 @@ void Model::append(const ImmutableTask& v) {
   Tasks::value_type e(new Tasks::value_type::element_type());
   e->assign(v);
 
-  ScopeGuard _ = MakeObjGuard(tasks_, &Tasks::pop_back);
+  auto _ = MakeObjGuard(tasks_, &Tasks::pop_back);
 
   // FIXME: а ведь порядок операций важен, и откатить проще операцию в памяти, чем в базе данных
   tasks_.push_back(e);

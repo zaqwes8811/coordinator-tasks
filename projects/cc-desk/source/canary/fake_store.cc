@@ -32,7 +32,7 @@ Tasks get_all() {
           //message
           );
 
-    tmp->set_priority(p);
+    tmp->setPriority(p);
     model.push_back(tmp);
   }
 

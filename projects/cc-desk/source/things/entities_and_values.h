@@ -53,7 +53,7 @@ public:
 
   int get_priority() const;
 
-  void set_priority(const int val);
+  void setPriority(const int val);
 
   bool get_is_done() const;
 

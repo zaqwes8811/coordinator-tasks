@@ -42,11 +42,11 @@ void ChainFilters::remove(FilterPtr e)
 { s_.erase(e); }
 
 entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
-  entities::Tasks r = e;  // impl. empty filter
+  auto r = e;  // impl. empty filter
 
   // фильтруем
   for (auto it = s_.begin(); it != s_.end(); ++it) {
-    FilterPtr action = *it;
+    auto action = *it;
     r = (*action)(r);
   }
 
@@ -55,8 +55,7 @@ entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
 
 entities::Tasks DoneFilter::operator()(entities::Tasks e)
 {
-  entities::Tasks::iterator it = std::stable_partition(e.begin(), e.end()
-                                                       , get_is_non_done());
+  auto it = std::stable_partition(e.begin(), e.end(), get_is_non_done());
   return entities::Tasks(e.begin(), it);
 }
 

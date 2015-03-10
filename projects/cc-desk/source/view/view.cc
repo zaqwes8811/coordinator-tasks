@@ -69,7 +69,7 @@ void QMyTableView::_insertBlankRows(const int end) {
 
 void QMyTableView::clearList() {
   // есть и функция clear and clearContent
-  int count_rows = rowCount();
+  auto count_rows = rowCount();
   for (int i = 0; i < count_rows; ++i)
     removeRow(i);
 }
@@ -78,16 +78,19 @@ void QMyTableView::draw(entities::Tasks tasks) {
   // fill table
   setRowCount(tasks.size() + models::kAddedBlankLines);
 
-  int row = 0;
-  for (Tasks::const_iterator record=tasks.begin(), end=tasks.end(); record != end; ++record) {
-    setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number((*record)->get_primary_key())));
-    setItem(row, values::TaskViewTableIdx::kPriority, new QTableWidgetItem(QString::number((*record)->get_priority())));
-    setItem(row, values::TaskViewTableIdx::kDone, new QTableWidgetItem(QString::number((*record)->get_is_done())));
+  auto row = 0;
+  for (auto& record : tasks) {
+    setItem(row, values::TaskViewTableIdx::kId
+            , new QTableWidgetItem(QString::number(record->get_primary_key())));
+    setItem(row, values::TaskViewTableIdx::kPriority
+            , new QTableWidgetItem(QString::number(record->get_priority())));
+    setItem(row, values::TaskViewTableIdx::kDone
+            , new QTableWidgetItem(QString::number(record->get_is_done())));
 
-    QString note = QString::fromUtf8((*record)->get_task_name().c_str());
-    QTableWidgetItem* v = new QTableWidgetItem(note);
+    auto note = QString::fromUtf8(record->get_task_name().c_str());
+    auto v = new QTableWidgetItem(note);
 
-    if ((*record)->get_is_done())
+    if (record->get_is_done())
       v->setTextColor(kDoneColor);
 
 
@@ -104,7 +107,7 @@ int QMyTableView::getId(const int row) const {
 }
 
 void QMyTableView::markDone(const int row) {
-  QString v = QString::number(!entities::EntitiesStates::kNonDone);
+  auto v = QString::number(!entities::EntitiesStates::kNonDone);
   item(row, values::TaskViewTableIdx::kDone)->setText(v);
 
   // перекрашиваем
@@ -112,7 +115,7 @@ void QMyTableView::markDone(const int row) {
 }
 
 void QMyTableView::markReopen(const int row) {
-  QString v = QString::number(entities::EntitiesStates::kNonDone);
+  auto v = QString::number(entities::EntitiesStates::kNonDone);
   item(row, values::TaskViewTableIdx::kDone)->setText(v);
   //item(row, values::TaskViewTableIdx::kTaskName)->setTextColor(kReopenColor);
 }
@@ -124,10 +127,10 @@ bool QMyTableView::isSaved(const int row) const {
 values::ImmutableTask QMyTableView::get_elem(const int row) const {
   assert(row < rowCount());
 
-  int id = getId(row);
+  auto id = getId(row);
   std::string d(item(row, values::TaskViewTableIdx::kTaskName)->text().toUtf8().constData());
   int p(item(row, values::TaskViewTableIdx::kPriority)->text().toInt());
-  bool done = item(row, values::TaskViewTableIdx::kDone)->text().toInt();
+  auto done = item(row, values::TaskViewTableIdx::kDone)->text().toInt();
 
   return values::ImmutableTask::create(id, d, p, done);
 }

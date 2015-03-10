@@ -62,37 +62,37 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 
 
   // pack all
-  QHBoxLayout* actions_layout = new QHBoxLayout;
+  auto actions_layout = new QHBoxLayout;
     // boxes
-    QVBoxLayout* checkbox_layout = new QVBoxLayout;
+    auto checkbox_layout = new QVBoxLayout;
     actions_layout->addLayout(checkbox_layout);
-      QCheckBox* non_done = new QCheckBox("Non done only", this);
+      auto non_done = new QCheckBox("Non done only", this);
       connect(non_done, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffDone(int)));
       checkbox_layout->addWidget(non_done);
 
-      QCheckBox* sort_dec = new QCheckBox("Sort dec priority", this);
+      auto sort_dec = new QCheckBox("Sort dec priority", this);
       connect(sort_dec, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffSortByDecPriority(int)));
       checkbox_layout->addWidget(sort_dec);
 
-      QCheckBox* done = new QCheckBox("Sort by task name", this);
+      auto done = new QCheckBox("Sort by task name", this);
       connect(done, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffSortByTaskName(int)));
       checkbox_layout->addWidget(done);
 
     // buttons
-    QVBoxLayout* buttons_layout = new QVBoxLayout;
+    auto buttons_layout = new QVBoxLayout;
     actions_layout->addLayout(buttons_layout);
-      QPushButton* mark_done = new QPushButton("Mark done", this);
+      auto mark_done = new QPushButton("Mark done", this);
       connect(mark_done, SIGNAL(clicked()), this, SLOT(slotMarkDone()));
       buttons_layout->addWidget(mark_done);
 
-      QPushButton* fake = new QPushButton("Reopen", this);
+      auto fake = new QPushButton("Reopen", this);
       connect(fake, SIGNAL(clicked()), this, SLOT(slotReopen()));
       buttons_layout->addWidget(fake);
 
   // добавляем чекбоксы
-  QWidget* centralWidget = new QWidget(this);
+  auto centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
-    QVBoxLayout* mainLayout = new QVBoxLayout(centralWidget);
+    auto mainLayout = new QVBoxLayout(centralWidget);
       m_table_ptr = new QMyTableView(this);
       connect(m_table_ptr, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
@@ -109,9 +109,9 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 Engine::~Engine() { delete ui; }
 
 void Engine::slotReopen() {
-  Row r = getSelectedRow();
+  auto r = getSelectedRow();
   if (r.isPresent()) {
-    int row = r.get();
+    auto row = r.get();
     // Обновляем ячейку
     m_table_ptr->markReopen(row);  // no throw
     values::ImmutableTask t = m_table_ptr->get_elem(row);
@@ -170,18 +170,18 @@ void Engine::redraw() {
   // FIXME: сбивает выбранную позицию
   //
   m_table_ptr->clearList();
-  Tasks records = get_model_data();  // may throw
+  auto records = get_model_data();  // may throw
   m_table_ptr->draw(records);
 }
 
 Row Engine::getSelectedRow() const {
-  QModelIndexList indexList = m_table_ptr->selectionModel()->selectedIndexes();
+  auto indexList = m_table_ptr->selectionModel()->selectedIndexes();
 
   // Должна быть выбрана одна ячейка
   if (indexList.empty() || (indexList.size() != 1))
     return Row::absent();
 
-  const size_t row = indexList.at(values::TaskViewTableIdx::kId).row();
+  auto const row = indexList.at(values::TaskViewTableIdx::kId).row();
 
   if (row >= get_model_data().size())
     return Row::absent();
@@ -190,12 +190,12 @@ Row Engine::getSelectedRow() const {
 }
 
 void Engine::slotMarkDone() {
-  Row r = getSelectedRow();
+  auto r = getSelectedRow();
   if (r.isPresent()) {
-    int row = r.get();
+    auto row = r.get();
     // Обновляем ячейку
     m_table_ptr->markDone(row);  // no throw
-    values::ImmutableTask t = m_table_ptr->get_elem(row);
+    auto t = m_table_ptr->get_elem(row);
     m_model_ptr->update(t);  // FIXME: may throw
   }
 }
@@ -206,8 +206,8 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
   try {
     // FIXME: а такая вот комбинация надежно то работает?
     if (m_table_ptr->isEdited()) {
-      const int row = widget->row();
-      values::ImmutableTask v = m_table_ptr->get_elem(row);
+      auto const row = widget->row();
+      auto v = m_table_ptr->get_elem(row);
       if (m_table_ptr->isSaved(row)) {
         // Cоздаем новую запись
         m_model_ptr->update(v);

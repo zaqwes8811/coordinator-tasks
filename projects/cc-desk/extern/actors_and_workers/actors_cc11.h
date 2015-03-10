@@ -38,7 +38,7 @@ private:
 
   void Run() {
     while( !done ) {
-      Message msg = mq.dequeue();
+      auto msg = mq.dequeue();
       msg();            // execute message
     } // note: last message sets done to true
   }
