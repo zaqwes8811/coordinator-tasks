@@ -16,34 +16,6 @@
 #include <cassert>
 #include <sstream>
 
-namespace pq_lower_level {
-using std::string;
-using pqxx::connection;
-using pqxx::work;
-
-// можно было использовать ссылку и ByRef()
-void rm_table(connection& conn, const string& table_name)
-{
-  // Если таблицы нет, то просто ничего не происходит.
-  string sql("DROP TABLE " + table_name + ";");
-
-  // создаем транзакционный объект
-  work w(conn);
-
-  // Exec
-  w.exec(sql);
-  w.commit();
-}
-
-void run_transaction(const string& sql, /*const*/ connection& C)
-{
-  work W(C);
-  W.exec(sql);
-  W.commit();
-}
-}  // ns
-
-
 namespace pq_dal {
 using namespace storages;
 
@@ -73,7 +45,9 @@ PQConnectionsPool::PQConnectionsPool(const std::string& conn_info
 PQConnectionsPool::~PQConnectionsPool() {
   try {
     m_conn_ptr->disconnect();
-  } catch (...) {}
+  } catch (...) {
+    // FIXME: add macro what print in debug mode
+  }
 }
 
 std::unique_ptr<storages::TaskTableQueries>
@@ -123,7 +97,9 @@ void TaskTableQueries::createIfNotExistImpl() {
   if (!c)
     return;
 
-  pq_lower_level::run_transaction(sql, *c);
+  work W(*c);
+  W.exec(sql);
+  W.commit();
 }
 
 void TaskTableQueries::dropImpl() {
@@ -131,7 +107,15 @@ void TaskTableQueries::dropImpl() {
   if(!c)
     return;
 
-  pq_lower_level::rm_table(*c, m_table_name);
+  // Если таблицы нет, то просто ничего не происходит.
+  string sql("DROP TABLE " + m_table_name + ";");
+
+  // создаем транзакционный объект
+  work w(*c);
+
+  // Exec
+  w.exec(sql);
+  w.commit();
 }
 
 TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
