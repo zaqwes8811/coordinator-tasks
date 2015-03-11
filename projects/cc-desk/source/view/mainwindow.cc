@@ -20,7 +20,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "canary/fake_store.h"
-#include "things/entities_and_values.h"
+#include "things/entities.h"
+#include "things/values.h"
 
 #include <QPushButton>
 #include <QTableWidget>

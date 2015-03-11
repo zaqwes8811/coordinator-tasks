@@ -27,12 +27,13 @@
 
 #include "top/config.h"
 
-#include "things/entities_and_values.h"
+#include "things/entities.h"
 #include "dal/pq_queries.h"
 #include "canary/renders.h"
 #include "canary/fake_store.h"
 #include "canary/filters.h"
 #include "top/app_types.h"
+#include "things/values.h"
 
 #include <gtest/gtest.h>
 #include <loki/ScopeGuard.h>

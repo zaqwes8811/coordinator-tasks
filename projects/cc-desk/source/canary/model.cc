@@ -14,6 +14,7 @@
 
 #include "canary/model.h"
 #include "canary/filters.h"
+#include "things/values.h"
 
 #include <loki/ScopeGuard.h>
 

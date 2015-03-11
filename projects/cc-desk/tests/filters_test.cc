@@ -1,6 +1,6 @@
 #include "top/config.h"
 
-#include "things/entities_and_values.h"
+#include "things/entities.h"
 #include "canary/model.h"
 #include "canary/filters.h"
 

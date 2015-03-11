@@ -1,6 +1,7 @@
 #include "top/config.h"
 
-#include "things/entities_and_values.h"
+#include "things/entities.h"
+#include "things/values.h"
 #include "top/common.h"
 
 #include <cstdlib>

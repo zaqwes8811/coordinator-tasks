@@ -17,7 +17,7 @@
 #ifndef FILTERS_H
 #define FILTERS_H
 
-#include "things/entities_and_values.h"
+#include "things/entities.h"
 
 #include <list>
 #include <functional>

@@ -6,7 +6,7 @@
 #include "top/config.h"
 
 #include "dal/pq_queries.h"
-#include "things/entities_and_values.h"
+#include "things/entities.h"
 
 #include <loki/ScopeGuard.h>
 #include <pqxx/pqxx> 

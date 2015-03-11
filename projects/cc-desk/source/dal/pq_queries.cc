@@ -7,10 +7,12 @@
 #include "top/config.h"
 
 #include "dal/pq_queries.h"
-#include "things/entities_and_values.h"
+#include "things/entities.h"
 #include "canary/filters.h"
+#include "top/error_handling.h"
 #include "top/common.h"
 #include "db_indep.h"
+#include "things/values.h"
 
 #include <iostream>
 #include <cassert>
@@ -120,8 +122,8 @@ void TaskTableQueries::dropImpl() {
 
 TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
                                          , app::WeakPtr<pqxx::connection>  p)
-    : m_table_name(table_name)
-    , m_conn_ptr(p)
+    : m_tableName(table_name)
+    , m_connPtr(p)
 { }
 
 void TaskLifetimeQueries::updateImpl(const values::ImmutableTask& v) {
@@ -134,13 +136,13 @@ void TaskLifetimeQueries::updateImpl(const values::ImmutableTask& v) {
 
   string sql(
   "UPDATE "
-        + m_table_name + " SET "
+        + m_tableName + " SET "
         + "TASK_NAME = '" + *v.description()
         + "', PRIORITY = " + common::to_string(v.priority())
         + ", DONE = " + done
         + " WHERE ID = " + common::to_string(v.id()) + ";");
   
-  auto c = m_conn_ptr.lock();
+  auto c = m_connPtr.lock();
   if (!c)
     return;
 
@@ -149,18 +151,18 @@ void TaskLifetimeQueries::updateImpl(const values::ImmutableTask& v) {
   w.commit();
 }
 
-values::ImmutableTask TaskLifetimeQueries::createImpl(const values::ImmutableTask& v)
+values::ImmutableTask TaskLifetimeQueries::createImpl(const values::ImmutableTask& task)
 {
-  assert(v.id() == entities::EntitiesStates::kInActiveKey);
-  assert(!v.done());
+  DCHECK(task.id() == entities::EntitiesStates::kInActiveKey);
+  DCHECK(!task.done());
 
   string sql(
-      "INSERT INTO " + m_table_name + " (TASK_NAME, PRIORITY) " \
+      "INSERT INTO " + m_tableName + " (TASK_NAME, PRIORITY) " \
         "VALUES ('"
-        + *v.description()+"', "
-        + common::to_string(v.priority()) + ") RETURNING ID; ");
+        + *task.description()+"', "
+        + common::to_string(task.priority()) + ") RETURNING ID; ");
 
-  auto c = m_conn_ptr.lock();
+  auto c = m_connPtr.lock();
   if (!c)
     throw std::runtime_error(FROM_HERE);
 
@@ -179,14 +181,14 @@ values::ImmutableTask TaskLifetimeQueries::createImpl(const values::ImmutableTas
 
   // из-за константрости приходится распаковывать значение, нельзя
   //   просто приствоить и оттюнить.
-  return ImmutableTask::create(id, *v.description(), v.priority());
+  return ImmutableTask::create(id, *task.description(), task.priority());
 }
 
 
 entities::Tasks TaskLifetimeQueries::get_allImpl() const {
-  string sql("SELECT * FROM " + m_table_name + ";");// WHERE DONE = FALSE;");
+  string sql("SELECT * FROM " + m_tableName + ";");// WHERE DONE = FALSE;");
 
-  auto c = m_conn_ptr.lock();
+  auto c = m_connPtr.lock();
   if (!c)
     throw std::runtime_error(FROM_HERE);
 

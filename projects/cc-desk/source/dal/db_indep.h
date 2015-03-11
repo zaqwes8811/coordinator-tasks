@@ -1,7 +1,7 @@
 #ifndef DB_INDEP_H_
 #define DB_INDEP_H_
 
-#include "things/entities_and_values.h"
+#include "things/entities.h"
 
 #include <ostream>
 
@@ -19,17 +19,11 @@ struct TablePositions {
 class TaskTableQueries
 {
 public:
-  void createIfNotExist()
-  { createIfNotExistImpl(); }
-  void drop()
-  { dropImpl(); }
-  void draw(std::ostream& o) const
-  { drawImpl(o); }
+  void createIfNotExist();
+  void drop();
+  void draw(std::ostream& o) const;
 
   virtual ~TaskTableQueries() { }
-
-
-
 private:
   virtual void createIfNotExistImpl() = 0;
   virtual void dropImpl() = 0;
@@ -58,12 +52,9 @@ private:
 class TaskLifetimeQueries
 {
 public:
-  values::ImmutableTask create(const values::ImmutableTask& v)
-  { return createImpl(v); }
-  void update(const values::ImmutableTask& v)
-  { updateImpl(v); }
-  entities::Tasks get_all() const
-  { return get_allImpl(); }
+  values::ImmutableTask create(const values::ImmutableTask& v);
+  void update(const values::ImmutableTask& v);
+  entities::Tasks get_all() const;
 
   virtual ~TaskLifetimeQueries() { }
 private:

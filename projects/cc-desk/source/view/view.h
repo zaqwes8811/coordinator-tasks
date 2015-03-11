@@ -1,7 +1,7 @@
 #ifndef VIEW_H
 #define VIEW_H
 
-#include "things/entities_and_values.h"
+#include "things/entities.h"
 
 #include <QTableWidget>
 

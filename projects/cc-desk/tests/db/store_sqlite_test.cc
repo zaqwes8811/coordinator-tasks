@@ -5,7 +5,7 @@
 #include "dal/sqlite_queries.h"
 
 #include <gtest/gtest.h>
-#include <sqlite3.h>
+//#include <sqlite3.h>
 #include <std_own_ext-fix/std_own_ext.h>
 
 #include <string>
@@ -13,6 +13,8 @@
 #include <vector>
 #include <map>
 #include <iostream>
+
+using std::string;
 
 std::ostream& operator<<(std::ostream& o, const sqlite3_cc::Result& result) {
   for(auto& row: result) {
@@ -79,12 +81,47 @@ private:
 
 TEST(SQLite, TaskTable) {
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
-  auto table = sqlite_queries::SQLiteTaskTableQueries(h);
+  auto table = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
   table.createIfNotExist();
 }
 
 TEST(SQLite, TagAndTaskTables) {
+  using namespace sqlite3_cc;
+
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
-  //auto table = SQLiteTagTableQuery(h);
-  //table.createIfNotExist();
+
+  auto table = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
+  table.createIfNotExist();
+
+  string sql = "CREATE TABLE IF NOT EXISTS TAGS("  \
+           "ID             SERIAL PRIMARY KEY     NOT NULL," \
+           "NAME           TEXT    NOT NULL," \
+           "COLOR          TEXT    NOT NULL);";
+
+  sqlite3_exec(*h, sql);
+
+  // task-tag relation
+
+  // destroy
+  sqlite3_exec(*h, "DROP TABLE TAGS;");
+  table.drop();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

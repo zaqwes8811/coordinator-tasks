@@ -1,7 +1,8 @@
 #include "top/config.h"
 
-#include "things/entities_and_values.h"
+#include "things/entities.h"
 #include "dal/pq_queries.h"
+#include "things/values.h"
 
 #include <vector>
 
@@ -56,7 +57,7 @@ int TaskEntity::get_priority() const
 void TaskEntity::setPriority(const int val)
 { priority_ = val; }
 
-bool TaskEntity::get_is_done() const
+bool TaskEntity::getIsDone() const
 { return is_done_; }
 
 // лучше так чем городить условную логику
@@ -71,7 +72,7 @@ values::ImmutableTask TaskEntity::make_value() const {
         get_primary_key(),
         get_task_name(),
         get_priority(),
-        get_is_done());
+        getIsDone());
 }
 
 }  // namespace

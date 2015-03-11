@@ -1,7 +1,8 @@
 #include "top/config.h"
 
 #include "view.h"
-#include "things/entities_and_values.h"
+#include "things/entities.h"
+#include "things/values.h"
 
 #include <QWidget>
 #include <QHeaderView>
@@ -85,12 +86,12 @@ void QMyTableView::draw(entities::Tasks tasks) {
     setItem(row, values::TaskViewTableIdx::kPriority
             , new QTableWidgetItem(QString::number(record->get_priority())));
     setItem(row, values::TaskViewTableIdx::kDone
-            , new QTableWidgetItem(QString::number(record->get_is_done())));
+            , new QTableWidgetItem(QString::number(record->getIsDone())));
 
     auto note = QString::fromUtf8(record->get_task_name().c_str());
     auto v = new QTableWidgetItem(note);
 
-    if (record->get_is_done())
+    if (record->getIsDone())
       v->setTextColor(kDoneColor);
 
 

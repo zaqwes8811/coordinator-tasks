@@ -29,7 +29,7 @@ std::function<bool(entities::Tasks::value_type)> get_check_contained(const int i
 std::function<bool(entities::Tasks::value_type)> get_is_non_done() {
   return bind(
       bind(equal_to<int>(), _1, entities::EntitiesStates::kNonDone),
-      bind(&TaskEntity::get_is_done, _1)) ;
+      bind(&TaskEntity::getIsDone, _1)) ;
 }
 
 ChainFilters::ChainFilters() { }

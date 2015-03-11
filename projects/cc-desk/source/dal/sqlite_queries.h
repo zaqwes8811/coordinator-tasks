@@ -12,23 +12,19 @@ namespace sqlite_queries {
 class SQLiteTaskTableQueries : public storages::TaskTableQueries
 {
 public:
-  explicit SQLiteTaskTableQueries(app::WeakPtr<sqlite3_cc::sqlite3> h);
+  explicit SQLiteTaskTableQueries(app::WeakPtr<sqlite3_cc::sqlite3> h
+                                  , const std::string& tableName);
 
 private:
   virtual void createIfNotExistImpl();
-  virtual void dropImpl() {
-
-  }
-
-  virtual void drawImpl(std::ostream& o) const {
-
-  }
+  virtual void dropImpl();
+  virtual void drawImpl(std::ostream& o) const;
 
   std::string getTableName() const
-  { return m_table_name; }
+  { return m_tableName; }
 
-  const std::string m_table_name;
-  app::WeakPtr<sqlite3_cc::sqlite3> m_conn_ptr;
+  const std::string m_tableName;
+  app::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
 };
 }  // space
 

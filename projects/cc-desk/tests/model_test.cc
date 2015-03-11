@@ -1,6 +1,6 @@
 #include "top/config.h"
 
-#include "things/entities_and_values.h"
+#include "things/entities.h"
 #include "dal/pq_queries.h"  // BAD!! too low level
 #include "canary/model.h"
 #include "canary/fake_store.h"
@@ -40,8 +40,8 @@ TEST(AppCore, Create) {
   }
 
   {
-    std::auto_ptr<Model> app_ptr(Model::createForOwn(pool));
-    ScopeGuard _ = MakeObjGuard(*app_ptr, &Model::clear_store);
+    std::unique_ptr<Model> app_ptr(Model::createForOwn(pool));
+    auto _ = MakeObjGuard(*app_ptr, &Model::clear_store);
 
     //renders::render_task_store(cout, *(app_ptr.get()));
   }
@@ -53,7 +53,7 @@ TEST(AppCore, Create) {
 TEST(AppCore, UpdatePriority) {
   app::SharedPtr<PQConnectionsPool> pool(new PQConnectionsPool(models::kConnection, models::kTaskTableNameRef));
   {
-    std::auto_ptr<Model> app_ptr(Model::createForOwn(pool));
+    std::unique_ptr<Model> app_ptr(Model::createForOwn(pool));
     auto _ = MakeObjGuard(*app_ptr, &Model::clear_store);
 
     // добавляем записи

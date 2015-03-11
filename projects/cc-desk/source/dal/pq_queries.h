@@ -1,7 +1,7 @@
 #ifndef DAL_H
 #define DAL_H
 
-#include "things/entities_and_values.h"
+#include "things/entities.h"
 #include "db_indep.h"
 
 #include <pqxx/pqxx>
@@ -41,8 +41,8 @@ public:
   TaskLifetimeQueries(const std::string& table_name
                               , app::WeakPtr<pqxx::connection> p);
 private:
-  const std::string m_table_name;
-  app::WeakPtr<pqxx::connection> m_conn_ptr;
+  const std::string m_tableName;
+  app::WeakPtr<pqxx::connection> m_connPtr;
 
   // values op.
   values::ImmutableTask createImpl(const values::ImmutableTask& v);

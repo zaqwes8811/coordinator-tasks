@@ -1,7 +1,7 @@
 #ifndef TEST_HELP_DATA_H
 #define TEST_HELP_DATA_H
 
-#include "things/entities_and_values.h"
+#include "things/entities.h"
 
 #include <vector>
 
