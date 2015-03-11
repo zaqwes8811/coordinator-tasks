@@ -1,11 +1,10 @@
-#include "top/config.h"
+#include "heart/config.h"
 
 #include "wrappers/sqlite_xx.h"
 #include "dal/db_indep.h"
 #include "dal/sqlite_queries.h"
 
 #include <gtest/gtest.h>
-//#include <sqlite3.h>
 #include <std_own_ext-fix/std_own_ext.h>
 
 #include <string>

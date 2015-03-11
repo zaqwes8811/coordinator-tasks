@@ -4,15 +4,16 @@
 // FIXME: писать все запросы буквами одного региста - пусть прописные. это помогает кешировать
 //   по крайней мере в MySQL даже регистр важен
 
-#include "top/config.h"
+#include "heart/config.h"
 
 #include "dal/pq_queries.h"
 #include "things/entities.h"
 #include "canary/filters.h"
-#include "top/error_handling.h"
-#include "top/common.h"
+#include "common/error_handling.h"
 #include "db_indep.h"
 #include "things/values.h"
+
+#include <std_own_ext-fix/std_own_ext.h>
 
 #include <iostream>
 #include <cassert>
@@ -138,9 +139,9 @@ void TaskLifetimeQueries::updateImpl(const values::ImmutableTask& v) {
   "UPDATE "
         + m_tableName + " SET "
         + "TASK_NAME = '" + *v.description()
-        + "', PRIORITY = " + common::to_string(v.priority())
+        + "', PRIORITY = " + std_own_ext::to_string(v.priority())
         + ", DONE = " + done
-        + " WHERE ID = " + common::to_string(v.id()) + ";");
+        + " WHERE ID = " + std_own_ext::to_string(v.id()) + ";");
   
   auto c = m_connPtr.lock();
   if (!c)
@@ -160,7 +161,7 @@ values::ImmutableTask TaskLifetimeQueries::createImpl(const values::ImmutableTas
       "INSERT INTO " + m_tableName + " (TASK_NAME, PRIORITY) " \
         "VALUES ('"
         + *task.description()+"', "
-        + common::to_string(task.priority()) + ") RETURNING ID; ");
+        + std_own_ext::to_string(task.priority()) + ") RETURNING ID; ");
 
   auto c = m_connPtr.lock();
   if (!c)

@@ -25,14 +25,14 @@
 //
 // если сложные выборки, то возможно лучше обычный цикл - см. Мейсера
 
-#include "top/config.h"
+#include "heart/config.h"
 
 #include "things/entities.h"
 #include "dal/pq_queries.h"
 #include "canary/renders.h"
 #include "canary/fake_store.h"
 #include "canary/filters.h"
-#include "top/app_types.h"
+#include "common/app_types.h"
 #include "things/values.h"
 
 #include <gtest/gtest.h>

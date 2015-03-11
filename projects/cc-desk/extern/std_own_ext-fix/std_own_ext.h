@@ -105,6 +105,12 @@ T lexical_cast(const std::string& str)
     return var;
 }
 
+template <typename T>
+std::string to_string(T const& value) {
+  std::stringstream sstr;
+  sstr << value;
+  return sstr.str();
+}
 }  // space
 
 #endif

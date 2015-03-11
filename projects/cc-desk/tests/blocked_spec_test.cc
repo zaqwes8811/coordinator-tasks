@@ -4,12 +4,12 @@
 // Model:
 //
 // Store:
-#include "top/config.h"
+#include "heart/config.h"
 
 #include "view/mainwindow.h"
 #include "canary/model.h"
 #include "dal/pq_queries.h"
-#include "top/app_types.h"
+#include "common/app_types.h"
 #include "canary/isolation.h"
 
 #include <QApplication>

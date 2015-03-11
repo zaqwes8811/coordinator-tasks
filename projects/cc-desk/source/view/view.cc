@@ -1,4 +1,4 @@
-#include "top/config.h"
+#include "heart/config.h"
 
 #include "view.h"
 #include "things/entities.h"

@@ -137,7 +137,8 @@ file( GLOB proTests
     ${Source}/../../std_own_ext/*.h
     ${Source}/dal/*.cc
     ${Source}/dal/*.h
-    ${Source}/top/*.h
+    ${Source}/heart/*.h
+    ${Source}/common/*.h
     ${Source}/canary/*.cc
     ${Source}/canary/*.h
     ${Source}/things/*.cc

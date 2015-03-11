@@ -3,7 +3,7 @@
 // Проблема в циклической зависимости
 #include <typeinfo>
 
-#include "top/config.h"
+#include "heart/config.h"
 
 #include "dal/pq_queries.h"
 #include "things/entities.h"

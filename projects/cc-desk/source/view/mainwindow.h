@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "top/config.h"  // BAD, but Qt generate some files
+#include "heart/config.h"  // BAD, but Qt generate some files
 
 #include "canary/model.h"
 #include "view/view.h"

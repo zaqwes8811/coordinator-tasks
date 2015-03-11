@@ -15,7 +15,7 @@
 //   может через downcasting? RTTI in Qt кажется отключено
 // http://codebetter.com/jeremymiller/2006/12/26/downcasting-is-a-code-smell/
 
-#include "top/config.h"
+#include "heart/config.h"
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"

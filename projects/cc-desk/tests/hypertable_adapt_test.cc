@@ -1,6 +1,6 @@
 // exc, errors and logging - hard coupled
 //
-#include "top/config.h"
+#include "heart/config.h"
 
 #include <gtest/gtest.h>
 

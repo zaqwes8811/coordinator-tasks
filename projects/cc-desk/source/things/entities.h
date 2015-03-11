@@ -1,7 +1,7 @@
 #ifndef DOMAIN_H_
 #define DOMAIN_H_
 
-#include "top/app_types.h"
+#include "common/app_types.h"
 
 #include <set>
 #include <string>

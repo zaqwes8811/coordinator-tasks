@@ -10,7 +10,7 @@
 //
 // FIXME: может лучше исключение?
 
-#include "top/config.h"
+#include "heart/config.h"
 
 #include "canary/model.h"
 #include "canary/filters.h"
