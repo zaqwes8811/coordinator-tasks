@@ -23,16 +23,16 @@ struct TaskViewTableIdx {
 // Придает семантику значений
 // Ухудшает локальность кеша
 // FIXME: Immutable now?
-class ImmutableTask {
+class Task {
 public:
-  static ImmutableTask create();
-  static ImmutableTask create(const std::string& d, const int p);
-  static ImmutableTask create(const int id, const std::string& d, const int p);
-  static ImmutableTask create(const int id, const std::string& d, const int p, const bool _done);
+  static Task create();
+  static Task create(const std::string& d, const int p);
+  static Task create(const int id, const std::string& d, const int p);
+  static Task create(const int id, const std::string& d, const int p, const bool _done);
 
   // copy/assign
-  ImmutableTask(const ImmutableTask& v);
-  ImmutableTask& operator=(const ImmutableTask& v);
+  Task(const Task& v);
+  Task& operator=(const Task& v);
 
   // accessors
   int id() const;
@@ -46,11 +46,9 @@ private:
   int _priority;
   bool _done;  // need store
 
-  ImmutableTask(const int _id, const std::string& d, const int p, const bool);
+  Task(const int _id, const std::string& d, const int p, const bool);
 };
-}  // space
 
-namespace canary {
 // FIXME: должны быть уникальные по имени и при создании это нужно контролировать.
 class Tag {
 public:

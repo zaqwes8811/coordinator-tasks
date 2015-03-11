@@ -11,7 +11,7 @@
 #include <cassert>
 
 using values::TaskViewTableIdx;
-using values::ImmutableTask;
+using values::Task;
 using entities::Tasks;
 
 const QColor QMyTableView::kDoneColor = QColor(0, 0, 255, 127);
@@ -125,7 +125,7 @@ bool QMyTableView::isSaved(const int row) const {
   return getId(row) != entities::EntitiesStates::kInActiveKey;
 }
 
-values::ImmutableTask QMyTableView::get_elem(const int row) const {
+values::Task QMyTableView::getTask(const int row) const {
   DCHECK(row < rowCount());
 
   auto id = getId(row);
@@ -133,5 +133,5 @@ values::ImmutableTask QMyTableView::get_elem(const int row) const {
   int p(item(row, values::TaskViewTableIdx::kPriority)->text().toInt());
   auto done = item(row, values::TaskViewTableIdx::kDone)->text().toInt();
 
-  return values::ImmutableTask::create(id, d, p, done);
+  return values::Task::create(id, d, p, done);
 }

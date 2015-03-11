@@ -52,14 +52,14 @@ private:
 class TaskLifetimeQueries
 {
 public:
-  values::ImmutableTask create(const values::ImmutableTask& v);
-  void update(const values::ImmutableTask& v);
+  values::Task create(const values::Task& v);
+  void update(const values::Task& v);
   entities::Tasks get_all() const;
 
   virtual ~TaskLifetimeQueries() { }
 private:
-  virtual values::ImmutableTask createImpl(const values::ImmutableTask& v) = 0;
-  virtual void updateImpl(const values::ImmutableTask& v) = 0;
+  virtual values::Task createImpl(const values::Task& v) = 0;
+  virtual void updateImpl(const values::Task& v) = 0;
   virtual entities::Tasks get_allImpl() const = 0;
 };
 
@@ -81,9 +81,9 @@ public:
 
     http://www.drdobbs.com/cpp/c11-uniqueptr/240002708
   */
-  virtual std::unique_ptr<storages::TaskTableQueries> createTaskTableQueries() = 0;
+  virtual std::unique_ptr<storages::TaskTableQueries> createTaskTableQuery() = 0;
 
-  virtual std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQueries() = 0;
+  virtual std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQuery() = 0;
 
   //DataBaseDriver(const DataBaseDriver&) = delete;
 };

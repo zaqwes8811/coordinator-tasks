@@ -8,7 +8,7 @@
 #include <vector>
 
 namespace values {
-class ImmutableTask;
+class Task;
 }
 
 namespace entities {
@@ -36,16 +36,16 @@ public:
 
   static app::SharedPtr<TaskEntity> create(const std::string& task_name);
 
-  static app::SharedPtr<TaskEntity> create(const values::ImmutableTask& v);
+  static app::SharedPtr<TaskEntity> create(const values::Task& v);
 
-  values::ImmutableTask make_value() const;
+  values::Task toValue() const;
 
-  void assign(const values::ImmutableTask& v);
+  void assign(const values::Task& v);
 
   // accessors
   int get_primary_key() const;
 
-  void set_primary_key(int val);
+  void setPrimaryKey(int val);
 
   std::string get_task_name() const;
 

@@ -122,8 +122,8 @@ TEST(ModelTest, Create) {
 
 TEST(Values, Assign) {
   using namespace values;
-  ImmutableTask v = ImmutableTask::create();
-  ImmutableTask v1 = ImmutableTask::create("hello", 90);
+  Task v = Task::create();
+  Task v1 = Task::create("hello", 90);
   v = v1;
 }
 

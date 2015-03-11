@@ -42,10 +42,10 @@ public:
 
   // наверное лучше сразу сохранить
   // добавлять все равно буду скорее всего по-одному
-  void append(const values::ImmutableTask& e);  // overloading trouble in for_each
+  void appendNewTask(const values::Task& e);  // overloading trouble in for_each
 
   // Precond: элемент был сохранен
-  void update(const values::ImmutableTask& e);
+  void update(const values::Task& e);
 
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
   //   shared объекты превращаются в глобальные переменные.

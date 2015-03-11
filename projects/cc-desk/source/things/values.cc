@@ -6,13 +6,13 @@
 
 namespace values {
 
-ImmutableTask::ImmutableTask(const ImmutableTask& v)
+Task::Task(const Task& v)
   : _id(v.id()), _description(v.description())
   , _priority(v.priority()), _done(v.done()) { }
 
 
-ImmutableTask& ImmutableTask::operator=(const ImmutableTask& v) {
-  ImmutableTask tmp(v);
+Task& Task::operator=(const Task& v) {
+  Task tmp(v);
   //std::swap(*this, tmp);  // failed on shared ptr - segfault
 
   std::swap(tmp._id, _id);
@@ -23,42 +23,42 @@ ImmutableTask& ImmutableTask::operator=(const ImmutableTask& v) {
   return *this;
 }
 
-ImmutableTask::ImmutableTask(const int _id, const std::string& d, const int p, const bool _d)
+Task::Task(const int _id, const std::string& d, const int p, const bool _d)
   : _id(_id)
   , _description(std::make_shared<std::string>(d))
   , _priority(p)
   , _done(_d)
 { }
 
-ImmutableTask ImmutableTask::create(const std::string& d, const int p) {
-  return ImmutableTask(entities::EntitiesStates::kInActiveKey, d, p, false);
+Task Task::create(const std::string& d, const int p) {
+  return Task(entities::EntitiesStates::kInActiveKey, d, p, false);
 }
 
-ImmutableTask ImmutableTask::create(const int id, const std::string& d, const int p) {
-  return ImmutableTask(id, d, p, false);
+Task Task::create(const int id, const std::string& d, const int p) {
+  return Task(id, d, p, false);
 }
 
-ImmutableTask ImmutableTask::create() {
+Task Task::create() {
   int p = entities::EntitiesStates::kDefaultPriority;
-  return ImmutableTask(entities::EntitiesStates::kInActiveKey, std::string(), p, false);
+  return Task(entities::EntitiesStates::kInActiveKey, std::string(), p, false);
 }
 
-ImmutableTask ImmutableTask::create(
+Task Task::create(
         const int id,
         const std::string& d,
         const int p,
-        const bool _done) { return ImmutableTask(id, d, p, _done); }
+        const bool _done) { return Task(id, d, p, _done); }
 
-int ImmutableTask::id() const
+int Task::id() const
 { return _id; }
 
-app::SharedPtr<const std::string> ImmutableTask::description() const
+app::SharedPtr<const std::string> Task::description() const
 { return _description; }
 
-int ImmutableTask::priority() const
+int Task::priority() const
 { return _priority; }
 
-bool ImmutableTask::done() const
+bool Task::done() const
 { return _done; }
 }
 

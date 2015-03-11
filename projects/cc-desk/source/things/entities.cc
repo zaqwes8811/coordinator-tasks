@@ -20,16 +20,16 @@ app::SharedPtr<TaskEntity> TaskEntity::create(const std::string& task_name)
   return tmp;
 }
 
-app::SharedPtr<TaskEntity> TaskEntity::create(const values::ImmutableTask& v)
+app::SharedPtr<TaskEntity> TaskEntity::create(const values::Task& v)
 {
   auto tmp = TaskEntity::create(*v.description());
-  tmp->set_primary_key(v.id());
+  tmp->setPrimaryKey(v.id());
   tmp->setPriority(v.priority());
   tmp->set_is_done(v.done());
   return tmp;
 }
 
-void TaskEntity::assign(const values::ImmutableTask& v) {
+void TaskEntity::assign(const values::Task& v) {
   id_ = v.id();
   task_name_ = *v.description();
   priority_ = v.priority();
@@ -64,11 +64,11 @@ bool TaskEntity::getIsDone() const
 void TaskEntity::set_is_done(bool val)
 { is_done_ = val; }
 
-void TaskEntity::set_primary_key(int val)
+void TaskEntity::setPrimaryKey(int val)
 { id_ = val; }
 
-values::ImmutableTask TaskEntity::make_value() const {
-  return values::ImmutableTask::create(
+values::Task TaskEntity::toValue() const {
+  return values::Task::create(
         get_primary_key(),
         get_task_name(),
         get_priority(),

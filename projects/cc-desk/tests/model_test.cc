@@ -46,7 +46,7 @@ TEST(AppCore, Create) {
     //renders::render_task_store(cout, *(app_ptr.get()));
   }
 
-  auto q = pool->createTaskTableQueries();
+  auto q = pool->createTaskTableQuery();
   EXPECT_THROW(q->draw(cout), pqxx::undefined_table);
 }
 
@@ -67,7 +67,7 @@ TEST(AppCore, UpdatePriority) {
     renders::render_task_store(cout, *app_ptr);
   }
 
-  auto q = pool->createTaskTableQueries();
+  auto q = pool->createTaskTableQuery();
   EXPECT_THROW(q->draw(cout), pqxx::undefined_table);
 }
 

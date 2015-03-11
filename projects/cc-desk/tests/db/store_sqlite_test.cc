@@ -68,14 +68,35 @@ TEST(SQLiteTest, Base) {
 class SQLiteTagTableQuery
 {
 public:
-  SQLiteTagTableQuery() : m_table_name("TAGS") { }
+  explicit SQLiteTagTableQuery(app::WeakPtr<sqlite3_cc::sqlite3> h)
+    : m_tableName("TAGS")
+    , m_connPtr(h) { }
 
   void createIfNotExist()  {
+    string sql = "CREATE TABLE IF NOT EXISTS " + m_tableName + "("  \
+             "ID             SERIAL  PRIMARY KEY     NOT NULL," \
+             "NAME           TEXT                    NOT NULL," \
+             "COLOR          TEXT                    NOT NULL);";
 
+    auto c = m_connPtr.lock();
+    if (!c)
+      return;
+
+    sqlite3_cc::sqlite3_exec(*c, sql);
+  }
+
+  void drop() {
+    auto c = m_connPtr.lock();
+    if (!c)
+      return;
+
+    sqlite3_cc::sqlite3_exec(*c, "DROP TABLE " + m_tableName + ";");
   }
 
 private:
-  const std::string m_table_name;
+  const std::string m_tableName;
+
+  app::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
 };
 
 TEST(SQLite, TaskTable) {
@@ -85,25 +106,16 @@ TEST(SQLite, TaskTable) {
 }
 
 TEST(SQLite, TagAndTaskTables) {
-  using namespace sqlite3_cc;
-
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
 
-  auto table = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
-  table.createIfNotExist();
+  auto tasks = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
+  tasks.createIfNotExist();
 
-  string sql = "CREATE TABLE IF NOT EXISTS TAGS("  \
-           "ID             SERIAL PRIMARY KEY     NOT NULL," \
-           "NAME           TEXT    NOT NULL," \
-           "COLOR          TEXT    NOT NULL);";
+  auto tags = SQLiteTagTableQuery(h);
+  tags.createIfNotExist();
 
-  sqlite3_exec(*h, sql);
-
-  // task-tag relation
-
-  // destroy
-  sqlite3_exec(*h, "DROP TABLE TAGS;");
-  table.drop();
+  tasks.drop();
+  tags.drop();
 }
 
 

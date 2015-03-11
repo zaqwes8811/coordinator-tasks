@@ -41,13 +41,13 @@ Tasks get_all() {
   return model;
 }
 
-std::vector<values::ImmutableTask> get_all_values() {
+std::vector<values::Task> get_all_values() {
   //Tasks model = build_fake_model();
 
-  std::vector<values::ImmutableTask> v;
+  std::vector<values::Task> v;
   for (int i = 0; i < 5; ++i) {
     int p = rand() % 10 + 1;
-    auto tmp = values::ImmutableTask::create(std_own_ext::to_string(p), p);
+    auto tmp = values::Task::create(std_own_ext::to_string(p), p);
     v.push_back(tmp);
   }
 

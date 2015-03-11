@@ -38,7 +38,7 @@
 using models::Model;
 using entities::Tasks;  // not work
 using values::TaskViewTableIdx;
-using values::ImmutableTask;
+using values::Task;
 using entities::EntitiesStates;
 using std::string;
 using std::vector;
@@ -50,7 +50,7 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
 {
   ui = new Ui::MainWindow;
   ui->setupUi(this);
-  m_model_ptr = model_ptr;
+  m_modelPtr = model_ptr;
 
   connect(&m_timer, SIGNAL(timeout()), this, SLOT(doWork()));
   m_timer.start(1000);
@@ -94,14 +94,14 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   auto centralWidget = new QWidget(this);
     setCentralWidget(centralWidget);
     auto mainLayout = new QVBoxLayout(centralWidget);
-      m_table_ptr = new QMyTableView(this);
-      connect(m_table_ptr, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
+      m_taskTablePtr = new QMyTableView(this);
+      connect(m_taskTablePtr, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
 
       // make checkbox
       //connect(_table->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(filterOnOffSortByDecPriority(int)));
 
       mainLayout->addLayout(actions_layout);
-      mainLayout->addWidget(m_table_ptr);
+      mainLayout->addWidget(m_taskTablePtr);
 
 
   redraw();
@@ -114,9 +114,9 @@ void Engine::slotReopen() {
   if (r.isPresent()) {
     auto row = r.get();
     // Обновляем ячейку
-    m_table_ptr->markReopen(row);  // no throw
-    values::ImmutableTask t = m_table_ptr->get_elem(row);
-    m_model_ptr->update(t);  // FIXME: may throw
+    m_taskTablePtr->markReopen(row);  // no throw
+    values::Task t = m_taskTablePtr->getTask(row);
+    m_modelPtr->update(t);  // FIXME: may throw
   }
 }
 
@@ -149,7 +149,7 @@ void Engine::filterOnOffSortByDecPriority(int state) {
 }
 
 entities::Tasks Engine::get_model_data() const {
-  return m_filters_chain(m_model_ptr->getCurrentModelData());
+  return m_filters_chain(m_modelPtr->getCurrentModelData());
 }
 
 #ifndef G_I_WANT_USE_IT
@@ -159,10 +159,10 @@ void Engine::slotFillFake(bool) {
 
   // сохраняем все
   std::for_each(mirror.begin(), mirror.end()
-                , bind(&Model::append, ref(*m_model_ptr),
-                               bind(&entities::TaskEntity::make_value, _1)));
+                , bind(&Model::appendNewTask, ref(*m_modelPtr),
+                               bind(&entities::TaskEntity::toValue, _1)));
 
-  ::renders::render_task_store(std::cout, *m_model_ptr);
+  ::renders::render_task_store(std::cout, *m_modelPtr);
 }
 #endif
 
@@ -170,13 +170,13 @@ void Engine::redraw() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   // FIXME: сбивает выбранную позицию
   //
-  m_table_ptr->clearList();
+  m_taskTablePtr->clearList();
   auto records = get_model_data();  // may throw
-  m_table_ptr->draw(records);
+  m_taskTablePtr->draw(records);
 }
 
 Row Engine::getSelectedRow() const {
-  auto indexList = m_table_ptr->selectionModel()->selectedIndexes();
+  auto indexList = m_taskTablePtr->selectionModel()->selectedIndexes();
 
   // Должна быть выбрана одна ячейка
   if (indexList.empty() || (indexList.size() != 1))
@@ -195,9 +195,9 @@ void Engine::slotMarkDone() {
   if (r.isPresent()) {
     auto row = r.get();
     // Обновляем ячейку
-    m_table_ptr->markDone(row);  // no throw
-    auto t = m_table_ptr->get_elem(row);
-    m_model_ptr->update(t);  // FIXME: may throw
+    m_taskTablePtr->markDone(row);  // no throw
+    auto task = m_taskTablePtr->getTask(row);
+    m_modelPtr->update(task);  // FIXME: may throw
   }
 }
 
@@ -206,15 +206,15 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
   // FIXME: проблема!! изменения любые! может зациклить
   try {
     // FIXME: а такая вот комбинация надежно то работает?
-    if (m_table_ptr->isEdited()) {
+    if (m_taskTablePtr->isEdited()) {
       auto const row = widget->row();
-      auto v = m_table_ptr->get_elem(row);
-      if (m_table_ptr->isSaved(row)) {
+      auto task = m_taskTablePtr->getTask(row);
+      if (m_taskTablePtr->isSaved(row)) {
         // Cоздаем новую запись
-        m_model_ptr->update(v);
+        m_modelPtr->update(task);
       } else {
         // Одна из видимых ячеек была обновлена
-        m_model_ptr->append(v);
+        m_modelPtr->appendNewTask(task);
       }
     }
   } catch (...) {

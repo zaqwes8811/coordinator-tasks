@@ -101,11 +101,11 @@ private:
 
   entities::Tasks get_model_data() const;
 
-  Ui::MainWindow *ui;
-  QMyTableView* m_table_ptr;
-  models::Model* m_model_ptr;
+  Ui::MainWindow *m_uiRawPtr;
+  QMyTableView* m_taskTablePtr;
+  models::Model* m_modelPtr;
 
-  filters::ChainFilters m_filters_chain;
+  filters::ChainFilters m_filtersChain;
 
   QTimer m_timer;
 };

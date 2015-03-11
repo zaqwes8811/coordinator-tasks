@@ -26,7 +26,8 @@ private:
   app::WeakPtr<pqxx::connection> m_conn_ptr;
 
   void createIfNotExistImpl() override;
-  void dropImpl();
+
+  void dropImpl() override;
 
   std::string getTableName() const
   { return m_table_name; }
@@ -45,9 +46,9 @@ private:
   app::WeakPtr<pqxx::connection> m_connPtr;
 
   // values op.
-  values::ImmutableTask createImpl(const values::ImmutableTask& v);
+  values::Task createImpl(const values::Task& v);
 
-  void updateImpl(const values::ImmutableTask& v);
+  void updateImpl(const values::Task& v);
 
   // entities op.
   entities::Tasks get_allImpl() const;
@@ -61,8 +62,8 @@ public:
   PQConnectionsPool(const std::string& conn_info, const std::string& table_name);
   ~PQConnectionsPool();
 
-  std::unique_ptr<storages::TaskTableQueries> createTaskTableQueries();
-  std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQueries();
+  std::unique_ptr<storages::TaskTableQueries> createTaskTableQuery();
+  std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQuery();
 
 private:
   // FIXME: important not only lifetime, but connection state to!

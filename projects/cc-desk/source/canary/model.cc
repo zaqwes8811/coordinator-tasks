@@ -26,14 +26,14 @@ using namespace pq_dal;
 using namespace entities;
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
-using values::ImmutableTask;
+using values::Task;
 
 using std::cout;
 
 Model* Model::createForOwn(app::SharedPtr<storages::DataBaseDriver> pool) {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
-  auto q = pool->createTaskTableQueries();
+  auto q = pool->createTaskTableQuery();
   q->createIfNotExist();
 
   auto t = load_all(pool);
@@ -41,19 +41,19 @@ Model* Model::createForOwn(app::SharedPtr<storages::DataBaseDriver> pool) {
 }
 
 void Model::draw_task_store(std::ostream& o) const {
-  auto q = m_dbPtr->createTaskTableQueries();
+  auto q = m_dbPtr->createTaskTableQuery();
   q->draw(o);
 }
 
 Model::~Model() { }
 
 void Model::clear_store() {
-  auto q = m_dbPtr->createTaskTableQueries();
+  auto q = m_dbPtr->createTaskTableQuery();
   q->drop();
 }
 
 Tasks Model::load_all(storages::DataBaseDriverPtr pool) {
-  auto q_live = pool->createTaskLifetimeQueries();
+  auto q_live = pool->createTaskLifetimeQuery();
   return Tasks(q_live->get_all());
 }
 
@@ -63,21 +63,21 @@ entities::Tasks::value_type Model::getElemById(const int id) {
   return *it;
 }
 
-void Model::update(const values::ImmutableTask& e) {
+void Model::update(const values::Task& e) {
   auto k = getElemById(e.id());
   k->assign(e);
 
-  auto q = m_dbPtr->createTaskLifetimeQueries();
-  q->update(k->make_value());
+  auto q = m_dbPtr->createTaskLifetimeQuery();
+  q->update(k->toValue());
 
   notify();  // FIXME: а нужно ли?
 }
 
-void Model::append(const ImmutableTask& v) {
-  DCHECK(v.id() == EntitiesStates::kInActiveKey);
+void Model::appendNewTask(const Task& task) {
+  DCHECK(task.id() == EntitiesStates::kInActiveKey);
 
-  Tasks::value_type e(new Tasks::value_type::element_type());
-  e->assign(v);
+  auto e = TaskEntityPtr(new TaskEntity());
+  e->assign(task);
 
   auto _ = MakeObjGuard(m_tasks, &Tasks::pop_back);
 
@@ -85,11 +85,11 @@ void Model::append(const ImmutableTask& v) {
   m_tasks.push_back(e);
 
   // persist full container
-  auto q = m_dbPtr->createTaskLifetimeQueries();
+  auto query = m_dbPtr->createTaskLifetimeQuery();
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
-  auto r = q->create(e->make_value());
-  e->set_primary_key(r.id());  // а ведь придется оставить!!
+  auto r = query->create(e->toValue());
+  e->setPrimaryKey(r.id());  // а ведь придется оставить!!
 
   notify();
   _.Dismiss();

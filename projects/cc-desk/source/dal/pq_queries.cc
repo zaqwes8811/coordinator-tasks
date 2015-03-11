@@ -33,7 +33,7 @@ using entities::TaskEntity;
 using entities::Tasks;
 using entities::EntitiesStates;
 
-using values::ImmutableTask;
+using values::Task;
 
 
 PQConnectionsPool::PQConnectionsPool(const std::string& conn_info
@@ -54,12 +54,12 @@ PQConnectionsPool::~PQConnectionsPool() {
 }
 
 std::unique_ptr<storages::TaskTableQueries>
-PQConnectionsPool::createTaskTableQueries() {
+PQConnectionsPool::createTaskTableQuery() {
   return std::unique_ptr<storages::TaskTableQueries>(new TaskTableQueries(m_table_name, m_conn_ptr));
 }
 
 std::unique_ptr<storages::TaskLifetimeQueries>
-PQConnectionsPool::createTaskLifetimeQueries() {
+PQConnectionsPool::createTaskLifetimeQuery() {
   return std::unique_ptr<storages::TaskLifetimeQueries>(new TaskLifetimeQueries(m_table_name, m_conn_ptr));
 }
 
@@ -127,7 +127,7 @@ TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
     , m_connPtr(p)
 { }
 
-void TaskLifetimeQueries::updateImpl(const values::ImmutableTask& v) {
+void TaskLifetimeQueries::updateImpl(const values::Task& v) {
 
   DCHECK(v.id() != EntitiesStates::kInActiveKey);
 
@@ -152,7 +152,7 @@ void TaskLifetimeQueries::updateImpl(const values::ImmutableTask& v) {
   w.commit();
 }
 
-values::ImmutableTask TaskLifetimeQueries::createImpl(const values::ImmutableTask& task)
+values::Task TaskLifetimeQueries::createImpl(const values::Task& task)
 {
   DCHECK(task.id() == entities::EntitiesStates::kInActiveKey);
   DCHECK(!task.done());
@@ -182,7 +182,7 @@ values::ImmutableTask TaskLifetimeQueries::createImpl(const values::ImmutableTas
 
   // из-за константрости приходится распаковывать значение, нельзя
   //   просто приствоить и оттюнить.
-  return ImmutableTask::create(id, *task.description(), task.priority());
+  return Task::create(id, *task.description(), task.priority());
 }
 
 
@@ -201,7 +201,7 @@ entities::Tasks TaskLifetimeQueries::get_allImpl() const {
   Tasks model;
   for (auto c = r.begin(); c != r.end(); ++c) {
     auto elem = TaskEntity::create("");
-    elem->set_primary_key(c[TablePositions::kId].as<int>());
+    elem->setPrimaryKey(c[TablePositions::kId].as<int>());
     elem->set_task_name(c[TablePositions::kTaskName].as<string>());
     elem->setPriority(c[TablePositions::kPriority].as<int>());
     elem->set_is_done(c[TablePositions::kDone].as<bool>());
