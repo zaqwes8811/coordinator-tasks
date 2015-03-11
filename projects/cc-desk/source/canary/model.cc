@@ -41,14 +41,14 @@ Model* Model::createForOwn(app::SharedPtr<storages::DataBaseDriver> pool) {
 }
 
 void Model::draw_task_store(std::ostream& o) const {
-  auto q = m_db_ptr->createTaskTableQueries();
+  auto q = m_dbPtr->createTaskTableQueries();
   q->draw(o);
 }
 
 Model::~Model() { }
 
 void Model::clear_store() {
-  auto q = m_db_ptr->createTaskTableQueries();
+  auto q = m_dbPtr->createTaskTableQueries();
   q->drop();
 }
 
@@ -57,36 +57,35 @@ Tasks Model::load_all(storages::DataBaseDriverPtr pool) {
   return Tasks(q_live->get_all());
 }
 
-entities::Tasks::value_type Model::_get_elem_by_id(const int id) {
-  auto it = std::find_if(tasks_.begin(), tasks_.end()
-                                    , filters::get_check_contained(id));
-  assert(it != tasks_.end());
+entities::Tasks::value_type Model::getElemById(const int id) {
+  auto it = std::find_if(m_tasks.begin(), m_tasks.end(), filters::get_check_contained(id));
+  DCHECK(it != m_tasks.end());
   return *it;
 }
 
 void Model::update(const values::ImmutableTask& e) {
-  auto k = _get_elem_by_id(e.id());
+  auto k = getElemById(e.id());
   k->assign(e);
 
-  auto q = m_db_ptr->createTaskLifetimeQueries();
+  auto q = m_dbPtr->createTaskLifetimeQueries();
   q->update(k->make_value());
 
   notify();  // FIXME: а нужно ли?
 }
 
 void Model::append(const ImmutableTask& v) {
-  assert(v.id() == EntitiesStates::kInActiveKey);
+  DCHECK(v.id() == EntitiesStates::kInActiveKey);
 
   Tasks::value_type e(new Tasks::value_type::element_type());
   e->assign(v);
 
-  auto _ = MakeObjGuard(tasks_, &Tasks::pop_back);
+  auto _ = MakeObjGuard(m_tasks, &Tasks::pop_back);
 
   // FIXME: а ведь порядок операций важен, и откатить проще операцию в памяти, чем в базе данных
-  tasks_.push_back(e);
+  m_tasks.push_back(e);
 
   // persist full container
-  auto q = m_db_ptr->createTaskLifetimeQueries();
+  auto q = m_dbPtr->createTaskLifetimeQueries();
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
   auto r = q->create(e->make_value());
@@ -98,8 +97,8 @@ void Model::append(const ImmutableTask& v) {
 
 Model::Model(entities::Tasks _tasks,
              app::SharedPtr<storages::DataBaseDriver> _pool)
-    : tasks_(_tasks)
-    , m_db_ptr(_pool) {  }
+    : m_tasks(_tasks)
+    , m_dbPtr(_pool) {  }
 
 void Model::notify()
 {
@@ -110,6 +109,6 @@ void Model::set_listener(app::SharedPtr< ::isolation::ModelListenerMediatorDynPo
 { m_observers = iso; }
 
 entities::Tasks Model::getCurrentModelData()
-{ return tasks_; }
+{ return m_tasks; }
 
 }

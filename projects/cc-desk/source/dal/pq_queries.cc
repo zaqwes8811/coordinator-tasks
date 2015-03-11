@@ -42,7 +42,7 @@ PQConnectionsPool::PQConnectionsPool(const std::string& conn_info
   , m_table_name(table_name)
 
 {
-  assert(m_conn_ptr->is_open());
+  DCHECK(m_conn_ptr->is_open());
 }
 
 PQConnectionsPool::~PQConnectionsPool() {
@@ -129,7 +129,7 @@ TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
 
 void TaskLifetimeQueries::updateImpl(const values::ImmutableTask& v) {
 
-  assert(v.id() != EntitiesStates::kInActiveKey);
+  DCHECK(v.id() != EntitiesStates::kInActiveKey);
 
   string done("false");
   if (v.done())
@@ -170,7 +170,7 @@ values::ImmutableTask TaskLifetimeQueries::createImpl(const values::ImmutableTas
   work w(*c);
   result r( w.exec( sql ));  // похоже нельзя выполнить два запроса
   w.commit();
-  assert(r.size() == 1);
+  DCHECK(r.size() == 1);
 
   // Узнаем что за ключ получили
   int id(entities::EntitiesStates::kInActiveKey);
@@ -178,7 +178,7 @@ values::ImmutableTask TaskLifetimeQueries::createImpl(const values::ImmutableTas
     id = c[TablePositions::kId].as<int>();
     break;
   }
-  assert(id != entities::EntitiesStates::kInActiveKey);
+  DCHECK(id != entities::EntitiesStates::kInActiveKey);
 
   // из-за константрости приходится распаковывать значение, нельзя
   //   просто приствоить и оттюнить.

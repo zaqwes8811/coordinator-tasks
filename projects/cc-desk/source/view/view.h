@@ -35,7 +35,7 @@ public:
   void markReopen(const int row);
 
 private:
-  void _insertBlankRows(const int);
+  void insertBlankRows(const int);
 
   static const QColor kDoneColor;
   static const QColor kReopenColor;

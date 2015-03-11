@@ -39,7 +39,7 @@ public:
 
 private:
   void update_() {
-    assert(view_);
+    DCHECK(view_);
     view_->redraw();
   }
 

@@ -63,12 +63,12 @@ private:
   // persist filters:
   static entities::Tasks load_all(storages::DataBaseDriverPtr pool);
 
-  entities::Tasks tasks_;
+  entities::Tasks m_tasks;
 
   // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
-  storages::DataBaseDriverPtr m_db_ptr;
+  storages::DataBaseDriverPtr m_dbPtr;
   isolation::ModelListenerPtr m_observers;
-  entities::Tasks::value_type _get_elem_by_id(const int id);
+  entities::Tasks::value_type getElemById(const int id);
 };
 }
 

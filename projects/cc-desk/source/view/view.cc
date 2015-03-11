@@ -57,7 +57,7 @@ bool QMyTableView::isEdited() const {
  else return false;
 }
 
-void QMyTableView::_insertBlankRows(const int end) {
+void QMyTableView::insertBlankRows(const int end) {
   // вставляем еще несколько рядов
   for (int row = end; row < end+models::kAddedBlankLines; ++row) {
       setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntitiesStates::kInActiveKey)));
@@ -100,7 +100,7 @@ void QMyTableView::draw(entities::Tasks tasks) {
   }
 
   // вставляем еще несколько рядов
-  _insertBlankRows(row);
+  insertBlankRows(row);
 }
 
 int QMyTableView::getId(const int row) const {
@@ -126,7 +126,7 @@ bool QMyTableView::isSaved(const int row) const {
 }
 
 values::ImmutableTask QMyTableView::get_elem(const int row) const {
-  assert(row < rowCount());
+  DCHECK(row < rowCount());
 
   auto id = getId(row);
   std::string d(item(row, values::TaskViewTableIdx::kTaskName)->text().toUtf8().constData());
