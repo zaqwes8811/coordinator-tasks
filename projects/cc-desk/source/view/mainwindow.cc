@@ -48,8 +48,8 @@ using std::bind;
 Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
     QMainWindow(parent)
 {
-  ui = new Ui::MainWindow;
-  ui->setupUi(this);
+  m_uiRawPtr = new Ui::MainWindow;
+  m_uiRawPtr->setupUi(this);
   m_modelPtr = model_ptr;
 
   connect(&m_timer, SIGNAL(timeout()), this, SLOT(doWork()));
@@ -107,7 +107,7 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   redraw();
 }
 
-Engine::~Engine() { delete ui; }
+Engine::~Engine() { delete m_uiRawPtr; }
 
 void Engine::slotReopen() {
   auto r = getSelectedRow();
@@ -122,11 +122,11 @@ void Engine::slotReopen() {
 
 void Engine::processFilter(filters::FilterPtr f, int state) {
   if (Qt::Unchecked == state) {
-    m_filters_chain.remove(f);
+    m_filtersChain.remove(f);
   }
 
   if (Qt::Checked == state) {
-    m_filters_chain.add(f);
+    m_filtersChain.add(f);
   }
 }
 
@@ -149,7 +149,7 @@ void Engine::filterOnOffSortByDecPriority(int state) {
 }
 
 entities::Tasks Engine::get_model_data() const {
-  return m_filters_chain(m_modelPtr->getCurrentModelData());
+  return m_filtersChain(m_modelPtr->getCurrentModelData());
 }
 
 #ifndef G_I_WANT_USE_IT

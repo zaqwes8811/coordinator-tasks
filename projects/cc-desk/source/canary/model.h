@@ -12,21 +12,23 @@
 
 namespace models
 {
-// FIXME: как вообще работать с кешем и базами данных.
-//   в кешах ограниченное api!
-//  http://en.wikipedia.org/wiki/Database_caching - есть про когерентность.
-//
-// But it need really?
-//   http://stackoverflow.com/questions/548301/what-is-caching
-//   http://stackoverflow.com/questions/2916645/implementing-model-level-caching?rq=1
-//   http://stackoverflow.com/questions/343899/how-to-cache-data-in-a-mvc-application?rq=1
-//   domain::TasksMirror store_cache_;
-//   bool miss_;  // кеш устарел
-//
-// FIXME: логичекая проблема с фильтрами - как быть, если каждый раз не перезагужать кеш?
-//   похоже есть зависимость от текущего фильтра. А если отред. и теперь в фильтр не попадает?
-//
-// FIXME: утекают хендлы!! make ImmutableTask. причем утекают как на нижние уровни, так и на верхние
+/**
+  \fixme как вообще работать с кешем и базами данных.
+  в кешах ограниченное api!
+  http://en.wikipedia.org/wiki/Database_caching - есть про когерентность.
+
+  But it need really?
+  http://stackoverflow.com/questions/548301/what-is-caching
+  http://stackoverflow.com/questions/2916645/implementing-model-level-caching?rq=1
+  http://stackoverflow.com/questions/343899/how-to-cache-data-in-a-mvc-application?rq=1
+  domain::TasksMirror store_cache_;
+  bool miss_;  // кеш устарел
+
+  FIXME: логичекая проблема с фильтрами - как быть, если каждый раз не перезагужать кеш?
+  похоже есть зависимость от текущего фильтра. А если отред. и теперь в фильтр не попадает?
+
+  FIXME: утекают хендлы!! make ImmutableTask. причем утекают как на нижние уровни, так и на верхние
+*/
 class Model
     //: public boost::noncopyable
 {
@@ -40,8 +42,10 @@ public:
   // FIXME: да, лучше передать в конструкторе, но при конструировании возникает цикл.
   void set_listener(isolation::ModelListenerPtr iso);
 
-  // наверное лучше сразу сохранить
-  // добавлять все равно буду скорее всего по-одному
+  /**
+
+    \fixme наверное лучше сразу сохранить, добавлять все равно буду скорее всего по-одному
+  */
   void appendNewTask(const values::Task& e);  // overloading trouble in for_each
 
   // Precond: элемент был сохранен

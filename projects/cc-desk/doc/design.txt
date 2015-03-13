@@ -1,1 +1,7 @@
 "Многопоточность в браузере. Модель акторов"
+
+Templates or virtual:
+- DB access - virtual - it's better pluggable on runtime
+- Filters - virtual - change dynamic
+- Listener - template(?) - need move Model code to *.h.
+  Don't want it. - virtual

@@ -2,35 +2,37 @@
 #define ISOLATION_H
 
 namespace isolation {
-// цель - не включать заголовоки видов в модель - нужна виртуальность
-// попробую статический полиморфизм.
-template <typename View>  // тогда и модель становится шаблоном, а значит код выносится в заголовки
-class ModelListenerStaticPolym {
-public:
-  // Не владеет
-  ModelListenerStaticPolym(View* const view) : view_(view) { }
+namespace detail {
+/**
+  \brief цель - не включать заголовоки видов в модель - нужна виртуальность
+  попробую статический полиморфизм.
 
-  void update() {
-    //view_->
-  }
+  \attention тогда и модель становится шаблоном, а значит код выносится в заголовки
+*/
+template <typename V>
+class ModelListener_templ {
+public:
+  ModelListener_templ(V* const view)
+    : m_viewRawPtr(view) { }
+
+  void update() { }
 
 private:
-  View* const view_;
+  V* const m_viewRawPtr;
 };
+}  // space
 
-class ModelListenerMediatorDynPolym {
+class ModelListener_virtual {
 public:
-  virtual ~ModelListenerMediatorDynPolym() { }
-  void update() {
-    //
-    update_();
-  }
+  virtual ~ModelListener_virtual() { }
+  void update() { do_update(); }
+
 private:
-  virtual void update_() = 0;
+  virtual void do_update() = 0;
 };
 
-typedef app::SharedPtr<isolation::ModelListenerMediatorDynPolym> ModelListenerPtr;
+typedef app::SharedPtr<isolation::ModelListener_virtual> ModelListenerPtr;
 
-}
+}  // space
 
 #endif // ISOLATION_H

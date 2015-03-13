@@ -53,8 +53,8 @@ void Model::clear_store() {
 }
 
 Tasks Model::load_all(storages::DataBaseDriverPtr pool) {
-  auto q_live = pool->createTaskLifetimeQuery();
-  return Tasks(q_live->get_all());
+  auto query = pool->createTaskLifetimeQuery();
+  return Tasks(query->get_all());
 }
 
 entities::Tasks::value_type Model::getElemById(const int id) {
@@ -105,7 +105,7 @@ void Model::notify()
   m_observers->update();
 }
 
-void Model::set_listener(app::SharedPtr< ::isolation::ModelListenerMediatorDynPolym> iso)
+void Model::set_listener(app::SharedPtr< ::isolation::ModelListener_virtual> iso)
 { m_observers = iso; }
 
 entities::Tasks Model::getCurrentModelData()
