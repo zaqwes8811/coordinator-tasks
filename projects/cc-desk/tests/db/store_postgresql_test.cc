@@ -39,7 +39,7 @@ void do_something(app::WeakPtr<pqxx::connection> C)
 
   // Если не создано, то нет смысла
   // а если не создасться? Тут похоже все равно.
-  ScopeGuard table_guard = MakeObjGuard(q, &TaskTableQueries::drop);
+  auto table_guard = MakeObjGuard(q, &TaskTableQueries::drop);
 
   // Create records
   TaskLifetimeQueries q_insert(kTaskTableNameRef, C);
@@ -62,7 +62,7 @@ TEST(postgres, all) {
       throw runtime_error("Can't open database");
     }
     
-    ScopeGuard guard = MakeObjGuard(*C, &connection::disconnect);
+    auto guard = MakeObjGuard(*C, &connection::disconnect);
     EXPECT_NO_THROW(do_something(C));
   }
   assert(!C->is_open());

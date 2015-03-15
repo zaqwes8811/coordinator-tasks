@@ -74,7 +74,7 @@ void Model::update(const values::Task& e) {
 }
 
 void Model::appendNewTask(const Task& task) {
-  DCHECK(task.id() == EntitiesStates::kInActiveKey);
+  DCHECK(task.id() == EntityStates::kInActiveKey);
 
   auto e = TaskEntityPtr(new TaskEntity());
   e->assign(task);

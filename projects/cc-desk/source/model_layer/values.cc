@@ -31,7 +31,7 @@ Task::Task(const int _id, const std::string& d, const int p, const bool _d)
 { }
 
 Task Task::create(const std::string& d, const int p) {
-  return Task(entities::EntitiesStates::kInActiveKey, d, p, false);
+  return Task(entities::EntityStates::kInActiveKey, d, p, false);
 }
 
 Task Task::create(const int id, const std::string& d, const int p) {
@@ -39,8 +39,8 @@ Task Task::create(const int id, const std::string& d, const int p) {
 }
 
 Task Task::create() {
-  int p = entities::EntitiesStates::kDefaultPriority;
-  return Task(entities::EntitiesStates::kInActiveKey, std::string(), p, false);
+  int p = entities::EntityStates::kDefaultPriority;
+  return Task(entities::EntityStates::kInActiveKey, std::string(), p, false);
 }
 
 Task Task::create(

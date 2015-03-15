@@ -9,8 +9,8 @@
 #include <vector>
 
 namespace entities {
-struct EntitiesStates {
-  static const int kInActiveKey;
+struct EntityStates {
+  static const size_t kInActiveKey;
   static const int kDefaultPriority;
   static const bool kNonDone;
 };
@@ -38,7 +38,7 @@ public:
   void assign(const values::Task& v);
 
   // accessors
-  int get_primary_key() const;
+  int getPrimaryKey() const;
 
   void setPrimaryKey(int val);
 
@@ -55,11 +55,10 @@ public:
   void set_is_done(bool val);
 
 private:
-  //friend class pq_dal::TaskLifetimeQueries;  // только он меняет первичный ключ
-  int id_;  // нужно какое-то не активное
+  size_t m_id;  // нужно какое-то не активное
   std::string task_name_;
   int priority_;
-  bool is_done_;
+  bool m_isDone;
 };
 
 class TagEntity {

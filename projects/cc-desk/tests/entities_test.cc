@@ -75,7 +75,7 @@ TEST(ModelTest, BaseCase) {
   ModelWeakSlice query(model.size());  // слабый похоже не сработает
   copy(model.begin(), model.end(), query.begin());  // работает со слабым
 
-  for_each(model.begin(), model.end(), bind(&TaskEntity::get_primary_key, _1));
+  for_each(model.begin(), model.end(), bind(&TaskEntity::getPrimaryKey, _1));
 
   assert(0 == query.at(0).lock()->get_priority());
 }

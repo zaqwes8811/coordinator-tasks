@@ -31,7 +31,7 @@ using pqxx::result;
 using pqxx::nontransaction;
 using entities::TaskEntity;
 using entities::Tasks;
-using entities::EntitiesStates;
+using entities::EntityStates;
 
 using values::Task;
 
@@ -129,7 +129,7 @@ TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
 
 void TaskLifetimeQueries::updateImpl(const values::Task& v) {
 
-  DCHECK(v.id() != EntitiesStates::kInActiveKey);
+  DCHECK(v.id() != EntityStates::kInActiveKey);
 
   string done("false");
   if (v.done())
@@ -154,7 +154,7 @@ void TaskLifetimeQueries::updateImpl(const values::Task& v) {
 
 values::Task TaskLifetimeQueries::createImpl(const values::Task& task)
 {
-  DCHECK(task.id() == entities::EntitiesStates::kInActiveKey);
+  DCHECK(task.id() == entities::EntityStates::kInActiveKey);
   DCHECK(!task.done());
 
   string sql(
@@ -173,12 +173,12 @@ values::Task TaskLifetimeQueries::createImpl(const values::Task& task)
   DCHECK(r.size() == 1);
 
   // Узнаем что за ключ получили
-  int id(entities::EntitiesStates::kInActiveKey);
+  int id(entities::EntityStates::kInActiveKey);
   for (auto c = r.begin(); c != r.end(); ++c) {
     id = c[TablePositions::kId].as<int>();
     break;
   }
-  DCHECK(id != entities::EntitiesStates::kInActiveKey);
+  DCHECK(id != entities::EntityStates::kInActiveKey);
 
   // из-за константрости приходится распаковывать значение, нельзя
   //   просто приствоить и оттюнить.

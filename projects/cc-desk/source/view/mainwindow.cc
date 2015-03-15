@@ -39,7 +39,7 @@ using models::Model;
 using entities::Tasks;  // not work
 using values::TaskViewTableIdx;
 using values::Task;
-using entities::EntitiesStates;
+using entities::EntityStates;
 using std::string;
 using std::vector;
 using std::ref;
@@ -225,7 +225,7 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
 entities::Tasks::value_type Engine::get_elem_by_id(const int id) {
   using namespace std::placeholders;
   auto r = get_model_data();
-  auto it = std::find_if(r.begin(), r.end(), bind(&entities::TaskEntity::get_primary_key, _1));
+  auto it = std::find_if(r.begin(), r.end(), bind(&entities::TaskEntity::getPrimaryKey, _1));
 
   assert(it != r.end());  // должен быть
   return *it;

@@ -9,9 +9,9 @@
 namespace entities {
 using namespace pq_dal;
 
-const int EntitiesStates::kInActiveKey = -1;
-const int EntitiesStates::kDefaultPriority = 0;
-const bool EntitiesStates::kNonDone = false;
+const size_t EntityStates::kInActiveKey = -1;
+const int EntityStates::kDefaultPriority = 0;
+const bool EntityStates::kNonDone = false;
 
 app::SharedPtr<TaskEntity> TaskEntity::create(const std::string& task_name)
 {
@@ -30,19 +30,19 @@ app::SharedPtr<TaskEntity> TaskEntity::create(const values::Task& v)
 }
 
 void TaskEntity::assign(const values::Task& v) {
-  id_ = v.id();
+  m_id = v.id();
   task_name_ = *v.description();
   priority_ = v.priority();
-  is_done_ = v.done();
+  m_isDone = v.done();
 }
 
 TaskEntity::TaskEntity()
-  : id_(EntitiesStates::kInActiveKey)
-  , priority_(EntitiesStates::kDefaultPriority)
-  , is_done_(false) { }
+  : m_id(EntityStates::kInActiveKey)
+  , priority_(EntityStates::kDefaultPriority)
+  , m_isDone(false) { }
 
-int TaskEntity::get_primary_key() const
-{ return id_; }
+int TaskEntity::getPrimaryKey() const
+{ return m_id; }
 
 // лучше по значению
 std::string TaskEntity::get_task_name() const
@@ -58,18 +58,18 @@ void TaskEntity::setPriority(const int val)
 { priority_ = val; }
 
 bool TaskEntity::getIsDone() const
-{ return is_done_; }
+{ return m_isDone; }
 
 // лучше так чем городить условную логику
 void TaskEntity::set_is_done(bool val)
-{ is_done_ = val; }
+{ m_isDone = val; }
 
 void TaskEntity::setPrimaryKey(int val)
-{ id_ = val; }
+{ m_id = val; }
 
 values::Task TaskEntity::toValue() const {
   return values::Task::create(
-        get_primary_key(),
+        getPrimaryKey(),
         get_task_name(),
         get_priority(),
         getIsDone());

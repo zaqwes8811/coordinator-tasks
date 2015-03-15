@@ -9,26 +9,26 @@ namespace filters {
 using namespace std::placeholders;
 using std::bind;
 using std::equal_to;
-using entities::EntitiesStates;
+using entities::EntityStates;
 using entities::TaskEntity;
 
 using std::string;
 
 std::function<bool(entities::Tasks::value_type)> get_check_non_saved() {
   return bind(
-      bind(equal_to<int>(), _1, EntitiesStates::kInActiveKey),
-      bind(&TaskEntity::get_primary_key, _1)) ;
+      bind(equal_to<int>(), _1, EntityStates::kInActiveKey),
+      bind(&TaskEntity::getPrimaryKey, _1)) ;
 }
 
 std::function<bool(entities::Tasks::value_type)> get_check_contained(const int id) {
   return bind(
       bind(equal_to<int>(), _1, id),
-      bind(&TaskEntity::get_primary_key, _1)) ;
+      bind(&TaskEntity::getPrimaryKey, _1)) ;
 }
 
 std::function<bool(entities::Tasks::value_type)> get_is_non_done() {
   return bind(
-      bind(equal_to<int>(), _1, entities::EntitiesStates::kNonDone),
+      bind(equal_to<int>(), _1, entities::EntityStates::kNonDone),
       bind(&TaskEntity::getIsDone, _1)) ;
 }
 

@@ -31,7 +31,7 @@ TEST(SQLiteTest, Base) {
 
 
   /* Create SQL statement */
-  char* sql = "CREATE TABLE IF NOT EXISTS COMPANY("  \
+  string sql = "CREATE TABLE IF NOT EXISTS COMPANY("  \
            "ID INT PRIMARY KEY     NOT NULL," \
            "NAME           TEXT    NOT NULL," \
            "AGE            INT     NOT NULL," \
@@ -79,23 +79,18 @@ public:
              "COLOR          TEXT                    NOT NULL);";
 
     auto c = m_connPtr.lock();
-    if (!c)
-      return;
-
+    if (!c) return;
     sqlite3_cc::sqlite3_exec(*c, sql);
   }
 
   void drop() {
     auto c = m_connPtr.lock();
-    if (!c)
-      return;
-
+    if (!c) return;
     sqlite3_cc::sqlite3_exec(*c, "DROP TABLE " + m_tableName + ";");
   }
 
 private:
   const std::string m_tableName;
-
   app::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
 };
 
@@ -103,6 +98,24 @@ TEST(SQLite, TaskTable) {
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
   auto table = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
   table.createIfNotExist();
+}
+
+bool checkUnique(const std::string& name, app::WeakPtr<sqlite3_cc::sqlite3> h) {
+  auto c = h.lock();
+  if (!c) return false;
+
+  auto sql = "SELECT NAME FROM TAGS WHERE NAME ='" + name + "';";
+  auto r = sqlite3_cc::sqlite3_exec(*c, sql);
+  return r.empty();
+}
+
+//tuple<>
+//entities::TagEntity
+bool tryCreateTag(const values::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
+  DCHECK(tag.m_primaryKey == entities::EntityStates::kInActiveKey);
+  DCHECK(checkUnique(tag.m_name, h));
+
+  return true;
 }
 
 TEST(SQLite, TagAndTaskTables) {
@@ -114,21 +127,14 @@ TEST(SQLite, TagAndTaskTables) {
   auto tags = SQLiteTagTableQuery(h);
   tags.createIfNotExist();
 
+  // Create tag
+  // Must have unique name
+  values::Tag t(entities::EntityStates::kInActiveKey, "CUDA");
+  tryCreateTag(t, h);
+
   tasks.drop();
   tags.drop();
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -52,10 +52,11 @@ private:
 // FIXME: должны быть уникальные по имени и при создании это нужно контролировать.
 class Tag {
 public:
-  Tag(const std::string& name) : m_primary_key(), m_name(name) { }
+  Tag(size_t id, const std::string& name)
+    : m_primaryKey(id)
+    , m_name(name) { }
 
-//private:
-  size_t m_primary_key;
+  size_t m_primaryKey;
   std::string m_name;
   std::string m_color;
 };
