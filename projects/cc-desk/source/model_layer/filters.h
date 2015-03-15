@@ -17,7 +17,7 @@
 #ifndef FILTERS_H
 #define FILTERS_H
 
-#include "things/entities.h"
+#include "model_layer/entities.h"
 
 #include <list>
 #include <functional>

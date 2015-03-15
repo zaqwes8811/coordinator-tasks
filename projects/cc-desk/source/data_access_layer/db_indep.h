@@ -1,7 +1,7 @@
 #ifndef DB_INDEP_H_
 #define DB_INDEP_H_
 
-#include "things/entities.h"
+#include "model_layer/entities.h"
 
 #include <ostream>
 

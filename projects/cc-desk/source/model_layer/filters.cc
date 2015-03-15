@@ -1,6 +1,6 @@
 #include "heart/config.h"
 
-#include "canary/filters.h"
+#include "model_layer/filters.h"
 
 #include <string>
 #include <algorithm>

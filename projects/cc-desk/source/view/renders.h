@@ -1,7 +1,7 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-#include "things/entities.h"
+#include "model_layer/entities.h"
 
 #include <ostream>
 #include <vector>

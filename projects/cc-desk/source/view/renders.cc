@@ -1,6 +1,6 @@
 #include "heart/config.h"
 
-#include "canary/renders.h"
+#include "view/renders.h"
 
 namespace renders {
 std::ostream& operator<<(std::ostream& o, entities::TaskEntity& a) {

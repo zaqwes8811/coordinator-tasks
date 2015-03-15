@@ -135,24 +135,16 @@ file( GLOB proTests
     ${ExternLocal}/actors_and_workers/*.h
     ${ExternLocal}/std_own_ext-fix/*.h
     ${Source}/../../std_own_ext/*.h
-    ${Source}/dal/*.cc
-    ${Source}/dal/*.h
+    ${Source}/data_access_layer/*.cc
+    ${Source}/data_access_layer/*.h
     ${Source}/heart/*.h
     ${Source}/common/*.h
-    ${Source}/canary/*.cc
-    ${Source}/canary/*.h
-    ${Source}/things/*.cc
-    ${Source}/things/*.h
+    ${Source}/model_layer/*.cc
+    ${Source}/model_layer/*.h
     ${Source}/wrappers/*.cc
-    ${Source}/*.cc
-    ${testsRoot}/lang_core/*.cc
-    ${testsRoot}/mem_heap_stack/*.cc
-    ${testsRoot}/extern/*.cc
-    ${testsRoot}/stl/*.cc
-    ${testsRoot}/stl/stephan_t_lavavej_hw/*.cc
     ${testsRoot}/*.cc
     ${testsRoot}/db/*.cc
-    ${testsRoot}/stl/algorithms/*.cc)
+)
 
 # we need this to be able to include headers produced by uic in our code
 # (CMAKE_BINARY_DIR holds a path to the build directory, while INCLUDE_DIRECTORIES()

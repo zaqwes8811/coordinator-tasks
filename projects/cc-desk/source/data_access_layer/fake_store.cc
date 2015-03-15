@@ -1,7 +1,7 @@
 #include "heart/config.h"
 
-#include "things/entities.h"
-#include "things/values.h"
+#include "model_layer/entities.h"
+#include "model_layer/values.h"
 
 #include <std_own_ext-fix/std_own_ext.h>
 

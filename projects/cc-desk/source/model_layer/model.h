@@ -1,11 +1,11 @@
 #ifndef BUSI_H
 #define BUSI_H
 
-#include "things/entities.h"
-#include "dal/pq_queries.h"
-#include "canary/renders.h"
-#include "canary/model.h"
-#include "canary/isolation.h"
+#include "model_layer/entities.h"
+#include "data_access_layer/pq_queries.h"
+#include "view/renders.h"
+#include "model_layer/model.h"
+#include "model_layer/isolation.h"
 
 
 #include <string>

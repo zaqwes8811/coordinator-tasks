@@ -27,13 +27,13 @@
 
 #include "heart/config.h"
 
-#include "things/entities.h"
-#include "dal/pq_queries.h"
-#include "canary/renders.h"
-#include "canary/fake_store.h"
-#include "canary/filters.h"
+#include "model_layer/entities.h"
+#include "data_access_layer/pq_queries.h"
+#include "view/renders.h"
+#include "data_access_layer/fake_store.h"
+#include "model_layer/filters.h"
 #include "common/app_types.h"
-#include "things/values.h"
+#include "model_layer/values.h"
 
 #include <gtest/gtest.h>
 #include <loki/ScopeGuard.h>

@@ -3,9 +3,9 @@
 
 #include "heart/config.h"  // BAD, but Qt generate some files
 
-#include "canary/model.h"
+#include "model_layer/model.h"
 #include "view/view.h"
-#include "canary/filters.h"
+#include "model_layer/filters.h"
 
 #include <QMainWindow>
 #include <QTableWidget>

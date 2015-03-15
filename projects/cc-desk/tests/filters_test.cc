@@ -1,8 +1,8 @@
 #include "heart/config.h"
 
-#include "things/entities.h"
-#include "canary/model.h"
-#include "canary/filters.h"
+#include "model_layer/entities.h"
+#include "model_layer/model.h"
+#include "model_layer/filters.h"
 
 #include <gtest/gtest.h>
 

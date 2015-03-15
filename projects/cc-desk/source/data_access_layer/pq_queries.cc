@@ -6,12 +6,12 @@
 
 #include "heart/config.h"
 
-#include "dal/pq_queries.h"
-#include "things/entities.h"
-#include "canary/filters.h"
+#include "data_access_layer/pq_queries.h"
+#include "model_layer/entities.h"
+#include "model_layer/filters.h"
 #include "common/error_handling.h"
 #include "db_indep.h"
-#include "things/values.h"
+#include "model_layer/values.h"
 
 #include <std_own_ext-fix/std_own_ext.h>
 

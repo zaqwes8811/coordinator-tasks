@@ -7,10 +7,10 @@
 #include "heart/config.h"
 
 #include "view/mainwindow.h"
-#include "canary/model.h"
-#include "dal/pq_queries.h"
+#include "model_layer/model.h"
+#include "data_access_layer/pq_queries.h"
 #include "common/app_types.h"
-#include "canary/isolation.h"
+#include "model_layer/isolation.h"
 
 #include <QApplication>
 #include <QLabel>
@@ -29,16 +29,16 @@
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
 
-using ::isolation::ModelListenerMediatorDynPolym;
+using ::isolation::ModelListener_virtual;
 
-class ModelListenerMediator : public ModelListenerMediatorDynPolym {
+class ModelListenerMediator : public ModelListener_virtual {
 public:
   explicit ModelListenerMediator(Engine* const view) : view_(view) {
     // не должно быть нулем
   }
 
 private:
-  void update_() {
+  void do_update() {
     DCHECK(view_);
     view_->redraw();
   }
@@ -86,7 +86,7 @@ private:
     QApplication app(argc, argv);
     auto engine_ptr = new Engine(model_ptr.get());
 
-    app::SharedPtr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(engine_ptr));
+    app::SharedPtr<ModelListener_virtual> listener(new ModelListenerMediator(engine_ptr));
     model_ptr->set_listener(listener);
 
     engine_ptr->show();
@@ -131,7 +131,7 @@ TEST(Blocked, TestApp) {
     QApplication app(argc, argv);
     auto window = new Engine(model_ptr.get());
 
-    app::SharedPtr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));
+    app::SharedPtr<ModelListener_virtual> listener(new ModelListenerMediator(window));
     model_ptr->set_listener(listener);  // bad!
 
     window->show();

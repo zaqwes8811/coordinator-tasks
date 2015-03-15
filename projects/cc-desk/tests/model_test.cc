@@ -1,10 +1,10 @@
 #include "heart/config.h"
 
-#include "things/entities.h"
-#include "dal/pq_queries.h"  // BAD!! too low level
-#include "canary/model.h"
-#include "canary/fake_store.h"
-#include "canary/renders.h"
+#include "model_layer/entities.h"
+#include "data_access_layer/pq_queries.h"  // BAD!! too low level
+#include "model_layer/model.h"
+#include "data_access_layer/fake_store.h"
+#include "view/renders.h"
 
 #include <gtest/gtest.h>
 #include <loki/ScopeGuard.h>

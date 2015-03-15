@@ -5,8 +5,8 @@
 
 #include "heart/config.h"
 
-#include "dal/pq_queries.h"
-#include "things/entities.h"
+#include "data_access_layer/pq_queries.h"
+#include "model_layer/entities.h"
 
 #include <loki/ScopeGuard.h>
 #include <pqxx/pqxx> 

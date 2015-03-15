@@ -12,9 +12,9 @@
 
 #include "heart/config.h"
 
-#include "canary/model.h"
-#include "canary/filters.h"
-#include "things/values.h"
+#include "model_layer/model.h"
+#include "model_layer/filters.h"
+#include "model_layer/values.h"
 
 #include <loki/ScopeGuard.h>
 

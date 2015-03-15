@@ -1,8 +1,8 @@
 #include "heart/config.h"
 
 #include "view.h"
-#include "things/entities.h"
-#include "things/values.h"
+#include "model_layer/entities.h"
+#include "model_layer/values.h"
 
 #include <QWidget>
 #include <QHeaderView>

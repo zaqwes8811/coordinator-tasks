@@ -2,18 +2,13 @@
 #define DOMAIN_H_
 
 #include "common/app_types.h"
+#include "values.h"
 
 #include <set>
 #include <string>
 #include <vector>
 
-namespace values {
-class Task;
-}
-
 namespace entities {
-const std::string gTableName = "tasks";
-
 struct EntitiesStates {
   static const int kInActiveKey;
   static const int kDefaultPriority;
@@ -65,6 +60,10 @@ private:
   std::string task_name_;
   int priority_;
   bool is_done_;
+};
+
+class TagEntity {
+
 };
 
 // set лучше, но до сохранения индекс может быть не уникальным

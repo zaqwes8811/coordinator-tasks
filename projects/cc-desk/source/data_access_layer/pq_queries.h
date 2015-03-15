@@ -1,7 +1,7 @@
 #ifndef DAL_H
 #define DAL_H
 
-#include "things/entities.h"
+#include "model_layer/entities.h"
 #include "db_indep.h"
 
 #include <pqxx/pqxx>

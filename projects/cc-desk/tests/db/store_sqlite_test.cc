@@ -1,8 +1,8 @@
 #include "heart/config.h"
 
 #include "wrappers/sqlite_xx.h"
-#include "dal/db_indep.h"
-#include "dal/sqlite_queries.h"
+#include "data_access_layer/db_indep.h"
+#include "data_access_layer/sqlite_queries.h"
 
 #include <gtest/gtest.h>
 #include <std_own_ext-fix/std_own_ext.h>
