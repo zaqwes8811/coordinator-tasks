@@ -10,8 +10,8 @@ void TaskTableQueries::registerBeanClass()
 void TaskTableQueries::drop()
 { do_drop(); }
 
-entities::Task TaskLifetimeQueries::copyBean(const entities::Task& v)
-{ return do_copyBean(v); }
+entities::Task TaskLifetimeQueries::persist(const entities::Task& v)
+{ return do_persist(v); }
 void TaskLifetimeQueries::update(const entities::Task& v)
 { do_update(v); }
 entities::TaskEntities TaskLifetimeQueries::loadAll() const

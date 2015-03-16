@@ -57,6 +57,10 @@ public:
   Task(const Task& v);
   Task();
 
+  // used overload
+  //void id(size_t id);
+  //size_t id() const;
+
   // data
   size_t id;  // нужно какое-то не активное
   std::string name;

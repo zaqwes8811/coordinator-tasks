@@ -134,7 +134,7 @@ void TaskLifetimeQueries::do_update(const entities::Task& v) {
   w.commit();
 }
 
-entities::Task TaskLifetimeQueries::do_copyBean(const entities::Task& task)
+entities::Task TaskLifetimeQueries::do_persist(const entities::Task& task)
 {
   DCHECK(task.id == entities::EntityStates::kInactiveKey);
   DCHECK(!task.done);

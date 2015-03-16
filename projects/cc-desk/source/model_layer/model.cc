@@ -29,7 +29,7 @@ using entities::Task;
 
 using std::cout;
 
-Model* Model::createForOwn(app::SharedPtr<storages::DataBaseDriver> pool) {
+Model* Model::createForOwn(app::SharedPtr<storages::DataBase> pool) {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
   auto q = pool->createTaskTableQuery();
@@ -71,6 +71,7 @@ void Model::update(const entities::Task& e) {
   notify();  // FIXME: а нужно ли?
 }
 
+// FIXME: may be not put in RAM? After persist view will be updated
 void Model::appendNewTask(const Task& task) {
   DCHECK(task.id == EntityStates::kInactiveKey);
 
@@ -85,14 +86,14 @@ void Model::appendNewTask(const Task& task) {
   auto query = m_dbPtr->createTaskLifetimeQuery();
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
-  auto r = query->copyBean(e->toValue());
+  auto r = query->persist(e->toValue());
   e->id = r.id;  // а ведь придется оставить!!
 
   notify();
   _.Dismiss();
 }
 
-Model::Model(entities::TaskEntities _tasks, app::SharedPtr<storages::DataBaseDriver> _pool)
+Model::Model(entities::TaskEntities _tasks, app::SharedPtr<storages::DataBase> _pool)
     : m_tasks(_tasks), m_dbPtr(_pool) {  }
 
 void Model::notify()

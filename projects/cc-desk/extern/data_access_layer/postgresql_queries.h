@@ -44,7 +44,7 @@ private:
   app::WeakPtr<pqxx::connection> m_connPtr;
 
   // values op.
-  entities::Task do_copyBean(const entities::Task& v) override;
+  entities::Task do_persist(const entities::Task& v) override;
 
   void do_update(const entities::Task& v) override;
 
@@ -55,7 +55,7 @@ private:
 /**
 
 */
-class PQConnectionsPool : public storages::DataBaseDriver {
+class PQConnectionsPool : public storages::DataBase {
 public:
   PQConnectionsPool(const std::string& conn_info, const std::string& table_name);
   ~PQConnectionsPool();
