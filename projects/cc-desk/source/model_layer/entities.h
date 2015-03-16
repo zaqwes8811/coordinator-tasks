@@ -63,8 +63,8 @@ public:
 
   static Task create();
   static Task create(const std::string& d, const int p);
-  static Task create(const size_t id, const std::string& d, const int p);
   static Task create(const size_t id, const std::string& d, const int p, const bool isDone);
+
   Task(const size_t id, const std::string& d, const int p, const bool);
 
   // copy/assign

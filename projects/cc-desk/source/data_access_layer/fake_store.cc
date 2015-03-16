@@ -41,8 +41,6 @@ TaskEntities get_all() {
 }
 
 std::vector<entities::Task> get_all_values() {
-  //Tasks model = build_fake_model();
-
   std::vector<entities::Task> v;
   for (int i = 0; i < 5; ++i) {
     int p = rand() % 10 + 1;

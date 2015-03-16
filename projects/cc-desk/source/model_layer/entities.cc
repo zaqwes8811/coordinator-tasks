@@ -64,10 +64,6 @@ Task Task::create(const std::string& d, const int p) {
   return Task(entities::EntityStates::kInactiveKey, d, p, false);
 }
 
-Task Task::create(const size_t id, const std::string& d, const int p) {
-  return Task(id, d, p, false);
-}
-
 Task Task::create() {
   auto p = entities::EntityStates::kDefaultPriority;
   return Task(entities::EntityStates::kInactiveKey, std::string(), p, false);
