@@ -121,7 +121,7 @@ TEST(Blocked, TestApp) {
 
   // work in UI thread
   auto model_ptr = app::SharedPtr<models::Model>(models::Model::createForOwn(pool));
-  auto _ = MakeObjGuard(*model_ptr, &models::Model::clear_store);
+  auto _ = MakeObjGuard(*model_ptr, &models::Model::dropStore);
 
   // FIXME: can't post to exist actor - it block it!
   //   May be can, but UI may be will be slow.

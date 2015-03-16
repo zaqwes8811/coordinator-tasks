@@ -55,7 +55,7 @@ public:
   //   shared объекты превращаются в глобальные переменные.
   entities::TaskEntities getCurrentModelData();
 
-  void clear_store();
+  void dropStore();
 
 private:
   template <typename U>

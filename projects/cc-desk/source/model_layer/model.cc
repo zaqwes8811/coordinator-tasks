@@ -29,14 +29,14 @@ using entities::Task;
 
 using std::cout;
 
-Model* Model::createForOwn(app::SharedPtr<storages::DataBase> pool) {
+Model* Model::createForOwn(app::SharedPtr<storages::DataBase> dbPtr) {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
-  auto q = pool->createTaskTableQuery();
+  auto q = dbPtr->createTaskTableQuery();
   q->registerBeanClass();
 
-  auto t = load_all(pool);
-  return new Model(t, pool);
+  auto t = load_all(dbPtr);
+  return new Model(t, dbPtr);
 }
 
 void Model::draw_task_store(std::ostream& o) const {
@@ -46,13 +46,13 @@ void Model::draw_task_store(std::ostream& o) const {
 
 Model::~Model() { }
 
-void Model::clear_store() {
+void Model::dropStore() {
   auto q = m_dbPtr->createTaskTableQuery();
   m_dbPtr->dropSchema(std::move(q));
 }
 
-TaskEntities Model::load_all(storages::DataBasePtr pool) {
-  auto query = pool->createTaskLifetimeQuery();
+TaskEntities Model::load_all(storages::DataBasePtr dbPtr) {
+  auto query = dbPtr->createTaskLifetimeQuery();
   return TaskEntities(query->loadAll());
 }
 

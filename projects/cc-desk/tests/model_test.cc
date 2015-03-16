@@ -41,7 +41,7 @@ TEST(AppCore, Create) {
 
   {
     std::unique_ptr<Model> app_ptr(Model::createForOwn(pool));
-    auto _ = MakeObjGuard(*app_ptr, &Model::clear_store);
+    auto _ = MakeObjGuard(*app_ptr, &Model::dropStore);
 
     //renders::render_task_store(cout, *(app_ptr.get()));
   }
@@ -54,7 +54,7 @@ TEST(AppCore, UpdatePriority) {
   app::SharedPtr<PostgreSQLDataBase> pool(new PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
   {
     std::unique_ptr<Model> app_ptr(Model::createForOwn(pool));
-    auto _ = MakeObjGuard(*app_ptr, &Model::clear_store);
+    auto _ = MakeObjGuard(*app_ptr, &Model::dropStore);
 
     // добавляем записи
     auto data = fake_store::get_all();

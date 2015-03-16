@@ -130,6 +130,7 @@ file( GLOB proTests
     ${ExternLocal}/actors_and_workers/*.cc
     ${ExternLocal}/actors_and_workers/*.h
     ${ExternLocal}/std_own_ext-fix/*.h
+    ${ExternLocal}/peoples_tricks/*.cc
     ${Source}/../../std_own_ext/*.h
     ${ExternLocal}/data_access_layer/*.cc
     ${ExternLocal}/data_access_layer/*.h
