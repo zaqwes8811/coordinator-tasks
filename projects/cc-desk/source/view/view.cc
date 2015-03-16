@@ -10,7 +10,7 @@
 #include <cassert>
 
 using entities::TaskViewTableIdx;
-using entities::TaskValue;
+using entities::Task;
 using entities::TaskEntities;
 
 const QColor QMyTableView::kDoneColor = QColor(0, 0, 255, 127);
@@ -123,7 +123,7 @@ bool QMyTableView::isSaved(const int row) const {
   return getId(row) != entities::EntityStates::kInactiveKey;
 }
 
-entities::TaskValue QMyTableView::getTask(const int row) const {
+entities::Task QMyTableView::getTask(const int row) const {
   DCHECK(row < rowCount());
 
   auto id = getId(row);
@@ -131,5 +131,5 @@ entities::TaskValue QMyTableView::getTask(const int row) const {
   int p(item(row, entities::TaskViewTableIdx::kPriority)->text().toInt());
   auto done = item(row, entities::TaskViewTableIdx::kDone)->text().toInt();
 
-  return entities::TaskValue::create(id, d, p, done);
+  return entities::Task::create(id, d, p, done);
 }

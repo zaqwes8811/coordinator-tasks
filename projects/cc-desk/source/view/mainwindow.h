@@ -92,7 +92,7 @@ private slots:
 
   // FIXME: DANGER!! при реализации фильтров сломает логику!!!
   // Жесткая привязка к списку и к цепочке фильтров
-  entities::TaskEntities::value_type getTaskById(const int pos);
+  entities::TaskEntity getTaskById(const int pos);
 
 private:
   Row getSelectedRow() const;

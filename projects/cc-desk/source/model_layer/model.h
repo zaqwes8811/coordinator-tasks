@@ -46,10 +46,10 @@ public:
 
     \fixme наверное лучше сразу сохранить, добавлять все равно буду скорее всего по-одному
   */
-  void appendNewTask(const entities::TaskValue& e);  // overloading trouble in for_each
+  void appendNewTask(const entities::Task& e);  // overloading trouble in for_each
 
   // Precond: элемент был сохранен
-  void update(const entities::TaskValue& e);
+  void update(const entities::Task& e);
 
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
   //   shared объекты превращаются в глобальные переменные.
@@ -71,8 +71,8 @@ private:
 
   // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
   storages::DataBaseDriverPtr m_dbPtr;
-  isolation::ModelListenerPtr m_observers;
-  entities::TaskEntities::value_type getElemById(const int id);
+  isolation::ModelListenerPtr m_observersPtr;
+  entities::TaskEntity getElemById(const int id);
 };
 }
 

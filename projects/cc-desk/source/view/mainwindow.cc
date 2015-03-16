@@ -37,7 +37,7 @@
 using models::Model;
 using entities::TaskEntities;  // not work
 using entities::TaskViewTableIdx;
-using entities::TaskValue;
+using entities::Task;
 using entities::EntityStates;
 using std::string;
 using std::vector;
@@ -114,7 +114,7 @@ void Engine::slotReopen() {
     auto row = r.get();
     // Обновляем ячейку
     m_taskTablePtr->markReopen(row);  // no throw
-    entities::TaskValue t = m_taskTablePtr->getTask(row);
+    entities::Task t = m_taskTablePtr->getTask(row);
     m_modelPtr->update(t);  // FIXME: may throw
   }
 }
@@ -159,7 +159,7 @@ void Engine::slotFillFake(bool) {
   // сохраняем все
   std::for_each(mirror.begin(), mirror.end()
                 , bind(&Model::appendNewTask, ref(*m_modelPtr),
-                               bind(&entities::TaskEntity::toValue, _1)));
+                               bind(&entities::Task::toValue, _1)));
 
   ::renders::render_task_store(std::cout, *m_modelPtr);
 }
@@ -221,10 +221,10 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
   }
 }
 
-entities::TaskEntities::value_type Engine::getTaskById(const int id) {
+entities::TaskEntity Engine::getTaskById(const int id) {
   using namespace std::placeholders;
   auto r = getModelData();
-  auto it = std::find_if(r.begin(), r.end(), bind(&entities::TaskEntity::id, _1));
+  auto it = std::find_if(r.begin(), r.end(), bind(&entities::Task::id, _1));
 
   DCHECK(it != r.end());  // должен быть
   return *it;

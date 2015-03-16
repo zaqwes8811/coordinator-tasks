@@ -25,7 +25,7 @@ using namespace pq_dal;
 using namespace entities;
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
-using entities::TaskValue;
+using entities::Task;
 
 using std::cout;
 
@@ -56,13 +56,13 @@ TaskEntities Model::load_all(storages::DataBaseDriverPtr pool) {
   return TaskEntities(query->get_all());
 }
 
-entities::TaskEntities::value_type Model::getElemById(const int id) {
+entities::TaskEntity Model::getElemById(const int id) {
   auto it = std::find_if(m_tasks.begin(), m_tasks.end(), filters::is_contained(id));
   DCHECK(it != m_tasks.end());
   return *it;
 }
 
-void Model::update(const entities::TaskValue& e) {
+void Model::update(const entities::Task& e) {
   auto k = getElemById(e.id);
   k->assign(e);
 
@@ -72,10 +72,10 @@ void Model::update(const entities::TaskValue& e) {
   notify();  // FIXME: а нужно ли?
 }
 
-void Model::appendNewTask(const TaskValue& task) {
+void Model::appendNewTask(const Task& task) {
   DCHECK(task.id == EntityStates::kInactiveKey);
 
-  auto e = TaskEntityPtr(new TaskEntity());
+  auto e = TaskEntity(new Task());
   e->assign(task);
 
   auto _ = MakeObjGuard(m_tasks, &TaskEntities::pop_back);
@@ -94,18 +94,14 @@ void Model::appendNewTask(const TaskValue& task) {
   _.Dismiss();
 }
 
-Model::Model(entities::TaskEntities _tasks,
-             app::SharedPtr<storages::DataBaseDriver> _pool)
-    : m_tasks(_tasks)
-    , m_dbPtr(_pool) {  }
+Model::Model(entities::TaskEntities _tasks, app::SharedPtr<storages::DataBaseDriver> _pool)
+    : m_tasks(_tasks), m_dbPtr(_pool) {  }
 
 void Model::notify()
-{
-  m_observers->update();
-}
+{ m_observersPtr->update(); }
 
-void Model::set_listener(app::SharedPtr< ::isolation::ModelListener_virtual> iso)
-{ m_observers = iso; }
+void Model::set_listener(app::SharedPtr<isolation::ModelListener_virtual> iso)
+{ m_observersPtr = iso; }
 
 entities::TaskEntities Model::getCurrentModelData()
 { return m_tasks; }

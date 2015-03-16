@@ -22,6 +22,8 @@ struct EntityStates {
   static const bool kNonDone;
 };
 
+class Task;
+typedef app::SharedPtr<Task> TaskEntity;
 /**
   FIXME: для таких объектов важно equal and hash!!
   FIXME: закончить реализацию
@@ -32,26 +34,7 @@ struct EntityStates {
   Придает семантику значений
   Ухудшает локальность кеша
   FIXME: Immutable now?
-*/
-class TaskValue {
-public:
-  static TaskValue create();
-  static TaskValue create(const std::string& d, const int p);
-  static TaskValue create(const size_t id, const std::string& d, const int p);
-  static TaskValue create(const size_t id, const std::string& d, const int p, const bool isDone);
-  TaskValue(const size_t id, const std::string& d, const int p, const bool);
 
-  // copy/assign
-  TaskValue(const TaskValue& v);
-  TaskValue& operator=(const TaskValue& v);
-
-  size_t id;
-  std::string name;  // FIXME: NonImmutable really
-  int priority;
-  bool isDone;  // need store
-};
-
-/**
   раз обрабатываем пачкой, то наверное нужны метки
   updated, to delete, ...
   Feature - пока нет
@@ -61,24 +44,34 @@ public:
 
   http://stackoverflow.com/questions/308276/c-call-constructor-from-constructor
 */
-class TaskEntity {
+class Task {
 public:
   // builders
-  static app::SharedPtr<TaskEntity> create(const std::string& task_name);
-  static app::SharedPtr<TaskEntity> create(const entities::TaskValue& v);
+  static TaskEntity create(const std::string& task_name);
+  static TaskEntity create(const entities::Task& v);
 
   // ctor/dtor/assign/copy
-  TaskEntity();
+  Task();
 
   // conv
-  entities::TaskValue toValue() const;
-  void assign(const entities::TaskValue& v);
+  entities::Task toValue() const;
+  void assign(const entities::Task& v);
 
   // data
   size_t id;  // нужно какое-то не активное
   std::string name;
   int priority;
   bool isDone;
+
+  static Task create();
+  static Task create(const std::string& d, const int p);
+  static Task create(const size_t id, const std::string& d, const int p);
+  static Task create(const size_t id, const std::string& d, const int p, const bool isDone);
+  Task(const size_t id, const std::string& d, const int p, const bool);
+
+  // copy/assign
+  Task(const Task& v);
+  Task& operator=(const Task& v);
 };
 
 /**
@@ -100,7 +93,7 @@ public:
 };
 
 // set лучше, но до сохранения индекс может быть не уникальным
-typedef app::SharedPtr<TaskEntity> TaskEntityPtr;
-typedef std::vector<entities::TaskEntityPtr> TaskEntities;
+
+typedef std::vector<entities::TaskEntity> TaskEntities;
 }  // namespace..
 #endif // DOMAIN_H

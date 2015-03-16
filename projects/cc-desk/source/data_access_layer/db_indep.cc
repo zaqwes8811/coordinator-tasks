@@ -12,9 +12,9 @@ void TaskTableQueries::drop()
 void TaskTableQueries::draw(std::ostream& o) const
 { drawImpl(o); }
 
-entities::TaskValue TaskLifetimeQueries::create(const entities::TaskValue& v)
+entities::Task TaskLifetimeQueries::create(const entities::Task& v)
 { return createImpl(v); }
-void TaskLifetimeQueries::update(const entities::TaskValue& v)
+void TaskLifetimeQueries::update(const entities::Task& v)
 { updateImpl(v); }
 entities::TaskEntities TaskLifetimeQueries::get_all() const
 { return get_allImpl(); }

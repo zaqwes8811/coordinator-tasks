@@ -61,20 +61,20 @@ using renders::operator <<;
 
 TEST(ModelTest, BaseCase) {
   using namespace std::placeholders;
-  typedef vector<app::WeakPtr<TaskEntity> > ModelWeakSlice;
+  typedef vector<app::WeakPtr<Task> > ModelWeakSlice;
 
   // пока храним все в памяти - активные только
   // ссылки не должны утечь, но как удалять из хранилища?
   TaskEntities model;
 
-  model.push_back(std::make_shared<TaskEntities::value_type::element_type>(TaskEntities::value_type::element_type()));
+  model.push_back(std::make_shared<TaskEntity::element_type>(TaskEntity::element_type()));
 
   // only tmp!!! maybe weak? - тогда копия не владеет, хотя и работать не очень удобно
   // weak_ptr - неожиданно влядеет
   ModelWeakSlice query(model.size());  // слабый похоже не сработает
   copy(model.begin(), model.end(), query.begin());  // работает со слабым
 
-  for_each(model.begin(), model.end(), bind(&TaskEntity::id, _1));
+  for_each(model.begin(), model.end(), bind(&Task::id, _1));
 
   EXPECT_TRUE(0 == query.at(0).lock()->priority);
 }
@@ -121,8 +121,8 @@ TEST(ModelTest, Create) {
 
 TEST(Values, Assign) {
   using namespace entities;
-  TaskValue v = TaskValue::create();
-  TaskValue v1 = TaskValue::create("hello", 90);
+  Task v = Task::create();
+  Task v1 = Task::create("hello", 90);
   v = v1;
 }
 

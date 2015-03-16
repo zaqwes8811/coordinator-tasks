@@ -9,7 +9,7 @@
 namespace {
 using filters::Filter;
 using filters::FilterPtr;
-using entities::TaskEntity;
+using entities::Task;
 using filters::DoneFilter;
 using filters::SortByPriorityFilter;
 

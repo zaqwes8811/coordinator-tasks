@@ -10,24 +10,24 @@ using namespace std::placeholders;
 using std::bind;
 using std::equal_to;
 using entities::EntityStates;
-using entities::TaskEntity;
+using entities::Task;
 
 using std::string;
 
-std::function<bool(entities::TaskEntities::value_type)> is_non_saved() {
+std::function<bool(entities::TaskEntity)> is_non_saved() {
   return bind(
       bind(equal_to<size_t>(), _1, EntityStates::kInactiveKey),
-      bind(&TaskEntity::id, _1)) ;
+      bind(&Task::id, _1)) ;
 }
 
-std::function<bool(entities::TaskEntityPtr)> is_contained(const size_t id) {
-  return bind(bind(equal_to<size_t>(), _1, id),  bind(&TaskEntity::id, _1)) ;
+std::function<bool(entities::TaskEntity)> is_contained(const size_t id) {
+  return bind(bind(equal_to<size_t>(), _1, id),  bind(&Task::id, _1)) ;
 }
 
-static std::function<bool(entities::TaskEntities::value_type)> is_non_done() {
+static std::function<bool(entities::TaskEntity)> is_non_done() {
   return bind(
       bind(equal_to<size_t>(), _1, entities::EntityStates::kNonDone),
-      bind(&TaskEntity::isDone, _1)) ;
+      bind(&Task::isDone, _1)) ;
 }
 
 ChainFilters::ChainFilters() { }
@@ -58,8 +58,8 @@ int DoneFilter::typeCode() const
 entities::TaskEntities SortByPriorityFilter::operator()(entities::TaskEntities e) {
   std::stable_sort(e.begin(), e.end(),
       bind(std::greater<int>(),
-           bind(&TaskEntity::priority, _1),
-           bind(&TaskEntity::priority, _2)));
+           bind(&Task::priority, _1),
+           bind(&Task::priority, _2)));
   return e;
 }
 
@@ -87,8 +87,8 @@ std::size_t hash_value(FilterPtr b)
 entities::TaskEntities SortByTaskName::operator()(entities::TaskEntities e) {
   std::stable_sort(e.begin(), e.end(),
       bind(std::greater<string>(),
-           bind(&TaskEntity::name, _1),
-           bind(&TaskEntity::name, _2)));
+           bind(&Task::name, _1),
+           bind(&Task::name, _2)));
   return e;
 }
 

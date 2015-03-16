@@ -28,7 +28,7 @@ public:
   void clearList();
   void draw(entities::TaskEntities tasks);
 
-  entities::TaskValue getTask(const int row) const;
+  entities::Task getTask(const int row) const;
   int getId(const int row) const;
   bool isSaved(const int row) const;
   void markDone(const int row);

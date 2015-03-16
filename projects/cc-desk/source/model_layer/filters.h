@@ -26,8 +26,8 @@
 namespace filters
 {
 
-std::function<bool(entities::TaskEntities::value_type)> is_non_saved();
-std::function<bool(entities::TaskEntities::value_type)> is_contained(const size_t id);
+std::function<bool(entities::TaskEntity)> is_non_saved();
+std::function<bool(entities::TaskEntity)> is_contained(const size_t id);
 
 // могли бы вставляться друг в друга
 class Filter {

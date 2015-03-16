@@ -29,7 +29,7 @@
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
 
-using ::isolation::ModelListener_virtual;
+using isolation::ModelListener_virtual;
 
 class ModelListenerMediator : public ModelListener_virtual {
 public:

@@ -28,11 +28,11 @@ using pqxx::connection;
 using pqxx::work;
 using pqxx::result;
 using pqxx::nontransaction;
-using entities::TaskEntity;
+using entities::Task;
 using entities::TaskEntities;
 using entities::EntityStates;
 
-using entities::TaskValue;
+using entities::Task;
 
 
 PQConnectionsPool::PQConnectionsPool(const std::string& conn_info
@@ -126,7 +126,7 @@ TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
     , m_connPtr(p)
 { }
 
-void TaskLifetimeQueries::updateImpl(const entities::TaskValue& v) {
+void TaskLifetimeQueries::updateImpl(const entities::Task& v) {
 
   DCHECK(v.id != EntityStates::kInactiveKey);
 
@@ -151,7 +151,7 @@ void TaskLifetimeQueries::updateImpl(const entities::TaskValue& v) {
   w.commit();
 }
 
-entities::TaskValue TaskLifetimeQueries::createImpl(const entities::TaskValue& task)
+entities::Task TaskLifetimeQueries::createImpl(const entities::Task& task)
 {
   DCHECK(task.id == entities::EntityStates::kInactiveKey);
   DCHECK(!task.isDone);
@@ -181,7 +181,7 @@ entities::TaskValue TaskLifetimeQueries::createImpl(const entities::TaskValue& t
 
   // из-за константрости приходится распаковывать значение, нельзя
   //   просто приствоить и оттюнить.
-  return TaskValue::create(id, task.name, task.priority);
+  return Task::create(id, task.name, task.priority);
 }
 
 
@@ -199,7 +199,7 @@ entities::TaskEntities TaskLifetimeQueries::get_allImpl() const {
   // pack
   TaskEntities model;
   for (auto c = r.begin(); c != r.end(); ++c) {
-    auto elem = TaskEntity::create("");
+    auto elem = Task::create("");
     elem->id = c[TablePositions::kId].as<int>();
     elem->name = (c[TablePositions::kTaskName].as<string>());
     elem->priority = (c[TablePositions::kPriority].as<int>());

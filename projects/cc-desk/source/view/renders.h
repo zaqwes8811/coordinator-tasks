@@ -8,7 +8,7 @@
 #include <algorithm>
 
 namespace renders {
-std::ostream& operator<<(std::ostream& o, entities::TaskEntity& a);
+std::ostream& operator<<(std::ostream& o, entities::Task& a);
 
 template <class T>
 class _ActionSmart {

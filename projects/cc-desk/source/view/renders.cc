@@ -3,7 +3,7 @@
 #include "view/renders.h"
 
 namespace renders {
-std::ostream& operator<<(std::ostream& o, entities::TaskEntity& a) {
+std::ostream& operator<<(std::ostream& o, entities::Task& a) {
   o << "Id: " << a.id
     << " TaskName: " << a.name
     << std::endl;
