@@ -47,8 +47,8 @@ typedef app::SharedPtr<Task> TaskEntity;
 class Task {
 public:
   // builders
-  static TaskEntity create(const std::string& task_name);
-  static TaskEntity create(const entities::Task& v);
+  static TaskEntity createEntity(const std::string& task_name);
+  static TaskEntity createEntity(const entities::Task& v);
 
   // ctor/dtor/assign/copy
   Task();
@@ -83,7 +83,7 @@ public:
   Tag(size_t _id, const std::string& name)
     : id(_id)
     , name(name)
-    , color("green"){ }
+    , color("green") { }
 
   Tag toValue() const;
 

@@ -12,20 +12,20 @@ const size_t EntityStates::kInactiveKey = -1;
 const int EntityStates::kDefaultPriority = 0;
 const bool EntityStates::kNonDone = false;
 
-TaskEntity Task::create(const std::string& task_name)
+TaskEntity Task::createEntity(const std::string& task_name)
 {
-  auto tmp = std::make_shared<Task>(Task());
-  tmp->name = task_name;
-  return tmp;
+  auto r = std::make_shared<Task>(Task());
+  r->name = task_name;
+  return r;
 }
 
-TaskEntity Task::create(const entities::Task& v)
+TaskEntity Task::createEntity(const entities::Task& v)
 {
-  auto tmp = Task::create(v.name);
-  tmp->id = (v.id);
-  tmp->priority = (v.priority);
-  tmp->isDone = (v.isDone);
-  return tmp;
+  auto r = Task::createEntity(v.name);
+  r->id = v.id;
+  r->priority = v.priority;
+  r->isDone = v.isDone;
+  return r;
 }
 
 void Task::assign(const entities::Task& v) {
@@ -36,26 +36,14 @@ void Task::assign(const entities::Task& v) {
 }
 
 Task::Task()
-  : id(EntityStates::kInactiveKey)
-  , priority(EntityStates::kDefaultPriority)
-  , isDone(false) { }
+  : id(EntityStates::kInactiveKey), priority(EntityStates::kDefaultPriority), isDone(false) { }
 
 entities::Task Task::toValue() const {
-  return entities::Task::create(
-        id,
-        name,
-        priority,
-        isDone);
+  return entities::Task::create(id, name, priority, isDone);
 }
 
-}  // namespace
-
-namespace entities {
-
 Task::Task(const Task& v)
-  : id(v.id), name(v.name)
-  , priority(v.priority), isDone(v.isDone) { }
-
+  : id(v.id), name(v.name), priority(v.priority), isDone(v.isDone) { }
 
 Task& Task::operator=(const Task& v) {
   Task tmp(v);
@@ -70,11 +58,7 @@ Task& Task::operator=(const Task& v) {
 }
 
 Task::Task(const size_t _id, const std::string& d, const int p, const bool _d)
-  : id(_id)
-  , name(d)
-  , priority(p)
-  , isDone(_d)
-{ }
+  : id(_id), name(d), priority(p), isDone(_d) { }
 
 Task Task::create(const std::string& d, const int p) {
   return Task(entities::EntityStates::kInactiveKey, d, p, false);
@@ -89,11 +73,8 @@ Task Task::create() {
   return Task(entities::EntityStates::kInactiveKey, std::string(), p, false);
 }
 
-Task Task::create(
-        const size_t id,
-        const std::string& d,
-        const int p,
-        const bool _done) { return Task(id, d, p, _done); }
+Task Task::create(const size_t id, const std::string& d, const int p, const bool _done)
+{ return Task(id, d, p, _done); }
 }
 
 

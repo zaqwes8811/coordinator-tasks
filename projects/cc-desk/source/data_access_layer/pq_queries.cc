@@ -199,7 +199,7 @@ entities::TaskEntities TaskLifetimeQueries::get_allImpl() const {
   // pack
   TaskEntities model;
   for (auto c = r.begin(); c != r.end(); ++c) {
-    auto elem = Task::create("");
+    auto elem = Task::createEntity("");
     elem->id = c[TablePositions::kId].as<int>();
     elem->name = (c[TablePositions::kTaskName].as<string>());
     elem->priority = (c[TablePositions::kPriority].as<int>());
