@@ -28,7 +28,7 @@
 #include "heart/config.h"
 
 #include "model_layer/entities.h"
-#include "data_access_layer/pq_queries.h"
+#include "data_access_layer/postgresql_queries.h"
 #include "view/renders.h"
 #include "data_access_layer/fake_store.h"
 #include "model_layer/filters.h"

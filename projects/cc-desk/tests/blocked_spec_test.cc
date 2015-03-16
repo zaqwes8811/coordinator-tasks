@@ -8,7 +8,7 @@
 
 #include "view/mainwindow.h"
 #include "model_layer/model.h"
-#include "data_access_layer/pq_queries.h"
+#include "data_access_layer/postgresql_queries.h"
 #include "common/app_types.h"
 #include "model_layer/isolation.h"
 

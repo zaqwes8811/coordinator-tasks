@@ -1,7 +1,7 @@
 #include "heart/config.h"
 
 #include "model_layer/entities.h"
-#include "data_access_layer/pq_queries.h"  // BAD!! too low level
+#include "data_access_layer/postgresql_queries.h"  // BAD!! too low level
 #include "model_layer/model.h"
 #include "data_access_layer/fake_store.h"
 #include "view/renders.h"

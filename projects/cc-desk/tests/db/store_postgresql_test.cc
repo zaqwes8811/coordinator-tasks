@@ -5,7 +5,7 @@
 
 #include "heart/config.h"
 
-#include "data_access_layer/pq_queries.h"
+#include "data_access_layer/postgresql_queries.h"
 #include "model_layer/entities.h"
 
 #include <loki/ScopeGuard.h>
