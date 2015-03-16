@@ -53,10 +53,8 @@ public:
   // conv
   entities::Task toValue() const;
 
-  // copy/assign
-  Task(const Task& v);
-
   // ctor/dtor/assign/copy
+  Task(const Task& v);
   Task();
 
   // data
@@ -86,8 +84,6 @@ public:
   std::string name;
   std::string color;
 };
-
-// set лучше, но до сохранения индекс может быть не уникальным
 
 typedef std::vector<entities::TaskEntity> TaskEntities;
 }  // namespace..
