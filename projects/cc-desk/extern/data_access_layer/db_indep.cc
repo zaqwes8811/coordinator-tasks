@@ -6,11 +6,9 @@
 
 namespace storages {
 void TaskTableQueries::registerBeanClass()
-{ createIfNotExistImpl(); }
+{ do_registerBeanClass(); }
 void TaskTableQueries::drop()
-{ dropImpl(); }
-void TaskTableQueries::draw(std::ostream& o) const
-{ drawImpl(o); }
+{ do_drop(); }
 
 entities::Task TaskLifetimeQueries::create(const entities::Task& v)
 { return do_create(v); }

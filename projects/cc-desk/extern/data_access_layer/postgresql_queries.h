@@ -25,14 +25,12 @@ private:
   const std::string m_table_name;
   app::WeakPtr<pqxx::connection> m_conn_ptr;
 
-  void createIfNotExistImpl() override;
+  void do_registerBeanClass() override;
 
-  void dropImpl() override;
+  void do_drop() override;
 
-  std::string getTableName() const
+  std::string getTableName() const override
   { return m_table_name; }
-
-  void drawImpl(std::ostream& o) const;
 };
 
 class TaskLifetimeQueries

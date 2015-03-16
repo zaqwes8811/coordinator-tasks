@@ -112,7 +112,7 @@ TEST(ModelTest, Create) {
       //EXPECT_EQ(it, model.end());  // все сохранили и исключение не выскочило
 
       // View
-      q.draw(cout);
+      //q.draw(cout);
     }
   }
   EXPECT_FALSE(C->is_open());

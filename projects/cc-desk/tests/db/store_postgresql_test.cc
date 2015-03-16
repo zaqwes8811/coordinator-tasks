@@ -51,7 +51,7 @@ void do_something(app::WeakPtr<pqxx::connection> C)
   // Tags
 
   // View
-  q.draw(cout);
+  //q.draw(cout);
 }
 
 TEST(postgres, all) {

@@ -40,8 +40,8 @@ Model* Model::createForOwn(app::SharedPtr<storages::DataBaseDriver> pool) {
 }
 
 void Model::draw_task_store(std::ostream& o) const {
-  auto q = m_dbPtr->createTaskTableQuery();
-  q->draw(o);
+  //auto q = m_dbPtr->createTaskTableQuery();
+  //q->draw(o);
 }
 
 Model::~Model() { }

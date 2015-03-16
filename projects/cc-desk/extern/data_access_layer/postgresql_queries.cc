@@ -18,6 +18,9 @@
 #include <cassert>
 #include <sstream>
 
+// Unused
+//   string sql("SELECT * FROM " + m_table_name + " ORDER BY ID;");
+
 namespace pq_dal {
 using namespace storages;
 
@@ -62,27 +65,7 @@ PQConnectionsPool::createTaskLifetimeQuery() {
   return std::unique_ptr<storages::TaskLifetimeQueries>(new TaskLifetimeQueries(m_table_name, m_conn_ptr));
 }
 
-
-void TaskTableQueries::drawImpl(std::ostream& o) const {
-  string sql("SELECT * FROM " + m_table_name + " ORDER BY ID;");
-
-  auto c = m_conn_ptr.lock();
-  if (!c)
-    return;
-
-  nontransaction no_tr_w(*c);
-  result r( no_tr_w.exec( sql ));
-
-  for (auto c = r.begin(); c != r.end(); ++c) {
-    o << "ID = " << c[TablePositions::kId].as<int>()
-         << " Name = " << c[TablePositions::kTaskName].as<string>()
-         << " Priority = "  << c[TablePositions::kPriority].as<int>()
-         << " Done = "  << c[TablePositions::kDone].as<bool>()
-         << endl;
-  }
-}
-
-void TaskTableQueries::createIfNotExistImpl() {
+void TaskTableQueries::do_registerBeanClass() {
   string sql(
     "CREATE TABLE " \
     "IF NOT EXISTS "+ // v9.1 >=
@@ -104,7 +87,7 @@ void TaskTableQueries::createIfNotExistImpl() {
   W.commit();
 }
 
-void TaskTableQueries::dropImpl() {
+void TaskTableQueries::do_drop() {
   auto c = m_conn_ptr.lock();
   if(!c)
     return;

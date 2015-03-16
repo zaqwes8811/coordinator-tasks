@@ -8,7 +8,7 @@ SQLiteTaskTableQueries::SQLiteTaskTableQueries(app::WeakPtr<sqlite3_cc::sqlite3>
   : m_tableName(tableName)
   , m_connPtr(h) { }
 
-void SQLiteTaskTableQueries::createIfNotExistImpl() {
+void SQLiteTaskTableQueries::do_registerBeanClass() {
   std::string sql(
     "CREATE TABLE " \
     "IF NOT EXISTS "+
@@ -27,7 +27,7 @@ void SQLiteTaskTableQueries::createIfNotExistImpl() {
   sqlite3_cc::sqlite3_exec(*c, sql);
 }
 
-void SQLiteTaskTableQueries::dropImpl() {
+void SQLiteTaskTableQueries::do_drop() {
   auto c = m_connPtr.lock();
 
   if (!c)

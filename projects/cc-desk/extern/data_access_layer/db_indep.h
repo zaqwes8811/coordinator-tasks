@@ -21,14 +21,11 @@ class TaskTableQueries
 public:
   void registerBeanClass();
   void drop();
-  void draw(std::ostream& o) const;
 
   virtual ~TaskTableQueries() { }
 private:
-  virtual void createIfNotExistImpl() = 0;
-  virtual void dropImpl() = 0;
-  virtual void drawImpl(std::ostream& o) const = 0;
-
+  virtual void do_registerBeanClass() = 0;
+  virtual void do_drop() = 0;
   virtual std::string getTableName() const = 0;
 };
 

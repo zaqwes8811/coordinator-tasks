@@ -16,8 +16,8 @@ public:
                                   , const std::string& tableName);
 
 private:
-  virtual void createIfNotExistImpl();
-  virtual void dropImpl();
+  virtual void do_registerBeanClass();
+  virtual void do_drop();
   virtual void drawImpl(std::ostream& o) const;
 
   std::string getTableName() const
