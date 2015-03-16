@@ -26,8 +26,8 @@
 namespace filters
 {
 
-std::function<bool(entities::Tasks::value_type)> get_check_non_saved();
-std::function<bool(entities::Tasks::value_type)> get_check_contained(const int id);
+std::function<bool(entities::Tasks::value_type)> is_non_saved();
+std::function<bool(entities::Tasks::value_type)> is_contained(const int id);
 
 // могли бы вставляться друг в друга
 class Filter {
@@ -79,7 +79,7 @@ public:
 
 private:
   // FIXME: можно вообще тупо массив, фильтров все равно не 100500
-  std::unordered_set<FilterPtr, KeyHasher, KeyEqual> s_;  // need own hasher
+  std::unordered_set<FilterPtr, KeyHasher, KeyEqual> m_s;  // need own hasher
 };
 
 class DoneFilter : public Filter {

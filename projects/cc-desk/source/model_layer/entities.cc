@@ -43,7 +43,7 @@ TaskEntity::TaskEntity()
 
 values::Task TaskEntity::toValue() const {
   return values::Task::create(
-        getPrimaryKey(),
+        getId(),
         get_task_name(),
         get_priority(),
         getIsDone());

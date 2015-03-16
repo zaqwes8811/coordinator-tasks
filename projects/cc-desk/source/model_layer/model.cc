@@ -58,7 +58,7 @@ Tasks Model::load_all(storages::DataBaseDriverPtr pool) {
 }
 
 entities::Tasks::value_type Model::getElemById(const int id) {
-  auto it = std::find_if(m_tasks.begin(), m_tasks.end(), filters::get_check_contained(id));
+  auto it = std::find_if(m_tasks.begin(), m_tasks.end(), filters::is_contained(id));
   DCHECK(it != m_tasks.end());
   return *it;
 }

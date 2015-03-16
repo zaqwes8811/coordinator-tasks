@@ -14,42 +14,36 @@ using entities::TaskEntity;
 
 using std::string;
 
-std::function<bool(entities::Tasks::value_type)> get_check_non_saved() {
+std::function<bool(entities::Tasks::value_type)> is_non_saved() {
   return bind(
-      bind(equal_to<int>(), _1, EntityStates::kInactiveKey),
-      bind(&TaskEntity::getPrimaryKey, _1)) ;
+      bind(equal_to<size_t>(), _1, EntityStates::kInactiveKey),
+      bind(&TaskEntity::getId, _1)) ;
 }
 
-std::function<bool(entities::Tasks::value_type)> get_check_contained(const int id) {
+std::function<bool(entities::TaskEntityPtr)> is_contained(const int id) {
   return bind(
-      bind(equal_to<int>(), _1, id),
-      bind(&TaskEntity::getPrimaryKey, _1)) ;
+      bind(equal_to<size_t>(), _1, id),
+      bind(&TaskEntity::getId, _1)) ;
 }
 
 std::function<bool(entities::Tasks::value_type)> get_is_non_done() {
   return bind(
-      bind(equal_to<int>(), _1, entities::EntityStates::kNonDone),
+      bind(equal_to<size_t>(), _1, entities::EntityStates::kNonDone),
       bind(&TaskEntity::getIsDone, _1)) ;
 }
 
 ChainFilters::ChainFilters() { }
 
 void ChainFilters::add(FilterPtr e)
-{ s_.insert(e); }
+{ m_s.insert(e); }
 
 // FIXME: как удалить то без RTTI? Список то полиморфный
 void ChainFilters::remove(FilterPtr e)
-{ s_.erase(e); }
+{ m_s.erase(e); }
 
 entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
-  auto r = e;  // impl. empty filter
-
-  // фильтруем
-  for (auto it = s_.begin(); it != s_.end(); ++it) {
-    auto action = *it;
-    r = (*action)(r);
-  }
-
+  auto r = e;
+  for (auto& action: m_s)  r = (*action)(r);
   return r;
 }
 
@@ -75,14 +69,14 @@ int SortByPriorityFilter::get_type_code() const
 { return 2; }
 
 // сырые указатели лучше не передавать.
+// FIXME: It is very bad! dynamic cast don't work, no info
+//return (typeid(lhs)) == (typeid(rhs));
 bool operator==(const Filter& lhs, const Filter& rhs) {
-  // FIXME: It is very bad! dynamic cast don't work, no info
-  //return (typeid(lhs)) == (typeid(rhs));
   return lhs.get_type_code() == rhs.get_type_code();
 }
 
+//return typeid(*lhs) == typeid(*rhs);  // no way
 bool operator==(FilterPtr lhs, FilterPtr rhs) {
-  //return typeid(*lhs) == typeid(*rhs);  // no way
   return lhs->get_type_code() == rhs->get_type_code();
 }
 
@@ -92,7 +86,6 @@ std::size_t hash_value(FilterPtr b)
     return hasher(b->get_type_code());
 }
 
-//
 entities::Tasks SortByTaskName::operator()(entities::Tasks e) {
   std::stable_sort(e.begin(), e.end(),
       bind(std::greater<string>(),

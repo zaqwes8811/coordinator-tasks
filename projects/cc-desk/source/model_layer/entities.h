@@ -39,7 +39,7 @@ public:
   void assign(const values::Task& v);
 
   // FIXME: remove it
-  size_t getPrimaryKey() const
+  size_t getId() const
   { return m_primaryKey; }
 
   std::string get_task_name() const
