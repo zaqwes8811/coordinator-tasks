@@ -75,7 +75,7 @@ void Model::update(const entities::Task& e) {
 void Model::appendNewTask(const Task& task) {
   DCHECK(task.id == EntityStates::kInactiveKey);
 
-  auto e = TaskEntity(new Task());
+  auto e = Task::createEntity("");
   e->assign(task);
 
   auto _ = MakeObjGuard(m_tasks, &TaskEntities::pop_back);

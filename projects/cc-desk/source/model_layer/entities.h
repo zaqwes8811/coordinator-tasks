@@ -24,6 +24,7 @@ struct EntityStates {
 
 class Task;
 typedef app::SharedPtr<Task> TaskEntity;
+
 /**
   FIXME: для таких объектов важно equal and hash!!
   FIXME: закончить реализацию
@@ -50,9 +51,6 @@ public:
   static TaskEntity createEntity(const std::string& task_name);
   static TaskEntity createEntity(const entities::Task& v);
 
-  // ctor/dtor/assign/copy
-  Task();
-
   // conv
   entities::Task toValue() const;
   void assign(const entities::Task& v);
@@ -72,6 +70,10 @@ public:
   // copy/assign
   Task(const Task& v);
   Task& operator=(const Task& v);
+
+private:
+  // ctor/dtor/assign/copy
+  Task();
 };
 
 /**

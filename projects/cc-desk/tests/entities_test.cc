@@ -67,7 +67,7 @@ TEST(ModelTest, BaseCase) {
   // ссылки не должны утечь, но как удалять из хранилища?
   TaskEntities model;
 
-  model.push_back(std::make_shared<TaskEntity::element_type>(TaskEntity::element_type()));
+  model.push_back(Task::createEntity(""));
 
   // only tmp!!! maybe weak? - тогда копия не владеет, хотя и работать не очень удобно
   // weak_ptr - неожиданно влядеет
