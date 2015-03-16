@@ -28,10 +28,7 @@ TaskEntities get_all() {
   for (int i = 0; i < 5; ++i) {
     string message(events[i]);
     int p = rand() % 10 + 1;
-    auto tmp = Task::createEntity(
-          std_own_ext::to_string(p)
-          //message
-          );
+    auto tmp = std::make_shared<Task>();//::createEntity();
 
     tmp->priority = p;
     model.push_back(tmp);

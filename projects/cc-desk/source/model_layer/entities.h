@@ -19,7 +19,7 @@ struct TaskViewTableIdx {
 struct EntityStates {
   static const size_t kInactiveKey;
   static const int kDefaultPriority;
-  static const bool kNonDone;
+  static const bool kDefaultDone;
 };
 
 class Task;
@@ -48,25 +48,22 @@ typedef app::SharedPtr<Task> TaskEntity;
 class Task {
 public:
   // builders
-  static TaskEntity createEntity(const std::string& task_name);
   static TaskEntity createEntity(const entities::Task& v);
 
   // conv
   entities::Task toValue() const;
 
+  // copy/assign
+  Task(const Task& v);
+
+  // ctor/dtor/assign/copy
+  Task();
+
   // data
   size_t id;  // нужно какое-то не активное
   std::string name;
   int priority;
-  bool isDone;
-
-  // copy/assign
-  Task(const Task& v);
-  Task& operator=(const Task& v);
-
-//private:
-  // ctor/dtor/assign/copy
-  Task();
+  bool done;
 };
 
 class Tag;

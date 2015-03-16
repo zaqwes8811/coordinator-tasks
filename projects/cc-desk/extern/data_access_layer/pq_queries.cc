@@ -131,7 +131,7 @@ void TaskLifetimeQueries::do_update(const entities::Task& v) {
   DCHECK(v.id != EntityStates::kInactiveKey);
 
   string done("false");
-  if (v.isDone)
+  if (v.done)
     done = "true";
 
   string sql(
@@ -154,7 +154,7 @@ void TaskLifetimeQueries::do_update(const entities::Task& v) {
 entities::Task TaskLifetimeQueries::do_create(const entities::Task& task)
 {
   DCHECK(task.id == entities::EntityStates::kInactiveKey);
-  DCHECK(!task.isDone);
+  DCHECK(!task.done);
 
   string sql(
       "INSERT INTO " + m_tableName + " (TASK_NAME, PRIORITY) " \
@@ -185,7 +185,7 @@ entities::Task TaskLifetimeQueries::do_create(const entities::Task& task)
   t.id = id;
   t.name = task.name;
   t.priority = task.priority;
-  t.isDone = false;
+  t.done = false;
   return t;
 }
 
@@ -204,11 +204,13 @@ entities::TaskEntities TaskLifetimeQueries::do_loadAll() const {
   // pack
   TaskEntities model;
   for (auto c = r.begin(); c != r.end(); ++c) {
-    auto elem = Task::createEntity("");
-    elem->id = c[TablePositions::kId].as<int>();
-    elem->name = (c[TablePositions::kTaskName].as<string>());
-    elem->priority = (c[TablePositions::kPriority].as<int>());
-    elem->isDone = (c[TablePositions::kDone].as<bool>());
+    Task t;
+    t.id = c[TablePositions::kId].as<int>();
+    t.name = (c[TablePositions::kTaskName].as<string>());
+    t.priority = (c[TablePositions::kPriority].as<int>());
+    t.done = (c[TablePositions::kDone].as<bool>());
+
+    auto elem = Task::createEntity(t);
 
     model.push_back(elem);
   }

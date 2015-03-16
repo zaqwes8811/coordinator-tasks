@@ -26,8 +26,8 @@ std::function<bool(entities::TaskEntity)> is_contained(const size_t id) {
 
 static std::function<bool(entities::TaskEntity)> is_non_done() {
   return bind(
-      bind(equal_to<size_t>(), _1, entities::EntityStates::kNonDone),
-      bind(&Task::isDone, _1)) ;
+      bind(equal_to<size_t>(), _1, entities::EntityStates::kDefaultDone),
+      bind(&Task::done, _1)) ;
 }
 
 ChainFilters::ChainFilters() { }

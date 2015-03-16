@@ -63,7 +63,7 @@ void QMyTableView::insertBlankRows(const int end) {
       setItem(row, entities::TaskViewTableIdx::kTaskName, new QTableWidgetItem(QString()));
       setItem(row, entities::TaskViewTableIdx::kPriority,
               new QTableWidgetItem(QString::number(entities::EntityStates::kDefaultPriority)));
-      setItem(row, entities::TaskViewTableIdx::kDone, new QTableWidgetItem(QString::number(entities::EntityStates::kNonDone)));
+      setItem(row, entities::TaskViewTableIdx::kDone, new QTableWidgetItem(QString::number(entities::EntityStates::kDefaultDone)));
   }
 }
 
@@ -81,15 +81,13 @@ void QMyTableView::draw(entities::TaskEntities taskEntities) {
   auto row = 0;
   for (auto& entity : taskEntities) {
     setItem(row, entities::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entity->id)));
-    setItem(row, entities::TaskViewTableIdx::kPriority
-            , new QTableWidgetItem(QString::number(entity->priority)));
-    setItem(row, entities::TaskViewTableIdx::kDone
-            , new QTableWidgetItem(QString::number(entity->isDone)));
+    setItem(row, entities::TaskViewTableIdx::kPriority, new QTableWidgetItem(QString::number(entity->priority)));
+    setItem(row, entities::TaskViewTableIdx::kDone, new QTableWidgetItem(QString::number(entity->done)));
 
     auto note = QString::fromUtf8(entity->name.c_str());
     auto v = new QTableWidgetItem(note);
 
-    if (entity->isDone)
+    if (entity->done)
       v->setTextColor(kDoneColor);
 
 
@@ -106,7 +104,7 @@ int QMyTableView::getId(const int row) const {
 }
 
 void QMyTableView::markDone(const int row) {
-  auto v = QString::number(!entities::EntityStates::kNonDone);
+  auto v = QString::number(!entities::EntityStates::kDefaultDone);
   item(row, entities::TaskViewTableIdx::kDone)->setText(v);
 
   // перекрашиваем
@@ -114,7 +112,7 @@ void QMyTableView::markDone(const int row) {
 }
 
 void QMyTableView::markReopen(const int row) {
-  auto v = QString::number(entities::EntityStates::kNonDone);
+  auto v = QString::number(entities::EntityStates::kDefaultDone);
   item(row, entities::TaskViewTableIdx::kDone)->setText(v);
   //item(row, values::TaskViewTableIdx::kTaskName)->setTextColor(kReopenColor);
 }
@@ -135,6 +133,6 @@ entities::Task QMyTableView::getTask(const int row) const {
   t.id = id;
   t.name = name;
   t.priority = p;
-  t.isDone = isDone;
+  t.done = isDone;
   return t;
 }
