@@ -53,7 +53,6 @@ public:
 
   // conv
   entities::Task toValue() const;
-  void assign(const entities::Task& v);
 
   // data
   size_t id;  // нужно какое-то не активное
@@ -61,17 +60,11 @@ public:
   int priority;
   bool isDone;
 
-  static Task create();
-  static Task create(const std::string& d, const int p);
-  static Task create(const size_t id, const std::string& d, const int p, const bool isDone);
-
-  Task(const size_t id, const std::string& d, const int p, const bool);
-
   // copy/assign
   Task(const Task& v);
   Task& operator=(const Task& v);
 
-private:
+//private:
   // ctor/dtor/assign/copy
   Task();
 };

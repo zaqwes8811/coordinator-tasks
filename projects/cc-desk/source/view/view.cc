@@ -127,9 +127,14 @@ entities::Task QMyTableView::getTask(const int row) const {
   DCHECK(row < rowCount());
 
   auto id = getId(row);
-  std::string d(item(row, entities::TaskViewTableIdx::kTaskName)->text().toUtf8().constData());
+  std::string name(item(row, entities::TaskViewTableIdx::kTaskName)->text().toUtf8().constData());
   int p(item(row, entities::TaskViewTableIdx::kPriority)->text().toInt());
-  auto done = item(row, entities::TaskViewTableIdx::kDone)->text().toInt();
+  auto isDone = item(row, entities::TaskViewTableIdx::kDone)->text().toInt();
 
-  return entities::Task::create(id, d, p, done);
+  entities::Task t;
+  t.id = id;
+  t.name = name;
+  t.priority = p;
+  t.isDone = isDone;
+  return t;
 }

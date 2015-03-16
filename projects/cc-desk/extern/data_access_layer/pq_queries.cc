@@ -181,7 +181,12 @@ entities::Task TaskLifetimeQueries::do_create(const entities::Task& task)
 
   // из-за константрости приходится распаковывать значение, нельзя
   //   просто приствоить и оттюнить.
-  return Task::create(id, task.name, task.priority, false);
+  Task t;
+  t.id = id;
+  t.name = task.name;
+  t.priority = task.priority;
+  t.isDone = false;
+  return t;
 }
 
 

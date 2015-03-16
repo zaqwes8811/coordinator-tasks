@@ -44,7 +44,7 @@ std::vector<entities::Task> get_all_values() {
   std::vector<entities::Task> v;
   for (int i = 0; i < 5; ++i) {
     int p = rand() % 10 + 1;
-    auto tmp = entities::Task::create(std_own_ext::to_string(p), p);
+    auto tmp = entities::Task();
     v.push_back(tmp);
   }
 

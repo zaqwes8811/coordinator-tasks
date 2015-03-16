@@ -64,7 +64,7 @@ entities::TaskEntity Model::getElemById(const int id) {
 
 void Model::update(const entities::Task& e) {
   auto k = getElemById(e.id);
-  k->assign(e);
+  *k = e;
 
   auto q = m_dbPtr->createTaskLifetimeQuery();
   q->update(k->toValue());
@@ -76,7 +76,7 @@ void Model::appendNewTask(const Task& task) {
   DCHECK(task.id == EntityStates::kInactiveKey);
 
   auto e = Task::createEntity("");
-  e->assign(task);
+  *e = task;
 
   auto _ = MakeObjGuard(m_tasks, &TaskEntities::pop_back);
 

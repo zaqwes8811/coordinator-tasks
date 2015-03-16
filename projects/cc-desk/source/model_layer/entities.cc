@@ -28,18 +28,16 @@ TaskEntity Task::createEntity(const entities::Task& v)
   return r;
 }
 
-void Task::assign(const entities::Task& v) {
-  id = v.id;
-  name = v.name;
-  priority = v.priority;
-  isDone = v.isDone;
-}
-
 Task::Task()
   : id(EntityStates::kInactiveKey), priority(EntityStates::kDefaultPriority), isDone(false) { }
 
 entities::Task Task::toValue() const {
-  return entities::Task::create(id, name, priority, isDone);
+  entities::Task t;
+  t.id = id;
+  t.name = name;
+  t.priority = priority;
+  t.isDone = isDone;
+  return t;
 }
 
 Task::Task(const Task& v)
@@ -56,21 +54,6 @@ Task& Task::operator=(const Task& v) {
 
   return *this;
 }
-
-Task::Task(const size_t _id, const std::string& d, const int p, const bool _d)
-  : id(_id), name(d), priority(p), isDone(_d) { }
-
-Task Task::create(const std::string& d, const int p) {
-  return Task(entities::EntityStates::kInactiveKey, d, p, false);
-}
-
-Task Task::create() {
-  auto p = entities::EntityStates::kDefaultPriority;
-  return Task(entities::EntityStates::kInactiveKey, std::string(), p, false);
-}
-
-Task Task::create(const size_t id, const std::string& d, const int p, const bool _done)
-{ return Task(id, d, p, _done); }
 }
 
 

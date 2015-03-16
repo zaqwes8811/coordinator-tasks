@@ -43,7 +43,7 @@ void do_something(app::WeakPtr<pqxx::connection> C)
 
   // Create records
   TaskLifetimeQueries q_insert(kTaskTableNameRef, C);
-  auto t = Task::create();
+  auto t = Task();
  // q_insert.create(t, C);
  // assert(t.get_primary_key() != EntitiesStates::kInActiveKey);
  // q_insert.create(t, C);
