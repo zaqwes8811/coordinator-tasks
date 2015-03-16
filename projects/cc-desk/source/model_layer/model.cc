@@ -86,7 +86,7 @@ void Model::appendNewTask(const Task& task) {
   auto query = m_dbPtr->createTaskLifetimeQuery();
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
-  auto r = query->create(e->toValue());
+  auto r = query->copyBean(e->toValue());
   e->id = r.id;  // а ведь придется оставить!!
 
   notify();

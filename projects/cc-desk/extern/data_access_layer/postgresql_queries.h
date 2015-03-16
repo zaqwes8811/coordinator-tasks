@@ -44,7 +44,7 @@ private:
   app::WeakPtr<pqxx::connection> m_connPtr;
 
   // values op.
-  entities::Task do_create(const entities::Task& v) override;
+  entities::Task do_copyBean(const entities::Task& v) override;
 
   void do_update(const entities::Task& v) override;
 
