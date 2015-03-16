@@ -14,7 +14,7 @@ using entities::TaskEntity;
 
 using std::string;
 
-std::function<bool(entities::Tasks::value_type)> is_non_saved() {
+std::function<bool(entities::TaskEntities::value_type)> is_non_saved() {
   return bind(
       bind(equal_to<size_t>(), _1, EntityStates::kInactiveKey),
       bind(&TaskEntity::id, _1)) ;
@@ -24,10 +24,10 @@ std::function<bool(entities::TaskEntityPtr)> is_contained(const size_t id) {
   return bind(bind(equal_to<size_t>(), _1, id),  bind(&TaskEntity::id, _1)) ;
 }
 
-static std::function<bool(entities::Tasks::value_type)> is_non_done() {
+static std::function<bool(entities::TaskEntities::value_type)> is_non_done() {
   return bind(
       bind(equal_to<size_t>(), _1, entities::EntityStates::kNonDone),
-      bind(&TaskEntity::m_isDone, _1)) ;
+      bind(&TaskEntity::isDone, _1)) ;
 }
 
 ChainFilters::ChainFilters() { }
@@ -39,27 +39,27 @@ void ChainFilters::add(FilterPtr e)
 void ChainFilters::remove(FilterPtr e)
 { m_s.erase(e); }
 
-entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
+entities::TaskEntities ChainFilters::operator()(entities::TaskEntities e) const {
   auto r = e;
   for (auto& action: m_s)  r = (*action)(r);
   return r;
 }
 
-entities::Tasks DoneFilter::operator()(entities::Tasks e)
+entities::TaskEntities DoneFilter::operator()(entities::TaskEntities e)
 {
   auto it = std::stable_partition(e.begin(), e.end(), is_non_done());
-  return entities::Tasks(e.begin(), it);
+  return entities::TaskEntities(e.begin(), it);
 }
 
 int DoneFilter::typeCode() const
 { return 1; }
 
 
-entities::Tasks SortByPriorityFilter::operator()(entities::Tasks e) {
+entities::TaskEntities SortByPriorityFilter::operator()(entities::TaskEntities e) {
   std::stable_sort(e.begin(), e.end(),
       bind(std::greater<int>(),
-           bind(&TaskEntity::m_priority, _1),
-           bind(&TaskEntity::m_priority, _2)));
+           bind(&TaskEntity::priority, _1),
+           bind(&TaskEntity::priority, _2)));
   return e;
 }
 
@@ -84,11 +84,11 @@ std::size_t hash_value(FilterPtr b)
     return hasher(b->typeCode());
 }
 
-entities::Tasks SortByTaskName::operator()(entities::Tasks e) {
+entities::TaskEntities SortByTaskName::operator()(entities::TaskEntities e) {
   std::stable_sort(e.begin(), e.end(),
       bind(std::greater<string>(),
-           bind(&TaskEntity::m_name, _1),
-           bind(&TaskEntity::m_name, _2)));
+           bind(&TaskEntity::name, _1),
+           bind(&TaskEntity::name, _2)));
   return e;
 }
 

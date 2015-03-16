@@ -51,12 +51,12 @@ void Model::clear_store() {
   q->drop();
 }
 
-Tasks Model::load_all(storages::DataBaseDriverPtr pool) {
+TaskEntities Model::load_all(storages::DataBaseDriverPtr pool) {
   auto query = pool->createTaskLifetimeQuery();
-  return Tasks(query->get_all());
+  return TaskEntities(query->get_all());
 }
 
-entities::Tasks::value_type Model::getElemById(const int id) {
+entities::TaskEntities::value_type Model::getElemById(const int id) {
   auto it = std::find_if(m_tasks.begin(), m_tasks.end(), filters::is_contained(id));
   DCHECK(it != m_tasks.end());
   return *it;
@@ -78,7 +78,7 @@ void Model::appendNewTask(const TaskValue& task) {
   auto e = TaskEntityPtr(new TaskEntity());
   e->assign(task);
 
-  auto _ = MakeObjGuard(m_tasks, &Tasks::pop_back);
+  auto _ = MakeObjGuard(m_tasks, &TaskEntities::pop_back);
 
   // FIXME: а ведь порядок операций важен, и откатить проще операцию в памяти, чем в базе данных
   m_tasks.push_back(e);
@@ -94,7 +94,7 @@ void Model::appendNewTask(const TaskValue& task) {
   _.Dismiss();
 }
 
-Model::Model(entities::Tasks _tasks,
+Model::Model(entities::TaskEntities _tasks,
              app::SharedPtr<storages::DataBaseDriver> _pool)
     : m_tasks(_tasks)
     , m_dbPtr(_pool) {  }
@@ -107,7 +107,7 @@ void Model::notify()
 void Model::set_listener(app::SharedPtr< ::isolation::ModelListener_virtual> iso)
 { m_observers = iso; }
 
-entities::Tasks Model::getCurrentModelData()
+entities::TaskEntities Model::getCurrentModelData()
 { return m_tasks; }
 
 }

@@ -19,7 +19,7 @@ using Loki::MakeObjGuard;
 using Loki::ScopeGuard;
 using pq_dal::PQConnectionsPool;
 using models::Model;
-using entities::Tasks;
+using entities::TaskEntities;
 using std::cout;
 using renders::render_task_store;
 

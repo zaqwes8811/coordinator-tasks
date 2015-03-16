@@ -16,6 +16,6 @@ entities::TaskValue TaskLifetimeQueries::create(const entities::TaskValue& v)
 { return createImpl(v); }
 void TaskLifetimeQueries::update(const entities::TaskValue& v)
 { updateImpl(v); }
-entities::Tasks TaskLifetimeQueries::get_all() const
+entities::TaskEntities TaskLifetimeQueries::get_all() const
 { return get_allImpl(); }
 }

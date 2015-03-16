@@ -29,7 +29,7 @@ using pqxx::work;
 using pqxx::result;
 using pqxx::nontransaction;
 using entities::TaskEntity;
-using entities::Tasks;
+using entities::TaskEntities;
 using entities::EntityStates;
 
 using entities::TaskValue;
@@ -131,14 +131,14 @@ void TaskLifetimeQueries::updateImpl(const entities::TaskValue& v) {
   DCHECK(v.id != EntityStates::kInactiveKey);
 
   string done("false");
-  if (v.done)
+  if (v.isDone)
     done = "true";
 
   string sql(
   "UPDATE "
         + m_tableName + " SET "
-        + "TASK_NAME = '" + v.m_name
-        + "', PRIORITY = " + std_own_ext::to_string(v.m_priority)
+        + "TASK_NAME = '" + v.name
+        + "', PRIORITY = " + std_own_ext::to_string(v.priority)
         + ", DONE = " + done
         + " WHERE ID = " + std_own_ext::to_string(v.id) + ";");
   
@@ -154,13 +154,13 @@ void TaskLifetimeQueries::updateImpl(const entities::TaskValue& v) {
 entities::TaskValue TaskLifetimeQueries::createImpl(const entities::TaskValue& task)
 {
   DCHECK(task.id == entities::EntityStates::kInactiveKey);
-  DCHECK(!task.done);
+  DCHECK(!task.isDone);
 
   string sql(
       "INSERT INTO " + m_tableName + " (TASK_NAME, PRIORITY) " \
         "VALUES ('"
-        + task.m_name + "', "
-        + std_own_ext::to_string(task.m_priority) + ") RETURNING ID; ");
+        + task.name + "', "
+        + std_own_ext::to_string(task.priority) + ") RETURNING ID; ");
 
   auto c = m_connPtr.lock();
   if (!c)
@@ -181,11 +181,11 @@ entities::TaskValue TaskLifetimeQueries::createImpl(const entities::TaskValue& t
 
   // из-за константрости приходится распаковывать значение, нельзя
   //   просто приствоить и оттюнить.
-  return TaskValue::create(id, task.m_name, task.m_priority);
+  return TaskValue::create(id, task.name, task.priority);
 }
 
 
-entities::Tasks TaskLifetimeQueries::get_allImpl() const {
+entities::TaskEntities TaskLifetimeQueries::get_allImpl() const {
   string sql("SELECT * FROM " + m_tableName + ";");// WHERE DONE = FALSE;");
 
   auto c = m_connPtr.lock();
@@ -197,13 +197,13 @@ entities::Tasks TaskLifetimeQueries::get_allImpl() const {
   w.commit();
 
   // pack
-  Tasks model;
+  TaskEntities model;
   for (auto c = r.begin(); c != r.end(); ++c) {
     auto elem = TaskEntity::create("");
     elem->id = c[TablePositions::kId].as<int>();
-    elem->m_name = (c[TablePositions::kTaskName].as<string>());
-    elem->m_priority = (c[TablePositions::kPriority].as<int>());
-    elem->m_isDone = (c[TablePositions::kDone].as<bool>());
+    elem->name = (c[TablePositions::kTaskName].as<string>());
+    elem->priority = (c[TablePositions::kPriority].as<int>());
+    elem->isDone = (c[TablePositions::kDone].as<bool>());
 
     model.push_back(elem);
   }

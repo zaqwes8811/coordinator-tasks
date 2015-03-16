@@ -26,7 +26,7 @@ public:
 
   // очищает список задач
   void clearList();
-  void draw(entities::Tasks tasks);
+  void draw(entities::TaskEntities tasks);
 
   entities::TaskValue getTask(const int row) const;
   int getId(const int row) const;

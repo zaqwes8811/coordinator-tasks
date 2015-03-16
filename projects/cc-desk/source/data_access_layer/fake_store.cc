@@ -22,8 +22,8 @@ const char* events[] = {
 
 //const char* labels[] = {"v8", "fake"};
 
-Tasks get_all() {
-  Tasks model;
+TaskEntities get_all() {
+  TaskEntities model;
 
   for (int i = 0; i < 5; ++i) {
     string message(events[i]);
@@ -33,7 +33,7 @@ Tasks get_all() {
           //message
           );
 
-    tmp->m_priority = p;
+    tmp->priority = p;
     model.push_back(tmp);
   }
 

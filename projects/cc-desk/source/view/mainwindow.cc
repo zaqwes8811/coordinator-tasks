@@ -35,7 +35,7 @@
 #include <functional>
 
 using models::Model;
-using entities::Tasks;  // not work
+using entities::TaskEntities;  // not work
 using entities::TaskViewTableIdx;
 using entities::TaskValue;
 using entities::EntityStates;
@@ -147,14 +147,14 @@ void Engine::filterOnOffSortByDecPriority(int state) {
   redraw();
 }
 
-entities::Tasks Engine::getModelData() const {
+entities::TaskEntities Engine::getModelData() const {
   return m_filtersChain(m_modelPtr->getCurrentModelData());
 }
 
 #ifndef G_I_WANT_USE_IT
 void Engine::slotFillFake(bool) {
   using namespace std::placeholders;
-  Tasks mirror(fake_store::get_all());
+  TaskEntities mirror(fake_store::get_all());
 
   // сохраняем все
   std::for_each(mirror.begin(), mirror.end()
@@ -221,7 +221,7 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
   }
 }
 
-entities::Tasks::value_type Engine::getTaskById(const int id) {
+entities::TaskEntities::value_type Engine::getTaskById(const int id) {
   using namespace std::placeholders;
   auto r = getModelData();
   auto it = std::find_if(r.begin(), r.end(), bind(&entities::TaskEntity::id, _1));

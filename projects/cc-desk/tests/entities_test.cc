@@ -51,7 +51,7 @@ using namespace entities;
 using namespace Loki;
 using namespace pqxx;
 using namespace fake_store;
-using entities::Tasks;
+using entities::TaskEntities;
 
 using std::vector;
 using std::string;
@@ -65,9 +65,9 @@ TEST(ModelTest, BaseCase) {
 
   // пока храним все в памяти - активные только
   // ссылки не должны утечь, но как удалять из хранилища?
-  Tasks model;
+  TaskEntities model;
 
-  model.push_back(std::make_shared<Tasks::value_type::element_type>(Tasks::value_type::element_type()));
+  model.push_back(std::make_shared<TaskEntities::value_type::element_type>(TaskEntities::value_type::element_type()));
 
   // only tmp!!! maybe weak? - тогда копия не владеет, хотя и работать не очень удобно
   // weak_ptr - неожиданно влядеет
@@ -76,12 +76,12 @@ TEST(ModelTest, BaseCase) {
 
   for_each(model.begin(), model.end(), bind(&TaskEntity::id, _1));
 
-  EXPECT_TRUE(0 == query.at(0).lock()->m_priority);
+  EXPECT_TRUE(0 == query.at(0).lock()->priority);
 }
 
 TEST(ModelTest, Create) {
   // load from store
-  Tasks model(get_all());
+  TaskEntities model(get_all());
   
   // view unsaved
   cout << model;  

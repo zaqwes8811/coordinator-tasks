@@ -35,7 +35,7 @@ class Model
 public:
   // create/destory
   static Model* createForOwn(storages::DataBaseDriverPtr);
-  Model(entities::Tasks _model, storages::DataBaseDriverPtr _pool);
+  Model(entities::TaskEntities _model, storages::DataBaseDriverPtr _pool);
   ~Model();
 
   // other
@@ -53,7 +53,7 @@ public:
 
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
   //   shared объекты превращаются в глобальные переменные.
-  entities::Tasks getCurrentModelData();
+  entities::TaskEntities getCurrentModelData();
 
   void clear_store();
 
@@ -65,14 +65,14 @@ private:
   void notify();  // Нужно было открыть для обновления при семене фильтров
 
   // persist filters:
-  static entities::Tasks load_all(storages::DataBaseDriverPtr pool);
+  static entities::TaskEntities load_all(storages::DataBaseDriverPtr pool);
 
-  entities::Tasks m_tasks;
+  entities::TaskEntities m_tasks;
 
   // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
   storages::DataBaseDriverPtr m_dbPtr;
   isolation::ModelListenerPtr m_observers;
-  entities::Tasks::value_type getElemById(const int id);
+  entities::TaskEntities::value_type getElemById(const int id);
 };
 }
 

@@ -114,15 +114,15 @@ bool checkUnique(const std::string& name, app::WeakPtr<sqlite3_cc::sqlite3> h) {
   return r.empty();
 }
 
-app::SharedPtr<entities::TagEntity>
+app::SharedPtr<entities::Tag>
 createTag(const entities::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
-  DCHECK(tag.m_primaryKey == entities::EntityStates::kInactiveKey);
-  DCHECK(checkUnique(tag.m_name, h));
+  DCHECK(tag.id == entities::EntityStates::kInactiveKey);
+  DCHECK(checkUnique(tag.name, h));
 
   // http://stackoverflow.com/questions/531109/how-to-return-the-value-of-auto-increment-column-in-sqlite-with-vb6
   string sql(
       "INSERT INTO " + s_kTagTableName + " (NAME, COLOR) " \
-      "VALUES ('" + tag.m_name+"','" + tag.m_color + "'); " \
+      "VALUES ('" + tag.name+"','" + tag.color + "'); " \
       "  SELECT last_insert_rowid() FROM " + s_kTagTableName + "; ");
 
   auto c = h.lock();
@@ -141,7 +141,7 @@ createTag(const entities::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
   }
   DCHECK(id != entities::EntityStates::kInactiveKey);
 
-  auto entity = std::make_shared<entities::TagEntity>();
+  auto entity = std::make_shared<entities::Tag>();
 
   return entity;
 }

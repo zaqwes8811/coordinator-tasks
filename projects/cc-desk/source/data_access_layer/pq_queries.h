@@ -51,7 +51,7 @@ private:
   void updateImpl(const entities::TaskValue& v);
 
   // entities op.
-  entities::Tasks get_allImpl() const;
+  entities::TaskEntities get_allImpl() const;
 };
 
 /**

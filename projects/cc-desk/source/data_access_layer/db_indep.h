@@ -54,13 +54,13 @@ class TaskLifetimeQueries
 public:
   entities::TaskValue create(const entities::TaskValue& v);
   void update(const entities::TaskValue& v);
-  entities::Tasks get_all() const;
+  entities::TaskEntities get_all() const;
 
   virtual ~TaskLifetimeQueries() { }
 private:
   virtual entities::TaskValue createImpl(const entities::TaskValue& v) = 0;
   virtual void updateImpl(const entities::TaskValue& v) = 0;
-  virtual entities::Tasks get_allImpl() const = 0;
+  virtual entities::TaskEntities get_allImpl() const = 0;
 };
 
 /**

@@ -11,7 +11,7 @@
 
 using entities::TaskViewTableIdx;
 using entities::TaskValue;
-using entities::Tasks;
+using entities::TaskEntities;
 
 const QColor QMyTableView::kDoneColor = QColor(0, 0, 255, 127);
 const QColor QMyTableView::kReopenColor = QColor(0, 0, 0, 0);  // не влияет, т.к. при перерисовке
@@ -74,7 +74,7 @@ void QMyTableView::clearList() {
     removeRow(i);
 }
 
-void QMyTableView::draw(entities::Tasks taskEntities) {
+void QMyTableView::draw(entities::TaskEntities taskEntities) {
   // fill table
   setRowCount(taskEntities.size() + models::kAddedBlankLines);
 
@@ -82,14 +82,14 @@ void QMyTableView::draw(entities::Tasks taskEntities) {
   for (auto& entity : taskEntities) {
     setItem(row, entities::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entity->id)));
     setItem(row, entities::TaskViewTableIdx::kPriority
-            , new QTableWidgetItem(QString::number(entity->m_priority)));
+            , new QTableWidgetItem(QString::number(entity->priority)));
     setItem(row, entities::TaskViewTableIdx::kDone
-            , new QTableWidgetItem(QString::number(entity->m_isDone)));
+            , new QTableWidgetItem(QString::number(entity->isDone)));
 
-    auto note = QString::fromUtf8(entity->m_name.c_str());
+    auto note = QString::fromUtf8(entity->name.c_str());
     auto v = new QTableWidgetItem(note);
 
-    if (entity->m_isDone)
+    if (entity->isDone)
       v->setTextColor(kDoneColor);
 
 

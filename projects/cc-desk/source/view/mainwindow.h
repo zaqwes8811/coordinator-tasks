@@ -92,14 +92,14 @@ private slots:
 
   // FIXME: DANGER!! при реализации фильтров сломает логику!!!
   // Жесткая привязка к списку и к цепочке фильтров
-  entities::Tasks::value_type getTaskById(const int pos);
+  entities::TaskEntities::value_type getTaskById(const int pos);
 
 private:
   Row getSelectedRow() const;
 
   void processFilter(filters::FilterPtr, int state);
 
-  entities::Tasks getModelData() const;
+  entities::TaskEntities getModelData() const;
 
   Ui::MainWindow *m_uiRawPtr;
   QMyTableView* m_taskTablePtr;

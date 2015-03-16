@@ -26,15 +26,15 @@
 namespace filters
 {
 
-std::function<bool(entities::Tasks::value_type)> is_non_saved();
-std::function<bool(entities::Tasks::value_type)> is_contained(const size_t id);
+std::function<bool(entities::TaskEntities::value_type)> is_non_saved();
+std::function<bool(entities::TaskEntities::value_type)> is_contained(const size_t id);
 
 // могли бы вставляться друг в друга
 class Filter {
 public:
   // ctors/..
   virtual ~Filter() { }
-  virtual entities::Tasks operator()(entities::Tasks t) = 0;
+  virtual entities::TaskEntities operator()(entities::TaskEntities t) = 0;
 
   // FIXME: хочется обойтись без rtti, пока так.
   //   Проблема в удалении фильтра из цепочки.
@@ -80,7 +80,7 @@ public:
   /**
     \attention Logical troubles with filter composition
   */
-  entities::Tasks operator()(entities::Tasks e) const;
+  entities::TaskEntities operator()(entities::TaskEntities e) const;
 
 private:
   // FIXME: можно вообще тупо массив, фильтров все равно не 100500
@@ -89,19 +89,19 @@ private:
 
 class DoneFilter : public Filter {
 public:
-  entities::Tasks operator()(entities::Tasks e);
+  entities::TaskEntities operator()(entities::TaskEntities e);
   int typeCode() const;
 };
 
 class SortByPriorityFilter : public Filter {
 public:
-  entities::Tasks operator()(entities::Tasks e);
+  entities::TaskEntities operator()(entities::TaskEntities e);
   int typeCode() const;
 };
 
 class SortByTaskName : public Filter {
 public:
-    entities::Tasks operator()(entities::Tasks e);
+    entities::TaskEntities operator()(entities::TaskEntities e);
     int typeCode() const;
 };
 }

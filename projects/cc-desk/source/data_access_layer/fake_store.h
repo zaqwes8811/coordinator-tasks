@@ -7,7 +7,7 @@
 
 namespace fake_store {
 // Оно просто создает задачи, это не фейковое хранилище, но чем-то похоже
-entities::Tasks get_all();
+entities::TaskEntities get_all();
 
 std::vector<entities::TaskValue> get_all_values();
 }
