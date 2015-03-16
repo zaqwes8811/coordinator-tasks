@@ -92,15 +92,11 @@ elseif (UNIX)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -Wall")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -std=c++11")
-    # https://tombarta.wordpress.com/2009/12/12/precompiled-headers-with-gcc/
-    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -Winvalid-pch")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -Wconversion")
 
 
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        message("I'm clang")
-        #link_directories(${BigExtern}/boost_1_57_0/stage_gcc/lib)
         link_libraries(
-            #boost_system boost_thread
             pthread rt)  # !! pthread and rt last!!
     else()
         #link_directories(${BigExtern}/boost_1_57_0/stage_x64/lib)

@@ -56,7 +56,7 @@ TaskEntities Model::load_all(storages::DataBaseDriverPtr pool) {
   return TaskEntities(query->loadAll());
 }
 
-entities::TaskEntity Model::getElemById(const int id) {
+entities::TaskEntity Model::getElemById(const size_t id) {
   auto it = std::find_if(m_tasks.begin(), m_tasks.end(), filters::is_contained(id));
   DCHECK(it != m_tasks.end());
   return *it;
@@ -64,7 +64,6 @@ entities::TaskEntity Model::getElemById(const int id) {
 
 void Model::update(const entities::Task& e) {
   auto k = getElemById(e.id);
-  *k = e;
 
   auto q = m_dbPtr->createTaskLifetimeQuery();
   q->update(k->toValue());

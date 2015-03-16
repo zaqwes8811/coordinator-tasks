@@ -72,7 +72,7 @@ private:
   // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
   storages::DataBaseDriverPtr m_dbPtr;
   isolation::ModelListenerPtr m_observersPtr;
-  entities::TaskEntity getElemById(const int id);
+  entities::TaskEntity getElemById(const size_t id);
 };
 }
 
