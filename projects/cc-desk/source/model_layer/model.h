@@ -34,8 +34,8 @@ class Model
 {
 public:
   // create/destory
-  static Model* createForOwn(storages::DataBaseDriverPtr);
-  Model(entities::TaskEntities _model, storages::DataBaseDriverPtr _pool);
+  static Model* createForOwn(storages::DataBasePtr);
+  Model(entities::TaskEntities _model, storages::DataBasePtr _pool);
   ~Model();
 
   // other
@@ -65,12 +65,12 @@ private:
   void notify();  // Нужно было открыть для обновления при семене фильтров
 
   // persist filters:
-  static entities::TaskEntities load_all(storages::DataBaseDriverPtr pool);
+  static entities::TaskEntities load_all(storages::DataBasePtr pool);
 
   entities::TaskEntities m_tasks;
 
   // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
-  storages::DataBaseDriverPtr m_dbPtr;
+  storages::DataBasePtr m_dbPtr;
   isolation::ModelListenerPtr m_observersPtr;
   entities::TaskEntity getElemById(const size_t id);
 };

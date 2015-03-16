@@ -48,10 +48,10 @@ Model::~Model() { }
 
 void Model::clear_store() {
   auto q = m_dbPtr->createTaskTableQuery();
-  q->drop();
+  m_dbPtr->dropSchema(std::move(q));
 }
 
-TaskEntities Model::load_all(storages::DataBaseDriverPtr pool) {
+TaskEntities Model::load_all(storages::DataBasePtr pool) {
   auto query = pool->createTaskLifetimeQuery();
   return TaskEntities(query->loadAll());
 }

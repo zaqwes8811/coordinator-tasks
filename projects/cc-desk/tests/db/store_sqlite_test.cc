@@ -133,6 +133,7 @@ TEST(SQLite, TagAndTaskTables) {
   entities::Tag t(entities::EntityStates::kInactiveKey, "CUDA");
   auto e = createTag(t, h);
 
+  //storages::DataBase::dropSchema()
   tasks.drop();
   tags.drop();
 }

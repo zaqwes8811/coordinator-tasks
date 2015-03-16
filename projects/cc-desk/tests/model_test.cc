@@ -17,7 +17,7 @@ namespace {
 using std::ref;
 using Loki::MakeObjGuard;
 using Loki::ScopeGuard;
-using pq_dal::PQConnectionsPool;
+using pq_dal::PostgreSQLDataBase;
 using models::Model;
 using entities::TaskEntities;
 using std::cout;
@@ -25,8 +25,8 @@ using renders::render_task_store;
 
 TEST(AppCore, Create) {
   // make_shared получает по копии - проблема с некопируемыми объектами
-  app::SharedPtr<PQConnectionsPool> pool(
-        new PQConnectionsPool(models::kConnection, models::kTaskTableNameRef));
+  app::SharedPtr<PostgreSQLDataBase> pool(
+        new PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
   {
     std::auto_ptr<Model> app_ptr(Model::createForOwn(pool));
 
@@ -51,7 +51,7 @@ TEST(AppCore, Create) {
 }
 
 TEST(AppCore, UpdatePriority) {
-  app::SharedPtr<PQConnectionsPool> pool(new PQConnectionsPool(models::kConnection, models::kTaskTableNameRef));
+  app::SharedPtr<PostgreSQLDataBase> pool(new PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
   {
     std::unique_ptr<Model> app_ptr(Model::createForOwn(pool));
     auto _ = MakeObjGuard(*app_ptr, &Model::clear_store);

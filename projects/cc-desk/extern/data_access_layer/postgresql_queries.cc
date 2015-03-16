@@ -38,7 +38,7 @@ using entities::EntityStates;
 using entities::Task;
 
 
-PQConnectionsPool::PQConnectionsPool(const std::string& conn_info
+PostgreSQLDataBase::PostgreSQLDataBase(const std::string& conn_info
                                      , const std::string& table_name)
   : m_conn_ptr(new pqxx::connection(conn_info))
   , m_table_name(table_name)
@@ -47,7 +47,7 @@ PQConnectionsPool::PQConnectionsPool(const std::string& conn_info
   DCHECK(m_conn_ptr->is_open());
 }
 
-PQConnectionsPool::~PQConnectionsPool() {
+PostgreSQLDataBase::~PostgreSQLDataBase() {
   try {
     m_conn_ptr->disconnect();
   } catch (...) {
@@ -56,12 +56,12 @@ PQConnectionsPool::~PQConnectionsPool() {
 }
 
 std::unique_ptr<storages::TaskTableQueries>
-PQConnectionsPool::createTaskTableQuery() {
+PostgreSQLDataBase::createTaskTableQuery() {
   return std::unique_ptr<storages::TaskTableQueries>(new TaskTableQueries(m_table_name, m_conn_ptr));
 }
 
 std::unique_ptr<storages::TaskLifetimeQueries>
-PQConnectionsPool::createTaskLifetimeQuery() {
+PostgreSQLDataBase::createTaskLifetimeQuery() {
   return std::unique_ptr<storages::TaskLifetimeQueries>(new TaskLifetimeQueries(m_table_name, m_conn_ptr));
 }
 

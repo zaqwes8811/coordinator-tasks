@@ -82,11 +82,16 @@ public:
 
   virtual std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQuery() = 0;
 
-  //DataBaseDriver(const DataBaseDriver&) = delete;
+  template <typename QPtr>
+  static void dropSchema(QPtr v) {
+    v->drop();
+  }
+
+  void createSchema();
 };
 
 
-typedef app::SharedPtr<storages::DataBase> DataBaseDriverPtr;
+typedef app::SharedPtr<storages::DataBase> DataBasePtr;
 }
 
 #endif

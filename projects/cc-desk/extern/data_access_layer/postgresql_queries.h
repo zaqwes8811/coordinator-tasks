@@ -55,10 +55,10 @@ private:
 /**
 
 */
-class PQConnectionsPool : public storages::DataBase {
+class PostgreSQLDataBase : public storages::DataBase {
 public:
-  PQConnectionsPool(const std::string& conn_info, const std::string& table_name);
-  ~PQConnectionsPool();
+  PostgreSQLDataBase(const std::string& conn_info, const std::string& table_name);
+  ~PostgreSQLDataBase();
 
   std::unique_ptr<storages::TaskTableQueries> createTaskTableQuery();
   std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQuery();
