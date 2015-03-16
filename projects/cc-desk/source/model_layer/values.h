@@ -35,7 +35,7 @@ public:
   Task& operator=(const Task& v);
 
   // accessors
-  int id() const;
+  size_t id() const;
   app::SharedPtr<const std::string> description() const;
   int priority() const;
   bool done() const;
@@ -54,7 +54,8 @@ class Tag {
 public:
   Tag(size_t id, const std::string& name)
     : m_primaryKey(id)
-    , m_name(name) { }
+    , m_name(name)
+    , m_color("green"){ }
 
   size_t m_primaryKey;
   std::string m_name;

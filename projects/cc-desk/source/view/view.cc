@@ -60,7 +60,7 @@ bool QMyTableView::isEdited() const {
 void QMyTableView::insertBlankRows(const int end) {
   // вставляем еще несколько рядов
   for (int row = end; row < end+models::kAddedBlankLines; ++row) {
-      setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntityStates::kInActiveKey)));
+      setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntityStates::kInactiveKey)));
       setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem(QString()));
       setItem(row, values::TaskViewTableIdx::kPriority,
               new QTableWidgetItem(QString::number(entities::EntityStates::kDefaultPriority)));
@@ -70,28 +70,28 @@ void QMyTableView::insertBlankRows(const int end) {
 
 void QMyTableView::clearList() {
   // есть и функция clear and clearContent
-  auto count_rows = rowCount();
-  for (int i = 0; i < count_rows; ++i)
+  auto size = rowCount();
+  for (int i = 0; i < size; ++i)
     removeRow(i);
 }
 
-void QMyTableView::draw(entities::Tasks tasks) {
+void QMyTableView::draw(entities::Tasks taskEntities) {
   // fill table
-  setRowCount(tasks.size() + models::kAddedBlankLines);
+  setRowCount(taskEntities.size() + models::kAddedBlankLines);
 
   auto row = 0;
-  for (auto& record : tasks) {
+  for (auto& entity : taskEntities) {
     setItem(row, values::TaskViewTableIdx::kId
-            , new QTableWidgetItem(QString::number(record->getPrimaryKey())));
+            , new QTableWidgetItem(QString::number(entity->m_primaryKey)));
     setItem(row, values::TaskViewTableIdx::kPriority
-            , new QTableWidgetItem(QString::number(record->get_priority())));
+            , new QTableWidgetItem(QString::number(entity->m_priority)));
     setItem(row, values::TaskViewTableIdx::kDone
-            , new QTableWidgetItem(QString::number(record->getIsDone())));
+            , new QTableWidgetItem(QString::number(entity->m_isDone)));
 
-    auto note = QString::fromUtf8(record->get_task_name().c_str());
+    auto note = QString::fromUtf8(entity->m_name.c_str());
     auto v = new QTableWidgetItem(note);
 
-    if (record->getIsDone())
+    if (entity->m_isDone)
       v->setTextColor(kDoneColor);
 
 
@@ -122,7 +122,7 @@ void QMyTableView::markReopen(const int row) {
 }
 
 bool QMyTableView::isSaved(const int row) const {
-  return getId(row) != entities::EntityStates::kInActiveKey;
+  return getId(row) != entities::EntityStates::kInactiveKey;
 }
 
 values::Task QMyTableView::getTask(const int row) const {

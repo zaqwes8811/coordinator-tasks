@@ -14,6 +14,8 @@
 #include <iostream>
 
 using std::string;
+using std::cout;
+using std::endl;
 
 std::ostream& operator<<(std::ostream& o, const sqlite3_cc::Result& result) {
   for(auto& row: result) {
@@ -75,8 +77,9 @@ public:
     , m_connPtr(h) { }
 
   void createIfNotExist()  {
+    // http://www.tutorialspoint.com/sqlite/sqlite_using_autoincrement.htm
     string sql = "CREATE TABLE IF NOT EXISTS " + m_tableName + "("  \
-             "ID             SERIAL  PRIMARY KEY     NOT NULL," \
+             "ID             INTEGER  PRIMARY KEY     AUTOINCREMENT," \
              "NAME           TEXT                    NOT NULL," \
              "COLOR          TEXT                    NOT NULL);";
 
@@ -111,32 +114,36 @@ bool checkUnique(const std::string& name, app::WeakPtr<sqlite3_cc::sqlite3> h) {
   return r.empty();
 }
 
-//entities::TagEntity
-void createTag(const values::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
+app::SharedPtr<entities::TagEntity>
+createTag(const values::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
   DCHECK(tag.m_primaryKey == entities::EntityStates::kInactiveKey);
   DCHECK(checkUnique(tag.m_name, h));
 
+  // http://stackoverflow.com/questions/531109/how-to-return-the-value-of-auto-increment-column-in-sqlite-with-vb6
   string sql(
       "INSERT INTO " + s_kTagTableName + " (NAME, COLOR) " \
-      "VALUES ('" + tag.m_name+"', " + tag.m_color + ") RETURNING ID; ");
+      "VALUES ('" + tag.m_name+"','" + tag.m_color + "'); " \
+      "  SELECT last_insert_rowid() FROM " + s_kTagTableName + "; ");
 
   auto c = h.lock();
   if (!c)
     throw std::runtime_error(FROM_HERE);
 
   // query
-  work w(*c);
-  result r( w.exec( sql ));  // похоже нельзя выполнить два запроса
-  w.commit();
+  auto r = sqlite3_cc::sqlite3_exec(*c, sql);
   DCHECK(r.size() == 1);
 
   // Узнаем что за ключ получили
-  int id(entities::EntityStates::kInactiveKey);
-  for (auto c = r.begin(); c != r.end(); ++c) {
-    id = c[TablePositions::kId].as<int>();
+  size_t id(entities::EntityStates::kInactiveKey);
+  for (auto& col : r) {
+    id = sqlite3_cc::as<size_t>(col["ID"]);
     break;
   }
   DCHECK(id != entities::EntityStates::kInactiveKey);
+
+  auto entity = std::make_shared<entities::TagEntity>();
+
+  return entity;
 }
 
 TEST(SQLite, TagAndTaskTables) {

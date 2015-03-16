@@ -148,7 +148,7 @@ void Engine::filterOnOffSortByDecPriority(int state) {
   redraw();
 }
 
-entities::Tasks Engine::get_model_data() const {
+entities::Tasks Engine::getModelData() const {
   return m_filtersChain(m_modelPtr->getCurrentModelData());
 }
 
@@ -171,7 +171,7 @@ void Engine::redraw() {
   // FIXME: сбивает выбранную позицию
   //
   m_taskTablePtr->clearList();
-  auto records = get_model_data();  // may throw
+  auto records = getModelData();  // may throw
   m_taskTablePtr->draw(records);
 }
 
@@ -184,7 +184,7 @@ Row Engine::getSelectedRow() const {
 
   auto const row = indexList.at(values::TaskViewTableIdx::kId).row();
 
-  if (row >= get_model_data().size())
+  if (row >= getModelData().size())
     return Row::absent();
 
   return Row::of(row);
@@ -222,11 +222,11 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
   }
 }
 
-entities::Tasks::value_type Engine::get_elem_by_id(const int id) {
+entities::Tasks::value_type Engine::getTaskById(const int id) {
   using namespace std::placeholders;
-  auto r = get_model_data();
+  auto r = getModelData();
   auto it = std::find_if(r.begin(), r.end(), bind(&entities::TaskEntity::getPrimaryKey, _1));
 
-  assert(it != r.end());  // должен быть
+  DCHECK(it != r.end());  // должен быть
   return *it;
 }

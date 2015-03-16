@@ -74,7 +74,7 @@ void Model::update(const values::Task& e) {
 }
 
 void Model::appendNewTask(const Task& task) {
-  DCHECK(task.id() == EntityStates::kInActiveKey);
+  DCHECK(task.id() == EntityStates::kInactiveKey);
 
   auto e = TaskEntityPtr(new TaskEntity());
   e->assign(task);
@@ -89,7 +89,7 @@ void Model::appendNewTask(const Task& task) {
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
   auto r = query->create(e->toValue());
-  e->setPrimaryKey(r.id());  // а ведь придется оставить!!
+  e->m_primaryKey = (r.id());  // а ведь придется оставить!!
 
   notify();
   _.Dismiss();

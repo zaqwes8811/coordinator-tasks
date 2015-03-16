@@ -31,7 +31,7 @@ Task::Task(const int _id, const std::string& d, const int p, const bool _d)
 { }
 
 Task Task::create(const std::string& d, const int p) {
-  return Task(entities::EntityStates::kInActiveKey, d, p, false);
+  return Task(entities::EntityStates::kInactiveKey, d, p, false);
 }
 
 Task Task::create(const int id, const std::string& d, const int p) {
@@ -39,8 +39,8 @@ Task Task::create(const int id, const std::string& d, const int p) {
 }
 
 Task Task::create() {
-  int p = entities::EntityStates::kDefaultPriority;
-  return Task(entities::EntityStates::kInActiveKey, std::string(), p, false);
+  auto p = entities::EntityStates::kDefaultPriority;
+  return Task(entities::EntityStates::kInactiveKey, std::string(), p, false);
 }
 
 Task Task::create(
@@ -49,7 +49,7 @@ Task Task::create(
         const int p,
         const bool _done) { return Task(id, d, p, _done); }
 
-int Task::id() const
+size_t Task::id() const
 { return _id; }
 
 app::SharedPtr<const std::string> Task::description() const

@@ -129,7 +129,7 @@ TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
 
 void TaskLifetimeQueries::updateImpl(const values::Task& v) {
 
-  DCHECK(v.id() != EntityStates::kInActiveKey);
+  DCHECK(v.id() != EntityStates::kInactiveKey);
 
   string done("false");
   if (v.done())
@@ -154,7 +154,7 @@ void TaskLifetimeQueries::updateImpl(const values::Task& v) {
 
 values::Task TaskLifetimeQueries::createImpl(const values::Task& task)
 {
-  DCHECK(task.id() == entities::EntityStates::kInActiveKey);
+  DCHECK(task.id() == entities::EntityStates::kInactiveKey);
   DCHECK(!task.done());
 
   string sql(
@@ -173,12 +173,12 @@ values::Task TaskLifetimeQueries::createImpl(const values::Task& task)
   DCHECK(r.size() == 1);
 
   // Узнаем что за ключ получили
-  int id(entities::EntityStates::kInActiveKey);
+  size_t id(entities::EntityStates::kInactiveKey);
   for (auto c = r.begin(); c != r.end(); ++c) {
-    id = c[TablePositions::kId].as<int>();
+    id = c[TablePositions::kId].as<size_t>();
     break;
   }
-  DCHECK(id != entities::EntityStates::kInActiveKey);
+  DCHECK(id != entities::EntityStates::kInactiveKey);
 
   // из-за константрости приходится распаковывать значение, нельзя
   //   просто приствоить и оттюнить.
@@ -201,10 +201,10 @@ entities::Tasks TaskLifetimeQueries::get_allImpl() const {
   Tasks model;
   for (auto c = r.begin(); c != r.end(); ++c) {
     auto elem = TaskEntity::create("");
-    elem->setPrimaryKey(c[TablePositions::kId].as<int>());
-    elem->set_task_name(c[TablePositions::kTaskName].as<string>());
-    elem->setPriority(c[TablePositions::kPriority].as<int>());
-    elem->set_is_done(c[TablePositions::kDone].as<bool>());
+    elem->m_primaryKey = c[TablePositions::kId].as<int>();
+    elem->m_name = (c[TablePositions::kTaskName].as<string>());
+    elem->m_priority = (c[TablePositions::kPriority].as<int>());
+    elem->m_isDone = (c[TablePositions::kDone].as<bool>());
 
     model.push_back(elem);
   }

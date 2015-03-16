@@ -34,7 +34,7 @@ Tasks get_all() {
           //message
           );
 
-    tmp->setPriority(p);
+    tmp->m_priority = p;
     model.push_back(tmp);
   }
 

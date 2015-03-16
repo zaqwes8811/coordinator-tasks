@@ -16,7 +16,7 @@ using std::string;
 
 std::function<bool(entities::Tasks::value_type)> get_check_non_saved() {
   return bind(
-      bind(equal_to<int>(), _1, EntityStates::kInActiveKey),
+      bind(equal_to<int>(), _1, EntityStates::kInactiveKey),
       bind(&TaskEntity::getPrimaryKey, _1)) ;
 }
 
