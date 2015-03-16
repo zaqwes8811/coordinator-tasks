@@ -17,19 +17,17 @@ using std::string;
 std::function<bool(entities::Tasks::value_type)> is_non_saved() {
   return bind(
       bind(equal_to<size_t>(), _1, EntityStates::kInactiveKey),
-      bind(&TaskEntity::getId, _1)) ;
+      bind(&TaskEntity::id, _1)) ;
 }
 
-std::function<bool(entities::TaskEntityPtr)> is_contained(const int id) {
-  return bind(
-      bind(equal_to<size_t>(), _1, id),
-      bind(&TaskEntity::getId, _1)) ;
+std::function<bool(entities::TaskEntityPtr)> is_contained(const size_t id) {
+  return bind(bind(equal_to<size_t>(), _1, id),  bind(&TaskEntity::id, _1)) ;
 }
 
-std::function<bool(entities::Tasks::value_type)> get_is_non_done() {
+static std::function<bool(entities::Tasks::value_type)> is_non_done() {
   return bind(
       bind(equal_to<size_t>(), _1, entities::EntityStates::kNonDone),
-      bind(&TaskEntity::getIsDone, _1)) ;
+      bind(&TaskEntity::idDone, _1)) ;
 }
 
 ChainFilters::ChainFilters() { }
@@ -49,52 +47,52 @@ entities::Tasks ChainFilters::operator()(entities::Tasks e) const {
 
 entities::Tasks DoneFilter::operator()(entities::Tasks e)
 {
-  auto it = std::stable_partition(e.begin(), e.end(), get_is_non_done());
+  auto it = std::stable_partition(e.begin(), e.end(), is_non_done());
   return entities::Tasks(e.begin(), it);
 }
 
-int DoneFilter::get_type_code() const
+int DoneFilter::typeCode() const
 { return 1; }
 
 
 entities::Tasks SortByPriorityFilter::operator()(entities::Tasks e) {
   std::stable_sort(e.begin(), e.end(),
       bind(std::greater<int>(),
-           bind(&TaskEntity::get_priority, _1),
-           bind(&TaskEntity::get_priority, _2)));
+           bind(&TaskEntity::priority, _1),
+           bind(&TaskEntity::priority, _2)));
   return e;
 }
 
-int SortByPriorityFilter::get_type_code() const
+int SortByPriorityFilter::typeCode() const
 { return 2; }
 
 // сырые указатели лучше не передавать.
 // FIXME: It is very bad! dynamic cast don't work, no info
 //return (typeid(lhs)) == (typeid(rhs));
 bool operator==(const Filter& lhs, const Filter& rhs) {
-  return lhs.get_type_code() == rhs.get_type_code();
+  return lhs.typeCode() == rhs.typeCode();
 }
 
 //return typeid(*lhs) == typeid(*rhs);  // no way
 bool operator==(FilterPtr lhs, FilterPtr rhs) {
-  return lhs->get_type_code() == rhs->get_type_code();
+  return lhs->typeCode() == rhs->typeCode();
 }
 
 std::size_t hash_value(FilterPtr b)
 {
     std::hash<int> hasher;
-    return hasher(b->get_type_code());
+    return hasher(b->typeCode());
 }
 
 entities::Tasks SortByTaskName::operator()(entities::Tasks e) {
   std::stable_sort(e.begin(), e.end(),
       bind(std::greater<string>(),
-           bind(&TaskEntity::get_task_name, _1),
-           bind(&TaskEntity::get_task_name, _2)));
+           bind(&TaskEntity::name, _1),
+           bind(&TaskEntity::name, _2)));
   return e;
 }
 
-int SortByTaskName::get_type_code() const {
+int SortByTaskName::typeCode() const {
   return 3;
 }
 

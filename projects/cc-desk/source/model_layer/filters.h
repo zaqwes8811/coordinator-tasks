@@ -27,7 +27,7 @@ namespace filters
 {
 
 std::function<bool(entities::Tasks::value_type)> is_non_saved();
-std::function<bool(entities::Tasks::value_type)> is_contained(const int id);
+std::function<bool(entities::Tasks::value_type)> is_contained(const size_t id);
 
 // могли бы вставляться друг в друга
 class Filter {
@@ -38,7 +38,7 @@ public:
 
   // FIXME: хочется обойтись без rtti, пока так.
   //   Проблема в удалении фильтра из цепочки.
-  virtual int get_type_code() const = 0;
+  virtual int typeCode() const = 0;
 };
 typedef app::SharedPtr<Filter> FilterPtr;
 
@@ -52,7 +52,7 @@ struct KeyHasher
   std::size_t operator()(FilterPtr k) const
   {
     using std::hash;
-    return hash<int>()(k->get_type_code());
+    return hash<int>()(k->typeCode());
   }
 };
 
@@ -72,9 +72,14 @@ public:
   ChainFilters();
   void add(FilterPtr e);
 
-  // FIXME: как удалить то без RTTI? Список то полиморфный
+  /**
+    \fixme как удалить то без RTTI? Список то полиморфный
+  */
   void remove(FilterPtr e);
 
+  /**
+    \attention Logical troubles with filter composition
+  */
   entities::Tasks operator()(entities::Tasks e) const;
 
 private:
@@ -85,19 +90,19 @@ private:
 class DoneFilter : public Filter {
 public:
   entities::Tasks operator()(entities::Tasks e);
-  int get_type_code() const;
+  int typeCode() const;
 };
 
 class SortByPriorityFilter : public Filter {
 public:
   entities::Tasks operator()(entities::Tasks e);
-  int get_type_code() const;
+  int typeCode() const;
 };
 
 class SortByTaskName : public Filter {
 public:
     entities::Tasks operator()(entities::Tasks e);
-    int get_type_code() const;
+    int typeCode() const;
 };
 }
 

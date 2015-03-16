@@ -225,7 +225,7 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
 entities::Tasks::value_type Engine::getTaskById(const int id) {
   using namespace std::placeholders;
   auto r = getModelData();
-  auto it = std::find_if(r.begin(), r.end(), bind(&entities::TaskEntity::getId, _1));
+  auto it = std::find_if(r.begin(), r.end(), bind(&entities::TaskEntity::id, _1));
 
   DCHECK(it != r.end());  // должен быть
   return *it;

@@ -39,17 +39,10 @@ public:
   void assign(const values::Task& v);
 
   // FIXME: remove it
-  size_t getId() const
-  { return m_primaryKey; }
-
-  std::string get_task_name() const
-  { return m_name; }
-
-  bool getIsDone() const
-  { return m_isDone; }
-
-  int get_priority() const
-  { return m_priority; }
+  size_t id() const { return m_primaryKey; }
+  std::string name() const { return m_name; }
+  bool idDone() const { return m_isDone; }
+  int priority() const { return m_priority; }
 
   size_t m_primaryKey;  // нужно какое-то не активное
   std::string m_name;
