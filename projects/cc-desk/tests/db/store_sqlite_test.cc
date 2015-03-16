@@ -65,11 +65,13 @@ TEST(SQLiteTest, Base) {
   sqlite3_cc::sqlite3_exec(h, "drop table COMPANY;");
 }
 
+static const string s_kTagTableName = "TAGS";
+
 class SQLiteTagTableQuery
 {
 public:
   explicit SQLiteTagTableQuery(app::WeakPtr<sqlite3_cc::sqlite3> h)
-    : m_tableName("TAGS")
+    : m_tableName(s_kTagTableName)
     , m_connPtr(h) { }
 
   void createIfNotExist()  {
@@ -104,18 +106,37 @@ bool checkUnique(const std::string& name, app::WeakPtr<sqlite3_cc::sqlite3> h) {
   auto c = h.lock();
   if (!c) return false;
 
-  auto sql = "SELECT NAME FROM TAGS WHERE NAME ='" + name + "';";
+  auto sql = "SELECT NAME FROM " + s_kTagTableName + " WHERE NAME ='" + name + "';";
   auto r = sqlite3_cc::sqlite3_exec(*c, sql);
   return r.empty();
 }
 
-//tuple<>
 //entities::TagEntity
-bool tryCreateTag(const values::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
-  DCHECK(tag.m_primaryKey == entities::EntityStates::kInActiveKey);
+void createTag(const values::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
+  DCHECK(tag.m_primaryKey == entities::EntityStates::kInactiveKey);
   DCHECK(checkUnique(tag.m_name, h));
 
-  return true;
+  string sql(
+      "INSERT INTO " + s_kTagTableName + " (NAME, COLOR) " \
+      "VALUES ('" + tag.m_name+"', " + tag.m_color + ") RETURNING ID; ");
+
+  auto c = h.lock();
+  if (!c)
+    throw std::runtime_error(FROM_HERE);
+
+  // query
+  work w(*c);
+  result r( w.exec( sql ));  // похоже нельзя выполнить два запроса
+  w.commit();
+  DCHECK(r.size() == 1);
+
+  // Узнаем что за ключ получили
+  int id(entities::EntityStates::kInactiveKey);
+  for (auto c = r.begin(); c != r.end(); ++c) {
+    id = c[TablePositions::kId].as<int>();
+    break;
+  }
+  DCHECK(id != entities::EntityStates::kInactiveKey);
 }
 
 TEST(SQLite, TagAndTaskTables) {
@@ -129,8 +150,8 @@ TEST(SQLite, TagAndTaskTables) {
 
   // Create tag
   // Must have unique name
-  values::Tag t(entities::EntityStates::kInActiveKey, "CUDA");
-  tryCreateTag(t, h);
+  values::Tag t(entities::EntityStates::kInactiveKey, "CUDA");
+  createTag(t, h);
 
   tasks.drop();
   tags.drop();
