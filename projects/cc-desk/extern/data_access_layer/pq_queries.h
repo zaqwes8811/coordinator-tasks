@@ -46,12 +46,12 @@ private:
   app::WeakPtr<pqxx::connection> m_connPtr;
 
   // values op.
-  entities::Task createImpl(const entities::Task& v);
+  entities::Task do_create(const entities::Task& v) override;
 
-  void updateImpl(const entities::Task& v);
+  void do_update(const entities::Task& v) override;
 
   // entities op.
-  entities::TaskEntities get_allImpl() const;
+  entities::TaskEntities do_loadAll() const override;
 };
 
 /**

@@ -135,13 +135,13 @@ file( GLOB proTests
     ${ExternLocal}/actors_and_workers/*.h
     ${ExternLocal}/std_own_ext-fix/*.h
     ${Source}/../../std_own_ext/*.h
-    ${Source}/data_access_layer/*.cc
-    ${Source}/data_access_layer/*.h
+    ${ExternLocal}/data_access_layer/*.cc
+    ${ExternLocal}/data_access_layer/*.h
     ${Source}/heart/*.h
     ${Source}/common/*.h
     ${Source}/model_layer/*.cc
     ${Source}/model_layer/*.h
-    ${Source}/wrappers/*.cc
+    ${ExternLocal}/sqlite_xx/*.cc
     ${testsRoot}/*.cc
     ${testsRoot}/db/*.cc
 )

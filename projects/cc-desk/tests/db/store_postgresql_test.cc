@@ -33,7 +33,7 @@ void do_something(app::WeakPtr<pqxx::connection> C)
   
   // Tasks
   TaskTableQueries q(kTaskTableNameRef, C);
-  q.createIfNotExist();  // clang segfault
+  q.registerBeanClass();  // clang segfault
 
   cout << "create table\n";
 

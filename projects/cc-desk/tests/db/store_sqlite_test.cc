@@ -1,6 +1,6 @@
 #include "heart/config.h"
 
-#include "wrappers/sqlite_xx.h"
+#include "sqlite_xx/sqlite_xx.h"
 #include "data_access_layer/db_indep.h"
 #include "data_access_layer/sqlite_queries.h"
 
@@ -25,46 +25,6 @@ std::ostream& operator<<(std::ostream& o, const sqlite3_cc::Result& result) {
     o  << std::endl;
   }
   return o;
-}
-
-// http://www.tutorialspoint.com/sqlite/sqlite_c_cpp.htm
-TEST(SQLiteTest, Base) {
-  sqlite3_cc::sqlite3 h("test.db");
-
-
-  /* Create SQL statement */
-  string sql = "CREATE TABLE IF NOT EXISTS COMPANY("  \
-           "ID INT PRIMARY KEY     NOT NULL," \
-           "NAME           TEXT    NOT NULL," \
-           "AGE            INT     NOT NULL," \
-           "ADDRESS        CHAR(50)," \
-           "SALARY         REAL );";
-
-   /* Execute SQL statement */
-  sqlite3_cc::sqlite3_exec(h, sql);
-
-  /* Create SQL statement */
-  sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "  \
-       "VALUES (1, 'Paul', 32, 'California', 20000.00 ); " \
-       "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) "  \
-       "VALUES (2, 'Allen', 25, 'Texas', 15000.00 ); "     \
-       "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY)" \
-       "VALUES (3, 'Teddy', 23, 'Norway', 20000.00 );" \
-       "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY)" \
-       "VALUES (4, 'Mark', 25, 'Rich-Mond ', 65000.00 );";
-
-  /* Execute SQL statement */
-  sqlite3_cc::sqlite3_exec(h, sql);
-
-  /* Create SQL statement */
-  sql = "SELECT * from COMPANY";
-
-  /* Execute SQL statement */
-  const auto result = sqlite3_cc::sqlite3_exec(h, sql);
-  std::cout << result;
-
-
-  sqlite3_cc::sqlite3_exec(h, "drop table COMPANY;");
 }
 
 static const string s_kTagTableName = "TAGS";
@@ -102,7 +62,7 @@ private:
 TEST(SQLite, TaskTable) {
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
   auto table = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
-  table.createIfNotExist();
+  table.registerBeanClass();
 }
 
 bool checkUnique(const std::string& name, app::WeakPtr<sqlite3_cc::sqlite3> h) {
@@ -114,8 +74,9 @@ bool checkUnique(const std::string& name, app::WeakPtr<sqlite3_cc::sqlite3> h) {
   return r.empty();
 }
 
-app::SharedPtr<entities::Tag>
-createTag(const entities::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
+entities::TagEntity createTag(const entities::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
+  using sqlite3_cc::as;
+
   DCHECK(tag.id == entities::EntityStates::kInactiveKey);
   DCHECK(checkUnique(tag.name, h));
 
@@ -136,21 +97,33 @@ createTag(const entities::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
   // Узнаем что за ключ получили
   size_t id(entities::EntityStates::kInactiveKey);
   for (auto& col : r) {
-    id = sqlite3_cc::as<size_t>(col["ID"]);
+    id = as<size_t>(col["ID"]);
     break;
   }
   DCHECK(id != entities::EntityStates::kInactiveKey);
 
   auto entity = std::make_shared<entities::Tag>();
+  entity->id = id;
+  entity->name = tag.name;
+  entity->color = tag.color;
 
   return entity;
 }
 
+template <typename Table>
+void registerTable (Table& t) { }
+
 TEST(SQLite, TagAndTaskTables) {
+  // Connect task with tag
+  // select by tag
+
+  using entities::Tag;
+  using entities::TagEntity;
+
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
 
   auto tasks = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
-  tasks.createIfNotExist();
+  tasks.registerBeanClass();
 
   auto tags = SQLiteTagTableQuery(h);
   tags.createIfNotExist();
@@ -158,7 +131,7 @@ TEST(SQLite, TagAndTaskTables) {
   // Create tag
   // Must have unique name
   entities::Tag t(entities::EntityStates::kInactiveKey, "CUDA");
-  createTag(t, h);
+  auto e = createTag(t, h);
 
   tasks.drop();
   tags.drop();

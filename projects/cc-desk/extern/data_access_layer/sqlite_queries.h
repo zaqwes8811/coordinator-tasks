@@ -2,7 +2,7 @@
 #define DAL_SQLITE_QUERIES_H_
 
 #include "db_indep.h"
-#include "wrappers/sqlite_xx.h"
+#include "sqlite_xx/sqlite_xx.h"
 
 #include <memory>
 #include <ostream>

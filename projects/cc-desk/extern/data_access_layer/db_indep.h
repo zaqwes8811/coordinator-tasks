@@ -19,7 +19,7 @@ struct TablePositions {
 class TaskTableQueries
 {
 public:
-  void createIfNotExist();
+  void registerBeanClass();
   void drop();
   void draw(std::ostream& o) const;
 
@@ -54,13 +54,13 @@ class TaskLifetimeQueries
 public:
   entities::Task create(const entities::Task& v);
   void update(const entities::Task& v);
-  entities::TaskEntities get_all() const;
+  entities::TaskEntities loadAll() const;
 
   virtual ~TaskLifetimeQueries() { }
 private:
-  virtual entities::Task createImpl(const entities::Task& v) = 0;
-  virtual void updateImpl(const entities::Task& v) = 0;
-  virtual entities::TaskEntities get_allImpl() const = 0;
+  virtual entities::Task do_create(const entities::Task& v) = 0;
+  virtual void do_update(const entities::Task& v) = 0;
+  virtual entities::TaskEntities do_loadAll() const = 0;
 };
 
 /**

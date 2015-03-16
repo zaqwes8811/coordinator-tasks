@@ -33,7 +33,7 @@ Model* Model::createForOwn(app::SharedPtr<storages::DataBaseDriver> pool) {
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
   auto q = pool->createTaskTableQuery();
-  q->createIfNotExist();
+  q->registerBeanClass();
 
   auto t = load_all(pool);
   return new Model(t, pool);
@@ -53,7 +53,7 @@ void Model::clear_store() {
 
 TaskEntities Model::load_all(storages::DataBaseDriverPtr pool) {
   auto query = pool->createTaskLifetimeQuery();
-  return TaskEntities(query->get_all());
+  return TaskEntities(query->loadAll());
 }
 
 entities::TaskEntity Model::getElemById(const int id) {

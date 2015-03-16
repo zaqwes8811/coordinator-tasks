@@ -97,7 +97,7 @@ TEST(ModelTest, Create) {
 
     // Tasks
     TaskTableQueries q(kTaskTableNameRef, C);
-    q.createIfNotExist();
+    q.registerBeanClass();
     // Если не создано, то нет смысла
     // а если не создасться? Тут похоже все равно.
     auto table_guard = MakeObjGuard(q, &TaskTableQueries::drop);

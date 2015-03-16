@@ -76,6 +76,9 @@ private:
   Task();
 };
 
+class Tag;
+typedef app::SharedPtr<entities::Tag> TagEntity;
+
 /**
   \fixme должны быть уникальные по имени и при создании это нужно контролировать.
 */

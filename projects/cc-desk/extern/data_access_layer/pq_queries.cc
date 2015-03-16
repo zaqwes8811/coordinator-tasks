@@ -126,7 +126,7 @@ TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
     , m_connPtr(p)
 { }
 
-void TaskLifetimeQueries::updateImpl(const entities::Task& v) {
+void TaskLifetimeQueries::do_update(const entities::Task& v) {
 
   DCHECK(v.id != EntityStates::kInactiveKey);
 
@@ -151,7 +151,7 @@ void TaskLifetimeQueries::updateImpl(const entities::Task& v) {
   w.commit();
 }
 
-entities::Task TaskLifetimeQueries::createImpl(const entities::Task& task)
+entities::Task TaskLifetimeQueries::do_create(const entities::Task& task)
 {
   DCHECK(task.id == entities::EntityStates::kInactiveKey);
   DCHECK(!task.isDone);
@@ -185,7 +185,7 @@ entities::Task TaskLifetimeQueries::createImpl(const entities::Task& task)
 }
 
 
-entities::TaskEntities TaskLifetimeQueries::get_allImpl() const {
+entities::TaskEntities TaskLifetimeQueries::do_loadAll() const {
   string sql("SELECT * FROM " + m_tableName + ";");// WHERE DONE = FALSE;");
 
   auto c = m_connPtr.lock();
