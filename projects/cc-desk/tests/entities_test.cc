@@ -33,7 +33,6 @@
 #include "data_access_layer/fake_store.h"
 #include "model_layer/filters.h"
 #include "common/app_types.h"
-#include "model_layer/values.h"
 
 #include <gtest/gtest.h>
 #include <loki/ScopeGuard.h>
@@ -77,7 +76,7 @@ TEST(ModelTest, BaseCase) {
 
   for_each(model.begin(), model.end(), bind(&TaskEntity::id, _1));
 
-  EXPECT_TRUE(0 == query.at(0).lock()->priority());
+  EXPECT_TRUE(0 == query.at(0).lock()->m_priority);
 }
 
 TEST(ModelTest, Create) {
@@ -121,9 +120,9 @@ TEST(ModelTest, Create) {
 }
 
 TEST(Values, Assign) {
-  using namespace values;
-  Task v = Task::create();
-  Task v1 = Task::create("hello", 90);
+  using namespace entities;
+  TaskValue v = TaskValue::create();
+  TaskValue v1 = TaskValue::create("hello", 90);
   v = v1;
 }
 

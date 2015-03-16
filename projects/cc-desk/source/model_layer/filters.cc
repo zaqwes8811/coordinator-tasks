@@ -27,7 +27,7 @@ std::function<bool(entities::TaskEntityPtr)> is_contained(const size_t id) {
 static std::function<bool(entities::Tasks::value_type)> is_non_done() {
   return bind(
       bind(equal_to<size_t>(), _1, entities::EntityStates::kNonDone),
-      bind(&TaskEntity::idDone, _1)) ;
+      bind(&TaskEntity::m_isDone, _1)) ;
 }
 
 ChainFilters::ChainFilters() { }
@@ -58,8 +58,8 @@ int DoneFilter::typeCode() const
 entities::Tasks SortByPriorityFilter::operator()(entities::Tasks e) {
   std::stable_sort(e.begin(), e.end(),
       bind(std::greater<int>(),
-           bind(&TaskEntity::priority, _1),
-           bind(&TaskEntity::priority, _2)));
+           bind(&TaskEntity::m_priority, _1),
+           bind(&TaskEntity::m_priority, _2)));
   return e;
 }
 
@@ -87,8 +87,8 @@ std::size_t hash_value(FilterPtr b)
 entities::Tasks SortByTaskName::operator()(entities::Tasks e) {
   std::stable_sort(e.begin(), e.end(),
       bind(std::greater<string>(),
-           bind(&TaskEntity::name, _1),
-           bind(&TaskEntity::name, _2)));
+           bind(&TaskEntity::m_name, _1),
+           bind(&TaskEntity::m_name, _2)));
   return e;
 }
 

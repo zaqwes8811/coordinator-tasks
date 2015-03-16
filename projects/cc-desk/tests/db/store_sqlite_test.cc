@@ -115,7 +115,7 @@ bool checkUnique(const std::string& name, app::WeakPtr<sqlite3_cc::sqlite3> h) {
 }
 
 app::SharedPtr<entities::TagEntity>
-createTag(const values::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
+createTag(const entities::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
   DCHECK(tag.m_primaryKey == entities::EntityStates::kInactiveKey);
   DCHECK(checkUnique(tag.m_name, h));
 
@@ -157,7 +157,7 @@ TEST(SQLite, TagAndTaskTables) {
 
   // Create tag
   // Must have unique name
-  values::Tag t(entities::EntityStates::kInactiveKey, "CUDA");
+  entities::Tag t(entities::EntityStates::kInactiveKey, "CUDA");
   createTag(t, h);
 
   tasks.drop();

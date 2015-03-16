@@ -21,7 +21,6 @@
 #include "ui_mainwindow.h"
 #include "data_access_layer/fake_store.h"
 #include "model_layer/entities.h"
-#include "model_layer/values.h"
 
 #include <QPushButton>
 #include <QTableWidget>
@@ -37,8 +36,8 @@
 
 using models::Model;
 using entities::Tasks;  // not work
-using values::TaskViewTableIdx;
-using values::Task;
+using entities::TaskViewTableIdx;
+using entities::TaskValue;
 using entities::EntityStates;
 using std::string;
 using std::vector;
@@ -115,7 +114,7 @@ void Engine::slotReopen() {
     auto row = r.get();
     // Обновляем ячейку
     m_taskTablePtr->markReopen(row);  // no throw
-    values::Task t = m_taskTablePtr->getTask(row);
+    entities::TaskValue t = m_taskTablePtr->getTask(row);
     m_modelPtr->update(t);  // FIXME: may throw
   }
 }
@@ -182,7 +181,7 @@ Row Engine::getSelectedRow() const {
   if (indexList.empty() || (indexList.size() != 1))
     return Row::absent();
 
-  auto const row = indexList.at(values::TaskViewTableIdx::kId).row();
+  auto const row = indexList.at(entities::TaskViewTableIdx::kId).row();
 
   if (row >= getModelData().size())
     return Row::absent();

@@ -52,14 +52,14 @@ private:
 class TaskLifetimeQueries
 {
 public:
-  values::Task create(const values::Task& v);
-  void update(const values::Task& v);
+  entities::TaskValue create(const entities::TaskValue& v);
+  void update(const entities::TaskValue& v);
   entities::Tasks get_all() const;
 
   virtual ~TaskLifetimeQueries() { }
 private:
-  virtual values::Task createImpl(const values::Task& v) = 0;
-  virtual void updateImpl(const values::Task& v) = 0;
+  virtual entities::TaskValue createImpl(const entities::TaskValue& v) = 0;
+  virtual void updateImpl(const entities::TaskValue& v) = 0;
   virtual entities::Tasks get_allImpl() const = 0;
 };
 

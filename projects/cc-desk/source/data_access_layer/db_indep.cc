@@ -1,7 +1,7 @@
 #include "heart/config.h"
 
 #include "db_indep.h"
-#include "model_layer/values.h"
+#include "model_layer/entities.h"
 
 
 namespace storages {
@@ -12,9 +12,9 @@ void TaskTableQueries::drop()
 void TaskTableQueries::draw(std::ostream& o) const
 { drawImpl(o); }
 
-values::Task TaskLifetimeQueries::create(const values::Task& v)
+entities::TaskValue TaskLifetimeQueries::create(const entities::TaskValue& v)
 { return createImpl(v); }
-void TaskLifetimeQueries::update(const values::Task& v)
+void TaskLifetimeQueries::update(const entities::TaskValue& v)
 { updateImpl(v); }
 entities::Tasks TaskLifetimeQueries::get_all() const
 { return get_allImpl(); }

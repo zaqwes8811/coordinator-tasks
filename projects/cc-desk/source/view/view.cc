@@ -2,7 +2,6 @@
 
 #include "view.h"
 #include "model_layer/entities.h"
-#include "model_layer/values.h"
 
 #include <QWidget>
 #include <QHeaderView>
@@ -10,8 +9,8 @@
 #include <stdexcept>
 #include <cassert>
 
-using values::TaskViewTableIdx;
-using values::Task;
+using entities::TaskViewTableIdx;
+using entities::TaskValue;
 using entities::Tasks;
 
 const QColor QMyTableView::kDoneColor = QColor(0, 0, 255, 127);
@@ -32,7 +31,7 @@ QMyTableView::QMyTableView(QWidget *parent)
   setHorizontalHeaderLabels(column_names);
 
   setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
-  setColumnHidden(values::TaskViewTableIdx::kDone, true);
+  setColumnHidden(entities::TaskViewTableIdx::kDone, true);
 
   // Style
   QHeaderView *v = verticalHeader();
@@ -60,11 +59,11 @@ bool QMyTableView::isEdited() const {
 void QMyTableView::insertBlankRows(const int end) {
   // вставляем еще несколько рядов
   for (int row = end; row < end+models::kAddedBlankLines; ++row) {
-      setItem(row, values::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntityStates::kInactiveKey)));
-      setItem(row, values::TaskViewTableIdx::kTaskName, new QTableWidgetItem(QString()));
-      setItem(row, values::TaskViewTableIdx::kPriority,
+      setItem(row, entities::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entities::EntityStates::kInactiveKey)));
+      setItem(row, entities::TaskViewTableIdx::kTaskName, new QTableWidgetItem(QString()));
+      setItem(row, entities::TaskViewTableIdx::kPriority,
               new QTableWidgetItem(QString::number(entities::EntityStates::kDefaultPriority)));
-      setItem(row, values::TaskViewTableIdx::kDone, new QTableWidgetItem(QString::number(entities::EntityStates::kNonDone)));
+      setItem(row, entities::TaskViewTableIdx::kDone, new QTableWidgetItem(QString::number(entities::EntityStates::kNonDone)));
   }
 }
 
@@ -81,11 +80,10 @@ void QMyTableView::draw(entities::Tasks taskEntities) {
 
   auto row = 0;
   for (auto& entity : taskEntities) {
-    setItem(row, values::TaskViewTableIdx::kId
-            , new QTableWidgetItem(QString::number(entity->m_primaryKey)));
-    setItem(row, values::TaskViewTableIdx::kPriority
+    setItem(row, entities::TaskViewTableIdx::kId, new QTableWidgetItem(QString::number(entity->id)));
+    setItem(row, entities::TaskViewTableIdx::kPriority
             , new QTableWidgetItem(QString::number(entity->m_priority)));
-    setItem(row, values::TaskViewTableIdx::kDone
+    setItem(row, entities::TaskViewTableIdx::kDone
             , new QTableWidgetItem(QString::number(entity->m_isDone)));
 
     auto note = QString::fromUtf8(entity->m_name.c_str());
@@ -95,7 +93,7 @@ void QMyTableView::draw(entities::Tasks taskEntities) {
       v->setTextColor(kDoneColor);
 
 
-    setItem(row, values::TaskViewTableIdx::kTaskName, v);
+    setItem(row, entities::TaskViewTableIdx::kTaskName, v);
     ++row;
   }
 
@@ -104,20 +102,20 @@ void QMyTableView::draw(entities::Tasks taskEntities) {
 }
 
 int QMyTableView::getId(const int row) const {
-  return item(row, values::TaskViewTableIdx::kId)->text().toInt();
+  return item(row, entities::TaskViewTableIdx::kId)->text().toInt();
 }
 
 void QMyTableView::markDone(const int row) {
   auto v = QString::number(!entities::EntityStates::kNonDone);
-  item(row, values::TaskViewTableIdx::kDone)->setText(v);
+  item(row, entities::TaskViewTableIdx::kDone)->setText(v);
 
   // перекрашиваем
-  item(row, values::TaskViewTableIdx::kTaskName)->setTextColor(kDoneColor);
+  item(row, entities::TaskViewTableIdx::kTaskName)->setTextColor(kDoneColor);
 }
 
 void QMyTableView::markReopen(const int row) {
   auto v = QString::number(entities::EntityStates::kNonDone);
-  item(row, values::TaskViewTableIdx::kDone)->setText(v);
+  item(row, entities::TaskViewTableIdx::kDone)->setText(v);
   //item(row, values::TaskViewTableIdx::kTaskName)->setTextColor(kReopenColor);
 }
 
@@ -125,13 +123,13 @@ bool QMyTableView::isSaved(const int row) const {
   return getId(row) != entities::EntityStates::kInactiveKey;
 }
 
-values::Task QMyTableView::getTask(const int row) const {
+entities::TaskValue QMyTableView::getTask(const int row) const {
   DCHECK(row < rowCount());
 
   auto id = getId(row);
-  std::string d(item(row, values::TaskViewTableIdx::kTaskName)->text().toUtf8().constData());
-  int p(item(row, values::TaskViewTableIdx::kPriority)->text().toInt());
-  auto done = item(row, values::TaskViewTableIdx::kDone)->text().toInt();
+  std::string d(item(row, entities::TaskViewTableIdx::kTaskName)->text().toUtf8().constData());
+  int p(item(row, entities::TaskViewTableIdx::kPriority)->text().toInt());
+  auto done = item(row, entities::TaskViewTableIdx::kDone)->text().toInt();
 
-  return values::Task::create(id, d, p, done);
+  return entities::TaskValue::create(id, d, p, done);
 }

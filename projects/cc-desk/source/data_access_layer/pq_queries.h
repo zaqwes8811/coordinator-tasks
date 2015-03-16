@@ -46,9 +46,9 @@ private:
   app::WeakPtr<pqxx::connection> m_connPtr;
 
   // values op.
-  values::Task createImpl(const values::Task& v);
+  entities::TaskValue createImpl(const entities::TaskValue& v);
 
-  void updateImpl(const values::Task& v);
+  void updateImpl(const entities::TaskValue& v);
 
   // entities op.
   entities::Tasks get_allImpl() const;

@@ -14,7 +14,6 @@
 
 #include "model_layer/model.h"
 #include "model_layer/filters.h"
-#include "model_layer/values.h"
 
 #include <loki/ScopeGuard.h>
 
@@ -26,7 +25,7 @@ using namespace pq_dal;
 using namespace entities;
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
-using values::Task;
+using entities::TaskValue;
 
 using std::cout;
 
@@ -63,8 +62,8 @@ entities::Tasks::value_type Model::getElemById(const int id) {
   return *it;
 }
 
-void Model::update(const values::Task& e) {
-  auto k = getElemById(e.id());
+void Model::update(const entities::TaskValue& e) {
+  auto k = getElemById(e.id);
   k->assign(e);
 
   auto q = m_dbPtr->createTaskLifetimeQuery();
@@ -73,8 +72,8 @@ void Model::update(const values::Task& e) {
   notify();  // FIXME: а нужно ли?
 }
 
-void Model::appendNewTask(const Task& task) {
-  DCHECK(task.id() == EntityStates::kInactiveKey);
+void Model::appendNewTask(const TaskValue& task) {
+  DCHECK(task.id == EntityStates::kInactiveKey);
 
   auto e = TaskEntityPtr(new TaskEntity());
   e->assign(task);
@@ -89,7 +88,7 @@ void Model::appendNewTask(const Task& task) {
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
   auto r = query->create(e->toValue());
-  e->m_primaryKey = (r.id());  // а ведь придется оставить!!
+  e->id = r.id;  // а ведь придется оставить!!
 
   notify();
   _.Dismiss();
