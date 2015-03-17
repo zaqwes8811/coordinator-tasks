@@ -1,6 +1,10 @@
+/**
+  http://stackoverflow.com/questions/21821948/concept-based-polymorphism
+  http://thinkthencode.blogspot.ru/2013/02/concept-based-polymorphism.html
+
+*/
+
 #include <gtest/gtest.h>
-//#include <boost/shared_ptr.hpp>
-//#include <boost/make_shared.hpp>
 
 #include <vector>
 #include <iostream>
@@ -123,11 +127,24 @@ TEST(EvelPsExtend, App) {
 }
 
 namespace database {
+/**
+  \fixme const troubles
+*/
 namespace detail {
 struct pq_tag { };
 struct sqlite_tab { };
+
+template <typename T> struct holder_traits;
+template <> struct holder_traits<string> {
+  typedef sqlite_tab category;
+};
+
+template <> struct holder_traits<int> {
+  typedef pq_tag category;
+};
 }
 
+// no inh.!
 struct sqlite {
   sqlite(string) { }
   void drop() { }
@@ -138,12 +155,14 @@ struct postgresql {
   void drop() { }
 };
 
+// Dropable
 class object_t {
 public:
   template<typename T>
   object_t(const T& x) : self_(std::make_shared<model<T>>(move(x)))
   { }
 
+  // FIXME: it's bad. must be friend?
   void drop()
   { self_->drop_(); }
 
@@ -157,9 +176,8 @@ private:
   template<typename T>
   struct model : concept_t {
     model(const T& x) : data_(move(x)) { }
-    void drop_() override {
-      data_.drop();
-    }
+    void drop_() override
+    { data_.drop(); }
 
     T data_;  // главный вопрос в куче ли? Да - см в Мейсере 35
   };
@@ -168,7 +186,20 @@ private:
     //const  // can't
     concept_t> self_;  // ссылки на immutable
 };
+
+template<typename T>
+object_t create(std::weak_ptr<T> p) {
+  return object_t(0);
 }
+
+// by value, not by type
+object_t build_data_base(int selector) {
+
+}
+
+}
+
+
 
 TEST(DB, Test) {
   using namespace database;
@@ -177,4 +208,9 @@ TEST(DB, Test) {
   auto a = object_t(sqlite(""));
   auto b = object_t(postgresql(0));
   a.drop();
+
+  // FIXME: how connect multy DB drivers?
+
+  int selector = 0;
+  auto db = build_data_base(selector);
 }
