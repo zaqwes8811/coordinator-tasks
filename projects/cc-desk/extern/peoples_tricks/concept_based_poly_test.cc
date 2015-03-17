@@ -4,6 +4,8 @@
 
 */
 
+#include <typeinfo>
+
 #include <gtest/gtest.h>
 
 #include <vector>
@@ -27,7 +29,10 @@ public:
   { }
 
   friend void draw(const object_t &x, ostream &out, size_t position)
-  { x.self_->draw_(out, position); }
+  {
+    x.self_->draw_(out, position);
+    //cout << x
+  }
 
 private:
   class concept_t {
@@ -40,7 +45,7 @@ private:
   struct model : concept_t {
     model(const T& x) : data_(move(x)) { }
     void draw_(ostream& out, size_t position) const {
-      draw(data_, out, position);
+      //draw(data_, out, position);
     }
 
     T data_;  // главный вопрос в куче ли? Да - см в Мейсере 35
@@ -149,8 +154,13 @@ template <> struct holder_traits<int> {
 namespace real_objs {
 // no inh.!
 struct sqlite {
-  sqlite(string) { }
+  sqlite(string _s) : s(_s) { }
   void drop() { }
+  string build() {
+    return s;
+  }
+
+  string s;
 };
 
 struct sqlite_builder {
@@ -158,13 +168,19 @@ struct sqlite_builder {
 };
 
 struct postgresql {
-  postgresql(int) { }
+  postgresql(int _s) : s(_s) { }
   void drop() { }
+
+  int build() {
+    return s;
+  }
+
+  int s;
 };
 }  // space
 
 // Dropable
-class one_table_concept_t {
+class object_t {
 public:
   template<typename T>
   object_t(const T& x) : self_(std::make_shared<model<T>>(move(x)))
@@ -172,7 +188,10 @@ public:
 
   // FIXME: it's bad. must be friend?
   void drop()
-  { self_->drop_(); }
+  {
+    // no way to know dyn. type
+    self_->drop_();
+  }
 
   // generate
   //template <typename T
@@ -182,6 +201,7 @@ private:
   public:
     virtual ~concept_t() = default;
     virtual void drop_() = 0;
+    virtual ps_sample_shared_extend::object_t build_() = 0;
   };
 
   template<typename T>
@@ -189,6 +209,10 @@ private:
     model(const T& x) : data_(move(x)) { }
     void drop_() override
     { data_.drop(); }
+
+    ps_sample_shared_extend::object_t build_() override {
+      return ps_sample_shared_extend::object_t(data_.build());
+    }
 
     T data_;
   };
@@ -200,20 +224,20 @@ private:
 
 // Fabric:
 template<typename T>
-one_table_concept_t create(std::weak_ptr<T> p) {
-  return one_table_concept_t(0);
+object_t create(std::weak_ptr<T> p) {
+  return object_t(0);
 }
 
 // by value, not by type
 enum db_vars { DB_SQLITE, DB_POSTGRES };
 
 //if (selector == DB_POSTGRES)
-one_table_concept_t build_data_base(const int selector) {
+object_t build_data_base(const int selector) {
   using namespace real_objs;
   if (selector == DB_SQLITE)
-    return one_table_concept_t(sqlite(""));
+    return object_t(sqlite(""));
   else
-    return one_table_concept_t(postgresql(0));
+    return object_t(postgresql(0));
 }
 }
 
@@ -222,8 +246,8 @@ TEST(DB, Test) {
   using namespace database::real_objs;
 
   // db.registerBeanClass<Obj>()
-  auto a = one_table_concept_t(sqlite(""));
-  auto b = one_table_concept_t(postgresql(0));
+  auto a = object_t(sqlite(""));
+  auto b = object_t(postgresql(0));
   a.drop();
 
   // FIXME: how connect multy DB drivers?
