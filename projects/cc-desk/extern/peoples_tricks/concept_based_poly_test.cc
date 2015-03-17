@@ -129,6 +129,8 @@ TEST(EvelPsExtend, App) {
 namespace database {
 /**
   \fixme const troubles
+
+  \attention how reduce 2 hier.?
 */
 namespace detail {
 struct pq_tag { };
@@ -142,6 +144,8 @@ template <> struct holder_traits<string> {
 template <> struct holder_traits<int> {
   typedef pq_tag category;
 };
+
+
 }
 
 // no inh.!
@@ -179,7 +183,7 @@ private:
     void drop_() override
     { data_.drop(); }
 
-    T data_;  // главный вопрос в куче ли? Да - см в Мейсере 35
+    T data_;
   };
 
   std::shared_ptr<
@@ -187,19 +191,22 @@ private:
     concept_t> self_;  // ссылки на immutable
 };
 
+// Fabric:
 template<typename T>
 object_t create(std::weak_ptr<T> p) {
   return object_t(0);
 }
 
 // by value, not by type
-object_t build_data_base(int selector) {
+enum db_vars { DB_SQLITE, DB_POSTGRES };
 
+object_t build_data_base(const int selector) {
+  if (selector == DB_SQLITE)
+    return object_t(sqlite(""));
+  else //if (selector == DB_POSTGRES)
+    return object_t(postgresql(0));
 }
-
 }
-
-
 
 TEST(DB, Test) {
   using namespace database;
