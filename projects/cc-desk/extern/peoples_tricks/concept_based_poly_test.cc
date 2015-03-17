@@ -144,23 +144,27 @@ template <> struct holder_traits<string> {
 template <> struct holder_traits<int> {
   typedef pq_tag category;
 };
-
-
 }
 
+namespace real_objs {
 // no inh.!
 struct sqlite {
   sqlite(string) { }
   void drop() { }
 };
 
+struct sqlite_builder {
+  //sqlite_builder()
+};
+
 struct postgresql {
   postgresql(int) { }
   void drop() { }
 };
+}  // space
 
 // Dropable
-class object_t {
+class one_table_concept_t {
 public:
   template<typename T>
   object_t(const T& x) : self_(std::make_shared<model<T>>(move(x)))
@@ -169,6 +173,9 @@ public:
   // FIXME: it's bad. must be friend?
   void drop()
   { self_->drop_(); }
+
+  // generate
+  //template <typename T
 
 private:
   class concept_t {
@@ -193,31 +200,38 @@ private:
 
 // Fabric:
 template<typename T>
-object_t create(std::weak_ptr<T> p) {
-  return object_t(0);
+one_table_concept_t create(std::weak_ptr<T> p) {
+  return one_table_concept_t(0);
 }
 
 // by value, not by type
 enum db_vars { DB_SQLITE, DB_POSTGRES };
 
-object_t build_data_base(const int selector) {
+//if (selector == DB_POSTGRES)
+one_table_concept_t build_data_base(const int selector) {
+  using namespace real_objs;
   if (selector == DB_SQLITE)
-    return object_t(sqlite(""));
-  else //if (selector == DB_POSTGRES)
-    return object_t(postgresql(0));
+    return one_table_concept_t(sqlite(""));
+  else
+    return one_table_concept_t(postgresql(0));
 }
 }
 
 TEST(DB, Test) {
   using namespace database;
+  using namespace database::real_objs;
 
   // db.registerBeanClass<Obj>()
-  auto a = object_t(sqlite(""));
-  auto b = object_t(postgresql(0));
+  auto a = one_table_concept_t(sqlite(""));
+  auto b = one_table_concept_t(postgresql(0));
   a.drop();
 
   // FIXME: how connect multy DB drivers?
 
   int selector = 0;
   auto db = build_data_base(selector);
+
+  // 1. Put handler - db specific - to queries builder
+  // 2. Builder store in some high level object
+  // 3. Want make queries on base getted handler
 }
