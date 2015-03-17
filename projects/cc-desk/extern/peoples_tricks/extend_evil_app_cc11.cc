@@ -121,3 +121,60 @@ TEST(EvelPsExtend, App) {
   undo(h);
   draw(current(h), cout, 0);
 }
+
+namespace database {
+namespace detail {
+struct pq_tag { };
+struct sqlite_tab { };
+}
+
+struct sqlite {
+  sqlite(string) { }
+  void drop() { }
+};
+
+struct postgresql {
+  postgresql(int) { }
+  void drop() { }
+};
+
+class object_t {
+public:
+  template<typename T>
+  object_t(const T& x) : self_(std::make_shared<model<T>>(move(x)))
+  { }
+
+  void drop()
+  { self_->drop_(); }
+
+private:
+  class concept_t {
+  public:
+    virtual ~concept_t() = default;
+    virtual void drop_() = 0;
+  };
+
+  template<typename T>
+  struct model : concept_t {
+    model(const T& x) : data_(move(x)) { }
+    void drop_() override {
+      data_.drop();
+    }
+
+    T data_;  // главный вопрос в куче ли? Да - см в Мейсере 35
+  };
+
+  std::shared_ptr<
+    //const  // can't
+    concept_t> self_;  // ссылки на immutable
+};
+}
+
+TEST(DB, Test) {
+  using namespace database;
+
+  // db.registerBeanClass<Obj>()
+  auto a = object_t(sqlite(""));
+  auto b = object_t(postgresql(0));
+  a.drop();
+}
