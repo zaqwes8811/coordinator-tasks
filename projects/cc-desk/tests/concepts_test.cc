@@ -163,11 +163,14 @@ TEST(ConceptsTest, Test) {
 }
 
 TEST(ConceptsTest, ActorEnv) {
+  // FIXME: .then() how help if future is out of scope - see Sutter
+
   // FIXME: actor doubled interface!
   using namespace new_space;
 
   // trouble with handles in actor model
   // need real links
+  // Object own it, but run in other thread
   auto db = database_app::build_database(database_app::DB_SQLITE);
   auto tables = std::vector<table_concept_t>{db.getTaskTableQuery(), db.getTaskTagQuery()};
 
