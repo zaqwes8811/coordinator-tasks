@@ -78,9 +78,9 @@ public:
 
     http://www.drdobbs.com/cpp/c11-uniqueptr/240002708
   */
-  virtual std::unique_ptr<storages::TaskTableQueries> createTaskTableQuery() = 0;
+  virtual std::unique_ptr<storages::TaskTableQueries> getTaskTableQuery() = 0;
 
-  virtual std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQuery() = 0;
+  virtual std::unique_ptr<storages::TaskLifetimeQueries> getTaskLifetimeQuery() = 0;
 
   template <typename QPtr>
   static void dropSchema(QPtr v) {
@@ -91,7 +91,7 @@ public:
 };
 
 
-typedef app::SharedPtr<storages::DataBase> DataBasePtr;
+typedef gc::SharedPtr<storages::DataBase> DataBasePtr;
 }
 
 #endif

@@ -31,7 +31,7 @@ private:
   virtual void do_update() = 0;
 };
 
-typedef app::SharedPtr<isolation::ModelListener_virtual> ModelListenerPtr;
+typedef gc::SharedPtr<isolation::ModelListener_virtual> ModelListenerPtr;
 
 }  // space
 

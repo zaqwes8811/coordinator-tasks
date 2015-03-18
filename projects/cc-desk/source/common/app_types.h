@@ -3,7 +3,7 @@
 
 #include <memory>
 
-namespace app {
+namespace gc {
 
 // http://en.cppreference.com/w/cpp/language/type_alias
 template<typename T> using SharedPtr =

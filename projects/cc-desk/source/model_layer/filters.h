@@ -40,7 +40,7 @@ public:
   //   Проблема в удалении фильтра из цепочки.
   virtual int typeCode() const = 0;
 };
-typedef app::SharedPtr<Filter> FilterPtr;
+typedef gc::SharedPtr<Filter> FilterPtr;
 
 // сырые указатели лучше не передавать.
 bool operator==(const Filter& lhs, const Filter& rhs);

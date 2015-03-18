@@ -32,7 +32,7 @@ static const string s_kTagTableName = "TAGS";
 class SQLiteTagTableQuery
 {
 public:
-  explicit SQLiteTagTableQuery(app::WeakPtr<sqlite3_cc::sqlite3> h)
+  explicit SQLiteTagTableQuery(gc::WeakPtr<sqlite3_cc::sqlite3> h)
     : m_tableName(s_kTagTableName)
     , m_connPtr(h) { }
 
@@ -56,7 +56,7 @@ public:
 
 private:
   const std::string m_tableName;
-  app::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
+  gc::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
 };
 
 TEST(SQLite, TaskTable) {
@@ -65,7 +65,7 @@ TEST(SQLite, TaskTable) {
   table.registerBeanClass();
 }
 
-bool checkUnique(const std::string& name, app::WeakPtr<sqlite3_cc::sqlite3> h) {
+bool checkUnique(const std::string& name, gc::WeakPtr<sqlite3_cc::sqlite3> h) {
   auto c = h.lock();
   if (!c) return false;
 
@@ -74,7 +74,7 @@ bool checkUnique(const std::string& name, app::WeakPtr<sqlite3_cc::sqlite3> h) {
   return r.empty();
 }
 
-entities::TagEntity createTag(const entities::Tag& tag, app::WeakPtr<sqlite3_cc::sqlite3> h) {
+entities::TagEntity createTag(const entities::Tag& tag, gc::WeakPtr<sqlite3_cc::sqlite3> h) {
   using sqlite3_cc::as;
 
   DCHECK(tag.id == entities::EntityStates::kInactiveKey);

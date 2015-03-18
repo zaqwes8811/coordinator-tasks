@@ -56,12 +56,12 @@ PostgreSQLDataBase::~PostgreSQLDataBase() {
 }
 
 std::unique_ptr<storages::TaskTableQueries>
-PostgreSQLDataBase::createTaskTableQuery() {
+PostgreSQLDataBase::getTaskTableQuery() {
   return std::unique_ptr<storages::TaskTableQueries>(new TaskTableQueries(m_table_name, m_conn_ptr));
 }
 
 std::unique_ptr<storages::TaskLifetimeQueries>
-PostgreSQLDataBase::createTaskLifetimeQuery() {
+PostgreSQLDataBase::getTaskLifetimeQuery() {
   return std::unique_ptr<storages::TaskLifetimeQueries>(new TaskLifetimeQueries(m_table_name, m_conn_ptr));
 }
 
@@ -104,7 +104,7 @@ void TaskTableQueries::do_drop() {
 }
 
 TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
-                                         , app::WeakPtr<pqxx::connection>  p)
+                                         , gc::WeakPtr<pqxx::connection>  p)
     : m_tableName(table_name)
     , m_connPtr(p)
 { }

@@ -12,7 +12,7 @@ namespace sqlite_queries {
 class SQLiteTaskTableQueries : public storages::TaskTableQueries
 {
 public:
-  explicit SQLiteTaskTableQueries(app::WeakPtr<sqlite3_cc::sqlite3> h
+  explicit SQLiteTaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
                                   , const std::string& tableName);
 
 private:
@@ -24,7 +24,7 @@ private:
   { return m_tableName; }
 
   const std::string m_tableName;
-  app::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
+  gc::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
 };
 }  // space
 

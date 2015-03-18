@@ -23,7 +23,7 @@ struct EntityStates {
 };
 
 class Task;
-typedef app::SharedPtr<Task> TaskEntity;
+typedef gc::SharedPtr<Task> TaskEntity;
 
 /**
   FIXME: для таких объектов важно equal and hash!!
@@ -69,7 +69,7 @@ public:
 };
 
 class Tag;
-typedef app::SharedPtr<entities::Tag> TagEntity;
+typedef gc::SharedPtr<entities::Tag> TagEntity;
 
 /**
   \fixme должны быть уникальные по имени и при создании это нужно контролировать.

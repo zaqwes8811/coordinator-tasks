@@ -10,35 +10,50 @@
 using std::string;
 
 namespace new_space {
-class object_t {
+
+template <typename T> void registerBeanClass(T& obj) {
+  obj.self_->registerBeanClass_();
+}
+
+template <typename T> void drop(T& obj) {
+  obj.self_->drop_();
+}
+
+class table_concept_t {
 public:
   template<typename T>
-  object_t(const T& x) : self_(std::make_shared<model<T>>(std::move(x)))
+  table_concept_t(const T& x) : self_(std::make_shared<model<T>>(std::move(x)))
   { }
 
-  void registerBeanClass()
-  {
-    self_->registerBeanClass_();
-  }
-
 private:
+  template <typename T> friend void registerBeanClass(T& obj);
+  template <typename T> friend void drop(T& obj);
+
   class concept_t {
   public:
     virtual ~concept_t() = default;
-    virtual void registerBeanClass_() const = 0;
+    virtual void registerBeanClass_() = 0;
+    virtual void drop_() = 0;
   };
 
   template<typename T>
   struct model : concept_t {
     model(const T& x) : data_(std::move(x)) { }
-    void registerBeanClass_() const {
+
+    void registerBeanClass_() override {
       data_.registerBeanClass();
+    }
+
+    void drop_() override {
+      data_.drop();
     }
 
     T data_;  // главный вопрос в куче ли? Да - см в Мейсере 35
   };
 
-  std::shared_ptr<const concept_t> self_;  // ссылки на immutable
+  std::shared_ptr<
+    //const
+    concept_t> self_;  // ссылки на immutable
 };
 }  // space
 
@@ -62,11 +77,17 @@ template <> struct holder_traits<int> {
 };
 }
 
-// Dropable
-class object_t {
+/**
+  \brief Dropable
+
+  \fixme Tourble. We return query objects with internal handler
+
+  \attention Query objects lifetime << manager lifetime
+*/
+class db_manager_concept_t {
 public:
   template<typename T>
-  object_t(const T& x) : self_(std::make_shared<model<T>>(std::move(x)))
+  db_manager_concept_t(const T& x) : self_(std::make_shared<model<T>>(std::move(x)))
   { }
 
   // FIXME: it's bad. must be friend?
@@ -90,10 +111,6 @@ private:
     void drop_() override
     { data_.drop(); }
 
-    //new_space::object_t build_() override {
-    //  return new_space::object_t(data_.build());
-    //}
-
     T data_;
   };
 
@@ -102,17 +119,34 @@ private:
     concept_t> self_;  // ссылки на immutable
 };
 
+class SQLiteDataBase {
+public:
+  SQLiteDataBase()
+    : m_connPtr(std::make_shared<sqlite3_cc::sqlite3>("test.db"))
+      , m_taskTableName(models::kTaskTableNameRef)
+  { }
+
+  sqlite_queries::SQLiteTaskTableQueries  getTaskTableQuery() {
+    return sqlite_queries::SQLiteTaskTableQueries(m_connPtr, m_taskTableName);
+  }
+
+private:
+  // FIXME: important not only lifetime, but connection state to!
+  gc::SharedPtr<sqlite3_cc::sqlite3> m_connPtr;
+  const std::string m_taskTableName;
+};
+
 // Fabric:
 template<typename T>
-object_t create(std::weak_ptr<T> p) {
-  return object_t(0);
+db_manager_concept_t create(std::weak_ptr<T> p) {
+  return db_manager_concept_t(0);
 }
 
 // by value, not by type
 enum db_vars { DB_SQLITE, DB_POSTGRES };
 
 //if (selector == DB_POSTGRES)
-object_t build_data_base(const int selector) {
+db_manager_concept_t build_data_base(const int selector) {
   //using namespace real_objs;
   //if (selector == DB_SQLITE)
   //  return object_t(sqlite(""));
@@ -122,12 +156,12 @@ object_t build_data_base(const int selector) {
 }
 
 TEST(ConceptsTest, Test) {
-  using namespace database_app;
+  using namespace new_space;
 
-  auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
-  auto tasks = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
-  auto obj = object_t(tasks);
-  obj.drop();
+  auto rawHandler = std::make_shared<sqlite3_cc::sqlite3>("test.db");
+  auto query = sqlite_queries::SQLiteTaskTableQueries(rawHandler, models::kTaskTableNameRef);
+  auto obj = table_concept_t(query);
+  registerBeanClass(obj);
 
   // db.registerBeanClass<Obj>()
   //auto a = object_t(sqlite(""));
@@ -142,4 +176,6 @@ TEST(ConceptsTest, Test) {
   // 1. Put handler - db specific - to queries builder
   // 2. Builder store in some high level object
   // 3. Want make queries on base getted handler
+
+  drop(obj);
 }

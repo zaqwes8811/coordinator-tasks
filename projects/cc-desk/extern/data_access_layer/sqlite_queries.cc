@@ -3,7 +3,7 @@
 #include "sqlite_queries.h"
 
 namespace sqlite_queries {
-SQLiteTaskTableQueries::SQLiteTaskTableQueries(app::WeakPtr<sqlite3_cc::sqlite3> h
+SQLiteTaskTableQueries::SQLiteTaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
                                                , const std::string& tableName)
   : m_tableName(tableName)
   , m_connPtr(h) { }

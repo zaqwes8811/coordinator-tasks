@@ -14,7 +14,7 @@ template <class T>
 class _ActionSmart {
 public:
   explicit _ActionSmart(std::ostream* o_) : o(o_) { }
-  void operator()(const app::SharedPtr<T>& elem) const {
+  void operator()(const gc::SharedPtr<T>& elem) const {
     *o << *elem;// << ", ";
   }
   std::ostream* const o;
@@ -22,7 +22,7 @@ public:
 
 template <class T>
 std::ostream& operator<<(std::ostream& o,
-                         const std::vector<app::SharedPtr<T> >& a)
+                         const std::vector<gc::SharedPtr<T> >& a)
 {
   std::for_each(a.begin(), a.end(),
       //view::ActionSmart<T>(&o));  // FIXME: не видит.

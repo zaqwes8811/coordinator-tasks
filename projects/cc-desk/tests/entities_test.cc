@@ -61,7 +61,7 @@ using renders::operator <<;
 
 TEST(ModelTest, BaseCase) {
   using namespace std::placeholders;
-  typedef vector<app::WeakPtr<Task> > ModelWeakSlice;
+  typedef vector<gc::WeakPtr<Task> > ModelWeakSlice;
 
   // пока храним все в памяти - активные только
   // ссылки не должны утечь, но как удалять из хранилища?

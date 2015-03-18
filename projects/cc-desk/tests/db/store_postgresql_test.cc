@@ -27,7 +27,7 @@ using namespace Loki;
 using namespace pqxx;
 using namespace std;
 
-void do_something(app::WeakPtr<pqxx::connection> C)
+void do_something(gc::WeakPtr<pqxx::connection> C)
 {
   using models::kTaskTableNameRef;
   

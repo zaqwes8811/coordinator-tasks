@@ -17,13 +17,13 @@ class TaskTableQueries
     : public storages::TaskTableQueries
 {
 public:
-  TaskTableQueries(const std::string& name, app::WeakPtr<pqxx::connection> p)
+  TaskTableQueries(const std::string& name, gc::WeakPtr<pqxx::connection> p)
     : m_table_name(name)
     , m_conn_ptr(p) { }
 
 private:
   const std::string m_table_name;
-  app::WeakPtr<pqxx::connection> m_conn_ptr;
+  gc::WeakPtr<pqxx::connection> m_conn_ptr;
 
   void do_registerBeanClass() override;
 
@@ -38,10 +38,10 @@ class TaskLifetimeQueries
 {
 public:
   TaskLifetimeQueries(const std::string& table_name
-                              , app::WeakPtr<pqxx::connection> p);
+                              , gc::WeakPtr<pqxx::connection> p);
 private:
   const std::string m_tableName;
-  app::WeakPtr<pqxx::connection> m_connPtr;
+  gc::WeakPtr<pqxx::connection> m_connPtr;
 
   // values op.
   entities::Task do_persist(const entities::Task& v) override;
@@ -57,15 +57,15 @@ private:
 */
 class PostgreSQLDataBase : public storages::DataBase {
 public:
-  PostgreSQLDataBase(const std::string& conn_info, const std::string& table_name);
+  PostgreSQLDataBase(const std::string& conn_info, const std::string& taskTableName);
   ~PostgreSQLDataBase();
 
-  std::unique_ptr<storages::TaskTableQueries> createTaskTableQuery();
-  std::unique_ptr<storages::TaskLifetimeQueries> createTaskLifetimeQuery();
+  std::unique_ptr<storages::TaskTableQueries> getTaskTableQuery();
+  std::unique_ptr<storages::TaskLifetimeQueries> getTaskLifetimeQuery();
 
 private:
   // FIXME: important not only lifetime, but connection state to!
-  app::SharedPtr<pqxx::connection> m_conn_ptr;
+  gc::SharedPtr<pqxx::connection> m_conn_ptr;
   const std::string m_table_name;
 };
 }  // space

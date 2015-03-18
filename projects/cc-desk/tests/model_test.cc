@@ -25,7 +25,7 @@ using renders::render_task_store;
 
 TEST(AppCore, Create) {
   // make_shared получает по копии - проблема с некопируемыми объектами
-  app::SharedPtr<PostgreSQLDataBase> pool(
+  gc::SharedPtr<PostgreSQLDataBase> pool(
         new PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
   {
     std::auto_ptr<Model> app_ptr(Model::createForOwn(pool));
@@ -46,12 +46,12 @@ TEST(AppCore, Create) {
     //renders::render_task_store(cout, *(app_ptr.get()));
   }
 
-  auto q = pool->createTaskTableQuery();
+  auto q = pool->getTaskTableQuery();
   //EXPECT_THROW(q->draw(cout), pqxx::undefined_table);
 }
 
 TEST(AppCore, UpdatePriority) {
-  app::SharedPtr<PostgreSQLDataBase> pool(new PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
+  gc::SharedPtr<PostgreSQLDataBase> pool(new PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
   {
     std::unique_ptr<Model> app_ptr(Model::createForOwn(pool));
     auto _ = MakeObjGuard(*app_ptr, &Model::dropStore);
@@ -67,7 +67,7 @@ TEST(AppCore, UpdatePriority) {
     renders::render_task_store(cout, *app_ptr);
   }
 
-  auto q = pool->createTaskTableQuery();
+  auto q = pool->getTaskTableQuery();
   //EXPECT_THROW(q->draw(cout), pqxx::undefined_table);
 }
 
