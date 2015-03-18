@@ -11,13 +11,8 @@ using std::string;
 
 namespace new_space {
 
-template <typename T> void registerBeanClass(T& obj) {
-  obj.self_->registerBeanClass_();
-}
-
-template <typename T> void drop(T& obj) {
-  obj.self_->drop_();
-}
+template <typename T> void registerBeanClass(T& obj) { obj.self_->registerBeanClass_(); }
+template <typename T> void drop(T& obj) { obj.self_->drop_(); }
 
 class table_concept_t {
 public:
@@ -40,13 +35,8 @@ private:
   struct model : concept_t {
     model(const T& x) : data_(std::move(x)) { }
 
-    void registerBeanClass_() override {
-      data_.registerBeanClass();
-    }
-
-    void drop_() override {
-      data_.drop();
-    }
+    void registerBeanClass_() override { data_.registerBeanClass();  }
+    void drop_() override { data_.drop(); }
 
     T data_;  // главный вопрос в куче ли? Да - см в Мейсере 35
   };
@@ -83,6 +73,10 @@ template <> struct holder_traits<int> {
   \fixme Tourble. We return query objects with internal handler
 
   \attention Query objects lifetime << manager lifetime
+
+  1. Put handler - db specific - to queries builder
+  2. Builder store in some high level object
+  3. Want make queries on base getted handler
 */
 class db_manager_concept_t {
 public:
@@ -90,26 +84,24 @@ public:
   db_manager_concept_t(const T& x) : self_(std::make_shared<model<T>>(std::move(x)))
   { }
 
-  // FIXME: it's bad. must be friend?
-  void drop()
+  new_space::table_concept_t getTaskTableQuery()
   {
     // no way to know dyn. type
-    self_->drop_();
+    return self_->getTaskTableQuery_();
   }
 
 private:
   class concept_t {
   public:
     virtual ~concept_t() = default;
-    virtual void drop_() = 0;
-    //virtual new_space::object_t build_() = 0;
+    virtual new_space::table_concept_t getTaskTableQuery_() = 0;
   };
 
   template<typename T>
   struct model : concept_t {
     model(const T& x) : data_(std::move(x)) { }
-    void drop_() override
-    { data_.drop(); }
+    new_space::table_concept_t getTaskTableQuery_() override
+    { return data_.getTaskTableQuery(); }
 
     T data_;
   };
@@ -136,46 +128,24 @@ private:
   const std::string m_taskTableName;
 };
 
-// Fabric:
-template<typename T>
-db_manager_concept_t create(std::weak_ptr<T> p) {
-  return db_manager_concept_t(0);
-}
-
 // by value, not by type
 enum db_vars { DB_SQLITE, DB_POSTGRES };
 
-//if (selector == DB_POSTGRES)
 db_manager_concept_t build_data_base(const int selector) {
-  //using namespace real_objs;
-  //if (selector == DB_SQLITE)
-  //  return object_t(sqlite(""));
-  //else
-  //  return object_t(postgresql(0));
+  if (selector == DB_SQLITE) {
+    return db_manager_concept_t(database_app::SQLiteDataBase());
+  } else {
+    return db_manager_concept_t(database_app::SQLiteDataBase());
+  }
 }
 }
 
 TEST(ConceptsTest, Test) {
   using namespace new_space;
 
-  auto rawHandler = std::make_shared<sqlite3_cc::sqlite3>("test.db");
-  auto query = sqlite_queries::SQLiteTaskTableQueries(rawHandler, models::kTaskTableNameRef);
-  auto obj = table_concept_t(query);
-  registerBeanClass(obj);
+  auto db = database_app::build_data_base(database_app::DB_SQLITE);
+  auto query = db.getTaskTableQuery();
+  registerBeanClass(query);
 
-  // db.registerBeanClass<Obj>()
-  //auto a = object_t(sqlite(""));
-  //auto b = object_t(postgresql(0));
-  //a.drop();
-
-  // FIXME: how connect multy DB drivers?
-
-  //int selector = 0;
-  //auto db = build_data_base(selector);
-
-  // 1. Put handler - db specific - to queries builder
-  // 2. Builder store in some high level object
-  // 3. Want make queries on base getted handler
-
-  drop(obj);
+  drop(query);
 }
