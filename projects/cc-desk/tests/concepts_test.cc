@@ -140,7 +140,7 @@ private:
 // by value, not by type
 enum db_vars { DB_SQLITE, DB_POSTGRES };
 
-db_manager_concept_t build_data_base(const int selector) {
+db_manager_concept_t build_database(const int selector) {
   if (selector == DB_SQLITE) {
     return db_manager_concept_t(database_app::SQLiteDataBase());
   } else {
@@ -152,15 +152,32 @@ db_manager_concept_t build_data_base(const int selector) {
 TEST(ConceptsTest, Test) {
   using namespace new_space;
 
-  auto db = database_app::build_data_base(database_app::DB_SQLITE);
+  auto db = database_app::build_database(database_app::DB_SQLITE);
   auto tables = std::vector<table_concept_t>{db.getTaskTableQuery(), db.getTaskTagQuery()};
 
   for (auto& a : tables)
     registerBeanClass(a);
 
+  for (auto& a : tables)
+    drop(a);
+}
 
-  {
-    auto query = db.getTaskTableQuery();
-    drop(query);
-  }
+TEST(ConceptsTest, ActorEnv) {
+  // FIXME: actor doubled interface!
+  using namespace new_space;
+
+  // trouble with handles in actor model
+  // need real links
+  auto db = database_app::build_database(database_app::DB_SQLITE);
+  auto tables = std::vector<table_concept_t>{db.getTaskTableQuery(), db.getTaskTagQuery()};
+
+  auto action = [tables] {
+    for (auto& a : tables)
+      registerBeanClass(a);
+  };
+
+  action();
+
+  for (auto& a : tables)
+    drop(a);
 }
