@@ -14,6 +14,8 @@ const char* const kTaskTableNameRef = "task_entity";
 const char* const kTaskTableNameRef = "task_fake_entity";
 #endif
 
+static char* const s_kTagTableName = "TAGS";
+
 const int kAddedBlankLines = 10;
 }
 #endif   

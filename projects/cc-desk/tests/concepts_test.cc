@@ -38,7 +38,7 @@ private:
     void registerBeanClass_() override { data_.registerBeanClass();  }
     void drop_() override { data_.drop(); }
 
-    T data_;  // главный вопрос в куче ли? Да - см в Мейсере 35
+    T data_;
   };
 
   std::shared_ptr<
@@ -85,30 +85,35 @@ public:
   { }
 
   new_space::table_concept_t getTaskTableQuery()
-  {
-    // no way to know dyn. type
-    return self_->getTaskTableQuery_();
-  }
+  {  return self_->getTaskTableQuery_(); }
+
+  new_space::table_concept_t getTaskTagQuery()
+  {  return self_->getTaskTagQuery_(); }
 
 private:
   class concept_t {
   public:
     virtual ~concept_t() = default;
     virtual new_space::table_concept_t getTaskTableQuery_() = 0;
+    virtual new_space::table_concept_t getTaskTagQuery_() = 0;
   };
 
   template<typename T>
   struct model : concept_t {
     model(const T& x) : data_(std::move(x)) { }
+
     new_space::table_concept_t getTaskTableQuery_() override
     { return data_.getTaskTableQuery(); }
+
+    new_space::table_concept_t getTaskTagQuery_() override
+    { return data_.getTaskTagQuery(); }
 
     T data_;
   };
 
   std::shared_ptr<
     //const  // can't
-    concept_t> self_;  // ссылки на immutable
+    concept_t> self_;
 };
 
 class SQLiteDataBase {
@@ -120,6 +125,10 @@ public:
 
   sqlite_queries::SQLiteTaskTableQueries  getTaskTableQuery() {
     return sqlite_queries::SQLiteTaskTableQueries(m_connPtr, m_taskTableName);
+  }
+
+  sqlite_queries::SQLiteTagTableQuery  getTaskTagQuery() {
+    return sqlite_queries::SQLiteTagTableQuery(m_connPtr);
   }
 
 private:
@@ -144,8 +153,14 @@ TEST(ConceptsTest, Test) {
   using namespace new_space;
 
   auto db = database_app::build_data_base(database_app::DB_SQLITE);
-  auto query = db.getTaskTableQuery();
-  registerBeanClass(query);
+  auto tables = std::vector<table_concept_t>{db.getTaskTableQuery(), db.getTaskTagQuery()};
 
-  drop(query);
+  for (auto& a : tables)
+    registerBeanClass(a);
+
+
+  {
+    auto query = db.getTaskTableQuery();
+    drop(query);
+  }
 }

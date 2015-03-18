@@ -26,6 +26,21 @@ private:
   const std::string m_tableName;
   gc::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
 };
+
+class SQLiteTagTableQuery
+{
+public:
+  explicit SQLiteTagTableQuery(gc::WeakPtr<sqlite3_cc::sqlite3> h);
+  void registerBeanClass();
+  void drop();
+private:
+  const std::string m_tableName;
+  gc::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
+};
+
+bool checkUnique(const std::string& name, gc::WeakPtr<sqlite3_cc::sqlite3> h);
+entities::TagEntity createTag(const entities::Tag& tag, gc::WeakPtr<sqlite3_cc::sqlite3> h);
+
 }  // space
 
 #endif
