@@ -16,23 +16,23 @@ public:
   object_t(const T& x) : self_(std::make_shared<model<T>>(std::move(x)))
   { }
 
-  friend void draw(const object_t &x, std::ostream &out, size_t position)
+  void registerBeanClass()
   {
-    x.self_->registerBeanClass_(out, position);
+    self_->registerBeanClass_();
   }
 
 private:
   class concept_t {
   public:
     virtual ~concept_t() = default;
-    virtual void registerBeanClass_(std::ostream& out, size_t position) const = 0;
+    virtual void registerBeanClass_() const = 0;
   };
 
   template<typename T>
   struct model : concept_t {
     model(const T& x) : data_(std::move(x)) { }
-    void registerBeanClass_(std::ostream& out, size_t position) const {
-      //draw(data_, out, position);
+    void registerBeanClass_() const {
+      data_.registerBeanClass();
     }
 
     T data_;  // главный вопрос в куче ли? Да - см в Мейсере 35
@@ -127,6 +127,7 @@ TEST(ConceptsTest, Test) {
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
   auto tasks = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
   auto obj = object_t(tasks);
+  obj.drop();
 
   // db.registerBeanClass<Obj>()
   //auto a = object_t(sqlite(""));
