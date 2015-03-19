@@ -36,7 +36,7 @@ Model* Model::createForOwn(gc::SharedPtr<storages::DataBase> dbPtr) {
   auto q = dbPtr->getTaskTableQuery();
   q->registerBeanClass();
 
-  auto t = load_all(dbPtr);
+  auto t = loadAll(dbPtr);
   return new Model(t, dbPtr);
 }
 
@@ -52,7 +52,7 @@ void Model::dropStore() {
   m_dbPtr->dropSchema(std::move(q));
 }
 
-TaskEntities Model::load_all(storages::DataBasePtr dbPtr) {
+TaskEntities Model::loadAll(storages::DataBasePtr dbPtr) {
   auto query = dbPtr->getTaskLifetimeQuery();
   return TaskEntities(query->loadAll());
 }

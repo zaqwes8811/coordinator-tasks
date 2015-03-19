@@ -9,6 +9,7 @@
 //#include "core/actor_ui.h"
 
 #include <string>
+#include <functional>
 
 namespace actors {
   class UIActor;
@@ -47,7 +48,6 @@ public:
   void setListener(isolation::ModelListenerPtr iso);
 
   /**
-
     \fixme наверное лучше сразу сохранить, добавлять все равно буду скорее всего по-одному
   */
   void appendNewTask(const entities::Task& e);  // overloading trouble in for_each
@@ -58,6 +58,9 @@ public:
   // FIXME: плохо что хендлы утекают, и из-за того что указатели
   //   shared объекты превращаются в глобальные переменные.
   entities::TaskEntities getCurrentModelData();
+
+  void initializeStore(std::function<void(std::string)>)
+  {}
 
   void dropStore();
 
@@ -72,7 +75,7 @@ private:
   void notify();  // Нужно было открыть для обновления при семене фильтров
 
   // persist filters:
-  static entities::TaskEntities load_all(storages::DataBasePtr pool);
+  static entities::TaskEntities loadAll(storages::DataBasePtr pool);
 
   entities::TaskEntities m_tasks;
 

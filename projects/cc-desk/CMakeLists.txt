@@ -41,6 +41,7 @@ include_directories(${Extern})
 include_directories(${ExternLocal})
 include_directories(${Source}/../../std_own_ext)
 #include_directories(${BigExtern}/boost_1_57_0)
+include_directories(/opt/folly/include)
 
 # ASan,TSan and MSan
 IF(LCB_USE_ASAN)
@@ -100,11 +101,12 @@ elseif (UNIX)
         link_libraries(
             pthread rt)  # !! pthread and rt last!!
     else()
-        #link_directories(${BigExtern}/boost_1_57_0/stage_x64/lib)
+        link_directories(${BigExtern}/boost_1_57_0/stage_x64/lib)
+        link_directories(${BigExtern}/../folly/lib)
         link_libraries(
             pqxx pq
             sqlite3
-            #boost_system boost_thread
+            folly glog boost_system boost_thread  # FIXME: it's bad! Just try interface. Watch Sean Parent
             pthread rt)  # !! pthread and rt last!!
     endif()
 endif()
@@ -144,6 +146,7 @@ file( GLOB proTests
     ${ExternLocal}/sqlite_xx/*.cc
     ${testsRoot}/*.cc
     ${testsRoot}/db/*.cc
+    ${testsRoot}/extern/*.cc
 )
 
 # we need this to be able to include headers produced by uic in our code
