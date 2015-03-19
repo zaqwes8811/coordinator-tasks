@@ -30,6 +30,7 @@ using entities::Task;
 using std::cout;
 
 Model* Model::createForOwn(gc::SharedPtr<storages::DataBase> dbPtr) {
+  // FIXME: It's bad - can't show on UI
   // FIXME: дублирование. как быть с именем таблицы?
   // create tables
   auto q = dbPtr->getTaskTableQuery();
@@ -73,6 +74,11 @@ void Model::update(const entities::Task& e) {
 
 // FIXME: may be not put in RAM? After persist view will be updated
 void Model::appendNewTask(const Task& task) {
+  // Create task
+  // Try persist
+  // Update model
+  // Notify
+
   DCHECK(task.id == EntityStates::kInactiveKey);
 
   auto e = Task::createEntity(task);

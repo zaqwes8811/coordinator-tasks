@@ -134,11 +134,9 @@ void UiEngine::onReopen() {
     // Обновляем ячейку
     m_taskTablePtr->markReopen(row);  // no throw
     entities::Task t = m_taskTablePtr->getTask(row);
+
     m_modelPtr->update(t);  // FIXME: may throw
   }
-
-  //
-  action();
 }
 
 void UiEngine::processFilter(filters::FilterPtr f, int state) {

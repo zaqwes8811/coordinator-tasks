@@ -143,6 +143,9 @@ private:
   //>
   m_dbActorPtr;
   scopes::AppScope m_scope;
+
+  // FSM:
+  bool m_fsmTablesIsCreated;
 };
 
 #endif // MAINWINDOW_H

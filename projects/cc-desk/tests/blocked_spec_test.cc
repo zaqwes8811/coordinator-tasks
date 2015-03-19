@@ -60,18 +60,15 @@ TEST(Blocked, UIActorTest) {
 
   auto ui = std::make_shared<actors::UIActor>(modelPtr);  // dtor will call and app out
 
-  ui->post([modelPtr] {
-    modelPtr->getCurrentModelData();
-  });
-
   // FIXME: troubles with out appl.
+  // bad!
   while(true) {
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
     // hard to check
     if (app.isClosed())
       break;
 
-  }  // bad!
+  }
 }
 
 // FIXME: Boost.Signal

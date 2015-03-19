@@ -45,6 +45,7 @@ void UIActor::Run(gc::SharedPtr<models::Model> modelPtr) {
   modelPtr->setListener(listenerPtr);
 
   enginePtr->setUiActor(shared_from_this());
+  modelPtr->setUiActor(shared_from_this());
   enginePtr->show();
 
   //appLoop.exec();

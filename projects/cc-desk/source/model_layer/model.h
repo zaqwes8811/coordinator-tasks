@@ -6,9 +6,13 @@
 #include "view/renders.h"
 #include "model_layer/model.h"
 #include "model_layer/isolation.h"
-
+//#include "core/actor_ui.h"
 
 #include <string>
+
+namespace actors {
+  class UIActor;
+}
 
 namespace models
 {
@@ -57,6 +61,9 @@ public:
 
   void dropStore();
 
+  void setUiActor(gc::SharedPtr<actors::UIActor> a)
+  { m_uiActorPtr = a; }
+
 private:
   template <typename U>
   friend void renders::render_task_store(std::ostream& o, const U& a);
@@ -73,6 +80,8 @@ private:
   storages::DataBasePtr m_dbPtr;
   isolation::ModelListenerPtr m_observersPtr;
   entities::TaskEntity getElemById(const size_t id);
+
+  gc::SharedPtr<actors::UIActor> m_uiActorPtr;
 };
 }
 
