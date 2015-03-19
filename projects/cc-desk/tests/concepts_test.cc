@@ -77,6 +77,9 @@ template <> struct holder_traits<int> {
   1. Put handler - db specific - to queries builder
   2. Builder store in some high level object
   3. Want make queries on base getted handler
+
+  ORM thinks:
+    https://msdn.microsoft.com/en-us/magazine/dd569757.aspx
 */
 class db_manager_concept_t {
 public:
