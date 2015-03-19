@@ -12,6 +12,7 @@
 #include "common/app_types.h"
 #include "model_layer/isolation.h"
 #include "core/actor_ui.h"
+#include "core/scopes.h"
 
 #include <QApplication>
 #include <QLabel>
@@ -26,6 +27,7 @@
 #include <cassert>
 #include <iostream>
 #include <thread>
+#include <atomic>
 
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
@@ -46,6 +48,8 @@ private:
 };
 
 TEST(Blocked, UIActorTest) {
+  scopes::AppScope app;
+
   // work in DB thread
   storages::DataBasePtr pool(
         new pq_dal::PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
@@ -61,7 +65,13 @@ TEST(Blocked, UIActorTest) {
   });
 
   // FIXME: troubles with out appl.
-  while(true) { std::this_thread::sleep_for(std::chrono::milliseconds(50)); }  // bad!
+  while(true) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    // hard to check
+    if (app.isClosed())
+      break;
+
+  }  // bad!
 }
 
 // FIXME: Boost.Signal

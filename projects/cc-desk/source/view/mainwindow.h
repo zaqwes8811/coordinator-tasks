@@ -6,6 +6,7 @@
 #include "model_layer/model.h"
 #include "view/view.h"
 #include "model_layer/filters.h"
+#include "core/scopes.h"
 
 #include <QMainWindow>
 #include <QTableWidget>
@@ -66,7 +67,9 @@ public:
   typedef std::function<void(void)> Callable;
 
   // ctor/dtor/assign/copy
-  UiEngine(models::Model* const app_ptr,
+  UiEngine(
+      //scopes::AppScope s,
+      models::Model* const app_ptr,
        QWidget *parent = 0);
   ~UiEngine();
 
@@ -134,6 +137,7 @@ private:
   cc11::Actior
   //>
   m_dbActorPtr;
+  scopes::AppScope m_scope;
 };
 
 #endif // MAINWINDOW_H

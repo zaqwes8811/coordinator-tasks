@@ -21,8 +21,7 @@ namespace actors {
 //   http://programmers.stackexchange.com/questions/88685/why-arent-more-desktop-apps-written-with-qt
 //
 // http://elfery.net/blog/signals.html ! what wrong with Sig/Slo
-
-
+//
 // FIXME: posting from other threads
 //   http://qt-project.org/wiki/ThreadsEventsQObjects
 //
@@ -53,6 +52,9 @@ public:
 
   void end()
   { post( [&]{ m_done = true; } ); }
+
+  //bool isActive() const
+  //{ return m_done; }
 
 private:
 

@@ -58,8 +58,10 @@ void UiEngine::action() {
   });
 }
 
-UiEngine::UiEngine(models::Model* const model_ptr, QWidget *parent) :
-    QMainWindow(parent)
+UiEngine::UiEngine(//scopes::AppScope s,
+                   models::Model* const model_ptr,
+                   QWidget *parent) :
+    QMainWindow(parent)//, m_scope(s)
 {
   m_uiRawPtr = new Ui::MainWindow;
   m_uiRawPtr->setupUi(this);
