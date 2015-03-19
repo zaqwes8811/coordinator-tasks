@@ -44,7 +44,7 @@ using std::vector;
 using std::ref;
 using std::bind;
 
-Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
+UiEngine::UiEngine(models::Model* const model_ptr, QWidget *parent) :
     QMainWindow(parent)
 {
   m_uiRawPtr = new Ui::MainWindow;
@@ -106,9 +106,9 @@ Engine::Engine(models::Model* const model_ptr, QWidget *parent) :
   redraw();
 }
 
-Engine::~Engine() { delete m_uiRawPtr; }
+UiEngine::~UiEngine() { delete m_uiRawPtr; }
 
-void Engine::slotReopen() {
+void UiEngine::slotReopen() {
   auto r = getSelectedRow();
   if (r.isPresent()) {
     auto row = r.get();
@@ -119,7 +119,7 @@ void Engine::slotReopen() {
   }
 }
 
-void Engine::processFilter(filters::FilterPtr f, int state) {
+void UiEngine::processFilter(filters::FilterPtr f, int state) {
   if (Qt::Unchecked == state) {
     m_filtersChain.remove(f);
   }
@@ -129,30 +129,30 @@ void Engine::processFilter(filters::FilterPtr f, int state) {
   }
 }
 
-void Engine::filterOnOffDone(int state) {
+void UiEngine::filterOnOffDone(int state) {
   filters::FilterPtr f(new filters::DoneFilter());
   processFilter(f, state);
   redraw();
 }
 
-void Engine::filterOnOffSortByTaskName(int state) {
+void UiEngine::filterOnOffSortByTaskName(int state) {
   filters::FilterPtr f(new filters::SortByTaskName());
   processFilter(f, state);
   redraw();
 }
 
-void Engine::filterOnOffSortByDecPriority(int state) {
+void UiEngine::filterOnOffSortByDecPriority(int state) {
   filters::FilterPtr f(new filters::SortByPriorityFilter());
   processFilter(f, state);
   redraw();
 }
 
-entities::TaskEntities Engine::getModelData() const {
+entities::TaskEntities UiEngine::getModelData() const {
   return m_filtersChain(m_modelPtr->getCurrentModelData());
 }
 
 #ifndef G_I_WANT_USE_IT
-void Engine::slotFillFake(bool) {
+void UiEngine::slotFillFake(bool) {
   using namespace std::placeholders;
   TaskEntities mirror(fake_store::get_all());
 
@@ -165,7 +165,7 @@ void Engine::slotFillFake(bool) {
 }
 #endif
 
-void Engine::redraw() {
+void UiEngine::redraw() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   // FIXME: сбивает выбранную позицию
   //
@@ -174,7 +174,7 @@ void Engine::redraw() {
   m_taskTablePtr->draw(records);
 }
 
-Row Engine::getSelectedRow() const {
+Row UiEngine::getSelectedRow() const {
   auto indexList = m_taskTablePtr->selectionModel()->selectedIndexes();
 
   // Должна быть выбрана одна ячейка
@@ -189,7 +189,7 @@ Row Engine::getSelectedRow() const {
   return Row::of(row);
 }
 
-void Engine::slotMarkDone() {
+void UiEngine::slotMarkDone() {
   auto r = getSelectedRow();
   if (r.isPresent()) {
     auto row = r.get();
@@ -200,7 +200,7 @@ void Engine::slotMarkDone() {
   }
 }
 
-void Engine::slotRowIsChanged(QTableWidgetItem* widget)
+void UiEngine::slotRowIsChanged(QTableWidgetItem* widget)
 {
   // FIXME: проблема!! изменения любые! может зациклить
   try {
@@ -221,7 +221,7 @@ void Engine::slotRowIsChanged(QTableWidgetItem* widget)
   }
 }
 
-entities::TaskEntity Engine::getTaskById(const int id) {
+entities::TaskEntity UiEngine::getTaskById(const int id) {
   using namespace std::placeholders;
   auto r = getModelData();
   auto it = std::find_if(r.begin(), r.end(), bind(&entities::Task::id, _1));

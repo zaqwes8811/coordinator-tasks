@@ -33,9 +33,7 @@ using isolation::ModelListener_virtual;
 
 class ModelListenerMediator : public ModelListener_virtual {
 public:
-  explicit ModelListenerMediator(Engine* const view) : view_(view) {
-    // не должно быть нулем
-  }
+  explicit ModelListenerMediator(UiEngine* const view) : view_(view) { }
 
 private:
   void do_update() {
@@ -43,32 +41,31 @@ private:
     view_->redraw();
   }
 
-  Engine* const view_;
+  UiEngine* const view_;
 };
 
+/**
+  \attention Only in head and shared_ptr
 
-class UIActor {
+  \fixme How check thread id in callable member?
+*/
+class UIActor : public std::enable_shared_from_this<UIActor>
+{
 public:
   typedef std::function<void()> Message;
 
   // FIXME: trouble is not non-arg ctor
   explicit UIActor(gc::SharedPtr<models::Model> model_ptr)
     : done(false), mq(100)
-  {
-    thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) );
-  }
+  { thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) ); }
 
   ~UIActor() {
-    Send( [&]{
-      done = true;
-    } ); ;
+    post( [&]{ done = true; } ); ;
     thd->join();
   }
 
-  void Send( Message m )
-  {
-    auto r = mq.try_push( m );
-  }
+  void post( Message m )
+  { auto r = mq.try_push( m ); }
 
 private:
 
@@ -80,16 +77,17 @@ private:
   fix_extern_concurent::concurent_bounded_try_queue<Message> mq;
   std::unique_ptr<std::thread> thd;          // le thread
 
-  void Run(gc::SharedPtr<models::Model> model_ptr) {
+  void Run(gc::SharedPtr<models::Model> modelPtr) {
     int argc = 1;
     char* argv[1] = { "none" };
-    QApplication app(argc, argv);
-    auto engine_ptr = new Engine(model_ptr.get());
+    QApplication appLoop(argc, argv);
 
-    gc::SharedPtr<ModelListener_virtual> listener(new ModelListenerMediator(engine_ptr));
-    model_ptr->set_listener(listener);
+    auto engineRawPtr = new UiEngine(modelPtr.get());
 
-    engine_ptr->show();
+    gc::SharedPtr<ModelListener_virtual> listenerPtr(new ModelListenerMediator(engineRawPtr));
+    modelPtr->set_listener(listenerPtr);
+
+    engineRawPtr->show();
 
     // http://qt-project.org/doc/qt-4.8/qeventloop.html#processEvents
     //app.exec();  // it's trouble for Actors usige
@@ -100,7 +98,7 @@ private:
         msg();            // execute message
 
       // main event loop
-      app.processEvents();  // hat processor!
+      appLoop.processEvents();  // hat processor!
     } // note: last message sets done to true
   }
 };
@@ -129,7 +127,7 @@ TEST(Blocked, TestApp) {
     int argc = 1;
     char* argv[1] = { "none" };
     QApplication app(argc, argv);
-    auto window = new Engine(model_ptr.get());
+    auto window = new UiEngine(model_ptr.get());
 
     gc::SharedPtr<ModelListener_virtual> listener(new ModelListenerMediator(window));
     model_ptr->set_listener(listener);  // bad!
@@ -157,13 +155,13 @@ TEST(Blocked, UIActorTest) {
 
 
   // work in UI thread
-  auto model_ptr = gc::SharedPtr<models::Model>(models::Model::createForOwn(pool));
+  auto modelPtr = gc::SharedPtr<models::Model>(models::Model::createForOwn(pool));
   //auto _ = MakeObjGuard(*model_ptr, &models::Model::clear_store);
 
-  UIActor ui(model_ptr);  // dtor will call and app out
+  auto ui = std::make_shared<UIActor>(modelPtr);  // dtor will call and app out
 
-  ui.Send([model_ptr] {
-    model_ptr->getCurrentModelData();
+  ui->post([modelPtr] {
+    modelPtr->getCurrentModelData();
   });
 
   // FIXME: troubles with out appl.

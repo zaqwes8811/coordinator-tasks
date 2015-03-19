@@ -51,7 +51,7 @@ public:
   }
 };
 
-class Engine : public QMainWindow
+class UiEngine : public QMainWindow
 {
   Q_OBJECT
 
@@ -60,9 +60,9 @@ public:
   typedef std::function<void(void)> Callable;
 
   // ctor/dtor/assign/copy
-  Engine(models::Model* const app_ptr,
+  UiEngine(models::Model* const app_ptr,
        QWidget *parent = 0);
-  ~Engine();
+  ~UiEngine();
 
   // actions
   void redraw();

@@ -164,6 +164,10 @@ TEST(ConceptsTest, Test) {
 
 TEST(ConceptsTest, ActorEnv) {
   // FIXME: .then() how help if future is out of scope - see Sutter
+  // FIXME: may be shared future?
+  // FIXME: "push" and "pull" models
+  // FIXME: need in another context, not in it actor - Actors and Wrappers!
+  // Actor - Wrapper - Wrapper - Actor
 
   // FIXME: actor doubled interface!
   using namespace new_space;
