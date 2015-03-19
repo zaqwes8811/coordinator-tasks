@@ -20,11 +20,11 @@ public:
     { thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(); } ) ); }
 
     ~Actior() {
-      Send( [&]{ done = true; } ); ;
+      post( [&]{ done = true; } ); ;
       thd->join();
     }
 
-    void Send( Message m )
+    void post( Message m )
     { mq.enqueue( m ); }
 
 private:

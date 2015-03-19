@@ -20,6 +20,7 @@ SET( QT_USE_QTXML TRUE )
 FIND_PACKAGE(Qt4 REQUIRED)
 INCLUDE( ${QT_USE_FILE} )
 
+# FIXME: use TSan
 set( LCB_USE_ASAN Y)
 
 set(Extern "../../extern/")

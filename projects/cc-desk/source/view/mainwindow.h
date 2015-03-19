@@ -11,6 +11,7 @@
 #include <QTableWidget>
 #include <QMessageBox>
 #include <QTimer>
+#include <actors_and_workers/actors_cc11.h>
 
 #include <stdexcept>
 #include <functional>
@@ -72,20 +73,23 @@ public:
   // actions
   void redraw();
 
+  void setUiActor(gc::SharedPtr<actors::UIActor> a)
+  { m_uiActorPtr = a; }
+
 private slots:
 
   // filters chain:
-  void filterOnOffSortByDecPriority(int state);
-  void filterOnOffDone(int state);
-  void filterOnOffSortByTaskName(int state);
+  void onOnOffSortByDecPriority(int state);
+  void onOnOffDone(int state);
+  void onOnOffSortByTaskName(int state);
 
   // other actions:
   // FIXME: а есть элемент не из той таблицы?
   // FIXME: а место ли этому слоту здесь?
   // FIXME: на один сигнал можно подвесить несколько слотов
-  void slotRowIsChanged(QTableWidgetItem* item);
-  void slotMarkDone();
-  void slotReopen();
+  void onRowIsChanged(QTableWidgetItem* item);
+  void onMarkDone();
+  void onReopen();
 
   /**
     \attention
@@ -94,7 +98,7 @@ private slots:
 
 
 #ifndef G_I_WANT_USE_IT
-  void slotFillFake(bool);
+  void onFillFake(bool);
 #endif
 
   // FIXME: DANGER!! при реализации фильтров сломает логику!!!
@@ -102,6 +106,12 @@ private slots:
   entities::TaskEntity getTaskById(const int pos);
 
 private:
+  void action();
+
+  void doTheThing() {
+    int i = 0;
+  }
+
   QTimer m_timer;
 
   Row getSelectedRow() const;
@@ -116,7 +126,14 @@ private:
 
   filters::ChainFilters m_filtersChain;
 
+  // Coupled with actors
+  gc::SharedPtr<UiEngine> share()
+  { return shared_from_this(); }
   gc::SharedPtr<actors::UIActor> m_uiActorPtr;
+  //gc::SharedPtr<
+  cc11::Actior
+  //>
+  m_dbActorPtr;
 };
 
 #endif // MAINWINDOW_H

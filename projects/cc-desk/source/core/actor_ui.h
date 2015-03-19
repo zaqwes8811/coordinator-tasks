@@ -45,12 +45,14 @@ public:
   { thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) ); }
 
   ~UIActor() {
-    post( [&]{ m_done = true; } ); ;
-    thd->join();
+    end(); thd->join();
   }
 
   void post( Message m )
   { auto r = mq.try_push( m ); }
+
+  void end()
+  { post( [&]{ m_done = true; } ); }
 
 private:
 

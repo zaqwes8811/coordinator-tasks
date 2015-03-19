@@ -21,6 +21,7 @@
 #include "ui_mainwindow.h"
 #include "data_access_layer/fake_store.h"
 #include "model_layer/entities.h"
+#include "core/actor_ui.h"
 
 #include <QPushButton>
 #include <QTableWidget>
@@ -43,6 +44,19 @@ using std::string;
 using std::vector;
 using std::ref;
 using std::bind;
+
+void UiEngine::action() {
+  auto self = share();
+  std::cout << std::this_thread::get_id() << std::flush;
+  auto uiActorPtr = m_uiActorPtr;
+  m_dbActorPtr.post([uiActorPtr, self] () mutable {
+    std::cout << std::this_thread::get_id() << std::flush;
+    uiActorPtr->post([=] {
+      self->doTheThing();
+      std::cout << std::this_thread::get_id() << std::flush;
+    });
+  });
+}
 
 UiEngine::UiEngine(models::Model* const model_ptr, QWidget *parent) :
     QMainWindow(parent)
@@ -67,26 +81,26 @@ UiEngine::UiEngine(models::Model* const model_ptr, QWidget *parent) :
     auto checkbox_layout = new QVBoxLayout;
     actions_layout->addLayout(checkbox_layout);
       auto non_done = new QCheckBox("Non done only", this);
-      connect(non_done, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffDone(int)));
+      connect(non_done, SIGNAL(stateChanged(int)), this, SLOT(onOnOffDone(int)));
       checkbox_layout->addWidget(non_done);
 
       auto sort_dec = new QCheckBox("Sort dec priority", this);
-      connect(sort_dec, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffSortByDecPriority(int)));
+      connect(sort_dec, SIGNAL(stateChanged(int)), this, SLOT(onOnOffSortByDecPriority(int)));
       checkbox_layout->addWidget(sort_dec);
 
       auto done = new QCheckBox("Sort by task name", this);
-      connect(done, SIGNAL(stateChanged(int)), this, SLOT(filterOnOffSortByTaskName(int)));
+      connect(done, SIGNAL(stateChanged(int)), this, SLOT(onOnOffSortByTaskName(int)));
       checkbox_layout->addWidget(done);
 
     // buttons
     auto buttons_layout = new QVBoxLayout;
     actions_layout->addLayout(buttons_layout);
       auto mark_done = new QPushButton("Mark done", this);
-      connect(mark_done, SIGNAL(clicked()), this, SLOT(slotMarkDone()));
+      connect(mark_done, SIGNAL(clicked()), this, SLOT(onMarkDone()));
       buttons_layout->addWidget(mark_done);
 
       auto fake = new QPushButton("Reopen", this);
-      connect(fake, SIGNAL(clicked()), this, SLOT(slotReopen()));
+      connect(fake, SIGNAL(clicked()), this, SLOT(onReopen()));
       buttons_layout->addWidget(fake);
 
   // добавляем чекбоксы
@@ -94,7 +108,7 @@ UiEngine::UiEngine(models::Model* const model_ptr, QWidget *parent) :
     setCentralWidget(centralWidget);
     auto mainLayout = new QVBoxLayout(centralWidget);
       m_taskTablePtr = new QMyTableView(this);
-      connect(m_taskTablePtr, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(slotRowIsChanged(QTableWidgetItem*)));
+      connect(m_taskTablePtr, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(onRowIsChanged(QTableWidgetItem*)));
 
       // make checkbox
       //connect(_table->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(filterOnOffSortByDecPriority(int)));
@@ -108,7 +122,7 @@ UiEngine::UiEngine(models::Model* const model_ptr, QWidget *parent) :
 
 UiEngine::~UiEngine() { delete m_uiRawPtr; }
 
-void UiEngine::slotReopen() {
+void UiEngine::onReopen() {
   auto r = getSelectedRow();
   if (r.isPresent()) {
     auto row = r.get();
@@ -117,6 +131,9 @@ void UiEngine::slotReopen() {
     entities::Task t = m_taskTablePtr->getTask(row);
     m_modelPtr->update(t);  // FIXME: may throw
   }
+
+  //
+  action();
 }
 
 void UiEngine::processFilter(filters::FilterPtr f, int state) {
@@ -129,19 +146,19 @@ void UiEngine::processFilter(filters::FilterPtr f, int state) {
   }
 }
 
-void UiEngine::filterOnOffDone(int state) {
+void UiEngine::onOnOffDone(int state) {
   filters::FilterPtr f(new filters::DoneFilter());
   processFilter(f, state);
   redraw();
 }
 
-void UiEngine::filterOnOffSortByTaskName(int state) {
+void UiEngine::onOnOffSortByTaskName(int state) {
   filters::FilterPtr f(new filters::SortByTaskName());
   processFilter(f, state);
   redraw();
 }
 
-void UiEngine::filterOnOffSortByDecPriority(int state) {
+void UiEngine::onOnOffSortByDecPriority(int state) {
   filters::FilterPtr f(new filters::SortByPriorityFilter());
   processFilter(f, state);
   redraw();
@@ -152,7 +169,7 @@ entities::TaskEntities UiEngine::getModelData() const {
 }
 
 #ifndef G_I_WANT_USE_IT
-void UiEngine::slotFillFake(bool) {
+void UiEngine::onFillFake(bool) {
   using namespace std::placeholders;
   TaskEntities mirror(fake_store::get_all());
 
@@ -189,7 +206,7 @@ Row UiEngine::getSelectedRow() const {
   return Row::of(row);
 }
 
-void UiEngine::slotMarkDone() {
+void UiEngine::onMarkDone() {
   auto r = getSelectedRow();
   if (r.isPresent()) {
     auto row = r.get();
@@ -200,7 +217,7 @@ void UiEngine::slotMarkDone() {
   }
 }
 
-void UiEngine::slotRowIsChanged(QTableWidgetItem* widget)
+void UiEngine::onRowIsChanged(QTableWidgetItem* widget)
 {
   // FIXME: проблема!! изменения любые! может зациклить
   try {
