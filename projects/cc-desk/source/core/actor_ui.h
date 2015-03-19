@@ -32,6 +32,9 @@ namespace actors {
   \attention Only in head and shared_ptr
 
   \fixme How check thread id in callable member?
+
+  \bug On off application ASan SIGSEGV detect. Think trouble in off thread
+  \fixme check by TSan.
 */
 class UIActor : public std::enable_shared_from_this<UIActor>
 {

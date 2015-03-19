@@ -11,7 +11,6 @@
 #include <QMainWindow>
 #include <QTableWidget>
 #include <QMessageBox>
-#include <QTimer>
 #include <actors_and_workers/actors_cc11.h>
 
 #include <stdexcept>
@@ -67,10 +66,7 @@ public:
   typedef std::function<void(void)> Callable;
 
   // ctor/dtor/assign/copy
-  UiEngine(
-      //scopes::AppScope s,
-      models::Model* const app_ptr,
-       QWidget *parent = 0);
+  UiEngine(models::Model* const app_ptr, QWidget *parent = 0);
   ~UiEngine();
 
   // actions
@@ -86,41 +82,44 @@ private slots:
   void onOnOffDone(int state);
   void onOnOffSortByTaskName(int state);
 
-  // other actions:
+  /** other actions:
   // FIXME: а есть элемент не из той таблицы?
   // FIXME: а место ли этому слоту здесь?
   // FIXME: на один сигнал можно подвесить несколько слотов
+  */
   void onRowIsChanged(QTableWidgetItem* item);
   void onMarkDone();
   void onReopen();
+
+#ifndef G_I_WANT_USE_IT
+  void onFillFake(bool);
+#endif
+
+private:
+  /**
+    \brief ops on start app. Need work on ready UI
+  */
+  void onUiLoaded();
+
+  void showEvent( QShowEvent* event ) override
+  {
+      QWidget::showEvent( event );
+      //your code here
+      onUiLoaded();
+  }
 
   /**
     \attention
   */
   void doWork();
 
-#ifndef G_I_WANT_USE_IT
-  void onFillFake(bool);
-#endif
-
-  // FIXME: DANGER!! при реализации фильтров сломает логику!!!
-  // Жесткая привязка к списку и к цепочке фильтров
-  entities::TaskEntity getTaskById(const int pos);
-
-private:
   void closeEvent(QCloseEvent *event) override
-  {
-    //    int i = 0;
-    doWork();
-  }
+  { doWork(); }
 
   void action();
 
-  void doTheThing() {
-
-  }
-
-  QTimer m_timer;
+  void doTheThing()
+  { }
 
   Row getSelectedRow() const;
 
@@ -137,15 +136,17 @@ private:
   // Coupled with actors
   gc::SharedPtr<UiEngine> share()
   { return shared_from_this(); }
+
   gc::SharedPtr<actors::UIActor> m_uiActorPtr;
-  //gc::SharedPtr<
-  cc11::Actior
-  //>
-  m_dbActorPtr;
+  cc11::Actior m_dbActor;
   scopes::AppScope m_scope;
 
   // FSM:
   bool m_fsmTablesIsCreated;
+
+  // FIXME: DANGER!! при реализации фильтров сломает логику!!!
+  // Жесткая привязка к списку и к цепочке фильтров
+  entities::TaskEntity getTaskById(const int pos);
 };
 
 #endif // MAINWINDOW_H

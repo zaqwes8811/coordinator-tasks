@@ -45,6 +45,11 @@ using std::vector;
 using std::ref;
 using std::bind;
 
+void UiEngine::onUiLoaded()
+{
+  std::cout << "Show" << std::endl;
+}
+
 void UiEngine::doWork() {
   (*m_uiActorPtr).end();
   m_scope.setToDone();
@@ -54,7 +59,7 @@ void UiEngine::doWork() {
 void UiEngine::action() {
   auto self = share();
   auto uiActorPtr = m_uiActorPtr;
-  m_dbActorPtr.post([uiActorPtr, self] () mutable {
+  m_dbActor.post([uiActorPtr, self] () mutable {
     uiActorPtr->post([=] {
       self->doTheThing();
     });

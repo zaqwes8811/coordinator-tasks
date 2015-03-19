@@ -59,7 +59,7 @@ public:
   //   shared объекты превращаются в глобальные переменные.
   entities::TaskEntities getCurrentModelData();
 
-  void initializeStore(std::function<void(std::string)>)
+  void initializeStore(std::function<void(std::string)> errorHandler)
   {}
 
   void dropStore();
