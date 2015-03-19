@@ -11,6 +11,7 @@
 #include "data_access_layer/postgresql_queries.h"
 #include "common/app_types.h"
 #include "model_layer/isolation.h"
+#include "core/actor_ui.h"
 
 #include <QApplication>
 #include <QLabel>
@@ -44,110 +45,6 @@ private:
   UiEngine* const view_;
 };
 
-/**
-  \attention Only in head and shared_ptr
-
-  \fixme How check thread id in callable member?
-*/
-class UIActor : public std::enable_shared_from_this<UIActor>
-{
-public:
-  typedef std::function<void()> Message;
-
-  // FIXME: trouble is not non-arg ctor
-  explicit UIActor(gc::SharedPtr<models::Model> model_ptr)
-    : done(false), mq(100)
-  { thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) ); }
-
-  ~UIActor() {
-    post( [&]{ done = true; } ); ;
-    thd->join();
-  }
-
-  void post( Message m )
-  { auto r = mq.try_push( m ); }
-
-private:
-
-  UIActor( const UIActor& );           // no copying
-  void operator=( const UIActor& );    // no copying
-
-  bool done;                         // le flag
-  //concurent::message_queue<Message> mq;        // le queue
-  fix_extern_concurent::concurent_bounded_try_queue<Message> mq;
-  std::unique_ptr<std::thread> thd;          // le thread
-
-  void Run(gc::SharedPtr<models::Model> modelPtr) {
-    int argc = 1;
-    char* argv[1] = { "none" };
-    QApplication appLoop(argc, argv);
-
-    auto engineRawPtr = new UiEngine(modelPtr.get());
-
-    gc::SharedPtr<ModelListener_virtual> listenerPtr(new ModelListenerMediator(engineRawPtr));
-    modelPtr->set_listener(listenerPtr);
-
-    engineRawPtr->show();
-
-    // http://qt-project.org/doc/qt-4.8/qeventloop.html#processEvents
-    //app.exec();  // it's trouble for Actors usige
-    while( !done ) {
-      // ! can't sleep or wait!
-      Message msg;
-      if (mq.try_pop(msg))
-        msg();            // execute message
-
-      // main event loop
-      appLoop.processEvents();  // hat processor!
-    } // note: last message sets done to true
-  }
-};
-
-// Actor model troubles:
-//   https://www.qtdeveloperdays.com/2013/sites/default/files/presentation_pdf/Qt_Event_Loop.pdf
-//   http://blog.bbv.ch/2012/10/03/multithreaded-programming-with-qt/
-//
-//   http://www.christeck.de/wp/2010/10/23/the-great-qthread-mess/
-//
-// Why not Qt?
-//   http://programmers.stackexchange.com/questions/88685/why-arent-more-desktop-apps-written-with-qt
-TEST(Blocked, TestApp) {
-  // work in DB thread
-  storages::DataBasePtr pool(
-        new pq_dal::PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
-
-
-  // work in UI thread
-  auto model_ptr = gc::SharedPtr<models::Model>(models::Model::createForOwn(pool));
-  auto _ = MakeObjGuard(*model_ptr, &models::Model::dropStore);
-
-  // FIXME: can't post to exist actor - it block it!
-  //   May be can, but UI may be will be slow.
-  {
-    int argc = 1;
-    char* argv[1] = { "none" };
-    QApplication app(argc, argv);
-    auto window = new UiEngine(model_ptr.get());
-
-    gc::SharedPtr<ModelListener_virtual> listener(new ModelListenerMediator(window));
-    model_ptr->set_listener(listener);  // bad!
-
-    window->show();
-
-    // http://qt-project.org/doc/qt-4.8/qeventloop.html#processEvents
-    //app.exec();  // it's trouble for Actors usige
-    while(true) {
-      // ! can't sleep or wait!
-      app.processEvents();  // hat processor!
-    }
-  }
-}
-
-// FIXME: posting from other threads
-//   http://qt-project.org/wiki/ThreadsEventsQObjects
-//
-// Trouble:
-// http://stackoverflow.com/questions/3629557/boost-shared-from-this
 TEST(Blocked, UIActorTest) {
   // work in DB thread
   storages::DataBasePtr pool(
@@ -156,9 +53,8 @@ TEST(Blocked, UIActorTest) {
 
   // work in UI thread
   auto modelPtr = gc::SharedPtr<models::Model>(models::Model::createForOwn(pool));
-  //auto _ = MakeObjGuard(*model_ptr, &models::Model::clear_store);
 
-  auto ui = std::make_shared<UIActor>(modelPtr);  // dtor will call and app out
+  auto ui = std::make_shared<actors::UIActor>(modelPtr);  // dtor will call and app out
 
   ui->post([modelPtr] {
     modelPtr->getCurrentModelData();
@@ -167,6 +63,8 @@ TEST(Blocked, UIActorTest) {
   // FIXME: troubles with out appl.
   while(true) { std::this_thread::sleep_for(std::chrono::milliseconds(50)); }  // bad!
 }
+
+// FIXME: Boost.Signal
 
 
 

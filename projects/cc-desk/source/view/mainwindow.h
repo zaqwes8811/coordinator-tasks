@@ -14,9 +14,14 @@
 
 #include <stdexcept>
 #include <functional>
+#include <memory>
 
 namespace Ui {
 class MainWindow;
+}
+
+namespace actors {
+class UIActor;
 }
 
 // FIXME: try how in Guava
@@ -51,7 +56,7 @@ public:
   }
 };
 
-class UiEngine : public QMainWindow
+class UiEngine : public QMainWindow, public std::enable_shared_from_this<UiEngine>
 {
   Q_OBJECT
 
@@ -82,9 +87,11 @@ private slots:
   void slotMarkDone();
   void slotReopen();
 
-  void doWork() {
-     /* ... */
-  }
+  /**
+    \attention
+  */
+  void doWork() { /* ... */ }
+
 
 #ifndef G_I_WANT_USE_IT
   void slotFillFake(bool);
@@ -95,6 +102,8 @@ private slots:
   entities::TaskEntity getTaskById(const int pos);
 
 private:
+  QTimer m_timer;
+
   Row getSelectedRow() const;
 
   void processFilter(filters::FilterPtr, int state);
@@ -107,7 +116,7 @@ private:
 
   filters::ChainFilters m_filtersChain;
 
-  QTimer m_timer;
+  gc::SharedPtr<actors::UIActor> m_uiActorPtr;
 };
 
 #endif // MAINWINDOW_H

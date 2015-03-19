@@ -52,7 +52,7 @@ UiEngine::UiEngine(models::Model* const model_ptr, QWidget *parent) :
   m_modelPtr = model_ptr;
 
   connect(&m_timer, SIGNAL(timeout()), this, SLOT(doWork()));
-  m_timer.start(1000);
+  //m_timer.start(1000);
 
 
   // FIXME: сделать что-то через editor - пока тщетно. Например как сконнектиться с отнасл. таблицей?

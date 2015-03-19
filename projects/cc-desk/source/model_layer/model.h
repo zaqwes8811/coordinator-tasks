@@ -40,7 +40,7 @@ public:
 
   // other
   // FIXME: да, лучше передать в конструкторе, но при конструировании возникает цикл.
-  void set_listener(isolation::ModelListenerPtr iso);
+  void setListener(isolation::ModelListenerPtr iso);
 
   /**
 

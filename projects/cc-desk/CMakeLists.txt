@@ -127,6 +127,8 @@ QT4_WRAP_CPP( SAMPLE_MOC_SRCS ${SAMPLE_MOC_HDRS} )
 
 file( GLOB proTests
     ${Source}/view/*.cc
+    ${Source}/core/*.cc
+    ${Source}/core/*.h
     ${ExternLocal}/actors_and_workers/*.cc
     ${ExternLocal}/actors_and_workers/*.h
     ${ExternLocal}/std_own_ext-fix/*.h
