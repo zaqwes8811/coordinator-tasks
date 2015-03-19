@@ -45,15 +45,18 @@ using std::vector;
 using std::ref;
 using std::bind;
 
+void UiEngine::doWork() {
+  (*m_uiActorPtr).end();
+  m_scope.setToDone();
+}
+
+
 void UiEngine::action() {
   auto self = share();
-  std::cout << std::this_thread::get_id() << std::flush;
   auto uiActorPtr = m_uiActorPtr;
   m_dbActorPtr.post([uiActorPtr, self] () mutable {
-    std::cout << std::this_thread::get_id() << std::flush;
     uiActorPtr->post([=] {
       self->doTheThing();
-      std::cout << std::this_thread::get_id() << std::flush;
     });
   });
 }
@@ -67,7 +70,7 @@ UiEngine::UiEngine(//scopes::AppScope s,
   m_uiRawPtr->setupUi(this);
   m_modelPtr = model_ptr;
 
-  connect(&m_timer, SIGNAL(timeout()), this, SLOT(doWork()));
+  //connect(&m_timer, SIGNAL(timeout()), this, SLOT(doWork()));
   //m_timer.start(1000);
 
 

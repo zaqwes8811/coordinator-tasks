@@ -44,7 +44,8 @@ public:
   { thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) ); }
 
   ~UIActor() {
-    end(); thd->join();
+    //end();
+    thd->join();
   }
 
   void post( Message m )

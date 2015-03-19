@@ -7,17 +7,19 @@
 
 #include <QApplication>
 
-class ModelListenerMediator : public isolation::ModelListener_virtual {
+class ModelListenerMediator :
+    public isolation::ModelListener_virtual
+{
 public:
-  explicit ModelListenerMediator(UiEngine* const view) : view_(view) { }
+  explicit ModelListenerMediator(UiEngine* const view) : m_viewRawPtr(view) { }
 
 private:
   void do_update() {
-    DCHECK(view_);
-    view_->redraw();
+    DCHECK(m_viewRawPtr);
+    m_viewRawPtr->redraw();
   }
 
-  UiEngine* const view_;
+  UiEngine* const m_viewRawPtr;
 };
 
 
@@ -36,12 +38,18 @@ void UIActor::Run(gc::SharedPtr<models::Model> modelPtr) {
 
   auto enginePtr = std::make_shared<UiEngine>(modelPtr.get());
 
+  // Work if .exec()
+  //QObject::connect(&appLoop, SIGNAL(aboutToQuit()), enginePtr.get(), SLOT(doWork()));
+
   gc::SharedPtr<isolation::ModelListener_virtual> listenerPtr(new ModelListenerMediator(enginePtr.get()));
   modelPtr->setListener(listenerPtr);
 
   enginePtr->setUiActor(shared_from_this());
   enginePtr->show();
 
+  //appLoop.exec();
+
+  ///**
   while( !m_done ) {
     // ! can't sleep or wait!
     Message msg;
@@ -54,6 +62,8 @@ void UIActor::Run(gc::SharedPtr<models::Model> modelPtr) {
     //if (wasTerminated) {
     //
     //}
+    //break;
   } // note: last message sets done to true
+  //*/
 }
 }

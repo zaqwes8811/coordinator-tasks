@@ -97,8 +97,7 @@ private slots:
   /**
     \attention
   */
-  void doWork() { /* ... */ }
-
+  void doWork();
 
 #ifndef G_I_WANT_USE_IT
   void onFillFake(bool);
@@ -109,10 +108,16 @@ private slots:
   entities::TaskEntity getTaskById(const int pos);
 
 private:
+  void closeEvent(QCloseEvent *event) override
+  {
+    //    int i = 0;
+    doWork();
+  }
+
   void action();
 
   void doTheThing() {
-    int i = 0;
+
   }
 
   QTimer m_timer;
