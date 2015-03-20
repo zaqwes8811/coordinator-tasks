@@ -62,6 +62,12 @@ void Model::updateTask(const entities::Task& e) {
   notifyObservers();
 }
 
+void Model::addFilter(filters::FilterPtr f)
+{ m_filtersChain.add(f); notifyObservers(); }
+
+void Model::removeFilter(filters::FilterPtr f)
+{ m_filtersChain.remove(f); notifyObservers(); }
+
 // FIXME: may be not put in RAM? After persist view will be updated
 void Model::appendNewTask(const Task& task) {
   DCHECK(task.id == EntityStates::kInactiveKey);
@@ -92,14 +98,14 @@ Model::Model(database_app::db_manager_concept_t _pool) : m_db(_pool)
 { }
 
 void Model::notifyObservers() {
-  m_observersPtr->update(getCurrentModelData());
+  m_observersPtr->update(filterModelData());
 }
 
 void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso) {
   m_observersPtr = iso;
 }
 
-entities::TaskEntities Model::getCurrentModelData() {
+entities::TaskEntities Model::filterModelData() {
   return m_filtersChain(m_tasksCache);
 }
 

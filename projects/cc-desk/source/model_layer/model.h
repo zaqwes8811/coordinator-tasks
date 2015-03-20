@@ -48,28 +48,22 @@ public:
     FIXME: да, лучше передать в конструкторе, но при конструировании возникает цикл.
   */
   void setListener(isolation::ModelListenerPtr iso);
-
-  /**
-    \fixme наверное лучше сразу сохранить, добавлять все равно буду скорее всего по-одному
-  */
-  void appendNewTask(const entities::Task& e);  // overloading trouble in for_each
-
-  /**
-    \pre лемент был сохранен
-  */
-  void update(const entities::Task& e);
-
-  void initializeStore(std::function<void(std::string)> errorHandler);
-
-  void dropStore();
-
   void setUiActor(gc::SharedPtr<actors::UIActor> a);
+  void addFilter(filters::FilterPtr f);
+  void removeFilter(filters::FilterPtr f);
 
-  void add(filters::FilterPtr f)
-  { m_filtersChain.add(f); notifyObservers(); }
+  /// Consistency space
+  /**
+    \design наверное лучше сразу сохранить, добавлять все равно буду скорее всего по-одному
+  */
+  void appendNewTask(const entities::Task& e);
 
-  void remove(filters::FilterPtr f)
-  { m_filtersChain.remove(f); notifyObservers(); }
+  /**
+    \pre Element was persist
+  */
+  void updateTask(const entities::Task& e);
+  void initializeStore(std::function<void(std::string)> errorHandler);
+  void dropStore();
 
 private:
   template <typename U>
@@ -86,7 +80,7 @@ private:
   */
   void notifyObservers();
 
-  entities::TaskEntities m_tasksCache;
+
 
   /**
     FIXME: кажется двойное лучше, или хранить фильтр?
@@ -105,7 +99,8 @@ private:
   filters::ChainFilters m_filtersChain;
 
   /// Consistency Guards
-  bool m_fsmAppendIsDone{false};
+  bool m_fsmNonConsistent{false};
+  entities::TaskEntities m_tasksCache;
 };
 }
 

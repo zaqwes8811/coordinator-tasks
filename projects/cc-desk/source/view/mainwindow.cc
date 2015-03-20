@@ -166,13 +166,13 @@ void UiEngine::onReopen() {
     m_taskTablePtr->markReopen(row);  // no throw
     entities::Task t = m_taskTablePtr->getTask(row);
 
-    m_modelPtr->update(t);  // FIXME: may throw
+    m_modelPtr->updateTask(t);  // FIXME: may throw
   }
 }
 
 void UiEngine::processFilter(filters::FilterPtr f, int state) {
-  if (Qt::Unchecked == state) m_modelPtr->remove(f);
-  if (Qt::Checked == state) m_modelPtr->add(f);
+  if (Qt::Unchecked == state) m_modelPtr->removeFilter(f);
+  if (Qt::Checked == state) m_modelPtr->addFilter(f);
 }
 
 void UiEngine::onOnOffDone(int state) {
@@ -251,7 +251,7 @@ void UiEngine::onMarkDone() {
     // Обновляем ячейку
     m_taskTablePtr->markDone(row);  // no throw
     auto task = m_taskTablePtr->getTask(row);
-    m_modelPtr->update(task);  // FIXME: may throw
+    m_modelPtr->updateTask(task);  // FIXME: may throw
   }
 }
 
@@ -265,7 +265,7 @@ void UiEngine::onRowIsChanged(QTableWidgetItem* widget)
       auto task = m_taskTablePtr->getTask(row);
       if (m_taskTablePtr->isSaved(row)) {
         // Cоздаем новую запись
-        m_modelPtr->update(task);
+        m_modelPtr->updateTask(task);
       } else {
         // Одна из видимых ячеек была обновлена
         m_modelPtr->appendNewTask(task);
