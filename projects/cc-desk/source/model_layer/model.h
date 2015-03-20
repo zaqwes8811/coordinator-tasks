@@ -59,12 +59,6 @@ public:
   */
   void update(const entities::Task& e);
 
-  /**
-    FIXME: плохо что хендлы утекают, и из-за того что указатели
-      shared объекты превращаются в глобальные переменные.
-  */
-  entities::TaskEntities getCurrentModelData();
-
   void initializeStore(std::function<void(std::string)> errorHandler);
 
   void dropStore();
@@ -82,6 +76,12 @@ private:
   friend void renders::render_task_store(std::ostream& o, const U& a);
 
   /**
+    FIXME: плохо что хендлы утекают, и из-за того что указатели
+      shared объекты превращаются в глобальные переменные.
+  */
+  entities::TaskEntities getCurrentModelData();
+
+  /**
     Нужно было открыть для обновления при семене фильтров
   */
   void notify();
@@ -94,7 +94,7 @@ private:
   */
   database_app::db_manager_concept_t m_db;
   isolation::ModelListenerPtr m_observersPtr;
-  entities::TaskEntity getElemById(const size_t id);
+  entities::TaskEntity getCachedTaskById(const size_t id);
 
   gc::WeakPtr<actors::UIActor> m_uiActorPtr;
 

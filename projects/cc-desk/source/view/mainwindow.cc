@@ -156,9 +156,6 @@ UiEngine::UiEngine(//scopes::AppScope s,
 
       mainLayout->addLayout(actions_layout);
       mainLayout->addWidget(m_taskTablePtr);
-
-
-  redraw();
 }
 
 void UiEngine::onReopen() {
@@ -181,23 +178,16 @@ void UiEngine::processFilter(filters::FilterPtr f, int state) {
 void UiEngine::onOnOffDone(int state) {
   filters::FilterPtr f(new filters::DoneFilter());
   processFilter(f, state);
-  redraw();
 }
 
 void UiEngine::onOnOffSortByTaskName(int state) {
   filters::FilterPtr f(new filters::SortByTaskName());
   processFilter(f, state);
-  redraw();
 }
 
 void UiEngine::onOnOffSortByDecPriority(int state) {
   filters::FilterPtr f(new filters::SortByPriorityFilter());
   processFilter(f, state);
-  redraw();
-}
-
-entities::TaskEntities UiEngine::getModelData() const {
-  return m_modelPtr->getCurrentModelData();
 }
 
 void UiEngine::onFillFake(bool) {
@@ -230,12 +220,12 @@ void UiEngine::setUiActor(gc::SharedPtr<actors::UIActor> a)
 bool UiEngine::isReadyToDestroy() const
 { return m_fsmToDestroy; }
 
-void UiEngine::redraw() {
+void UiEngine::redraw(entities::TaskEntities e) {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
   // FIXME: сбивает выбранную позицию
   //
   m_taskTablePtr->clearList();
-  auto records = getModelData();  // may throw
+  auto records = e;  // may throw
   m_taskTablePtr->draw(records);
 }
 
@@ -248,8 +238,8 @@ Row UiEngine::getSelectedRow() const {
 
   auto const row = indexList.at(entities::TaskViewTableIdx::kId).row();
 
-  if (row >= getModelData().size())
-    return Row::absent();
+  //if (row >= getModelData().size())
+  //  return Row::absent();
 
   return Row::of(row);
 }

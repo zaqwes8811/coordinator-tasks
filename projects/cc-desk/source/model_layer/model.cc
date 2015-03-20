@@ -37,18 +37,20 @@ void Model::initializeStore(std::function<void(std::string)> errorHandler) {
   notify();
 }
 
-entities::TaskEntity Model::getElemById(const size_t id) {
-  auto it = std::find_if(m_tasksCache.begin(), m_tasksCache.end(), filters::is_contained(id));
-  DCHECK(it != m_tasksCache.end());
-  return *it;
+entities::TaskEntity Model::getCachedTaskById(const size_t id) {
+  auto iter = std::find_if(m_tasksCache.begin(), m_tasksCache.end(), filters::is_contained(id));
+  DCHECK(iter != m_tasksCache.end());
+  return *iter;
 }
 
 void Model::update(const entities::Task& e) {
-  auto k = getElemById(e.id);
-
+  auto k = getCachedTaskById(e.id);
   auto q = m_db.getTaskLifetimeQuery();
+
+  // Action
   q.update(k->toValue());
 
+  // .then()
   notify();  // FIXME: а нужно ли?
 }
 
@@ -83,7 +85,7 @@ Model::Model(database_app::db_manager_concept_t _pool) : m_db(_pool)
 { }
 
 void Model::notify()
-{ m_observersPtr->update(); }
+{ m_observersPtr->update(getCurrentModelData()); }
 
 void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso)
 { m_observersPtr = iso; }

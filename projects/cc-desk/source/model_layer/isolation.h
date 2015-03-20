@@ -1,7 +1,11 @@
 #ifndef ISOLATION_H
 #define ISOLATION_H
 
+#include "model_layer/entities.h"
+
 namespace isolation {
+//typedef
+
 namespace detail {
 /**
   \brief цель - не включать заголовоки видов в модель - нужна виртуальность
@@ -25,10 +29,10 @@ private:
 class ModelListener {
 public:
   virtual ~ModelListener() { }
-  void update() { do_update(); }
+  void update(entities::TaskEntities m) { do_update(m); }
 
 private:
-  virtual void do_update() = 0;
+  virtual void do_update(entities::TaskEntities m) = 0;
 };
 
 typedef gc::SharedPtr<isolation::ModelListener> ModelListenerPtr;

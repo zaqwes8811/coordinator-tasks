@@ -45,7 +45,7 @@ public:
   ~UiEngine();
 
   // actions
-  void redraw();
+  void redraw(entities::TaskEntities e);
 
   void setUiActor(gc::SharedPtr<actors::UIActor> a);
 
@@ -88,8 +88,6 @@ private:
   Row getSelectedRow() const;
 
   void processFilter(filters::FilterPtr, int state);
-
-  entities::TaskEntities getModelData() const;
 
   gc::SharedPtr<models::Model> m_modelPtr;
 

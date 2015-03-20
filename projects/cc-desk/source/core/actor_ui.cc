@@ -16,10 +16,10 @@ public:
     : m_viewPtr(view) { }
 
 private:
-  void do_update() {
+  void do_update(entities::TaskEntities e) override {
     auto c = m_viewPtr.lock();
     if (c)
-      c->redraw();
+      c->redraw(e);
   }
 
   gc::WeakPtr<UiEngine> m_viewPtr;
