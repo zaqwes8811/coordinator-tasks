@@ -1,7 +1,6 @@
 #include "heart/config.h"
 
 #include "sqlite_xx/sqlite_xx.h"
-#include "data_access_layer/db_indep.h"
 #include "data_access_layer/sqlite_queries.h"
 
 #include <gtest/gtest.h>

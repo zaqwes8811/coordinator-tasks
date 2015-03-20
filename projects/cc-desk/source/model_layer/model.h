@@ -35,16 +35,17 @@ namespace models
 
   FIXME: утекают хендлы!! make ImmutableTask. причем утекают как на нижние уровни, так и на верхние
 */
-class Model
-    //: public boost::noncopyable
+class Model //: public boost::noncopyable
 {
 public:
-  // create/destory
+  /// create/destory
   explicit Model(database_app::db_manager_concept_t _pool);
   ~Model();
 
-  // other
-  // FIXME: да, лучше передать в конструкторе, но при конструировании возникает цикл.
+  /// other
+  /**
+    FIXME: да, лучше передать в конструкторе, но при конструировании возникает цикл.
+  */
   void setListener(isolation::ModelListenerPtr iso);
 
   /**
@@ -52,33 +53,40 @@ public:
   */
   void appendNewTask(const entities::Task& e);  // overloading trouble in for_each
 
-  // Precond: элемент был сохранен
+  /**
+    \pre лемент был сохранен
+  */
   void update(const entities::Task& e);
 
-  // FIXME: плохо что хендлы утекают, и из-за того что указатели
-  //   shared объекты превращаются в глобальные переменные.
+  /**
+    FIXME: плохо что хендлы утекают, и из-за того что указатели
+      shared объекты превращаются в глобальные переменные.
+  */
   entities::TaskEntities getCurrentModelData();
 
   void initializeStore(std::function<void(std::string)> errorHandler);
 
   void dropStore();
 
-  void setUiActor(gc::SharedPtr<actors::UIActor> a)
-  { m_uiActorPtr = a; }
+  void setUiActor(gc::SharedPtr<actors::UIActor> a);
 
 private:
   template <typename U>
   friend void renders::render_task_store(std::ostream& o, const U& a);
   void draw_task_store(std::ostream& o) const;
 
-  void notify();  // Нужно было открыть для обновления при семене фильтров
+  // Нужно было открыть для обновления при семене фильтров
+  void notify();
 
-  // persist filters:
+  /// persist filters:
   static entities::TaskEntities loadAll(database_app::db_manager_concept_t pool);
 
   entities::TaskEntities m_tasks;
 
-  // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
+  /**
+    FIXME: кажется двойное лучше, или хранить фильтр?
+      и через него при прорисовке пропускать?
+  */
   database_app::db_manager_concept_t m_dbPtr;
   isolation::ModelListenerPtr m_observersPtr;
   entities::TaskEntity getElemById(const size_t id);

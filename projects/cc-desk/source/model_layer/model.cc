@@ -41,6 +41,9 @@ void Model::dropStore() {
   new_space::drop(q);
 }
 
+void Model::setUiActor(gc::SharedPtr<actors::UIActor> a)
+{ m_uiActorPtr = a; }
+
 void Model::initializeStore(std::function<void(std::string)> errorHandler)
 {
   // FIXME: It's bad - can't show on UI

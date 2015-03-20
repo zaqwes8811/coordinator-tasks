@@ -10,13 +10,21 @@
 #include "model_layer/entities.h"
 #include "model_layer/filters.h"
 #include "common/error_handling.h"
-#include "db_indep.h"
 
 #include <std_own_ext-fix/std_own_ext.h>
 
 #include <iostream>
 #include <cassert>
 #include <sstream>
+
+namespace storages {
+struct TablePositions {
+  const static int kId = 0;
+  const static int kTaskName = 1;
+  const static int kPriority = 2;
+  const static int kDone = 3;
+};
+}
 
 // Unused
 //   string sql("SELECT * FROM " + m_table_name + " ORDER BY ID;");
@@ -63,7 +71,7 @@ TaskLifetimeQueries PostgreSQLDataBase::getTaskLifetimeQuery() {
   return TaskLifetimeQueries(m_table_name, m_conn_ptr);
 }
 
-void TaskTableQueries::do_registerBeanClass() {
+void TaskTableQueries::registerBeanClass() {
   string sql(
     "CREATE TABLE " \
     "IF NOT EXISTS "+ // v9.1 >=
@@ -85,7 +93,7 @@ void TaskTableQueries::do_registerBeanClass() {
   W.commit();
 }
 
-void TaskTableQueries::do_drop() {
+void TaskTableQueries::drop() {
   auto c = m_conn_ptr.lock();
   if(!c)
     return;
@@ -107,7 +115,7 @@ TaskLifetimeQueries::TaskLifetimeQueries(const std::string& table_name
     , m_connPtr(p)
 { }
 
-void TaskLifetimeQueries::do_update(const entities::Task& v) {
+void TaskLifetimeQueries::update(const entities::Task& v) {
 
   DCHECK(v.id != EntityStates::kInactiveKey);
 
@@ -132,7 +140,7 @@ void TaskLifetimeQueries::do_update(const entities::Task& v) {
   w.commit();
 }
 
-entities::Task TaskLifetimeQueries::do_persist(const entities::Task& task)
+entities::Task TaskLifetimeQueries::persist(const entities::Task& task)
 {
   DCHECK(task.id == entities::EntityStates::kInactiveKey);
   DCHECK(!task.done);
@@ -171,7 +179,7 @@ entities::Task TaskLifetimeQueries::do_persist(const entities::Task& task)
 }
 
 
-entities::TaskEntities TaskLifetimeQueries::do_loadAll() const {
+entities::TaskEntities TaskLifetimeQueries::loadAll() const {
   string sql("SELECT * FROM " + m_tableName + ";");// WHERE DONE = FALSE;");
 
   auto c = m_connPtr.lock();

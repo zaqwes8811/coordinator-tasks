@@ -1,7 +1,8 @@
 #ifndef DAL_SQLITE_QUERIES_H_
 #define DAL_SQLITE_QUERIES_H_
 
-#include "db_indep.h"
+#include "model_layer/entities.h"
+
 #include "sqlite_xx/sqlite_xx.h"
 
 #include <memory>
@@ -9,7 +10,7 @@
 #include <string>
 
 namespace sqlite_queries {
-class SQLiteTaskTableQueries : public storages::TaskTableQueries
+class SQLiteTaskTableQueries
 {
 public:
   explicit SQLiteTaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
@@ -24,11 +25,11 @@ public:
     return entities::TaskEntities();
   }
 
-private:
-  virtual void do_registerBeanClass();
-  virtual void do_drop();
-  virtual void drawImpl(std::ostream& o) const;
+  void registerBeanClass();
+  void drop();
+  void drawImpl(std::ostream& o) const;
 
+private:
   std::string getTableName() const
   { return m_tableName; }
 

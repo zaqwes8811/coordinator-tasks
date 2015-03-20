@@ -43,6 +43,23 @@ private:
     concept_t> self_;  // ссылки на immutable
 };
 
+/**
+  \attention Small life time!
+
+  Делать один репозиторий не советуют
+
+  FIXME: Может DI какой сделать, или все равно?
+
+  FIXME: как то объединить create, update, etc. в persist
+
+  Назначет id!! очень важно! объекты уникальные
+  Создает, если еще не был создан, либо обновляет всю запись
+  by value
+  На групповую вставку могут быть ограничения, но в данной задаче
+   пока не нужно, если не нужно будет что-то куда-то автоматически переливать.
+
+  FIXME: с умными указателями возникают проблемы с константростью!
+*/
 class lifetime_concept_t {
 public:
   template<typename T>
@@ -111,6 +128,16 @@ template <> struct holder_traits<int> {
 }
 
 /**
+  \attention Only in single thread! Actors Model can help
+
+  http://herbsutter.com/2013/05/30/gotw-90-solution-factories/
+
+  \fixme How make noncopyble in C++11
+
+  \fixme: strange design. May be bad lifetimes
+
+  http://www.drdobbs.com/cpp/c11-uniqueptr/240002708
+
   \brief Dropable
 
   \fixme Tourble. We return query objects with internal handler
