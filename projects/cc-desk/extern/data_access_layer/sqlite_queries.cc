@@ -7,6 +7,15 @@
 namespace sqlite_queries {
 using std::string;
 
+entities::Task SQLiteTaskTableQueries::persist(const entities::Task& v) {
+  return v;
+}
+void SQLiteTaskTableQueries::update(const entities::Task& v) { }
+
+entities::TaskEntities SQLiteTaskTableQueries::loadAll() const {
+  return entities::TaskEntities();
+}
+
 SQLiteTaskTableQueries::SQLiteTaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
                                                , const std::string& tableName)
   : m_tableName(tableName)
@@ -38,10 +47,6 @@ void SQLiteTaskTableQueries::drop() {
     return;
 
   sqlite3_cc::sqlite3_exec(*c, "DROP TABLE " + m_tableName + ";");
-}
-
-void SQLiteTaskTableQueries::drawImpl(std::ostream& o) const {
-
 }
 
 bool checkUnique(const std::string& name, gc::WeakPtr<sqlite3_cc::sqlite3> h) {

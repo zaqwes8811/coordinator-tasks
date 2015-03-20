@@ -16,18 +16,12 @@ public:
   explicit SQLiteTaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
                                   , const std::string& tableName);
 
-  entities::Task persist(const entities::Task& v) {
-    return v;
-  }
-  void update(const entities::Task& v) {}
-
-  entities::TaskEntities loadAll() const {
-    return entities::TaskEntities();
-  }
+  entities::Task persist(const entities::Task& v);
+  void update(const entities::Task& v);
+  entities::TaskEntities loadAll() const;
 
   void registerBeanClass();
   void drop();
-  void drawImpl(std::ostream& o) const;
 
 private:
   std::string getTableName() const

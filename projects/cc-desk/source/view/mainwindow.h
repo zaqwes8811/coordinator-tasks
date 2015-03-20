@@ -47,11 +47,9 @@ public:
   // actions
   void redraw();
 
-  void setUiActor(gc::SharedPtr<actors::UIActor> a)
-  { m_uiActorPtr = a; }
+  void setUiActor(gc::SharedPtr<actors::UIActor> a);
 
-  bool isReadyToDestroy() const
-  { return m_fsmToDestroy; }
+  bool isReadyToDestroy() const;
 
 private slots:
 
@@ -61,17 +59,15 @@ private slots:
   void onOnOffSortByTaskName(int state);
 
   /** other actions:
-  // FIXME: а есть элемент не из той таблицы?
-  // FIXME: а место ли этому слоту здесь?
-  // FIXME: на один сигнал можно подвесить несколько слотов
+    \fixme а есть элемент не из той таблицы?
+    \fixme а место ли этому слоту здесь?
+    \fixme на один сигнал можно подвесить несколько слотов
   */
   void onRowIsChanged(QTableWidgetItem* item);
   void onMarkDone();
   void onReopen();
 
-#ifndef G_I_WANT_USE_IT
   void onFillFake(bool);
-#endif
 
 private:
   /**
@@ -79,25 +75,15 @@ private:
   */
   void onUiLoaded();
 
-  void showEvent( QShowEvent* event ) override
-  {
-      QWidget::showEvent( event );
-      //your code here
-      onUiLoaded();
-  }
-
   /**
     \attention
   */
   void onClose();
+  void doTheThing();
 
-  void closeEvent(QCloseEvent *event) override
-  { onClose(); }
+  gc::SharedPtr<UiEngine> share();
 
   void action();
-
-  void doTheThing()
-  { }
 
   Row getSelectedRow() const;
 
@@ -105,26 +91,22 @@ private:
 
   entities::TaskEntities getModelData() const;
 
-  Ui::MainWindow* m_uiRawPtr;
-  QMyTableView* m_taskTablePtr;
   gc::SharedPtr<models::Model> m_modelPtr;
 
-  filters::ChainFilters m_filtersChain;
-
   // Coupled with actors
-  gc::SharedPtr<UiEngine> share()
-  { return shared_from_this(); }
-
   gc::WeakPtr<actors::UIActor> m_uiActorPtr;
   cc11::Actior m_dbActor;
 
-  // FSM:
-  bool m_fsmTablesIsCreated;
+  /// FSM
+  bool m_fsmTablesIsCreated{false};
   bool m_fsmToDestroy{false};
 
-  // FIXME: DANGER!! при реализации фильтров сломает логику!!!
-  // Жесткая привязка к списку и к цепочке фильтров
-  entities::TaskEntity getTaskById(const int pos);
+  /// Qt specific
+  Ui::MainWindow* m_uiRawPtr;
+  QMyTableView* m_taskTablePtr;
+
+  void closeEvent(QCloseEvent *event) override;
+  void showEvent( QShowEvent* event ) override;
 };
 
 #endif // MAINWINDOW_H

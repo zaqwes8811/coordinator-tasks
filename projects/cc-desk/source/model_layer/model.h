@@ -2,12 +2,10 @@
 #define BUSI_H
 
 #include "model_layer/entities.h"
-#include "data_access_layer/postgresql_queries.h"
 #include "view/renders.h"
-#include "model_layer/model.h"
 #include "model_layer/isolation.h"
-//#include "core/actor_ui.h"
 #include "core/concepts.h"
+#include "filters.h"
 
 #include <string>
 #include <functional>
@@ -34,13 +32,16 @@ namespace models
   похоже есть зависимость от текущего фильтра. А если отред. и теперь в фильтр не попадает?
 
   FIXME: утекают хендлы!! make ImmutableTask. причем утекают как на нижние уровни, так и на верхние
+
+  \design
+  Looks like it's bad reload full model. Need work with RAM.
+  It's hard recreate state. And big overhead.
 */
 class Model //: public boost::noncopyable
 {
 public:
   /// create/destory
   explicit Model(database_app::db_manager_concept_t _pool);
-  ~Model();
 
   /// other
   /**
@@ -70,28 +71,38 @@ public:
 
   void setUiActor(gc::SharedPtr<actors::UIActor> a);
 
+  void add(filters::FilterPtr f)
+  { m_filtersChain.add(f); }
+
+  void remove(filters::FilterPtr f)
+  { m_filtersChain.remove(f); }
+
 private:
   template <typename U>
   friend void renders::render_task_store(std::ostream& o, const U& a);
-  void draw_task_store(std::ostream& o) const;
 
-  // Нужно было открыть для обновления при семене фильтров
+  /**
+    Нужно было открыть для обновления при семене фильтров
+  */
   void notify();
 
-  /// persist filters:
-  static entities::TaskEntities loadAll(database_app::db_manager_concept_t pool);
-
-  entities::TaskEntities m_tasks;
+  entities::TaskEntities m_tasksCache;
 
   /**
     FIXME: кажется двойное лучше, или хранить фильтр?
       и через него при прорисовке пропускать?
   */
-  database_app::db_manager_concept_t m_dbPtr;
+  database_app::db_manager_concept_t m_db;
   isolation::ModelListenerPtr m_observersPtr;
   entities::TaskEntity getElemById(const size_t id);
 
   gc::WeakPtr<actors::UIActor> m_uiActorPtr;
+
+  /**
+    \fixme DANGER!! при реализации фильтров сломает логику!!!
+      Жесткая привязка к списку и к цепочке фильтров
+  */
+  filters::ChainFilters m_filtersChain;
 };
 }
 

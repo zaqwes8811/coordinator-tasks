@@ -174,13 +174,8 @@ void UiEngine::onReopen() {
 }
 
 void UiEngine::processFilter(filters::FilterPtr f, int state) {
-  if (Qt::Unchecked == state) {
-    m_filtersChain.remove(f);
-  }
-
-  if (Qt::Checked == state) {
-    m_filtersChain.add(f);
-  }
+  if (Qt::Unchecked == state) m_modelPtr->remove(f);
+  if (Qt::Checked == state) m_modelPtr->add(f);
 }
 
 void UiEngine::onOnOffDone(int state) {
@@ -202,22 +197,38 @@ void UiEngine::onOnOffSortByDecPriority(int state) {
 }
 
 entities::TaskEntities UiEngine::getModelData() const {
-  return m_filtersChain(m_modelPtr->getCurrentModelData());
+  return m_modelPtr->getCurrentModelData();
 }
 
-#ifndef G_I_WANT_USE_IT
 void UiEngine::onFillFake(bool) {
   using namespace std::placeholders;
   TaskEntities mirror(fake_store::get_all());
 
-  // сохраняем все
   std::for_each(mirror.begin(), mirror.end()
                 , bind(&Model::appendNewTask, ref(*m_modelPtr),
                                bind(&entities::Task::toValue, _1)));
-
-  ::renders::render_task_store(std::cout, *m_modelPtr);
 }
-#endif
+
+
+void UiEngine::closeEvent(QCloseEvent *event)
+{ onClose(); }
+
+void UiEngine::doTheThing() { }
+
+void UiEngine::showEvent( QShowEvent* event )
+{
+    QWidget::showEvent( event );
+    onUiLoaded();
+}
+
+gc::SharedPtr<UiEngine> UiEngine::share()
+{ return shared_from_this(); }
+
+void UiEngine::setUiActor(gc::SharedPtr<actors::UIActor> a)
+{ m_uiActorPtr = a; }
+
+bool UiEngine::isReadyToDestroy() const
+{ return m_fsmToDestroy; }
 
 void UiEngine::redraw() {
   // FIXME: не лучший вариант все же, лучше реюзать, но как пока не ясно
@@ -275,11 +286,4 @@ void UiEngine::onRowIsChanged(QTableWidgetItem* widget)
   }
 }
 
-entities::TaskEntity UiEngine::getTaskById(const int id) {
-  using namespace std::placeholders;
-  auto r = getModelData();
-  auto it = std::find_if(r.begin(), r.end(), bind(&entities::Task::id, _1));
 
-  DCHECK(it != r.end());  // должен быть
-  return *it;
-}

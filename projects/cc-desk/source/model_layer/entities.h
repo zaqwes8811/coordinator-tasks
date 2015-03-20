@@ -47,19 +47,13 @@ typedef gc::SharedPtr<Task> TaskEntity;
 */
 class Task {
 public:
-  // builders
-  static TaskEntity createEntity(const entities::Task& v);
-
   // conv
   entities::Task toValue() const;
+  TaskEntity toEntity() const;
 
   // ctor/dtor/assign/copy
   Task(const Task& v);
   Task();
-
-  // used overload
-  //void id(size_t id);
-  //size_t id() const;
 
   // data
   size_t id;  // нужно какое-то не активное
@@ -90,5 +84,6 @@ public:
 };
 
 typedef std::vector<entities::TaskEntity> TaskEntities;
+typedef std::vector<entities::TagEntity> TagEntities;
 }  // namespace..
 #endif // DOMAIN_H

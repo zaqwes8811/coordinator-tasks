@@ -33,7 +33,7 @@ std::ostream& operator<<(std::ostream& o,
 
 template <typename U>
 void render_task_store(std::ostream& o, const U& a) {
-  a.draw_task_store(o);
+  //a.draw_task_store(o);
 }
 
 }

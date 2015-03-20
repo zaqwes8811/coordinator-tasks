@@ -1,15 +1,3 @@
-// даже если исключение брошено при
-//   сохранении, а элемент добавлен, то можно потом сохр.
-// но! лучше сохранить! так мы копим несохраненные данные!
-//
-// нет, лучше транзакцией и по много не сохранять.
-//   будет зависеть от производительности.
-//   но лучше работать с
-//
-// add to container
-//
-// FIXME: может лучше исключение?
-
 #include "heart/config.h"
 
 #include "model_layer/model.h"
@@ -21,7 +9,6 @@
 #include <functional>
 
 namespace models {
-using namespace pq_dal;
 using namespace entities;
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
@@ -29,47 +16,37 @@ using entities::Task;
 
 using std::cout;
 
-void Model::draw_task_store(std::ostream& o) const {
-  //auto q = m_dbPtr->createTaskTableQuery();
-  //q->draw(o);
-}
-
-Model::~Model() { }
-
 void Model::dropStore() {
-  auto q = m_dbPtr.getTaskTableQuery();
+  auto q = m_db.getTaskTableQuery();
   new_space::drop(q);
 }
 
 void Model::setUiActor(gc::SharedPtr<actors::UIActor> a)
 { m_uiActorPtr = a; }
 
-void Model::initializeStore(std::function<void(std::string)> errorHandler)
-{
-  // FIXME: It's bad - can't show on UI
-  // FIXME: дублирование. как быть с именем таблицы?
-  // create tables
-  auto q = m_dbPtr.getTaskTableQuery();
+void Model::initializeStore(std::function<void(std::string)> errorHandler) {
+  auto q = m_db.getTaskTableQuery();
+  auto query = m_db.getTaskLifetimeQuery();
+
+  // Action
   new_space::registerBeanClass(q);
+  auto tasks = query.loadAll();
 
-  m_tasks = loadAll(m_dbPtr);
-}
-
-TaskEntities Model::loadAll(database_app::db_manager_concept_t dbPtr) {
-  auto query = dbPtr.getTaskLifetimeQuery();
-  return TaskEntities(query.loadAll());
+  // Draw
+  m_tasksCache = tasks;
+  notify();
 }
 
 entities::TaskEntity Model::getElemById(const size_t id) {
-  auto it = std::find_if(m_tasks.begin(), m_tasks.end(), filters::is_contained(id));
-  DCHECK(it != m_tasks.end());
+  auto it = std::find_if(m_tasksCache.begin(), m_tasksCache.end(), filters::is_contained(id));
+  DCHECK(it != m_tasksCache.end());
   return *it;
 }
 
 void Model::update(const entities::Task& e) {
   auto k = getElemById(e.id);
 
-  auto q = m_dbPtr.getTaskLifetimeQuery();
+  auto q = m_db.getTaskLifetimeQuery();
   q.update(k->toValue());
 
   notify();  // FIXME: а нужно ли?
@@ -84,15 +61,15 @@ void Model::appendNewTask(const Task& task) {
 
   DCHECK(task.id == EntityStates::kInactiveKey);
 
-  auto e = Task::createEntity(task);
+  auto e = task.toEntity();
 
-  auto _ = MakeObjGuard(m_tasks, &TaskEntities::pop_back);
+  auto _ = MakeObjGuard(m_tasksCache, &TaskEntities::pop_back);
 
   // FIXME: а ведь порядок операций важен, и откатить проще операцию в памяти, чем в базе данных
-  m_tasks.push_back(e);
+  m_tasksCache.push_back(e);
 
   // persist full container
-  auto query = m_dbPtr.getTaskLifetimeQuery();
+  auto query = m_db.getTaskLifetimeQuery();
 
   // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
   auto r = query.persist(e->toValue());
@@ -102,7 +79,7 @@ void Model::appendNewTask(const Task& task) {
   _.Dismiss();
 }
 
-Model::Model(database_app::db_manager_concept_t _pool) : m_dbPtr(_pool)
+Model::Model(database_app::db_manager_concept_t _pool) : m_db(_pool)
 { }
 
 void Model::notify()
@@ -112,6 +89,6 @@ void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso)
 { m_observersPtr = iso; }
 
 entities::TaskEntities Model::getCurrentModelData()
-{ return m_tasks; }
+{ return m_filtersChain(m_tasksCache); }
 
 }
