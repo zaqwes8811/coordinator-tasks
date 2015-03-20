@@ -45,33 +45,63 @@ using std::vector;
 using std::ref;
 using std::bind;
 
+// FIXME: try how in Guava
+class Optional {
+public:
+  //static Optional absent() { return -1; }
+};
+
+Row::Row() : idx(-1) { }
+Row::Row(int _idx) : idx(_idx) { }
+
+bool Row::isPresent() const {
+  return idx != -1 && idx >= 0;
+}
+
+int Row::get() const {
+  if (!isPresent())
+    throw std::runtime_error("absent");
+
+  return idx;
+}
+
+Row Row::absent() {
+  return Row();
+}
+
+Row Row::of(int v) {
+  return Row(v);
+}
+
 void UiEngine::onUiLoaded()
 {
   std::cout << "Show" << std::endl;
 }
 
-void UiEngine::doWork() {
-  (*m_uiActorPtr).end();
-  m_scope.setToDone();
+void UiEngine::onClose() {
+  m_fsmToDestroy = true;
 }
 
+UiEngine::~UiEngine(){ delete m_uiRawPtr; }
 
 void UiEngine::action() {
   auto self = share();
   auto uiActorPtr = m_uiActorPtr;
-  m_dbActor.post([uiActorPtr, self] () mutable {
+  /*m_dbActor.post([uiActorPtr, self] () mutable {
     uiActorPtr->post([=] {
       self->doTheThing();
     });
-  });
+  });*/
 }
 
 UiEngine::UiEngine(//scopes::AppScope s,
-                   models::Model* const model_ptr,
+                   gc::SharedPtr<models::Model> model_ptr,
                    QWidget *parent) :
     QMainWindow(parent)//, m_scope(s)
 {
-  m_uiRawPtr = new Ui::MainWindow;
+  m_uiRawPtr = //std::unique_ptr<Ui::MainWindow>(
+        new Ui::MainWindow();
+      //);
   m_uiRawPtr->setupUi(this);
   m_modelPtr = model_ptr;
 
@@ -118,7 +148,8 @@ UiEngine::UiEngine(//scopes::AppScope s,
     setCentralWidget(centralWidget);
     auto mainLayout = new QVBoxLayout(centralWidget);
       m_taskTablePtr = new QMyTableView(this);
-      connect(m_taskTablePtr, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(onRowIsChanged(QTableWidgetItem*)));
+      connect(m_taskTablePtr, SIGNAL(itemChanged(QTableWidgetItem*))
+              , this, SLOT(onRowIsChanged(QTableWidgetItem*)));
 
       // make checkbox
       //connect(_table->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(filterOnOffSortByDecPriority(int)));
@@ -129,8 +160,6 @@ UiEngine::UiEngine(//scopes::AppScope s,
 
   redraw();
 }
-
-UiEngine::~UiEngine() { delete m_uiRawPtr; }
 
 void UiEngine::onReopen() {
   auto r = getSelectedRow();

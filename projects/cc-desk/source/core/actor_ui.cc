@@ -4,22 +4,25 @@
 #include "common/app_types.h"
 #include "view/mainwindow.h"
 #include "model_layer/isolation.h"
+#include "core/scopes.h"
 
 #include <QApplication>
 
 class ModelListenerMediator :
-    public isolation::ModelListener_virtual
+    public isolation::ModelListener
 {
 public:
-  explicit ModelListenerMediator(UiEngine* const view) : m_viewRawPtr(view) { }
+  explicit ModelListenerMediator(gc::WeakPtr<UiEngine> view)
+    : m_viewPtr(view) { }
 
 private:
   void do_update() {
-    DCHECK(m_viewRawPtr);
-    m_viewRawPtr->redraw();
+    auto c = m_viewPtr.lock();
+    if (c)
+      c->redraw();
   }
 
-  UiEngine* const m_viewRawPtr;
+  gc::WeakPtr<UiEngine> m_viewPtr;
 };
 
 
@@ -31,40 +34,53 @@ namespace actors {
 //
 // Quit
 // http://stackoverflow.com/questions/8165487/how-to-do-cleaning-up-on-exit-in-qt
-void UIActor::Run(gc::SharedPtr<models::Model> modelPtr) {
-  int argc = 1;
-  char* argv[1] = { "none" };
-  QApplication appLoop(argc, argv);
+void UIActor::Run(storages::DataBasePtr pool) {
+  {
+    // work in UI thread
+    int argc = 1;
+    char* argv[1] = { "none" };
+    QApplication appLoop(argc, argv);
 
-  auto enginePtr = std::make_shared<UiEngine>(modelPtr.get());
+    // Objects
+    // Must be shared. Need for actors
+    auto model = gc::SharedPtr<models::Model>(models::Model::createForOwn(pool));
+    auto ui = std::make_shared<UiEngine>(model);
+    gc::SharedPtr<isolation::ModelListener> uiMediator(new ModelListenerMediator(ui));
 
-  // Work if .exec()
-  //QObject::connect(&appLoop, SIGNAL(aboutToQuit()), enginePtr.get(), SLOT(doWork()));
+    // Connect
+    model->setListener(uiMediator);
+    model->setUiActor(shared_from_this());
+    ui->setUiActor(shared_from_this());
 
-  gc::SharedPtr<isolation::ModelListener_virtual> listenerPtr(new ModelListenerMediator(enginePtr.get()));
-  modelPtr->setListener(listenerPtr);
+    // Work if .exec()
+    //QObject::connect(&appLoop, SIGNAL(aboutToQuit()), enginePtr.get(), SLOT(doWork()));
+    //appLoop.exec();
+    ui->show();
+    scopes::AppScope scope;
+    while( !m_done ) {
+      if (ui->isReadyToDestroy()) {
+        scope.setToDone();
+        break;
+      }
 
-  enginePtr->setUiActor(shared_from_this());
-  modelPtr->setUiActor(shared_from_this());
-  enginePtr->show();
+      // main event loop
+      appLoop.processEvents();  // hat processor!
 
-  //appLoop.exec();
+      // ! can't sleep or wait!
+      Message msg;
+      if (mq.try_pop(msg))
+        msg();            // execute message
+    } // note: last message sets done to true
+  }
 
-  ///**
-  while( !m_done ) {
-    // ! can't sleep or wait!
-    Message msg;
-    if (mq.try_pop(msg))
-      msg();            // execute message
-
-    // main event loop
-    appLoop.processEvents();  // hat processor!
-
-    //if (wasTerminated) {
-    //
+  // UI is destroyed
+  {
+    // Only thread loop rest
+    //while( !m_done ) {
+    //  Message msg;
+    //  if (mq.try_pop(msg))
+    //    msg();
     //}
-    //break;
-  } // note: last message sets done to true
-  //*/
+  }
 }
 }

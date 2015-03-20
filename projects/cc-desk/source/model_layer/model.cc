@@ -105,7 +105,7 @@ Model::Model(entities::TaskEntities _tasks, gc::SharedPtr<storages::DataBase> _p
 void Model::notify()
 { m_observersPtr->update(); }
 
-void Model::setListener(gc::SharedPtr<isolation::ModelListener_virtual> iso)
+void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso)
 { m_observersPtr = iso; }
 
 entities::TaskEntities Model::getCurrentModelData()

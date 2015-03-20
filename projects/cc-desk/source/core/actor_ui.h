@@ -29,6 +29,8 @@ namespace actors {
 // http://stackoverflow.com/questions/3629557/boost-shared-from-this
 
 /**
+  \attention Dark place
+
   \attention Only in head and shared_ptr
 
   \fixme How check thread id in callable member?
@@ -42,26 +44,19 @@ public:
   typedef std::function<void()> Message;
 
   // FIXME: trouble is not non-arg ctor
-  explicit UIActor(gc::SharedPtr<models::Model> model_ptr)
+  explicit UIActor(storages::DataBasePtr model_ptr)
     : m_done(false), mq(100)
   { thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) ); }
 
   ~UIActor() {
-    //end();
+    post( [&]{ m_done = true; } );
     thd->join();
   }
 
   void post( Message m )
   { auto r = mq.try_push( m ); }
 
-  void end()
-  { post( [&]{ m_done = true; } ); }
-
-  //bool isActive() const
-  //{ return m_done; }
-
 private:
-
   UIActor( const UIActor& );           // no copying
   void operator=( const UIActor& );    // no copying
 
@@ -69,7 +64,7 @@ private:
   fix_extern_concurent::concurent_bounded_try_queue<Message> mq;
   std::unique_ptr<std::thread> thd;          // le thread
 
-  void Run(gc::SharedPtr<models::Model> modelPtr);
+  void Run(storages::DataBasePtr modelPtr);
 };
 }
 

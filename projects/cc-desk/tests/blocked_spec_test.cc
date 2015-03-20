@@ -32,9 +32,9 @@
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
 
-using isolation::ModelListener_virtual;
+using isolation::ModelListener;
 
-class ModelListenerMediator : public ModelListener_virtual {
+class ModelListenerMediator : public ModelListener {
 public:
   explicit ModelListenerMediator(UiEngine* const view) : view_(view) { }
 
@@ -54,11 +54,7 @@ TEST(Blocked, UIActorTest) {
   storages::DataBasePtr pool(
         new pq_dal::PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
 
-
-  // work in UI thread
-  auto modelPtr = gc::SharedPtr<models::Model>(models::Model::createForOwn(pool));
-
-  auto ui = std::make_shared<actors::UIActor>(modelPtr);  // dtor will call and app out
+  auto ui = std::make_shared<actors::UIActor>(pool);  // dtor will call and app out
 
   // FIXME: troubles with out appl.
   // bad!

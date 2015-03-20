@@ -6,7 +6,6 @@
 #include "model_layer/model.h"
 #include "view/view.h"
 #include "model_layer/filters.h"
-#include "core/scopes.h"
 
 #include <QMainWindow>
 #include <QTableWidget>
@@ -17,44 +16,20 @@
 #include <functional>
 #include <memory>
 
-namespace Ui {
-class MainWindow;
-}
+namespace Ui { class MainWindow; }
 
-namespace actors {
-class UIActor;
-}
-
-// FIXME: try how in Guava
-class Optional {
-public:
-  //static Optional absent() { return -1; }
-};
+namespace actors { class UIActor; }
 
 class Row {
   int idx;
-  Row() : idx(-1) { }
-  explicit Row(int _idx) : idx(_idx) { }
+  Row();
+  explicit Row(int _idx);
 
 public:
-  bool isPresent() const {
-    return idx != -1 && idx >= 0;
-  }
-
-  int get() const {
-    if (!isPresent())
-      throw std::runtime_error("absent");
-
-    return idx;
-  }
-
-  static Row absent() {
-    return Row();
-  }
-
-  static Row of(int v) {
-    return Row(v);
-  }
+  bool isPresent() const;
+  int get() const;
+  static Row absent();
+  static Row of(int v);
 };
 
 class UiEngine : public QMainWindow, public std::enable_shared_from_this<UiEngine>
@@ -66,7 +41,7 @@ public:
   typedef std::function<void(void)> Callable;
 
   // ctor/dtor/assign/copy
-  UiEngine(models::Model* const app_ptr, QWidget *parent = 0);
+  UiEngine(gc::SharedPtr<models::Model> app_ptr, QWidget *parent = 0);
   ~UiEngine();
 
   // actions
@@ -74,6 +49,9 @@ public:
 
   void setUiActor(gc::SharedPtr<actors::UIActor> a)
   { m_uiActorPtr = a; }
+
+  bool isReadyToDestroy() const
+  { return m_fsmToDestroy; }
 
 private slots:
 
@@ -111,10 +89,10 @@ private:
   /**
     \attention
   */
-  void doWork();
+  void onClose();
 
   void closeEvent(QCloseEvent *event) override
-  { doWork(); }
+  { onClose(); }
 
   void action();
 
@@ -127,9 +105,9 @@ private:
 
   entities::TaskEntities getModelData() const;
 
-  Ui::MainWindow *m_uiRawPtr;
+  Ui::MainWindow* m_uiRawPtr;
   QMyTableView* m_taskTablePtr;
-  models::Model* m_modelPtr;
+  gc::SharedPtr<models::Model> m_modelPtr;
 
   filters::ChainFilters m_filtersChain;
 
@@ -137,12 +115,12 @@ private:
   gc::SharedPtr<UiEngine> share()
   { return shared_from_this(); }
 
-  gc::SharedPtr<actors::UIActor> m_uiActorPtr;
+  gc::WeakPtr<actors::UIActor> m_uiActorPtr;
   cc11::Actior m_dbActor;
-  scopes::AppScope m_scope;
 
   // FSM:
   bool m_fsmTablesIsCreated;
+  bool m_fsmToDestroy{false};
 
   // FIXME: DANGER!! при реализации фильтров сломает логику!!!
   // Жесткая привязка к списку и к цепочке фильтров

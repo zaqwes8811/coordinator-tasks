@@ -84,7 +84,7 @@ private:
   isolation::ModelListenerPtr m_observersPtr;
   entities::TaskEntity getElemById(const size_t id);
 
-  gc::SharedPtr<actors::UIActor> m_uiActorPtr;
+  gc::WeakPtr<actors::UIActor> m_uiActorPtr;
 };
 }
 

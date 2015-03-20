@@ -22,16 +22,16 @@ private:
 };
 }  // space
 
-class ModelListener_virtual {
+class ModelListener {
 public:
-  virtual ~ModelListener_virtual() { }
+  virtual ~ModelListener() { }
   void update() { do_update(); }
 
 private:
   virtual void do_update() = 0;
 };
 
-typedef gc::SharedPtr<isolation::ModelListener_virtual> ModelListenerPtr;
+typedef gc::SharedPtr<isolation::ModelListener> ModelListenerPtr;
 
 }  // space
 

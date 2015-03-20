@@ -2,6 +2,7 @@
 # http://stackoverflow.com/questions/19912648/cmake-qtcreator-mingw-debug-mode-windows-7
 # http://www.cmake.org/Wiki/CMake_Useful_Variables
 # -DCMAKE_BUILD_TYPE=Debug
+# -DCMAKE_BUILD_TYPE=Release
 # -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_C_COMPILER=/usr/bin/clang -DCMAKE_CXX_COMPILER=/usr/bin/clang++
 #
 # Trouble:
@@ -21,7 +22,10 @@ FIND_PACKAGE(Qt4 REQUIRED)
 INCLUDE( ${QT_USE_FILE} )
 
 # FIXME: use TSan
+# Keys is exclude other
 set( LCB_USE_ASAN Y)
+# http://stackoverflow.com/questions/26507205/error-when-attempting-to-compile-libpqxx-4-0-1-on-solaris-10-using-oracle-solari
+#set( LCB_USE_TSAN Y)  # Trouble with libpqxx - need compile with -fPIC
 
 set(Extern "../../extern/")
 set(ExternLocal "./extern/")
@@ -67,13 +71,22 @@ IF(LCB_USE_ASAN)
     # http://blogs.perl.org/users/rurban/2011/11/adventures-with-clang-and-asan.html
     # main: address - thread, memory and ub not work in i686, only x86_64
     #-fno-omit-frame-pointer -O1 -g
-    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fno-omit-frame-pointer -fsanitize=address")
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -g -fno-omit-frame-pointer -fsanitize=address")
     #-fno-omit-frame-pointer -O1
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -fno-omit-frame-pointer -fsanitize=address")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -g -fno-omit-frame-pointer -fsanitize=address")
     # -undefined dynamic_lookup
     SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}  -fsanitize=address")
     SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
 ENDIF()
+
+IF(LCB_USE_TSAN)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -g -fsanitize=thread -fPIC")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -g -fsanitize=thread -fPIC")
+    #set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}  -fsanitize=thread")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=thread -pie")
+
+    #link_directories(${BigExtern}/boost_1_57_0/gcc_tsan_lib64/lib)
+endif()
 
 # link the libraries to the executable
 if (MSVC90)
