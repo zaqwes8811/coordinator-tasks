@@ -1,0 +1,1 @@
+http://stackoverflow.com/questions/28675745/node-js-how-to-enforce-data-consistency-with-async-waterfall

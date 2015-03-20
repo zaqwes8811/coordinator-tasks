@@ -66,10 +66,10 @@ public:
   void setUiActor(gc::SharedPtr<actors::UIActor> a);
 
   void add(filters::FilterPtr f)
-  { m_filtersChain.add(f); }
+  { m_filtersChain.add(f); notifyObservers(); }
 
   void remove(filters::FilterPtr f)
-  { m_filtersChain.remove(f); }
+  { m_filtersChain.remove(f); notifyObservers(); }
 
 private:
   template <typename U>
@@ -84,7 +84,7 @@ private:
   /**
     Нужно было открыть для обновления при семене фильтров
   */
-  void notify();
+  void notifyObservers();
 
   entities::TaskEntities m_tasksCache;
 
@@ -103,6 +103,9 @@ private:
       Жесткая привязка к списку и к цепочке фильтров
   */
   filters::ChainFilters m_filtersChain;
+
+  /// Consistency Guards
+  bool m_fsmAppendIsDone{false};
 };
 }
 

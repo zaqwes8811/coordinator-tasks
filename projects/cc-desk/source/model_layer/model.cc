@@ -18,6 +18,8 @@ using std::cout;
 
 void Model::dropStore() {
   auto q = m_db.getTaskTableQuery();
+
+  // Action
   new_space::drop(q);
 }
 
@@ -25,6 +27,7 @@ void Model::setUiActor(gc::SharedPtr<actors::UIActor> a)
 { m_uiActorPtr = a; }
 
 void Model::initializeStore(std::function<void(std::string)> errorHandler) {
+  // Prepare
   auto q = m_db.getTaskTableQuery();
   auto query = m_db.getTaskLifetimeQuery();
 
@@ -34,63 +37,70 @@ void Model::initializeStore(std::function<void(std::string)> errorHandler) {
 
   // Draw
   m_tasksCache = tasks;
-  notify();
+  notifyObservers();
 }
 
 entities::TaskEntity Model::getCachedTaskById(const size_t id) {
-  auto iter = std::find_if(m_tasksCache.begin(), m_tasksCache.end(), filters::is_contained(id));
+  auto iter = std::find_if(
+        m_tasksCache.begin(), m_tasksCache.end(),
+        filters::is_contained(id));
+
   DCHECK(iter != m_tasksCache.end());
   return *iter;
 }
 
-void Model::update(const entities::Task& e) {
+void Model::updateTask(const entities::Task& e) {
   auto k = getCachedTaskById(e.id);
+
+  // Prepare
   auto q = m_db.getTaskLifetimeQuery();
 
   // Action
   q.update(k->toValue());
 
   // .then()
-  notify();  // FIXME: а нужно ли?
+  notifyObservers();
 }
 
 // FIXME: may be not put in RAM? After persist view will be updated
 void Model::appendNewTask(const Task& task) {
-  // Create task
-  // Try persist
-  // Update model
-  // Notify
-
   DCHECK(task.id == EntityStates::kInactiveKey);
 
   auto e = task.toEntity();
-
-  auto _ = MakeObjGuard(m_tasksCache, &TaskEntities::pop_back);
-
-  // FIXME: а ведь порядок операций важен, и откатить проще операцию в памяти, чем в базе данных
   m_tasksCache.push_back(e);
 
-  // persist full container
+  // Prepare
   auto query = m_db.getTaskLifetimeQuery();
 
-  // не правильно это! нужно сохранить одну записть. Иначе это сторонний эффект!!
-  auto r = query.persist(e->toValue());
-  e->id = r.id;  // а ведь придется оставить!!
+  // Action
+  try {
+    *e = query.persist(task);
+  } catch (...) {
+    // No way! Can add some task after
+    auto rollback = [this]() {
+      //std::remove()
+      this->m_tasksCache.pop_back();
+    };
+    rollback();
+  }
 
-  notify();
-  _.Dismiss();
+  // .then()
+  notifyObservers();
 }
 
 Model::Model(database_app::db_manager_concept_t _pool) : m_db(_pool)
 { }
 
-void Model::notify()
-{ m_observersPtr->update(getCurrentModelData()); }
+void Model::notifyObservers() {
+  m_observersPtr->update(getCurrentModelData());
+}
 
-void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso)
-{ m_observersPtr = iso; }
+void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso) {
+  m_observersPtr = iso;
+}
 
-entities::TaskEntities Model::getCurrentModelData()
-{ return m_filtersChain(m_tasksCache); }
+entities::TaskEntities Model::getCurrentModelData() {
+  return m_filtersChain(m_tasksCache);
+}
 
 }
