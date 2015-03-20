@@ -34,7 +34,7 @@ namespace actors {
 //
 // Quit
 // http://stackoverflow.com/questions/8165487/how-to-do-cleaning-up-on-exit-in-qt
-void UIActor::Run(storages::DataBasePtr pool) {
+void UIActor::Run(database_app::db_manager_concept_t pool) {
   {
     // work in UI thread
     int argc = 1;
@@ -43,7 +43,7 @@ void UIActor::Run(storages::DataBasePtr pool) {
 
     // Objects
     // Must be shared. Need for actors
-    auto model = gc::SharedPtr<models::Model>(models::Model::createForOwn(pool));
+    auto model = std::make_shared<models::Model>(pool);
     auto ui = std::make_shared<UiEngine>(model);
     gc::SharedPtr<isolation::ModelListener> uiMediator(new ModelListenerMediator(ui));
 

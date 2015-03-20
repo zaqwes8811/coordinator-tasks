@@ -13,6 +13,7 @@
 #include "model_layer/isolation.h"
 #include "core/actor_ui.h"
 #include "core/scopes.h"
+#include "core/concepts.h"
 
 #include <QApplication>
 #include <QLabel>
@@ -20,6 +21,7 @@
 #include <QHBoxLayout>
 #include <QTableWidget>
 #include <loki/ScopeGuard.h>
+#include <data_access_layer/sqlite_queries.h>
 #include <gtest/gtest.h>
 #include <actors_and_workers/concurent_queues.h>
 
@@ -34,27 +36,31 @@ using Loki::MakeObjGuard;
 
 using isolation::ModelListener;
 
-class ModelListenerMediator : public ModelListener {
-public:
-  explicit ModelListenerMediator(UiEngine* const view) : view_(view) { }
+namespace {
+// by value, not by type
+enum db_vars { DB_SQLITE, DB_POSTGRES };
 
-private:
-  void do_update() {
-    DCHECK(view_);
-    view_->redraw();
+database_app::db_manager_concept_t build_database(const int selector) {
+  if (selector == DB_SQLITE) {
+    return database_app::db_manager_concept_t(sqlite_queries::SQLiteDataBase());
+  } else {
+    return database_app::db_manager_concept_t(pq_dal::PostgreSQLDataBase(
+                                                models::kConnection, models::kTaskTableNameRef
+                                                ));
   }
-
-  UiEngine* const view_;
-};
+}
+}
 
 TEST(Blocked, UIActorTest) {
   scopes::AppScope app;
 
-  // work in DB thread
-  storages::DataBasePtr pool(
-        new pq_dal::PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
+  // FIXME: put in actor?
+  auto db = build_database(DB_POSTGRES);
 
-  auto ui = std::make_shared<actors::UIActor>(pool);  // dtor will call and app out
+  // work in DB thread
+  //storages::DataBasePtr pool(new pq_dal::PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
+
+  auto ui = std::make_shared<actors::UIActor>(db);  // dtor will call and app out
 
   // FIXME: troubles with out appl.
   // bad!

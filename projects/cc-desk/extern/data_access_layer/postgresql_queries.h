@@ -55,13 +55,15 @@ private:
 /**
 
 */
-class PostgreSQLDataBase : public storages::DataBase {
+class PostgreSQLDataBase
+    //: public storages::DataBase
+{
 public:
   PostgreSQLDataBase(const std::string& conn_info, const std::string& taskTableName);
   ~PostgreSQLDataBase();
 
-  std::unique_ptr<storages::TaskTableQueries> getTaskTableQuery();
-  std::unique_ptr<storages::TaskLifetimeQueries> getTaskLifetimeQuery();
+  TaskTableQueries getTaskTableQuery();
+  TaskLifetimeQueries getTaskLifetimeQuery();
 
 private:
   // FIXME: important not only lifetime, but connection state to!

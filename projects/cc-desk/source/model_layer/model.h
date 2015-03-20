@@ -7,6 +7,7 @@
 #include "model_layer/model.h"
 #include "model_layer/isolation.h"
 //#include "core/actor_ui.h"
+#include "core/concepts.h"
 
 #include <string>
 #include <functional>
@@ -39,8 +40,7 @@ class Model
 {
 public:
   // create/destory
-  static Model* createForOwn(storages::DataBasePtr);
-  Model(entities::TaskEntities _model, storages::DataBasePtr _pool);
+  explicit Model(database_app::db_manager_concept_t _pool);
   ~Model();
 
   // other
@@ -59,8 +59,7 @@ public:
   //   shared объекты превращаются в глобальные переменные.
   entities::TaskEntities getCurrentModelData();
 
-  void initializeStore(std::function<void(std::string)> errorHandler)
-  {}
+  void initializeStore(std::function<void(std::string)> errorHandler);
 
   void dropStore();
 
@@ -75,12 +74,12 @@ private:
   void notify();  // Нужно было открыть для обновления при семене фильтров
 
   // persist filters:
-  static entities::TaskEntities loadAll(storages::DataBasePtr pool);
+  static entities::TaskEntities loadAll(database_app::db_manager_concept_t pool);
 
   entities::TaskEntities m_tasks;
 
   // FIXME: кажется двойное лучше, или хранить фильтр? и через него при прорисовке пропускать?
-  storages::DataBasePtr m_dbPtr;
+  database_app::db_manager_concept_t m_dbPtr;
   isolation::ModelListenerPtr m_observersPtr;
   entities::TaskEntity getElemById(const size_t id);
 

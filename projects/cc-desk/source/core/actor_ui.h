@@ -2,6 +2,7 @@
 #define VIEW_UI_ACTOR_H_
 
 #include "common/app_types.h"
+#include "core/concepts.h"
 #include "model_layer/model.h"
 
 #include <actors_and_workers/concurent_queues.h>
@@ -44,7 +45,7 @@ public:
   typedef std::function<void()> Message;
 
   // FIXME: trouble is not non-arg ctor
-  explicit UIActor(storages::DataBasePtr model_ptr)
+  explicit UIActor(database_app::db_manager_concept_t model_ptr)
     : m_done(false), mq(100)
   { thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) ); }
 
@@ -64,7 +65,7 @@ private:
   fix_extern_concurent::concurent_bounded_try_queue<Message> mq;
   std::unique_ptr<std::thread> thd;          // le thread
 
-  void Run(storages::DataBasePtr modelPtr);
+  void Run(database_app::db_manager_concept_t modelPtr);
 };
 }
 

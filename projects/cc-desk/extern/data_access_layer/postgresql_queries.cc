@@ -55,14 +55,12 @@ PostgreSQLDataBase::~PostgreSQLDataBase() {
   }
 }
 
-std::unique_ptr<storages::TaskTableQueries>
-PostgreSQLDataBase::getTaskTableQuery() {
-  return std::unique_ptr<storages::TaskTableQueries>(new TaskTableQueries(m_table_name, m_conn_ptr));
+TaskTableQueries PostgreSQLDataBase::getTaskTableQuery() {
+  return TaskTableQueries(m_table_name, m_conn_ptr);
 }
 
-std::unique_ptr<storages::TaskLifetimeQueries>
-PostgreSQLDataBase::getTaskLifetimeQuery() {
-  return std::unique_ptr<storages::TaskLifetimeQueries>(new TaskLifetimeQueries(m_table_name, m_conn_ptr));
+TaskLifetimeQueries PostgreSQLDataBase::getTaskLifetimeQuery() {
+  return TaskLifetimeQueries(m_table_name, m_conn_ptr);
 }
 
 void TaskTableQueries::do_registerBeanClass() {

@@ -24,8 +24,7 @@ INCLUDE( ${QT_USE_FILE} )
 # FIXME: use TSan
 # Keys is exclude other
 set( LCB_USE_ASAN Y)
-# http://stackoverflow.com/questions/26507205/error-when-attempting-to-compile-libpqxx-4-0-1-on-solaris-10-using-oracle-solari
-#set( LCB_USE_TSAN Y)  # Trouble with libpqxx - need compile with -fPIC
+#set( LCB_USE_TSAN Y)
 
 set(Extern "../../extern/")
 set(ExternLocal "./extern/")
@@ -44,32 +43,11 @@ include_directories(${Extern}/loki-0.1.7/include)
 include_directories(${Extern})
 include_directories(${ExternLocal})
 include_directories(${Source}/../../std_own_ext)
-#include_directories(${BigExtern}/boost_1_57_0)
+include_directories(${BigExtern}/boost_1_57_0)
 include_directories(/opt/folly/include)
 
 # ASan,TSan and MSan
 IF(LCB_USE_ASAN)
-    # GCC: troubles with symbols
-    #ASAN_SYMBOLIZER_PATH=$(which llvm-symbolizer-3.4)
-    #/usr/bin/llvm-symbolizer-3.4
-
-    # TOOLS:
-    #
-    # https://code.google.com/p/address-sanitizer/wiki/HowToBuild
-    # http://cameo54321.blogspot.ru/2014/02/installing-cmake-288-or-higher-on.html
-    # clang 3.1 >= need for ASan Ub12.04 -> 3.0
-    #
-    # !!https://solarianprogrammer.com/2013/01/17/building-clang-libcpp-ubuntu-linux/
-    # Try it! https://github.com/pacs-course/pacs/wiki/Instructions-to-install-clang-3.1-on-ubuntu-12.04.1-and-12.10
-    # http://stackoverflow.com/questions/17657261/how-to-install-clang-pre-built-binaries-ubuntu-12-04
-    # http://sohanikh.blogspot.ru/2013/02/how-to-build-llvm-from-source-on-ubuntu.html
-    #add_definitions(  -Wall -g -fsanitize=address)
-    # https://developer.mozilla.org/en-US/docs/Mozilla/Testing/Firefox_and_Address_Sanitizer
-
-    # Static analyser http://clang-analyzer.llvm.org/
-    # https://github.com/couchbase/couchnode/blob/master/deps/lcb/cmake/Modules/GetLibcouchbaseFlags.cmake
-    # http://blogs.perl.org/users/rurban/2011/11/adventures-with-clang-and-asan.html
-    # main: address - thread, memory and ub not work in i686, only x86_64
     #-fno-omit-frame-pointer -O1 -g
     SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -g -fno-omit-frame-pointer -fsanitize=address")
     #-fno-omit-frame-pointer -O1
@@ -80,6 +58,8 @@ IF(LCB_USE_ASAN)
 ENDIF()
 
 IF(LCB_USE_TSAN)
+    # http://stackoverflow.com/questions/26507205/error-when-attempting-to-compile-libpqxx-4-0-1-on-solaris-10-using-oracle-solari
+    # Trouble with libpqxx - need compile with -fPIC
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -g -fsanitize=thread -fPIC")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -g -fsanitize=thread -fPIC")
     #set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}  -fsanitize=thread")
@@ -108,7 +88,6 @@ elseif (UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -Wall")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -std=c++11")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -Wconversion")
-
 
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         link_libraries(
