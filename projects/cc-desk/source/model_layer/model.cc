@@ -96,12 +96,13 @@ void Model::appendNewTask(const Task& task) {
 
   // RAM
   auto e = task.toEntity();
-  m_taskCells.push_back({false, e});
+  m_taskCells.push_back({false, e});  // on lock
 
   // Prepare
   auto query = m_db.getTaskLifetimeQuery();
 
-  auto uiTask = [e, this] (Task t) {
+  // FIXME: May be shared from this and weak_ptr?
+  auto successCallback = [e, this] (Task t) {
     *e = t;
     // std::find_if()  // off lock
     notifyObservers();
@@ -112,7 +113,7 @@ void Model::appendNewTask(const Task& task) {
     auto t = query.persist(task);  // if somewhere failed - then.. state is protect?
 
     // UI Actor
-    uiTask(t);
+    successCallback(t);
   }
 }
 
