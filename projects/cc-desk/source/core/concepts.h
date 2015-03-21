@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 
-namespace new_space {
+namespace concepts {
 
 template <typename T> void registerBeanClass(T& obj) { obj.self_->registerBeanClass_(); }
 template <typename T> void drop(T& obj) { obj.self_->drop_(); }
@@ -105,9 +105,7 @@ private:
     //const
     concept_t> self_;  // ссылки на immutable
 };
-}  // space
 
-namespace database_app {
 /**
   \fixme const troubles
 
@@ -157,10 +155,10 @@ public:
   db_manager_concept_t(const T& x) : self_(std::make_shared<model<T>>(std::move(x)))
   { }
 
-  new_space::table_concept_t getTaskTableQuery()
+  concepts::table_concept_t getTaskTableQuery()
   {  return self_->getTaskTableQuery_(); }
 
-  new_space::lifetime_concept_t getTaskLifetimeQuery()
+  concepts::lifetime_concept_t getTaskLifetimeQuery()
   {  return self_->getTaskLifetimeQuery_(); }
 
   //new_space::table_concept_t getTaskTagQuery()
@@ -170,22 +168,22 @@ private:
   class concept_t {
   public:
     virtual ~concept_t() = default;
-    virtual new_space::table_concept_t getTaskTableQuery_() = 0;
+    virtual concepts::table_concept_t getTaskTableQuery_() = 0;
     //virtual new_space::table_concept_t getTaskTagQuery_() = 0;
-    virtual new_space::lifetime_concept_t getTaskLifetimeQuery_() = 0;
+    virtual concepts::lifetime_concept_t getTaskLifetimeQuery_() = 0;
   };
 
   template<typename T>
   struct model : concept_t {
     model(const T& x) : data_(std::move(x)) { }
 
-    new_space::table_concept_t getTaskTableQuery_() override
+    concepts::table_concept_t getTaskTableQuery_() override
     { return data_.getTaskTableQuery(); }
 
     //new_space::table_concept_t getTaskTagQuery_() override
     //{ return data_.getTaskTagQuery(); }
 
-    new_space::lifetime_concept_t getTaskLifetimeQuery_() override
+    concepts::lifetime_concept_t getTaskLifetimeQuery_() override
     { return data_.getTaskLifetimeQuery(); }
 
     T data_;

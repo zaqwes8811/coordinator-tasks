@@ -15,17 +15,17 @@ using std::string;
 // by value, not by type
 enum db_vars { DB_SQLITE, DB_POSTGRES };
 
-database_app::db_manager_concept_t build_database(const int selector) {
+concepts::db_manager_concept_t build_database(const int selector) {
   if (selector == DB_SQLITE) {
-    return database_app::db_manager_concept_t(sqlite_queries::SQLiteDataBase());
+    return concepts::db_manager_concept_t(sqlite_queries::SQLiteDataBase());
   } else {
-    return database_app::db_manager_concept_t(
+    return concepts::db_manager_concept_t(
           pq_dal::PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
   }
 }
 
 TEST(ConceptsTest, Test) {
-  using namespace new_space;
+  using namespace concepts;
 
   auto db = build_database(DB_POSTGRES);
   auto tables = std::vector<table_concept_t>{db.getTaskTableQuery()
@@ -47,7 +47,7 @@ TEST(ConceptsTest, ActorEnv) {
   // Actor - Wrapper - Wrapper - Actor
 
   // FIXME: actor doubled interface!
-  using namespace new_space;
+  using namespace concepts;
 
   // trouble with handles in actor model
   // need real links

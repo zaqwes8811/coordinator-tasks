@@ -26,7 +26,7 @@ using renders::render_task_store;
 
 TEST(AppCore, Create) {
   // make_shared получает по копии - проблема с некопируемыми объектами
-  auto pool = database_app::db_manager_concept_t(PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
+  auto pool = concepts::db_manager_concept_t(PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
   {
     Model app_ptr(pool);
 
@@ -51,7 +51,7 @@ TEST(AppCore, Create) {
 }
 
 TEST(AppCore, UpdatePriority) {
-  auto pool = database_app::db_manager_concept_t(PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
+  auto pool = concepts::db_manager_concept_t(PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
 
   {
     Model app_ptr(pool);

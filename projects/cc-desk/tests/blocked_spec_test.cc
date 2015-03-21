@@ -40,11 +40,11 @@ namespace {
 // by value, not by type
 enum db_vars { DB_SQLITE, DB_POSTGRES };
 
-database_app::db_manager_concept_t build_database(const int selector) {
+concepts::db_manager_concept_t build_database(const int selector) {
   if (selector == DB_SQLITE) {
-    return database_app::db_manager_concept_t(sqlite_queries::SQLiteDataBase());
+    return concepts::db_manager_concept_t(sqlite_queries::SQLiteDataBase());
   } else {
-    return database_app::db_manager_concept_t(pq_dal::PostgreSQLDataBase(
+    return concepts::db_manager_concept_t(pq_dal::PostgreSQLDataBase(
                                                 models::kConnection, models::kTaskTableNameRef
                                                 ));
   }

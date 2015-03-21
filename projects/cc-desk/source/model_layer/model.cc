@@ -22,7 +22,7 @@ void Model::dropStore() {
   auto q = m_db.getTaskTableQuery();
 
   // Action
-  new_space::drop(q);
+  concepts::drop(q);
 }
 
 void Model::setUiActor(gc::SharedPtr<actors::UIActor> a)
@@ -34,7 +34,7 @@ void Model::initialize(std::function<void(std::string)> errorHandler) {
   auto query = m_db.getTaskLifetimeQuery();
 
   // Action
-  new_space::registerBeanClass(q);
+  concepts::registerBeanClass(q);
   auto tasks = query.loadAll();
 
   // Important
@@ -59,14 +59,19 @@ Model::TaskCell Model::getCachedTaskById(const size_t id) {
 void Model::updateTask(const entities::Task& e) {
   auto k = getCachedTaskById(e.id);
 
-  // Prepare
-  auto q = m_db.getTaskLifetimeQuery();
+  // Is locked?
+  if (!k.first) {
+    return;
+  } else {
+    // Prepare
+    auto q = m_db.getTaskLifetimeQuery();
 
-  // Action
-  q.update(k.second->toValue());
+    // Action
+    q.update(k.second->toValue());
 
-  // .then()
-  notifyObservers();
+    // .then()
+    notifyObservers();
+  }
 }
 
 void Model::addFilter(filters::FilterPtr f)
@@ -76,39 +81,42 @@ void Model::removeFilter(filters::FilterPtr f)
 { m_filtersChain.remove(f); notifyObservers(); }
 
 // FIXME: may be not put in RAM? After persist view will be updated
+//} catch (...) {
+  // No way! Can add some task after
+  //auto rollback = [this]() {
+    //std::remove()
+    // FIXME: No can't. Lost user input!
+    //this->m_taskCells.pop_back();  // no way!
+  //};
+  //rollback();
+//}
 void Model::appendNewTask(const Task& task) {
+  // FIXME: show error message
   DCHECK(task.id == EntityStates::kInactiveKey);
 
-  if (task.id == EntityStates::kInactiveKey)
-    return;  // FIXME: show error message
-
+  // RAM
   auto e = task.toEntity();
   m_taskCells.push_back({false, e});
 
   // Prepare
   auto query = m_db.getTaskLifetimeQuery();
 
-  // Action
-  while (true) {
-    try {
-      *e = query.persist(task);
-    } catch (...) {
-      // No way! Can add some task after
-      auto rollback = [this]() {
-        //std::remove()
-        // FIXME: No can't. Lost user input!
-        this->m_taskCells.pop_back();
-      };
-      rollback();
-    }
-    break;
-  }
+  auto uiTask = [e, this] (Task t) {
+    *e = t;
+    // std::find_if()  // off lock
+    notifyObservers();
+  };
 
-  // .then()
-  notifyObservers();
+  {
+    // DB Actor
+    auto t = query.persist(task);  // if somewhere failed - then.. state is protect?
+
+    // UI Actor
+    uiTask(t);
+  }
 }
 
-Model::Model(database_app::db_manager_concept_t _pool) : m_db(_pool)
+Model::Model(concepts::db_manager_concept_t _pool) : m_db(_pool)
 { }
 
 void Model::notifyObservers() {
