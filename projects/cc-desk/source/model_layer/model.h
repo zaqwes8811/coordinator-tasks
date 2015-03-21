@@ -62,10 +62,13 @@ public:
     \pre Element was persist
   */
   void updateTask(const entities::Task& e);
-  void initializeStore(std::function<void(std::string)> errorHandler);
+  void initialize(std::function<void(std::string)> errorHandler);
   void dropStore();
 
 private:
+  // typedefs
+  using TaskCell = std::pair<bool, entities::TaskEntity>;
+
   template <typename U>
   friend void renders::render_task_store(std::ostream& o, const U& a);
 
@@ -73,14 +76,12 @@ private:
     FIXME: плохо что хендлы утекают, и из-за того что указатели
       shared объекты превращаются в глобальные переменные.
   */
-  entities::TaskEntities getCurrentModelData();
+  entities::TaskEntities filterModelData();
 
   /**
     Нужно было открыть для обновления при семене фильтров
   */
   void notifyObservers();
-
-
 
   /**
     FIXME: кажется двойное лучше, или хранить фильтр?
@@ -88,7 +89,8 @@ private:
   */
   database_app::db_manager_concept_t m_db;
   isolation::ModelListenerPtr m_observersPtr;
-  entities::TaskEntity getCachedTaskById(const size_t id);
+
+  TaskCell getCachedTaskById(const size_t id);
 
   gc::WeakPtr<actors::UIActor> m_uiActorPtr;
 
@@ -100,7 +102,13 @@ private:
 
   /// Consistency Guards
   bool m_fsmNonConsistent{false};
-  entities::TaskEntities m_tasksCache;
+  // FIXME: may be add state to elem - cons/incons?
+  // FIXME: may be keep sorted
+  //entities::TaskEntities m_tasksCache;
+  // f/s is cons.?/handler
+  // FIXME: trouble - extra space
+
+  std::vector<TaskCell> m_taskCells;
 };
 }
 

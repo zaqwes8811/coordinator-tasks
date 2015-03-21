@@ -1,0 +1,3 @@
+http://www.sqlite.org/asyncvfs.html
+
+Ch6 async tips and tricks

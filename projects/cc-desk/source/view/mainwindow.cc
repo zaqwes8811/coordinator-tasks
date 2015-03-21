@@ -75,7 +75,7 @@ Row Row::of(int v) {
 
 void UiEngine::onUiLoaded()
 {
-  m_modelPtr->initializeStore([](std::string) { ; });
+  m_modelPtr->initialize([](std::string) { ; });
 }
 
 void UiEngine::onClose() {

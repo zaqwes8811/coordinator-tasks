@@ -14,6 +14,8 @@ using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
 using entities::Task;
 
+using std::begin;
+using std::end;
 using std::cout;
 
 void Model::dropStore() {
@@ -26,7 +28,7 @@ void Model::dropStore() {
 void Model::setUiActor(gc::SharedPtr<actors::UIActor> a)
 { m_uiActorPtr = a; }
 
-void Model::initializeStore(std::function<void(std::string)> errorHandler) {
+void Model::initialize(std::function<void(std::string)> errorHandler) {
   // Prepare
   auto q = m_db.getTaskTableQuery();
   auto query = m_db.getTaskLifetimeQuery();
@@ -35,15 +37,20 @@ void Model::initializeStore(std::function<void(std::string)> errorHandler) {
   new_space::registerBeanClass(q);
   auto tasks = query.loadAll();
 
-  // Draw
-  m_tasksCache = tasks;
+  // Important
+  m_taskCells.clear();
+  for (auto& task : tasks)
+    m_taskCells.emplace_back(true, task);
+
   notifyObservers();
 }
 
-entities::TaskEntity Model::getCachedTaskById(const size_t id) {
+Model::TaskCell Model::getCachedTaskById(const size_t id) {
   auto iter = std::find_if(
-        m_tasksCache.begin(), m_tasksCache.end(),
-        filters::is_contained(id));
+        m_taskCells.begin(), m_taskCells.end(),
+        [id] (const TaskCell& elem) -> bool {
+          return filters::is_contained(id)(elem.second);
+        });
 
   DCHECK(iter != m_tasksCache.end());
   return *iter;
@@ -56,7 +63,7 @@ void Model::updateTask(const entities::Task& e) {
   auto q = m_db.getTaskLifetimeQuery();
 
   // Action
-  q.update(k->toValue());
+  q.update(k.second->toValue());
 
   // .then()
   notifyObservers();
@@ -72,22 +79,29 @@ void Model::removeFilter(filters::FilterPtr f)
 void Model::appendNewTask(const Task& task) {
   DCHECK(task.id == EntityStates::kInactiveKey);
 
+  if (task.id == EntityStates::kInactiveKey)
+    return;  // FIXME: show error message
+
   auto e = task.toEntity();
-  m_tasksCache.push_back(e);
+  m_taskCells.push_back({false, e});
 
   // Prepare
   auto query = m_db.getTaskLifetimeQuery();
 
   // Action
-  try {
-    *e = query.persist(task);
-  } catch (...) {
-    // No way! Can add some task after
-    auto rollback = [this]() {
-      //std::remove()
-      this->m_tasksCache.pop_back();
-    };
-    rollback();
+  while (true) {
+    try {
+      *e = query.persist(task);
+    } catch (...) {
+      // No way! Can add some task after
+      auto rollback = [this]() {
+        //std::remove()
+        // FIXME: No can't. Lost user input!
+        this->m_taskCells.pop_back();
+      };
+      rollback();
+    }
+    break;
   }
 
   // .then()
@@ -106,7 +120,12 @@ void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso) {
 }
 
 entities::TaskEntities Model::filterModelData() {
-  return m_filtersChain(m_tasksCache);
+  auto r = entities::TaskEntities();
+  std::transform(begin(m_taskCells), end(m_taskCells), std::back_inserter(r),
+                 [](TaskCell cell) -> entities::TaskEntity {
+                    return cell.second;
+                 });
+  return m_filtersChain(r);
 }
 
 }
