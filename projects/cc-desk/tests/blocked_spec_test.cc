@@ -61,22 +61,9 @@ TEST(Blocked, UIActorTest) {
 
   // FIXME: put in actor?
   auto db = build_database(DB_POSTGRES);
-  uiActor->connectUI(db);
+  auto f = uiActor->connectUI(db);
 
-  // work in DB thread
-  //storages::DataBasePtr pool(new pq_dal::PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
-
-  // FIXME: troubles with out appl.
-  // bad!
-  while(true) {
-    std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    // hard to check
-    if (app.isClosed())
-      break;
-
-  }
-
-  uiActor->disconnectUI();
+  f.get();
 }
 
 // FIXME: Boost.Signal

@@ -35,9 +35,13 @@ private:
 // http://stackoverflow.com/questions/8165487/how-to-do-cleaning-up-on-exit-in-qt
 void UIActor::Run() {
   while( !m_done ) {
-    // if UI connected
-    if (uiPtr)
-      uiPtr->poll();
+    {
+      auto p = uiPtr;
+      // if UI connected
+      if (p)
+        if (!p->poll())
+          uiPtr = nullptr;
+    }
 
     // ! can't sleep or wait!
     // It's danger work without UI
@@ -45,13 +49,15 @@ void UIActor::Run() {
     if (mq.try_pop(msg))
       msg();            // execute message
   } // note: last message sets done to true
+  int i = 0;
 }
-
 
 static int argc = 1;
 static char* argv[1] = { "none" };
 
-UiObject::UiObject(concepts::db_manager_concept_t db) : appLoop(argc, argv) {
+UiObject::UiObject(concepts::db_manager_concept_t db
+                   , gc::SharedPtr<std::promise<int>> pr)
+  : m_pr(pr), appLoop(argc, argv) {
   // Objects
   // Must be shared. Need for actors
   model = std::make_shared<models::Model>(db);
@@ -67,14 +73,19 @@ UiObject::UiObject(concepts::db_manager_concept_t db) : appLoop(argc, argv) {
   ui->show();
 }
 
-void UiObject::poll() {
+bool UiObject::poll() {
+  if (!ui)
+    return false;
+
   if (ui->isReadyToDestroy()) {
-    scope.setToDone();
-    return;
+    m_pr->set_value(0);
+    std::cout << "Destroy" << std::endl;
+    return false;
   }
 
   // main event loop
   appLoop.processEvents();  // hat processor!
+  return true;
 }
 }  // space
 

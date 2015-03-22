@@ -13,12 +13,16 @@
 #include <iostream>
 #include <memory>
 #include <thread>
+#include <future>
 
 namespace actors {
-class UiObject : public std::enable_shared_from_this<UiObject> {
+class UiObject {
 public:
-  UiObject(concepts::db_manager_concept_t db);
-  void poll();
+  UiObject(concepts::db_manager_concept_t db, gc::SharedPtr<std::promise<int>> pr);
+  bool poll();
+  ~UiObject() {
+
+  }
 
 private:
   scopes::AppScope scope;
@@ -26,6 +30,8 @@ private:
   gc::SharedPtr<models::Model> model;
   gc::SharedPtr<isolation::ModelListener> uiMediator;
   gc::SharedPtr<UiEngine> ui;
+
+  gc::SharedPtr<std::promise<int>> m_pr;
 
   QApplication appLoop;
 };
@@ -76,17 +82,21 @@ public:
   void post( Message m )
   { auto r = mq.try_push( m ); }
 
-  void connectUI(concepts::db_manager_concept_t db) {
-    post([db, this]() {
-      uiPtr = std::make_shared<actors::UiObject>(db);
+  std::future<int> connectUI(concepts::db_manager_concept_t db) {
+    auto pr = std::make_shared<std::promise<int>>();
+    auto f = pr->get_future();
+
+    post([db, this, pr]() {
+      uiPtr = std::make_shared<actors::UiObject>(db, pr);
     });
+    return f;
   }
 
-  void disconnectUI() {
-    post([this]() {
-      uiPtr = nullptr;
-    });
-  }
+  //void disconnectUI() {
+  //  post([this]() {
+  //    uiPtr = gc::SharedPtr<UiObject>();
+  //  });
+  //}
 
 private:
   UIActor( const UIActor& );           // no copying
