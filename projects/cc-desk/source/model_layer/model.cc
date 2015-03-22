@@ -24,8 +24,16 @@ using std::end;
 using std::cout;
 
 namespace ext {
-void onNew() {
+void onNew(gc::SharedPtr<Model> m, TaskEntity e, Task t) {
+  *e = t;
+  auto iter =
+      std::find_if(begin(m->m_taskCells), end(m->m_taskCells),
+                   [e] (models::Model::TaskCell v) { return e->id == v.second->id; });
 
+  if (iter == end(m->m_taskCells)) return;
+
+  iter->first = true; // off lock
+  m->notifyObservers();
 }
 }
 
@@ -104,38 +112,24 @@ void Model::removeFilter(filters::FilterPtr f)
   //rollback();
 //}
 // FIXME: if somewhere failed after persist - then.. state is protect?
-void Model::appendNewTask(const Task& task) {
+void Model::appendNewTask(const Task& unsaved_task) {
   using std::find_if;
+  using namespace std::placeholders;
 
   // FIXME: show error message
-  DCHECK(task.id == EntityStates::kInactiveKey);
+  DCHECK(unsaved_task.id == EntityStates::kInactiveKey);
 
-  // RAM
-  auto e = task.toEntity();
-  m_taskCells.push_back({false, e});  // on lock
+  // on lock
+  auto e = unsaved_task.toEntity();
+  m_taskCells.push_back({false, e});
 
-  // FIXME: May be shared from this and weak_ptr?
-  auto unlockTask = [e, this] (Task t) {
-    *e = t;
-    auto iter =
-        find_if(begin(m_taskCells), end(m_taskCells), [e] (TaskCell v) { return e->id == v.second->id; });
+  auto unlock = std::bind(&ext::onNew, shared_from_this(), e, _1);
 
-    if (iter == end(m_taskCells)) return;
-
-    iter->first = true; // off lock
-    notifyObservers();
-  };
-
-  auto dbPtr = gc::WeakPtr<concepts::db_manager_concept_t>(m_db);
-  gDBActor->post([task, unlockTask, dbPtr] () mutable {
-    // add error handling
-    auto d = dbPtr.lock();
-    if (!d)
-      return;
-
-    auto query = d->getTaskLifetimeQuery();
-    auto t = query.persist(task);
-    gUIActor->post(std::bind(unlockTask, t));
+  auto db_ptr = m_db;
+  gDBActor->post([unsaved_task, unlock, db_ptr] () mutable {
+    auto query = db->getTaskLifetimeQuery();
+    auto new_task = query.persist(unsaved_task);
+    gUIActor->post(std::bind(unlock, new_task));
   });
 }
 
