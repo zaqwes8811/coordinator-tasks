@@ -93,7 +93,6 @@ private:
 
   // Coupled with actors
   gc::WeakPtr<actors::UIActor> m_uiActorPtr;
-  cc11::Actior m_dbActor;
 
   /// FSM
   bool m_fsmTablesIsCreated{false};

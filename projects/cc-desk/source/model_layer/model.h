@@ -7,6 +7,8 @@
 #include "core/concepts.h"
 #include "filters.h"
 
+#include <actors_and_workers/actors_cc11.h>
+
 #include <string>
 #include <functional>
 
@@ -93,6 +95,10 @@ private:
   TaskCell getCachedTaskById(const size_t id);
 
   gc::WeakPtr<actors::UIActor> m_uiActorPtr;
+  cc11::Actior m_dbActor;
+
+  cc11::Actior& db()
+  { return m_dbActor; }
 
   /**
     \fixme DANGER!! при реализации фильтров сломает логику!!!

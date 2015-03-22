@@ -2,6 +2,7 @@
 
 #include "model_layer/model.h"
 #include "model_layer/filters.h"
+#include "core/actor_ui.h"
 
 #include <loki/ScopeGuard.h>
 
@@ -90,6 +91,7 @@ void Model::removeFilter(filters::FilterPtr f)
   //};
   //rollback();
 //}
+// FIXME: if somewhere failed after persist - then.. state is protect?
 void Model::appendNewTask(const Task& task) {
   // FIXME: show error message
   DCHECK(task.id == EntityStates::kInactiveKey);
@@ -102,39 +104,40 @@ void Model::appendNewTask(const Task& task) {
   auto query = m_db.getTaskLifetimeQuery();
 
   // FIXME: May be shared from this and weak_ptr?
-  auto successCallback = [e, this] (Task t) {
+  auto onSuccess = [e, this] (Task t) {
     *e = t;
-    // std::find_if()  // off lock
+    auto iter =
+        std::find_if(begin(m_taskCells), end(m_taskCells),
+                     [e] (TaskCell v) { return e->id == v.second->id; });
+
+    if (iter == end(m_taskCells)) return;
+
+    iter->first = true; // off lock
     notifyObservers();
   };
 
-  {
-    // DB Actor
-    auto t = query.persist(task);  // if somewhere failed - then.. state is protect?
+  auto actor = m_uiActorPtr;
 
-    // UI Actor
-    successCallback(t);
-  }
-}
-
-Model::Model(concepts::db_manager_concept_t _pool) : m_db(_pool)
-{ }
-
-void Model::notifyObservers() {
-  m_observersPtr->update(filterModelData());
-}
-
-void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso) {
-  m_observersPtr = iso;
+  db().post([actor, task, onSuccess, query] () mutable {
+    auto t = query.persist(task);
+    auto a = actor.lock();
+    if (a)
+      a->post(std::bind(onSuccess, t));
+  });
 }
 
 entities::TaskEntities Model::filterModelData() {
   auto r = entities::TaskEntities();
-  std::transform(begin(m_taskCells), end(m_taskCells), std::back_inserter(r),
+  std::transform(begin(m_taskCells), end(m_taskCells),
+                 std::back_inserter(r),
                  [](TaskCell cell) -> entities::TaskEntity {
-                    return cell.second;
-                 });
+                    return cell.second;});
+
   return m_filtersChain(r);
 }
+
+Model::Model(concepts::db_manager_concept_t _pool) : m_db(_pool) { }
+void Model::notifyObservers() { m_observersPtr->update(filterModelData()); }
+void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso) { m_observersPtr = iso; }
 
 }
