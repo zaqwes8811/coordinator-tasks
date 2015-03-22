@@ -26,32 +26,6 @@ private:
   gc::WeakPtr<UiEngine> m_viewPtr;
 };
 
-// http://qt-project.org/doc/qt-4.8/qeventloop.html#processEvents
-//app.exec();  // it's trouble for Actors usige
-// http://stackoverflow.com/questions/16812602/qt-main-gui-and-other-thread-events-loops
-// http://doc.qt.digia.com/qq/qq27-responsive-guis.html
-//
-// Quit
-// http://stackoverflow.com/questions/8165487/how-to-do-cleaning-up-on-exit-in-qt
-void UIActor::Run() {
-  while( !m_done ) {
-    {
-      auto p = uiPtr;
-      // if UI connected
-      if (p)
-        if (!p->poll())
-          uiPtr = nullptr;
-    }
-
-    // ! can't sleep or wait!
-    // It's danger work without UI
-    Message msg;
-    if (mq.try_pop(msg))
-      msg();            // execute message
-  } // note: last message sets done to true
-  int i = 0;
-}
-
 static int argc = 1;
 static char* argv[1] = { "none" };
 
@@ -78,14 +52,42 @@ bool UiObject::poll() {
     return false;
 
   if (ui->isReadyToDestroy()) {
-    m_pr->set_value(0);
-    std::cout << "Destroy" << std::endl;
     return false;
   }
 
   // main event loop
   appLoop.processEvents();  // hat processor!
   return true;
+}
+
+// http://qt-project.org/doc/qt-4.8/qeventloop.html#processEvents
+//app.exec();  // it's trouble for Actors usige
+// http://stackoverflow.com/questions/16812602/qt-main-gui-and-other-thread-events-loops
+// http://doc.qt.digia.com/qq/qq27-responsive-guis.html
+//
+// Quit
+// http://stackoverflow.com/questions/8165487/how-to-do-cleaning-up-on-exit-in-qt
+void UIActor::Run() {
+  while( !m_done ) {
+    {
+      if (uiPtr) {
+        auto pr = uiPtr->off();
+        if (!uiPtr->poll()) {
+           auto p = uiPtr.release();
+           delete p;
+        }
+
+        if (!uiPtr)
+          pr->set_value(0);
+      }
+    }
+
+    // ! can't sleep or wait!
+    // It's danger work without UI
+    Message msg;
+    if (mq.try_pop(msg))
+      msg();            // execute message
+  } // note: last message sets done to true
 }
 }  // space
 

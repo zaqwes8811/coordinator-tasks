@@ -20,20 +20,19 @@ class UiObject {
 public:
   UiObject(concepts::db_manager_concept_t db, gc::SharedPtr<std::promise<int>> pr);
   bool poll();
-  ~UiObject() {
 
-  }
+  gc::SharedPtr<std::promise<int>> off() { return m_pr; }
 
 private:
-  scopes::AppScope scope;
+  // it first
+  QApplication appLoop;
 
+  // other after
   gc::SharedPtr<models::Model> model;
   gc::SharedPtr<isolation::ModelListener> uiMediator;
   gc::SharedPtr<UiEngine> ui;
 
   gc::SharedPtr<std::promise<int>> m_pr;
-
-  QApplication appLoop;
 };
 
 // Actor model troubles:
@@ -87,16 +86,10 @@ public:
     auto f = pr->get_future();
 
     post([db, this, pr]() {
-      uiPtr = std::make_shared<actors::UiObject>(db, pr);
+      uiPtr = std::unique_ptr<actors::UiObject>(new actors::UiObject(db, pr));
     });
     return f;
   }
-
-  //void disconnectUI() {
-  //  post([this]() {
-  //    uiPtr = gc::SharedPtr<UiObject>();
-  //  });
-  //}
 
 private:
   UIActor( const UIActor& );           // no copying
@@ -108,7 +101,7 @@ private:
 
   void Run();
 
-  gc::SharedPtr<UiObject> uiPtr{nullptr};
+  std::unique_ptr<UiObject> uiPtr{nullptr};
 };
 }
 
