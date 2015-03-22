@@ -199,7 +199,7 @@ entities::TaskEntities TaskLifetimeQueries::loadAll() const {
     t.priority = (c[TablePositions::kPriority].as<int>());
     t.done = (c[TablePositions::kDone].as<bool>());
 
-    auto elem = t.toEntity();
+    auto elem = t.share();
 
     model.push_back(elem);
   }

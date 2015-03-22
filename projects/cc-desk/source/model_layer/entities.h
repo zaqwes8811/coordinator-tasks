@@ -49,7 +49,7 @@ class Task {
 public:
   // conv
   entities::Task toValue() const;
-  TaskEntity toEntity() const;
+  TaskEntity share() const;
 
   // ctor/dtor/assign/copy
   Task(const Task& v);

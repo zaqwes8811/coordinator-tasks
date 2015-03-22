@@ -99,7 +99,7 @@ private:
   gc::SharedPtr<concepts::db_manager_concept_t> m_db;
   isolation::ModelListenerPtr m_observersPtr;
 
-  TaskCell getCachedTaskById(const size_t id);
+  TaskCell GetCachedTaskById(const size_t id);
 
   /**
     \fixme DANGER!! при реализации фильтров сломает логику!!!
@@ -115,7 +115,7 @@ private:
   // f/s is cons.?/handler
   // FIXME: trouble - extra space
 
-  std::vector<TaskCell> m_taskCells;
+  std::vector<TaskCell> m_task_cells;
 };
 }
 

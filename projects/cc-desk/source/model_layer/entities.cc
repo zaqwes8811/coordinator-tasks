@@ -10,7 +10,7 @@ const size_t EntityStates::kInactiveKey = -1;
 const int EntityStates::kDefaultPriority = 0;
 const bool EntityStates::kDefaultDone = false;
 
-TaskEntity Task::toEntity() const {
+TaskEntity Task::share() const {
   // FIXME: std::move - troubles with args
   // FIXME: strange but compiled
   return std::make_shared<Task>(*this);

@@ -24,13 +24,13 @@ using std::end;
 using std::cout;
 
 namespace ext {
-void onNew(gc::SharedPtr<Model> m, TaskEntity e, Task t) {
-  *e = t;
+void onNew(gc::SharedPtr<Model> m, TaskEntity task_ptr, Task saved_task) {
+  *task_ptr = saved_task;
   auto iter =
-      std::find_if(begin(m->m_taskCells), end(m->m_taskCells),
-                   [e] (models::Model::TaskCell v) { return e->id == v.second->id; });
+      std::find_if(begin(m->m_task_cells), end(m->m_task_cells),
+                   [task_ptr] (models::Model::TaskCell v) { return task_ptr->id == v.second->id; });
 
-  if (iter == end(m->m_taskCells)) return;
+  if (iter == end(m->m_task_cells)) return;
 
   iter->first = true; // off lock
   m->notifyObservers();
@@ -49,9 +49,9 @@ void Model::dropStore() {
 void Model::initialize(std::function<void(std::string)> errorHandler) {
 
   auto onLoaded = [this](entities::TaskEntities tasks) {
-    m_taskCells.clear();
+    m_task_cells.clear();
     for (auto& task : tasks)
-      m_taskCells.emplace_back(true, task);
+      m_task_cells.emplace_back(true, task);
     notifyObservers();
   };
 
@@ -66,9 +66,9 @@ void Model::initialize(std::function<void(std::string)> errorHandler) {
   });
 }
 
-Model::TaskCell Model::getCachedTaskById(const size_t id) {
+Model::TaskCell Model::GetCachedTaskById(const size_t id) {
   auto iter = std::find_if(
-        m_taskCells.begin(), m_taskCells.end(),
+        m_task_cells.begin(), m_task_cells.end(),
         [id] (const TaskCell& elem) -> bool {
           return filters::is_contained(id)(elem.second);
         });
@@ -78,20 +78,20 @@ Model::TaskCell Model::getCachedTaskById(const size_t id) {
 }
 
 void Model::updateTask(const entities::Task& e) {
-  auto k = getCachedTaskById(e.id);
+  auto cell_to_update = GetCachedTaskById(e.id);
 
   // Is locked?
-  if (!k.first) {
+  if (!cell_to_update.first) {
     return;
   } else {
-    // Prepare
-    auto q = m_db->getTaskLifetimeQuery();
+    auto on_update = std::bind(&Model::notifyObservers, shared_from_this());
 
-    // Action
-    q.update(k.second->toValue());
-
-    // .then()
-    notifyObservers();
+    auto db = m_db;
+    gDBActor->post([on_update, db, cell_to_update] {
+      auto value = cell_to_update.second->toValue();
+      db->getTaskLifetimeQuery().update(value);
+      gUIActor->post(on_update);
+    });
   }
 }
 
@@ -120,22 +120,21 @@ void Model::appendNewTask(const Task& unsaved_task) {
   DCHECK(unsaved_task.id == EntityStates::kInactiveKey);
 
   // on lock
-  auto e = unsaved_task.toEntity();
-  m_taskCells.push_back({false, e});
+  auto unsaved_task_ptr = unsaved_task.share();
+  m_task_cells.push_back({false, unsaved_task_ptr});
 
-  auto unlock = std::bind(&ext::onNew, shared_from_this(), e, _1);
+  auto unlock = std::bind(&ext::onNew, shared_from_this(), unsaved_task_ptr, _1);
 
   auto db_ptr = m_db;
   gDBActor->post([unsaved_task, unlock, db_ptr] () mutable {
-    auto query = db->getTaskLifetimeQuery();
-    auto new_task = query.persist(unsaved_task);
-    gUIActor->post(std::bind(unlock, new_task));
+    auto saved_task = db_ptr->getTaskLifetimeQuery().persist(unsaved_task);
+    gUIActor->post(std::bind(unlock, saved_task));
   });
 }
 
 entities::TaskEntities Model::filterModelData() {
   auto r = entities::TaskEntities();
-  std::transform(begin(m_taskCells), end(m_taskCells),
+  std::transform(begin(m_task_cells), end(m_task_cells),
                  std::back_inserter(r),
                  [](TaskCell cell) -> entities::TaskEntity {
                     return cell.second;});
