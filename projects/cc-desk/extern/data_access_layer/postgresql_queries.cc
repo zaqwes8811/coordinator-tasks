@@ -191,7 +191,7 @@ entities::TaskEntities TaskLifetimeQueries::loadAll() const {
   w.commit();
 
   // pack
-  TaskEntities model;
+  TaskEntities tasks;
   for (auto c = r.begin(); c != r.end(); ++c) {
     Task t;
     t.id = c[TablePositions::kId].as<int>();
@@ -201,9 +201,9 @@ entities::TaskEntities TaskLifetimeQueries::loadAll() const {
 
     auto elem = t.share();
 
-    model.push_back(elem);
+    tasks.emplace_back(elem);
   }
-  return model;
+  return tasks;
 }
 
 }  // ns

@@ -16,6 +16,9 @@ public:
   explicit SQLiteTaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
                                   , const std::string& tableName);
 
+  /**
+    \brief Persist new task.
+  */
   entities::Task persist(const entities::Task& v);
   void update(const entities::Task& v);
   entities::TaskEntities loadAll() const;
@@ -34,6 +37,8 @@ private:
 class SQLiteTagTableQuery
 {
 public:
+  //using
+
   explicit SQLiteTagTableQuery(gc::WeakPtr<sqlite3_cc::sqlite3> h);
   void registerBeanClass();
   void drop();
@@ -51,6 +56,12 @@ public:
     : m_connPtr(std::make_shared<sqlite3_cc::sqlite3>("test.db"))
       , m_taskTableName(models::kTaskTableNameRef)
   { }
+
+  //template <typename T> T GetTableQuery();
+
+  //template <>
+  //SQLiteTaskTableQueries GetTableQuery<SQLiteTaskTableQueries>()
+  //{ return this->getTaskTableQuery(); }
 
   SQLiteTaskTableQueries  getTaskTableQuery()
   { return SQLiteTaskTableQueries(m_connPtr, m_taskTableName); }

@@ -6,9 +6,40 @@
 
 namespace sqlite_queries {
 using std::string;
+using entities::Task;
 
-entities::Task SQLiteTaskTableQueries::persist(const entities::Task& v) {
-  return v;
+entities::Task SQLiteTaskTableQueries::persist(const entities::Task& unsaved_task) {
+  using sqlite3_cc::as;
+
+  DCHECK(unsaved_task.id == entities::EntityStates::kInactiveKey);
+
+  string sql(
+      "INSERT INTO " + m_tableName + " (TASK_NAME, PRIORITY) " \
+      "VALUES ('" + unsaved_task.name+"','" + std_own_ext::to_string(unsaved_task.priority) + "'); " +
+      "  SELECT last_insert_rowid() FROM " + m_tableName + "; ");
+
+  auto c = m_connPtr.lock();
+  if (!c)
+    throw std::runtime_error(FROM_HERE);
+
+  // query
+  auto r = sqlite3_cc::sqlite3_exec(*c, sql);
+  DCHECK(r.size() == 1);
+
+  // Узнаем что за ключ получили
+  size_t id(entities::EntityStates::kInactiveKey);
+  for (auto& col : r) {
+    id = as<size_t>(col["ID"]);
+    break;
+  }
+  DCHECK(id != entities::EntityStates::kInactiveKey);
+
+  auto saved_task = Task();
+  saved_task.id = id;
+  saved_task.name = unsaved_task.name;
+  saved_task.priority = unsaved_task.priority;
+  saved_task.done = false;
+  return saved_task;
 }
 void SQLiteTaskTableQueries::update(const entities::Task& v) { }
 
@@ -30,7 +61,7 @@ void SQLiteTaskTableQueries::registerBeanClass() {
     "ID         SERIAL PRIMARY KEY NOT NULL," \
     "TASK_NAME  TEXT               NOT NULL, " \
     "PRIORITY   INT                NOT NULL, " \
-    "DONE BOOLEAN DEFAULT FALSE);");
+    "DONE       BOOLEAN            DEFAULT FALSE);");
 
   auto c = m_connPtr.lock();
 
