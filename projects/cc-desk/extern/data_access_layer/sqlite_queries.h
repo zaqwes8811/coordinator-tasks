@@ -55,7 +55,7 @@ public:
   SQLiteTaskTableQueries  getTaskTableQuery()
   { return SQLiteTaskTableQueries(m_connPtr, m_taskTableName); }
 
-  SQLiteTagTableQuery  getTaskTagQuery()
+  SQLiteTagTableQuery  getTagTableQuery()
   { return SQLiteTagTableQuery(m_connPtr); }
 
   SQLiteTaskTableQueries getTaskLifetimeQuery()

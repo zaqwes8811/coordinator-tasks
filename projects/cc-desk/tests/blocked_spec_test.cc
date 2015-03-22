@@ -41,12 +41,13 @@ namespace {
 enum db_vars { DB_SQLITE, DB_POSTGRES };
 
 concepts::db_manager_concept_t build_database(const int selector) {
-  if (selector == DB_SQLITE) {
+  if (true) { //selector == DB_SQLITE) {
     return concepts::db_manager_concept_t(sqlite_queries::SQLiteDataBase());
   } else {
-    return concepts::db_manager_concept_t(pq_dal::PostgreSQLDataBase(
+    /*return
+        concepts::db_manager_concept_t(pq_dal::PostgreSQLDataBase(
                                                 models::kConnection, models::kTaskTableNameRef
-                                                ));
+                                                ));*/
   }
 }
 }

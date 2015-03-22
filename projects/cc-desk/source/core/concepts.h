@@ -164,15 +164,15 @@ public:
   concepts::lifetime_concept_t getTaskLifetimeQuery()
   {  return self_->getTaskLifetimeQuery_(); }
 
-  //new_space::table_concept_t getTaskTagQuery()
-  //{  return self_->getTaskTagQuery_(); }
+  concepts::table_concept_t getTagTableQuery()
+  {  return self_->getTagTableQuery_(); }
 
 private:
   class concept_t {
   public:
     virtual ~concept_t() = default;
     virtual concepts::table_concept_t getTaskTableQuery_() = 0;
-    //virtual new_space::table_concept_t getTaskTagQuery_() = 0;
+    virtual concepts::table_concept_t getTagTableQuery_() = 0;
     virtual concepts::lifetime_concept_t getTaskLifetimeQuery_() = 0;
   };
 
@@ -180,13 +180,13 @@ private:
   struct model : concept_t {
     model(const T& x) : data_(std::move(x)) { }
 
-    concepts::table_concept_t getTaskTableQuery_() override
+    concepts::table_concept_t getTaskTableQuery_() OVERRIDE
     { return data_.getTaskTableQuery(); }
 
-    //new_space::table_concept_t getTaskTagQuery_() override
-    //{ return data_.getTaskTagQuery(); }
+    concepts::table_concept_t getTagTableQuery_() OVERRIDE
+    { return data_.getTagTableQuery(); }
 
-    concepts::lifetime_concept_t getTaskLifetimeQuery_() override
+    concepts::lifetime_concept_t getTaskLifetimeQuery_() OVERRIDE
     { return data_.getTaskLifetimeQuery(); }
 
     T data_;

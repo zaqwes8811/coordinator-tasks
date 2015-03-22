@@ -58,8 +58,9 @@ void Model::initialize(std::function<void(std::string)> errorHandler) {
 
   auto db = m_db;
   gDBActor->post([onLoaded, db] {
-    auto task_table_query = db->getTaskTableQuery();
-    concepts::registerBeanClass(task_table_query);
+    auto tables = std::vector<concepts::table_concept_t>{db->getTaskTableQuery(), db->getTagTableQuery()};
+    for (auto& table : tables)
+      concepts::registerBeanClass(table);
 
     auto tasks = db->getTaskLifetimeQuery().loadAll();
 

@@ -2,6 +2,7 @@
 
 #include "model_layer/entities.h"
 #include "data_access_layer/postgresql_queries.h"  // BAD!! too low level
+#include "data_access_layer/sqlite_queries.h"
 #include "model_layer/model.h"
 #include "data_access_layer/fake_store.h"
 #include "view/renders.h"
@@ -26,7 +27,7 @@ using renders::render_task_store;
 
 TEST(AppCore, Create) {
   // make_shared получает по копии - проблема с некопируемыми объектами
-  auto pool = concepts::db_manager_concept_t(PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
+  auto pool = concepts::db_manager_concept_t(sqlite_queries::SQLiteDataBase());
   {
     Model app_ptr(pool);
 
@@ -51,10 +52,10 @@ TEST(AppCore, Create) {
 }
 
 TEST(AppCore, UpdatePriority) {
-  auto pool = concepts::db_manager_concept_t(PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
+  auto db = concepts::db_manager_concept_t(sqlite_queries::SQLiteDataBase());
 
   {
-    Model app_ptr(pool);
+    Model app_ptr(db);
     auto _ = MakeObjGuard(app_ptr, &Model::dropStore);
 
     // добавляем записи
@@ -68,7 +69,7 @@ TEST(AppCore, UpdatePriority) {
     renders::render_task_store(cout, app_ptr);
   }
 
-  auto q = pool.getTaskTableQuery();
+  auto q = db.getTaskTableQuery();
   //EXPECT_THROW(q->draw(cout), pqxx::undefined_table);
 }
 
