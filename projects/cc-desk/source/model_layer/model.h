@@ -89,7 +89,7 @@ private:
     FIXME: кажется двойное лучше, или хранить фильтр?
       и через него при прорисовке пропускать?
   */
-  concepts::db_manager_concept_t m_db;
+  gc::SharedPtr<concepts::db_manager_concept_t> m_db;
   isolation::ModelListenerPtr m_observersPtr;
 
   TaskCell getCachedTaskById(const size_t id);
@@ -97,7 +97,7 @@ private:
   gc::WeakPtr<actors::UIActor> m_uiActorPtr;
   cc11::Actior m_dbActor;
 
-  cc11::Actior& db()
+  cc11::Actior& dbActor()
   { return m_dbActor; }
 
   /**

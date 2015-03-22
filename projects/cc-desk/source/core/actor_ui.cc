@@ -8,6 +8,7 @@
 
 #include <QApplication>
 
+namespace actors {
 class ModelListenerMediator :
     public isolation::ModelListener
 {
@@ -25,8 +26,6 @@ private:
   gc::WeakPtr<UiEngine> m_viewPtr;
 };
 
-
-namespace actors {
 // http://qt-project.org/doc/qt-4.8/qeventloop.html#processEvents
 //app.exec();  // it's trouble for Actors usige
 // http://stackoverflow.com/questions/16812602/qt-main-gui-and-other-thread-events-loops
@@ -34,53 +33,48 @@ namespace actors {
 //
 // Quit
 // http://stackoverflow.com/questions/8165487/how-to-do-cleaning-up-on-exit-in-qt
-void UIActor::Run(concepts::db_manager_concept_t db) {
-  {
-    // work in UI thread
-    int argc = 1;
-    char* argv[1] = { "none" };
-    QApplication appLoop(argc, argv);
+void UIActor::Run() {
+  while( !m_done ) {
+    // if UI connected
+    if (uiPtr)
+      uiPtr->poll();
 
-    // Objects
-    // Must be shared. Need for actors
-    auto model = std::make_shared<models::Model>(db);
-    auto ui = std::make_shared<UiEngine>(model);
-    gc::SharedPtr<isolation::ModelListener> uiMediator(new ModelListenerMediator(ui));
+    // ! can't sleep or wait!
+    // It's danger work without UI
+    Message msg;
+    if (mq.try_pop(msg))
+      msg();            // execute message
+  } // note: last message sets done to true
+}
 
-    // Connect
-    model->setListener(uiMediator);
-    model->setUiActor(shared_from_this());
-    ui->setUiActor(shared_from_this());
 
-    // Work if .exec()
-    //QObject::connect(&appLoop, SIGNAL(aboutToQuit()), enginePtr.get(), SLOT(doWork()));
-    //appLoop.exec();
-    ui->show();
-    scopes::AppScope scope;
-    while( !m_done ) {
-      if (ui->isReadyToDestroy()) {
-        scope.setToDone();
-        break;
-      }
+static int argc = 1;
+static char* argv[1] = { "none" };
 
-      // main event loop
-      appLoop.processEvents();  // hat processor!
+UiObject::UiObject(concepts::db_manager_concept_t db) : appLoop(argc, argv) {
+  // Objects
+  // Must be shared. Need for actors
+  model = std::make_shared<models::Model>(db);
+  ui = std::make_shared<UiEngine>(model);
+  uiMediator = gc::SharedPtr<isolation::ModelListener>(new ModelListenerMediator(ui));
 
-      // ! can't sleep or wait!
-      Message msg;
-      if (mq.try_pop(msg))
-        msg();            // execute message
-    } // note: last message sets done to true
+  // Connect
+  model->setListener(uiMediator);
+
+  // Work if .exec()
+  //QObject::connect(&appLoop, SIGNAL(aboutToQuit()), enginePtr.get(), SLOT(doWork()));
+  //appLoop.exec();
+  ui->show();
+}
+
+void UiObject::poll() {
+  if (ui->isReadyToDestroy()) {
+    scope.setToDone();
+    return;
   }
 
-  // UI is destroyed
-  {
-    // Only thread loop rest
-    //while( !m_done ) {
-    //  Message msg;
-    //  if (mq.try_pop(msg))
-    //    msg();
-    //}
-  }
+  // main event loop
+  appLoop.processEvents();  // hat processor!
 }
-}
+}  // space
+

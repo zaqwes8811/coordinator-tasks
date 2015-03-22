@@ -20,30 +20,37 @@ using std::end;
 using std::cout;
 
 void Model::dropStore() {
-  auto q = m_db.getTaskTableQuery();
+  auto db = m_db;
 
-  // Action
-  concepts::drop(q);
+  dbActor().post([db]() {
+    auto q = db->getTaskTableQuery();
+    concepts::drop(q);
+  });
 }
 
-void Model::setUiActor(gc::SharedPtr<actors::UIActor> a)
-{ m_uiActorPtr = a; }
+void Model::setUiActor(gc::SharedPtr<actors::UIActor> a) { m_uiActorPtr = a; }
 
 void Model::initialize(std::function<void(std::string)> errorHandler) {
-  // Prepare
-  auto q = m_db.getTaskTableQuery();
-  auto query = m_db.getTaskLifetimeQuery();
 
-  // Action
-  concepts::registerBeanClass(q);
-  auto tasks = query.loadAll();
+  auto onLoaded = [this](entities::TaskEntities tasks) {
+    m_taskCells.clear();
+    for (auto& task : tasks)
+      m_taskCells.emplace_back(true, task);
+    notifyObservers();
+  };
 
-  // Important
-  m_taskCells.clear();
-  for (auto& task : tasks)
-    m_taskCells.emplace_back(true, task);
+  auto actor = m_uiActorPtr;
+  auto db = m_db;
+  dbActor().post([onLoaded, db, actor] {
+    auto q = db->getTaskTableQuery();
+    auto query = db->getTaskLifetimeQuery();
 
-  notifyObservers();
+    concepts::registerBeanClass(q);
+    auto tasks = query.loadAll();
+    auto a = actor.lock();
+    if (a)
+      a->post(std::bind(onLoaded, tasks));
+  });
 }
 
 Model::TaskCell Model::getCachedTaskById(const size_t id) {
@@ -65,7 +72,7 @@ void Model::updateTask(const entities::Task& e) {
     return;
   } else {
     // Prepare
-    auto q = m_db.getTaskLifetimeQuery();
+    auto q = m_db->getTaskLifetimeQuery();
 
     // Action
     q.update(k.second->toValue());
@@ -93,6 +100,8 @@ void Model::removeFilter(filters::FilterPtr f)
 //}
 // FIXME: if somewhere failed after persist - then.. state is protect?
 void Model::appendNewTask(const Task& task) {
+  using std::find_if;
+
   // FIXME: show error message
   DCHECK(task.id == EntityStates::kInactiveKey);
 
@@ -100,15 +109,11 @@ void Model::appendNewTask(const Task& task) {
   auto e = task.toEntity();
   m_taskCells.push_back({false, e});  // on lock
 
-  // Prepare
-  auto query = m_db.getTaskLifetimeQuery();
-
   // FIXME: May be shared from this and weak_ptr?
-  auto onSuccess = [e, this] (Task t) {
+  auto unlockTask = [e, this] (Task t) {
     *e = t;
     auto iter =
-        std::find_if(begin(m_taskCells), end(m_taskCells),
-                     [e] (TaskCell v) { return e->id == v.second->id; });
+        find_if(begin(m_taskCells), end(m_taskCells), [e] (TaskCell v) { return e->id == v.second->id; });
 
     if (iter == end(m_taskCells)) return;
 
@@ -117,12 +122,18 @@ void Model::appendNewTask(const Task& task) {
   };
 
   auto actor = m_uiActorPtr;
+  auto dbPtr = gc::WeakPtr<concepts::db_manager_concept_t>(m_db);
+  dbActor().post([actor, task, unlockTask, dbPtr] () mutable {
+    // add error handling
+    auto d = dbPtr.lock();
+    if (!d)
+      return;
 
-  db().post([actor, task, onSuccess, query] () mutable {
+    auto query = d->getTaskLifetimeQuery();
     auto t = query.persist(task);
     auto a = actor.lock();
     if (a)
-      a->post(std::bind(onSuccess, t));
+      a->post(std::bind(unlockTask, t));
   });
 }
 
@@ -136,7 +147,8 @@ entities::TaskEntities Model::filterModelData() {
   return m_filtersChain(r);
 }
 
-Model::Model(concepts::db_manager_concept_t _pool) : m_db(_pool) { }
+Model::Model(concepts::db_manager_concept_t _pool)
+  : m_db(std::make_shared<concepts::db_manager_concept_t>(_pool)) { }
 void Model::notifyObservers() { m_observersPtr->update(filterModelData()); }
 void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso) { m_observersPtr = iso; }
 

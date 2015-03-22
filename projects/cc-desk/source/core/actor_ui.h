@@ -4,14 +4,32 @@
 #include "common/app_types.h"
 #include "core/concepts.h"
 #include "model_layer/model.h"
+#include "core/scopes.h"
+#include "view/mainwindow.h"
 
 #include <actors_and_workers/concurent_queues.h>
+#include <QApplication>
 
 #include <iostream>
 #include <memory>
 #include <thread>
 
 namespace actors {
+class UiObject : public std::enable_shared_from_this<UiObject> {
+public:
+  UiObject(concepts::db_manager_concept_t db);
+  void poll();
+
+private:
+  scopes::AppScope scope;
+
+  gc::SharedPtr<models::Model> model;
+  gc::SharedPtr<isolation::ModelListener> uiMediator;
+  gc::SharedPtr<UiEngine> ui;
+
+  QApplication appLoop;
+};
+
 // Actor model troubles:
 //   https://www.qtdeveloperdays.com/2013/sites/default/files/presentation_pdf/Qt_Event_Loop.pdf
 //   http://blog.bbv.ch/2012/10/03/multithreaded-programming-with-qt/
@@ -39,15 +57,15 @@ namespace actors {
   \bug On off application ASan SIGSEGV detect. Think trouble in off thread
   \fixme check by TSan.
 */
+//template <typename T>  // can't
 class UIActor : public std::enable_shared_from_this<UIActor>
 {
 public:
   typedef std::function<void()> Message;
 
   // FIXME: trouble is not non-arg ctor
-  explicit UIActor(concepts::db_manager_concept_t model_ptr)
-    : m_done(false), mq(100)
-  { thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(model_ptr); } ) ); }
+  explicit UIActor() : m_done(false), mq(100)
+  { thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(); } ) ); }
 
   ~UIActor() {
     post( [&]{ m_done = true; } );
@@ -57,6 +75,14 @@ public:
   void post( Message m )
   { auto r = mq.try_push( m ); }
 
+  void connectUI(gc::SharedPtr<UiObject> ui) {
+
+  }
+
+  void disconnectUI() {
+
+  }
+
 private:
   UIActor( const UIActor& );           // no copying
   void operator=( const UIActor& );    // no copying
@@ -65,7 +91,9 @@ private:
   fix_extern_concurent::concurent_bounded_try_queue<Message> mq;
   std::unique_ptr<std::thread> thd;          // le thread
 
-  void Run(concepts::db_manager_concept_t modelPtr);
+  void Run();
+
+  gc::SharedPtr<UiObject> uiPtr{nullptr};
 };
 }
 

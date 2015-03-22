@@ -51,16 +51,17 @@ concepts::db_manager_concept_t build_database(const int selector) {
 }
 }
 
+static auto uiActor = std::make_shared<actors::UIActor>();  // dtor will call and app out
+
 TEST(Blocked, UIActorTest) {
   scopes::AppScope app;
 
   // FIXME: put in actor?
   auto db = build_database(DB_POSTGRES);
+  auto ui = std::make_shared<actors::UiObject>(db);
 
   // work in DB thread
   //storages::DataBasePtr pool(new pq_dal::PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));
-
-  auto ui = std::make_shared<actors::UIActor>(db);  // dtor will call and app out
 
   // FIXME: troubles with out appl.
   // bad!
@@ -71,6 +72,8 @@ TEST(Blocked, UIActorTest) {
       break;
 
   }
+
+  uiActor->disconnectUI();
 }
 
 // FIXME: Boost.Signal
