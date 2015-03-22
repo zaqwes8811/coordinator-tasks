@@ -61,9 +61,7 @@ TEST(Blocked, UIActorTest) {
 
   // FIXME: put in actor?
   auto db = build_database(DB_POSTGRES);
-  auto ui = std::make_shared<actors::UiObject>(db);
-
-  uiActor->connectUI(ui);
+  uiActor->connectUI(db);
 
   // work in DB thread
   //storages::DataBasePtr pool(new pq_dal::PostgreSQLDataBase(models::kConnection, models::kTaskTableNameRef));

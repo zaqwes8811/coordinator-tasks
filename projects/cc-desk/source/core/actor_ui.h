@@ -76,9 +76,9 @@ public:
   void post( Message m )
   { auto r = mq.try_push( m ); }
 
-  void connectUI(gc::SharedPtr<UiObject> ui) {
-    post([ui, this]() {
-      uiPtr = ui;
+  void connectUI(concepts::db_manager_concept_t db) {
+    post([db, this]() {
+      uiPtr = std::make_shared<actors::UiObject>(db);
     });
   }
 
