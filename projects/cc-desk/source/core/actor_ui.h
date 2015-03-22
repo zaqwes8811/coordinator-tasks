@@ -58,6 +58,7 @@ private:
   \fixme check by TSan.
 */
 //template <typename T>  // can't
+// http://stackoverflow.com/questions/17853212/using-shared-from-this-in-templated-classes
 class UIActor : public std::enable_shared_from_this<UIActor>
 {
 public:
@@ -76,11 +77,15 @@ public:
   { auto r = mq.try_push( m ); }
 
   void connectUI(gc::SharedPtr<UiObject> ui) {
-
+    post([ui, this]() {
+      uiPtr = ui;
+    });
   }
 
   void disconnectUI() {
-
+    post([this]() {
+      uiPtr = nullptr;
+    });
   }
 
 private:

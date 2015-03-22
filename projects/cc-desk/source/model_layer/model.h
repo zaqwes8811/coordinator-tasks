@@ -50,7 +50,6 @@ public:
     FIXME: да, лучше передать в конструкторе, но при конструировании возникает цикл.
   */
   void setListener(isolation::ModelListenerPtr iso);
-  void setUiActor(gc::SharedPtr<actors::UIActor> a);
   void addFilter(filters::FilterPtr f);
   void removeFilter(filters::FilterPtr f);
 
@@ -93,12 +92,6 @@ private:
   isolation::ModelListenerPtr m_observersPtr;
 
   TaskCell getCachedTaskById(const size_t id);
-
-  gc::WeakPtr<actors::UIActor> m_uiActorPtr;
-  cc11::Actior m_dbActor;
-
-  cc11::Actior& dbActor()
-  { return m_dbActor; }
 
   /**
     \fixme DANGER!! при реализации фильтров сломает логику!!!

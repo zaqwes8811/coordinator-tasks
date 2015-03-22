@@ -86,7 +86,6 @@ UiEngine::~UiEngine(){ delete m_uiRawPtr; }
 
 void UiEngine::action() {
   auto self = share();
-  auto uiActorPtr = m_uiActorPtr;
   /*m_dbActor.post([uiActorPtr, self] () mutable {
     uiActorPtr->post([=] {
       self->doTheThing();
@@ -213,9 +212,6 @@ void UiEngine::showEvent( QShowEvent* event )
 
 gc::SharedPtr<UiEngine> UiEngine::share()
 { return shared_from_this(); }
-
-void UiEngine::setUiActor(gc::SharedPtr<actors::UIActor> a)
-{ m_uiActorPtr = a; }
 
 bool UiEngine::isReadyToDestroy() const
 { return m_fsmToDestroy; }

@@ -9,6 +9,10 @@
 #include <iostream>
 #include <functional>
 
+extern gc::SharedPtr<actors::UIActor> uiActor;  // dtor will call and app out
+extern gc::SharedPtr<cc11::Actior> dbActor;
+
+
 namespace models {
 using namespace entities;
 using Loki::ScopeGuard;
@@ -22,13 +26,11 @@ using std::cout;
 void Model::dropStore() {
   auto db = m_db;
 
-  dbActor().post([db]() {
+  dbActor->post([db]() {
     auto q = db->getTaskTableQuery();
     concepts::drop(q);
   });
 }
-
-void Model::setUiActor(gc::SharedPtr<actors::UIActor> a) { m_uiActorPtr = a; }
 
 void Model::initialize(std::function<void(std::string)> errorHandler) {
 
@@ -39,17 +41,14 @@ void Model::initialize(std::function<void(std::string)> errorHandler) {
     notifyObservers();
   };
 
-  auto actor = m_uiActorPtr;
   auto db = m_db;
-  dbActor().post([onLoaded, db, actor] {
+  dbActor->post([onLoaded, db] {
     auto q = db->getTaskTableQuery();
     auto query = db->getTaskLifetimeQuery();
 
     concepts::registerBeanClass(q);
     auto tasks = query.loadAll();
-    auto a = actor.lock();
-    if (a)
-      a->post(std::bind(onLoaded, tasks));
+    uiActor->post(std::bind(onLoaded, tasks));
   });
 }
 
@@ -121,9 +120,8 @@ void Model::appendNewTask(const Task& task) {
     notifyObservers();
   };
 
-  auto actor = m_uiActorPtr;
   auto dbPtr = gc::WeakPtr<concepts::db_manager_concept_t>(m_db);
-  dbActor().post([actor, task, unlockTask, dbPtr] () mutable {
+  dbActor->post([task, unlockTask, dbPtr] () mutable {
     // add error handling
     auto d = dbPtr.lock();
     if (!d)
@@ -131,9 +129,7 @@ void Model::appendNewTask(const Task& task) {
 
     auto query = d->getTaskLifetimeQuery();
     auto t = query.persist(task);
-    auto a = actor.lock();
-    if (a)
-      a->post(std::bind(unlockTask, t));
+    uiActor->post(std::bind(unlockTask, t));
   });
 }
 

@@ -47,8 +47,6 @@ public:
   // actions
   void redraw(entities::TaskEntities e);
 
-  void setUiActor(gc::SharedPtr<actors::UIActor> a);
-
   bool isReadyToDestroy() const;
 
 private slots:
@@ -90,9 +88,6 @@ private:
   void processFilter(filters::FilterPtr, int state);
 
   gc::SharedPtr<models::Model> m_modelPtr;
-
-  // Coupled with actors
-  gc::WeakPtr<actors::UIActor> m_uiActorPtr;
 
   /// FSM
   bool m_fsmTablesIsCreated{false};
