@@ -18,6 +18,10 @@ namespace actors {
 
 namespace models
 {
+class Model;
+namespace ext {
+void onNew();
+}
 /**
   \fixme как вообще работать с кешем и базами данных.
   в кешах ограниченное api!
@@ -40,6 +44,7 @@ namespace models
   It's hard recreate state. And big overhead.
 */
 class Model //: public boost::noncopyable
+    // FIXME: make emb ref counter
 {
 public:
   /// create/destory
@@ -72,6 +77,8 @@ private:
 
   template <typename U>
   friend void renders::render_task_store(std::ostream& o, const U& a);
+
+  friend void models::ext::onNew();
 
   /**
     FIXME: плохо что хендлы утекают, и из-за того что указатели

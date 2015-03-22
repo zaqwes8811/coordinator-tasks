@@ -52,16 +52,16 @@ concepts::db_manager_concept_t build_database(const int selector) {
 }
 
 //static
-auto uiActor = std::make_shared<actors::UIActor>();  // dtor will call and app out
+auto gUIActor = std::make_shared<actors::UIActor>();  // dtor will call and app out
 //static
-auto dbActor = std::make_shared<cc11::Actior>();
+auto gDBActor = std::make_shared<cc11::Actior>();
 
 TEST(Blocked, UIActorTest) {
   scopes::AppScope app;
 
   // FIXME: put in actor?
   auto db = build_database(DB_POSTGRES);
-  auto f = uiActor->connectUI(db);
+  auto f = gUIActor->connectUI(db);
 
   f.get();
 }
