@@ -12,7 +12,6 @@
 extern gc::SharedPtr<actors::UIActor> gUIActor;  // dtor will call and app out
 extern gc::SharedPtr<cc11::Actior> gDBActor;
 
-
 namespace models {
 using namespace entities;
 using Loki::ScopeGuard;
@@ -35,7 +34,7 @@ void onNew(gc::SharedPtr<Model> m, TaskEntity task_ptr, Task saved_task) {
   iter->first = true; // off lock
   m->notifyObservers();
 }
-}
+}  // space
 
 void Model::dropStore() {
   auto db = m_db;
@@ -45,6 +44,8 @@ void Model::dropStore() {
     concepts::drop(q);
   });
 }
+
+//template <typename T>
 
 void Model::initialize(std::function<void(std::string)> errorHandler) {
 
@@ -57,23 +58,26 @@ void Model::initialize(std::function<void(std::string)> errorHandler) {
 
   auto db = m_db;
   gDBActor->post([onLoaded, db] {
-    auto q = db->getTaskTableQuery();
-    auto query = db->getTaskLifetimeQuery();
+    auto task_table_query = db->getTaskTableQuery();
+    concepts::registerBeanClass(task_table_query);
 
-    concepts::registerBeanClass(q);
-    auto tasks = query.loadAll();
+    auto tasks = db->getTaskLifetimeQuery().loadAll();
+
     gUIActor->post(std::bind(onLoaded, tasks));
   });
 }
 
 Model::TaskCell Model::GetCachedTaskById(const size_t id) {
+  // Check contain
+  DCHECK(std::find_if(
+      begin(m_task_cells), end(m_task_cells),
+      [id] (const TaskCell& elem) -> bool { return filters::is_contained(id)(elem.second);})
+         != end(m_tasks_cells));
+
   auto iter = std::find_if(
         m_task_cells.begin(), m_task_cells.end(),
-        [id] (const TaskCell& elem) -> bool {
-          return filters::is_contained(id)(elem.second);
-        });
+        [id] (const TaskCell& elem) -> bool { return filters::is_contained(id)(elem.second); });
 
-  DCHECK(iter != m_tasksCache.end());
   return *iter;
 }
 
@@ -126,7 +130,7 @@ void Model::appendNewTask(const Task& unsaved_task) {
   auto unlock = std::bind(&ext::onNew, shared_from_this(), unsaved_task_ptr, _1);
 
   auto db_ptr = m_db;
-  gDBActor->post([unsaved_task, unlock, db_ptr] () mutable {
+  gDBActor->post([unsaved_task, unlock, db_ptr] () {
     auto saved_task = db_ptr->getTaskLifetimeQuery().persist(unsaved_task);
     gUIActor->post(std::bind(unlock, saved_task));
   });
@@ -136,14 +140,12 @@ entities::TaskEntities Model::filterModelData() {
   auto r = entities::TaskEntities();
   std::transform(begin(m_task_cells), end(m_task_cells),
                  std::back_inserter(r),
-                 [](TaskCell cell) -> entities::TaskEntity {
-                    return cell.second;});
+                 [](TaskCell cell) -> entities::TaskEntity { return cell.second;});
 
   return m_filtersChain(r);
 }
 
-Model::Model(concepts::db_manager_concept_t _pool)
-  : m_db(std::make_shared<concepts::db_manager_concept_t>(_pool)) { }
+Model::Model(concepts::db_manager_concept_t _pool) : m_db(std::make_shared<concepts::db_manager_concept_t>(_pool)) { }
 void Model::notifyObservers() { m_observersPtr->update(filterModelData()); }
 void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso) { m_observersPtr = iso; }
 

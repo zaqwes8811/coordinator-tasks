@@ -27,7 +27,7 @@ concepts::db_manager_concept_t build_database(const int selector) {
 TEST(ConceptsTest, Test) {
   using namespace concepts;
 
-  auto db = build_database(DB_POSTGRES);
+  auto db = build_database(DB_SQLITE);
   auto tables = std::vector<table_concept_t>{db.getTaskTableQuery()
       //, db.getTaskTagQuery()
   };
@@ -52,7 +52,7 @@ TEST(ConceptsTest, ActorEnv) {
   // trouble with handles in actor model
   // need real links
   // Object own it, but run in other thread
-  auto db = build_database(DB_POSTGRES);
+  auto db = build_database(DB_SQLITE);
   auto tables = std::vector<table_concept_t>{db.getTaskTableQuery()
 //      , db.getTaskTagQuery()
 };

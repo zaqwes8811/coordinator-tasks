@@ -89,13 +89,13 @@ private:
   struct model : concept_t {
     model(const T& x) : data_(std::move(x)) { }
 
-    entities::Task persist_(const entities::Task& v) override
+    virtual entities::Task persist_(const entities::Task& v) OVERRIDE
     { return data_.persist(v); }
 
-    void update_(const entities::Task& v) override
+    void update_(const entities::Task& v) OVERRIDE
     { data_.update(v); }
 
-    entities::TaskEntities loadAll_() const override
+    entities::TaskEntities loadAll_() const OVERRIDE
     { return data_.loadAll(); }
 
     T data_;
@@ -154,6 +154,9 @@ public:
   template<typename T>
   db_manager_concept_t(const T& x) : self_(std::make_shared<model<T>>(std::move(x)))
   { }
+
+  //template <typename Q>
+  //concepts::table_concept_t table();
 
   concepts::table_concept_t getTaskTableQuery()
   {  return self_->getTaskTableQuery_(); }

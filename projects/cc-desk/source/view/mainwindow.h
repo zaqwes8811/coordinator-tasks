@@ -97,8 +97,8 @@ private:
   Ui::MainWindow* m_uiRawPtr;
   QMyTableView* m_taskTablePtr;
 
-  void closeEvent(QCloseEvent *event) override;
-  void showEvent( QShowEvent* event ) override;
+  virtual void closeEvent(QCloseEvent *event) OVERRIDE;
+  virtual void showEvent( QShowEvent* event ) OVERRIDE;
 };
 
 #endif // MAINWINDOW_H

@@ -60,7 +60,7 @@ TEST(Blocked, UIActorTest) {
   scopes::AppScope app;
 
   // FIXME: put in actor?
-  auto db = build_database(DB_POSTGRES);
+  auto db = build_database(DB_SQLITE);
   auto f = gUIActor->connectUI(db);
 
   f.get();
