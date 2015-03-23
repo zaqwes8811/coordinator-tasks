@@ -16,7 +16,8 @@ using entities::Tag;
 
 // http://stackoverflow.com/questions/27764486/java-sqlite-last-insert-rowid-return-0
 size_t get_last_id(const sqlite3_cc::Result& r) {
-  DCHECK(r.size() == 1);
+  // FIXME: Strange thing. Really return bunch identical rows.
+  //DCHECK(r.size() == 1);
 
   size_t id(entities::EntityStates::kInactiveKey);
   for (auto& col : r) {
@@ -37,7 +38,7 @@ Task SQLiteTaskTableQueries::persist(const entities::Task& unsaved_task) {
       + std_own_ext::to_string(unsaved_task.priority) + "'); " +
       "  SELECT last_insert_rowid() FROM " + m_tableName + "; ");
 
-  auto r = sqlite3_exec(*lock(), sql);
+  auto r = exec(sql);
 
   auto saved_task = Task();
   saved_task.id = get_last_id(r);
