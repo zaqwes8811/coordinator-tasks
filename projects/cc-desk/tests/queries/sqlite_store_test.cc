@@ -17,10 +17,12 @@ using std::cout;
 using std::endl;
 using entities::Tag;
 using entities::TagEntity;
+using sqlite_queries::TagTableQuery;
+
 
 TEST(SQLite, TaskTable) {
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
-  auto table = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
+  auto table = sqlite_queries::TaskTableQueries(h, models::kTaskTableNameRef);
   table.registerBeanClass();
 }
 
@@ -29,8 +31,8 @@ TEST(SQLite, TagAndTaskTables) {
   // select by tag
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
 
-  auto tasks = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
-  auto tags = sqlite_queries::SQLiteTagTableQuery(h);
+  auto tasks = sqlite_queries::TaskTableQueries(h, models::kTaskTableNameRef);
+  auto tags = sqlite_queries::TagTableQuery(h);
   tasks.registerBeanClass();
   tags.registerBeanClass();
 
@@ -41,7 +43,9 @@ TEST(SQLite, TagAndTaskTables) {
   tags.persist(t);
   tags.persist(t1);
 
-  //tags.lo
+  std::cout << tags;
+  std::cout << endl;
+  cout << tasks;
 
   tasks.drop();
   tags.drop();

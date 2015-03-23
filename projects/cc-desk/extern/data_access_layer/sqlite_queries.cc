@@ -29,7 +29,7 @@ size_t get_last_id(const sqlite3_cc::Result& r) {
   return id;
 }
 
-Task SQLiteTaskTableQueries::persist(const entities::Task& unsaved_task) {
+Task TaskTableQueries::persist(const entities::Task& unsaved_task) {
   DCHECK(unsaved_task.id == entities::EntityStates::kInactiveKey);
 
   string sql(
@@ -48,7 +48,7 @@ Task SQLiteTaskTableQueries::persist(const entities::Task& unsaved_task) {
   return saved_task;
 }
 
-void SQLiteTaskTableQueries::update(const entities::Task& saved_task) {
+void TaskTableQueries::update(const entities::Task& saved_task) {
   DCHECK(saved_task.id != entities::EntityStates::kInactiveKey);
 
   string done("false");
@@ -65,7 +65,7 @@ void SQLiteTaskTableQueries::update(const entities::Task& saved_task) {
   exec(sql);
 }
 
-TaskEntities SQLiteTaskTableQueries::loadAll() const {
+TaskEntities TaskTableQueries::loadAll() const {
   string sql("SELECT * FROM " + m_table_name + ";");
 
   auto r = exec(sql);
@@ -83,12 +83,12 @@ TaskEntities SQLiteTaskTableQueries::loadAll() const {
   return tasks;
 }
 
-SQLiteTaskTableQueries::SQLiteTaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
+TaskTableQueries::TaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
                                                , const std::string& tableName)
   : m_table_name(tableName), m_connPtr(h)
 { }
 
-void SQLiteTaskTableQueries::registerBeanClass() {
+void TaskTableQueries::registerBeanClass() {
   std::string sql(
     "CREATE TABLE IF NOT EXISTS "+
     m_table_name +
@@ -101,14 +101,14 @@ void SQLiteTaskTableQueries::registerBeanClass() {
   exec(sql);
 }
 
-void SQLiteTaskTableQueries::drop() { exec("DROP TABLE " + m_table_name + ";"); }
+void TaskTableQueries::drop() { exec("DROP TABLE " + m_table_name + ";"); }
 
-bool SQLiteTagTableQuery::checkUnique(const std::string& name) {
+bool TagTableQuery::checkUnique(const std::string& name) {
   auto sql = "SELECT NAME FROM " + m_table_name + " WHERE NAME ='" + name + "';";
   return exec(sql).empty();
 }
 
-Tag SQLiteTagTableQuery::persist(const Tag& unsaved_tag) {
+Tag TagTableQuery::persist(const Tag& unsaved_tag) {
   using sqlite3_cc::operator <<;
 
   DCHECK(unsaved_tag.id == entities::EntityStates::kInactiveKey);
@@ -130,11 +130,11 @@ Tag SQLiteTagTableQuery::persist(const Tag& unsaved_tag) {
 }
 
 
-SQLiteTagTableQuery::SQLiteTagTableQuery(gc::WeakPtr<sqlite3_cc::sqlite3> h)
+TagTableQuery::TagTableQuery(gc::WeakPtr<sqlite3_cc::sqlite3> h)
     : m_table_name(models::s_kTagTableName) , m_connPtr(h)
 { }
 
-void SQLiteTagTableQuery::registerBeanClass()  {
+void TagTableQuery::registerBeanClass()  {
   // http://www.tutorialspoint.com/sqlite/sqlite_using_autoincrement.htm
   std::string sql =
       "CREATE TABLE IF NOT EXISTS " + m_table_name + "("  \
@@ -145,7 +145,7 @@ void SQLiteTagTableQuery::registerBeanClass()  {
   exec(sql);
 }
 
-void SQLiteTagTableQuery::drop() {
+void TagTableQuery::drop() {
   exec("DROP TABLE " + m_table_name + ";");
 }
 }  // space

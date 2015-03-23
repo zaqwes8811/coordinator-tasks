@@ -10,12 +10,25 @@
 #include <string>
 
 namespace sqlite_queries {
-class SQLiteTaskTableQueries
+
+template <typename T>
+std::ostream& operator<< (std::ostream &o, T &t) {
+  using sqlite3_cc::operator<<;
+
+  std::string sql = "select * from " + t.m_table_name + ";";
+  auto r = t.exec(sql);
+
+  o << r;
+
+  return o;
+}
+
+class TaskTableQueries
 {
 public:
   using Result = sqlite3_cc::Result;
 
-  explicit SQLiteTaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
+  explicit TaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
                                   , const std::string& tableName);
 
   /**
@@ -29,6 +42,9 @@ public:
   void drop();
 
 private:
+  template <typename T>
+  friend std::ostream& operator<< (std::ostream &o, T &t);
+
   std::string getTableName() const
   { return m_table_name; }
 
@@ -46,17 +62,21 @@ private:
   }
 };
 
-class SQLiteTagTableQuery
+class TagTableQuery
 {
 public:
   using Result = sqlite3_cc::Result;
 
-  explicit SQLiteTagTableQuery(gc::WeakPtr<sqlite3_cc::sqlite3> h);
+  explicit TagTableQuery(gc::WeakPtr<sqlite3_cc::sqlite3> h);
   void registerBeanClass();
   void drop();
 
   entities::Tag persist(const entities::Tag& tag);
+
 private:
+  template <typename T>
+  friend std::ostream& operator<< (std::ostream &o, T &t);
+
   const std::string m_table_name;
   gc::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
 
@@ -80,14 +100,14 @@ public:
       , m_taskTableName(models::kTaskTableNameRef)
   { }
 
-  SQLiteTaskTableQueries  getTaskTableQuery()
-  { return SQLiteTaskTableQueries(m_connPtr, m_taskTableName); }
+  TaskTableQueries  getTaskTableQuery()
+  { return TaskTableQueries(m_connPtr, m_taskTableName); }
 
-  SQLiteTagTableQuery  getTagTableQuery()
-  { return SQLiteTagTableQuery(m_connPtr); }
+  TagTableQuery  getTagTableQuery()
+  { return TagTableQuery(m_connPtr); }
 
-  SQLiteTaskTableQueries getTaskLifetimeQuery()
-  { return SQLiteTaskTableQueries(m_connPtr, m_taskTableName); }
+  TaskTableQueries getTaskLifetimeQuery()
+  { return TaskTableQueries(m_connPtr, m_taskTableName); }
 
 private:
   // FIXME: important not only lifetime, but connection state to!

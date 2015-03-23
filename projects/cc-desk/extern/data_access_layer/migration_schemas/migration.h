@@ -2,6 +2,9 @@
 #define DAL_MIGRATION_H_
 
 namespace migration {
+/**
+  \case Exist file, need update software
+*/
 class Versions {
 public:
   void makeV0() { }
