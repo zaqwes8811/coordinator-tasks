@@ -4,6 +4,8 @@
 namespace migration {
 /**
   \case Exist file, need update software
+
+  upcast and downcast to!
 */
 class Versions {
 public:

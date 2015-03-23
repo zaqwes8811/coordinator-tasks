@@ -18,6 +18,7 @@ using std::endl;
 using entities::Tag;
 using entities::TagEntity;
 using sqlite_queries::TagTableQuery;
+using entities::EntityStates;
 
 
 TEST(SQLite, TaskTable) {
@@ -37,16 +38,16 @@ TEST(SQLite, TagAndTaskTables) {
   tags.registerBeanClass();
 
   // Create tag
-  // Must have unique name
-  entities::Tag t(entities::EntityStates::kInactiveKey, "CUDA");
-  entities::Tag t1(entities::EntityStates::kInactiveKey, "V8");
-  tags.persist(t);
-  tags.persist(t1);
+  tags.persist(Tag{EntityStates::kInactiveKey, "CUDA"});
+  tags.persist(Tag{EntityStates::kInactiveKey, "V8"});
 
   std::cout << tags;
   std::cout << endl;
   cout << tasks;
 
+  // Create tasks
+
+  // Destroy all
   tasks.drop();
   tags.drop();
 }
