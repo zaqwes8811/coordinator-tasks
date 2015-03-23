@@ -33,10 +33,10 @@ Task SQLiteTaskTableQueries::persist(const entities::Task& unsaved_task) {
   DCHECK(unsaved_task.id == entities::EntityStates::kInactiveKey);
 
   string sql(
-      "INSERT INTO " + m_tableName + " (TASK_NAME, PRIORITY) " \
-      "VALUES ('" + unsaved_task.name+"','"
-      + std_own_ext::to_string(unsaved_task.priority) + "'); " +
-      "  SELECT last_insert_rowid() FROM " + m_tableName + "; ");
+      "INSERT INTO " + m_table_name + " (TASK_NAME, PRIORITY) " \
+      "VALUES ('" + unsaved_task.name+"',"
+      + std_own_ext::to_string(unsaved_task.priority) + "); " +
+      "  SELECT last_insert_rowid() FROM " + m_table_name + "; ");
 
   auto r = exec(sql);
 
@@ -48,52 +48,50 @@ Task SQLiteTaskTableQueries::persist(const entities::Task& unsaved_task) {
   return saved_task;
 }
 
-void SQLiteTaskTableQueries::update(const entities::Task& v) {
-  DCHECK(v.id != entities::EntityStates::kInactiveKey);
+void SQLiteTaskTableQueries::update(const entities::Task& saved_task) {
+  DCHECK(saved_task.id != entities::EntityStates::kInactiveKey);
 
   string done("false");
-  if (v.done)
-    done = "true";
+  if (saved_task.done) done = "true";
 
   string sql(
   "UPDATE "
-        + m_tableName + " SET "
-        + "TASK_NAME = '" + v.name
-        + "', PRIORITY = " + std_own_ext::to_string(v.priority)
+        + m_table_name + " SET "
+        + "TASK_NAME = '" + saved_task.name
+        + "', PRIORITY = " + std_own_ext::to_string(saved_task.priority)
         + ", DONE = " + done
-        + " WHERE ID = " + std_own_ext::to_string(v.id) + ";");
+        + " WHERE ID = " + std_own_ext::to_string(saved_task.id) + ";");
 
   exec(sql);
 }
 
 TaskEntities SQLiteTaskTableQueries::loadAll() const {
-  string sql("SELECT * FROM " + m_tableName + ";");
+  string sql("SELECT * FROM " + m_table_name + ";");
 
   auto r = exec(sql);
 
   TaskEntities tasks;
   for (auto& col : r) {
-    Task t;
-    t.id = as<size_t>(col["ID"]);
-    t.name = as<string>(col["TASK_NAME"]);
-    t.priority = as<int>(col["PRIORITY"]);
-    t.done = as<bool>(col["DONE"]);
+    Task saved_task;
+    saved_task.id = as<size_t>(col["ID"]);
+    saved_task.name = as<string>(col["TASK_NAME"]);
+    saved_task.priority = as<int>(col["PRIORITY"]);
+    saved_task.done = as<bool>(col["DONE"]);
 
-    tasks.emplace_back(t.share());
+    tasks.emplace_back(saved_task.share());
   }
   return tasks;
 }
 
 SQLiteTaskTableQueries::SQLiteTaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
                                                , const std::string& tableName)
-  : m_tableName(tableName), m_connPtr(h)
+  : m_table_name(tableName), m_connPtr(h)
 { }
 
 void SQLiteTaskTableQueries::registerBeanClass() {
   std::string sql(
-    "CREATE TABLE " \
-    "IF NOT EXISTS "+
-    m_tableName +
+    "CREATE TABLE IF NOT EXISTS "+
+    m_table_name +
     "(" \
     "ID         SERIAL PRIMARY KEY NOT NULL," \
     "TASK_NAME  TEXT               NOT NULL, " \
@@ -103,10 +101,10 @@ void SQLiteTaskTableQueries::registerBeanClass() {
   exec(sql);
 }
 
-void SQLiteTaskTableQueries::drop() { exec("DROP TABLE " + m_tableName + ";"); }
+void SQLiteTaskTableQueries::drop() { exec("DROP TABLE " + m_table_name + ";"); }
 
 bool SQLiteTagTableQuery::checkUnique(const std::string& name) {
-  auto sql = "SELECT NAME FROM " + m_tableName + " WHERE NAME ='" + name + "';";
+  auto sql = "SELECT NAME FROM " + m_table_name + " WHERE NAME ='" + name + "';";
   return exec(sql).empty();
 }
 
@@ -117,12 +115,11 @@ Tag SQLiteTagTableQuery::persist(const Tag& unsaved_tag) {
   DCHECK(checkUnique(unsaved_tag.name));
 
   string sql(
-      "INSERT INTO " + m_tableName + " (NAME, COLOR) " \
+      "INSERT INTO " + m_table_name + " (NAME, COLOR) " \
       "VALUES ('" + unsaved_tag.name+"','" + unsaved_tag.color + "'); " \
-      "  SELECT last_insert_rowid() FROM " + m_tableName + "; ");
+      "  SELECT last_insert_rowid() FROM " + m_table_name + "; ");
 
   auto r = exec(sql);
-  std::cout << r;
 
   auto saved_tag = Tag();
   saved_tag.id = get_last_id(r);
@@ -134,12 +131,13 @@ Tag SQLiteTagTableQuery::persist(const Tag& unsaved_tag) {
 
 
 SQLiteTagTableQuery::SQLiteTagTableQuery(gc::WeakPtr<sqlite3_cc::sqlite3> h)
-    : m_tableName(models::s_kTagTableName) , m_connPtr(h)
+    : m_table_name(models::s_kTagTableName) , m_connPtr(h)
 { }
 
 void SQLiteTagTableQuery::registerBeanClass()  {
   // http://www.tutorialspoint.com/sqlite/sqlite_using_autoincrement.htm
-  std::string sql = "CREATE TABLE IF NOT EXISTS " + m_tableName + "("  \
+  std::string sql =
+      "CREATE TABLE IF NOT EXISTS " + m_table_name + "("  \
            "ID             INTEGER  PRIMARY KEY     AUTOINCREMENT," \
            "NAME           TEXT                    NOT NULL," \
            "COLOR          TEXT                    NOT NULL);";
@@ -148,6 +146,6 @@ void SQLiteTagTableQuery::registerBeanClass()  {
 }
 
 void SQLiteTagTableQuery::drop() {
-  exec("DROP TABLE " + m_tableName + ";");
+  exec("DROP TABLE " + m_table_name + ";");
 }
 }  // space

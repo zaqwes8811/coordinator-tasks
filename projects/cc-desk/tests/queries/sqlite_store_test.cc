@@ -15,6 +15,8 @@
 using std::string;
 using std::cout;
 using std::endl;
+using entities::Tag;
+using entities::TagEntity;
 
 TEST(SQLite, TaskTable) {
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
@@ -25,24 +27,22 @@ TEST(SQLite, TaskTable) {
 TEST(SQLite, TagAndTaskTables) {
   // Connect task with tag
   // select by tag
-
-  using entities::Tag;
-  using entities::TagEntity;
-
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
 
   auto tasks = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
-  tasks.registerBeanClass();
-
   auto tags = sqlite_queries::SQLiteTagTableQuery(h);
+  tasks.registerBeanClass();
   tags.registerBeanClass();
 
   // Create tag
   // Must have unique name
   entities::Tag t(entities::EntityStates::kInactiveKey, "CUDA");
-  tags.persist(t);
+
   entities::Tag t1(entities::EntityStates::kInactiveKey, "V8");
+  tags.persist(t);
   tags.persist(t1);
+
+  //tags.lo
 
   //storages::DataBase::dropSchema()
   tasks.drop();
