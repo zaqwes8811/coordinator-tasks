@@ -126,6 +126,7 @@ file( GLOB proTests
     ${Source}/core/*.h
     ${ExternLocal}/actors_and_workers/*.cc
     ${ExternLocal}/actors_and_workers/*.h
+    ${ExternLocal}/data_access_layer/migration_schemas/*.h
     ${ExternLocal}/std_own_ext-fix/*.h
     ${ExternLocal}/peoples_tricks/*.cc
     ${Source}/../../std_own_ext/*.h

@@ -30,9 +30,9 @@ public:
 
 private:
   std::string getTableName() const
-  { return m_tableName; }
+  { return m_table_name; }
 
-  const std::string m_tableName;
+  const std::string m_table_name;
   gc::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
 
   gc::SharedPtr<sqlite3_cc::sqlite3> lock() const {
@@ -57,7 +57,7 @@ public:
 
   entities::Tag persist(const entities::Tag& tag);
 private:
-  const std::string m_tableName;
+  const std::string m_table_name;
   gc::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
 
   gc::SharedPtr<sqlite3_cc::sqlite3> lock() const {

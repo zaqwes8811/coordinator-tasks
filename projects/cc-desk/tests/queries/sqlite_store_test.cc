@@ -37,14 +37,12 @@ TEST(SQLite, TagAndTaskTables) {
   // Create tag
   // Must have unique name
   entities::Tag t(entities::EntityStates::kInactiveKey, "CUDA");
-
   entities::Tag t1(entities::EntityStates::kInactiveKey, "V8");
   tags.persist(t);
   tags.persist(t1);
 
   //tags.lo
 
-  //storages::DataBase::dropSchema()
   tasks.drop();
   tags.drop();
 }
