@@ -11,6 +11,16 @@
 namespace sqlite3_cc {
 static const int sqlite_ok = SQLITE_OK;
 
+std::ostream& operator<<(std::ostream& o, const sqlite3_cc::Result& result) {
+  for(auto& row: result) {
+    for(auto& column: row) {
+      o << column.first << " = " << column.second << " ";
+    }
+    o  << std::endl;
+  }
+  return o;
+}
+
 // https://www.sqlite.org/threadsafe.html
 sqlite3::~sqlite3() {
   sqlite3_close(m_db_ptr);

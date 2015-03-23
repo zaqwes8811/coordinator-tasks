@@ -19,11 +19,22 @@
 // Как быть с Qt - она собирается без исключений!!
 
 #include <cassert>
+#include <string>
+#include <sstream>
+#include <stdexcept>
 
-#define DCHECK(cond) assert(cond);
+template <typename T>
+std::string toString(T const& value) {
+  std::stringstream sstr;
+  sstr << value;
+  return sstr.str();
+}
 
 #ifndef FROM_HERE
-#  define FROM_HERE ""
+#  define FROM_HERE (std::string(__FILE__) + ": " + toString(__LINE__))
 #endif
+
+
+#define DCHECK(cond) do { if (!(cond)) throw std::runtime_error("Assert: " + FROM_HERE); } while(0);
 
 #endif

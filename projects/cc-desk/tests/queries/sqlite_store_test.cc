@@ -16,16 +16,6 @@ using std::string;
 using std::cout;
 using std::endl;
 
-std::ostream& operator<<(std::ostream& o, const sqlite3_cc::Result& result) {
-  for(auto& row: result) {
-    for(auto& column: row) {
-      o << column.first << " = " << column.second << " ";
-    }
-    o  << std::endl;
-  }
-  return o;
-}
-
 TEST(SQLite, TaskTable) {
   auto h = std::make_shared<sqlite3_cc::sqlite3>("test.db");
   auto table = sqlite_queries::SQLiteTaskTableQueries(h, models::kTaskTableNameRef);
@@ -50,7 +40,9 @@ TEST(SQLite, TagAndTaskTables) {
   // Create tag
   // Must have unique name
   entities::Tag t(entities::EntityStates::kInactiveKey, "CUDA");
-  auto e = sqlite_queries::createTag(t, h);
+  tags.persist(t);
+  entities::Tag t1(entities::EntityStates::kInactiveKey, "V8");
+  tags.persist(t1);
 
   //storages::DataBase::dropSchema()
   tasks.drop();

@@ -72,8 +72,8 @@ Model::TaskCell Model::GetCachedTaskById(const size_t id) {
   // Check contain
   DCHECK(std::find_if(
       begin(m_task_cells), end(m_task_cells),
-      [id] (const TaskCell& elem) -> bool { return filters::is_contained(id)(elem.second);})
-         != end(m_tasks_cells));
+      [id, this] (const TaskCell& elem) -> bool { return filters::is_contained(id)(elem.second);})
+         != end(m_task_cells));
 
   auto iter = std::find_if(
         m_task_cells.begin(), m_task_cells.end(),

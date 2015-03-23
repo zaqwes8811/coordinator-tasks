@@ -23,7 +23,7 @@ const size_t kAddedBlankLines = 10;
 }
 
 // Ext
-#define FROM_HERE ""
+//#define FROM_HERE ""
 #define OVERRIDE override
 
 #endif   

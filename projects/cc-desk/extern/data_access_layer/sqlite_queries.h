@@ -13,6 +13,8 @@ namespace sqlite_queries {
 class SQLiteTaskTableQueries
 {
 public:
+  using Result = sqlite3_cc::Result;
+
   explicit SQLiteTaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
                                   , const std::string& tableName);
 
@@ -32,23 +34,44 @@ private:
 
   const std::string m_tableName;
   gc::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
+
+  gc::SharedPtr<sqlite3_cc::sqlite3> lock() const {
+    auto c = m_connPtr.lock();
+    if (!c) throw std::runtime_error(FROM_HERE);
+    return c;
+  }
+
+  Result exec(const std::string& sql) const {
+    return sqlite3_exec(*lock(), sql);
+  }
 };
 
 class SQLiteTagTableQuery
 {
 public:
-  //using
+  using Result = sqlite3_cc::Result;
 
   explicit SQLiteTagTableQuery(gc::WeakPtr<sqlite3_cc::sqlite3> h);
   void registerBeanClass();
   void drop();
+
+  entities::Tag persist(const entities::Tag& tag);
 private:
   const std::string m_tableName;
   gc::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;
-};
 
-bool checkUnique(const std::string& name, gc::WeakPtr<sqlite3_cc::sqlite3> h);
-entities::TagEntity createTag(const entities::Tag& tag, gc::WeakPtr<sqlite3_cc::sqlite3> h);
+  gc::SharedPtr<sqlite3_cc::sqlite3> lock() const {
+    auto c = m_connPtr.lock();
+    if (!c) throw std::runtime_error(FROM_HERE);
+    return c;
+  }
+
+  Result exec(const std::string& sql) const {
+    return sqlite3_exec(*lock(), sql);
+  }
+
+  bool checkUnique(const std::string& name);
+};
 
 class SQLiteDataBase {
 public:
@@ -56,12 +79,6 @@ public:
     : m_connPtr(std::make_shared<sqlite3_cc::sqlite3>("test.db"))
       , m_taskTableName(models::kTaskTableNameRef)
   { }
-
-  //template <typename T> T GetTableQuery();
-
-  //template <>
-  //SQLiteTaskTableQueries GetTableQuery<SQLiteTaskTableQueries>()
-  //{ return this->getTaskTableQuery(); }
 
   SQLiteTaskTableQueries  getTaskTableQuery()
   { return SQLiteTaskTableQueries(m_connPtr, m_taskTableName); }

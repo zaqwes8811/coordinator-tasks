@@ -137,7 +137,8 @@ file( GLOB proTests
     ${Source}/model_layer/*.h
     ${ExternLocal}/sqlite_xx/*.cc
     ${testsRoot}/*.cc
-    ${testsRoot}/db/*.cc
+    ${testsRoot}/queries/*.cc
+    ${testsRoot}/units/*.cc
     ${testsRoot}/extern/*.cc
 )
 

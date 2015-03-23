@@ -34,6 +34,8 @@ private:
 std::string sqlite3_errmsg(sqlite3& db_ptr);
 Result sqlite3_exec(sqlite3& db_ptr, const std::string& sql);
 
+std::ostream& operator<<(std::ostream& o, const sqlite3_cc::Result& result);
+
 }  // space
 
 #endif
