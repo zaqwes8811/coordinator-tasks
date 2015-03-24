@@ -20,7 +20,7 @@ void TaskTableQueries::registerBeanClass() {
     "CREATE TABLE IF NOT EXISTS \n"+
     m_table_name +
     "(" \
-    "ID         SERIAL PRIMARY KEY DEFAULT  1, \n" \
+    "ID         INTEGER            PRIMARY KEY AUTOINCREMENT DEFAULT  1, \n" \
     "TASK_NAME  TEXT               NOT      NULL, \n" \
     "PRIORITY   INT                DEFAULT  0, \n" \
     "DONE       BOOLEAN            DEFAULT  0);");  // troubles
@@ -139,9 +139,9 @@ void TagTableQuery::registerBeanClass()  {
   // http://www.tutorialspoint.com/sqlite/sqlite_using_autoincrement.htm
   std::string sql =
       "CREATE TABLE IF NOT EXISTS " + m_table_name + "("  \
-           "ID             INTEGER  PRIMARY KEY     AUTOINCREMENT," \
-           "NAME           TEXT                    NOT NULL," \
-           "COLOR          TEXT                    NOT NULL);";
+           "ID             INTEGER  PRIMARY KEY    AUTOINCREMENT, \n" \
+           "NAME           TEXT                    NOT NULL, \n" \
+           "COLOR          TEXT                    NOT NULL);\n";
 
   exec(sql);
 }

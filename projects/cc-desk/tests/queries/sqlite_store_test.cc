@@ -5,6 +5,7 @@
 
 #include <gtest/gtest.h>
 #include <std_own_ext-fix/std_own_ext.h>
+#include <loki/ScopeGuard.h>
 
 #include <string>
 #include <stdexcept>
@@ -19,6 +20,9 @@ using entities::Tag;
 using entities::TagEntity;
 using sqlite_queries::TagTableQuery;
 using entities::EntityStates;
+using entities::Task;
+using namespace Loki;
+using namespace sqlite_queries;
 
 
 TEST(SQLite, TaskTable) {
@@ -34,6 +38,10 @@ TEST(SQLite, TagAndTaskTables) {
 
   auto tasks = sqlite_queries::TaskTableQueries(h, models::kTaskTableNameRef);
   auto tags = sqlite_queries::TagTableQuery(h);
+
+  auto _g0 = MakeObjGuard(tasks, &TaskTableQueries::drop);
+  auto _g1 = MakeObjGuard(tags, &TagTableQuery::drop);
+
   tasks.registerBeanClass();
   tags.registerBeanClass();
 
@@ -49,10 +57,9 @@ TEST(SQLite, TagAndTaskTables) {
   }
 
   // Create tasks
-
-  // Destroy all
-  tasks.drop();
-  tags.drop();
+  Task t;
+  tasks.persist(t);
+  tasks.persist(t);
 }
 
 

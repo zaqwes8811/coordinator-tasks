@@ -95,6 +95,8 @@ private:
   }
 
   Result exec(const std::string& sql) const {
+    // ! trouble !
+    std::cout << sql << std::endl;
     return sqlite3_exec(*lock(), sql);
   }
 
