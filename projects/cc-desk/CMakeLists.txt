@@ -120,7 +120,7 @@ QT4_WRAP_UI( SAMPLE_UI_HDRS ${SAMPLE_UIS} )
 # and finally this will run moc:
 QT4_WRAP_CPP( SAMPLE_MOC_SRCS ${SAMPLE_MOC_HDRS} )
 
-file( GLOB proTests
+file( GLOB src
     ${Source}/view/*.cc
     ${Source}/core/*.cc
     ${Source}/core/*.h
@@ -128,7 +128,6 @@ file( GLOB proTests
     ${ExternLocal}/actors_and_workers/*.h
     ${ExternLocal}/data_access_layer/migration_schemas/*.h
     ${ExternLocal}/std_own_ext-fix/*.h
-    ${ExternLocal}/peoples_tricks/*.cc
     ${Source}/../../std_own_ext/*.h
     ${ExternLocal}/data_access_layer/*.cc
     ${ExternLocal}/data_access_layer/*.h
@@ -137,10 +136,14 @@ file( GLOB proTests
     ${Source}/model_layer/*.cc
     ${Source}/model_layer/*.h
     ${ExternLocal}/sqlite_xx/*.cc
+)
+
+file( GLOB tests
     ${testsRoot}/*.cc
     ${testsRoot}/queries/*.cc
     ${testsRoot}/units/*.cc
     ${testsRoot}/extern/*.cc
+    ${ExternLocal}/peoples_tricks/*.cc
 )
 
 # we need this to be able to include headers produced by uic in our code
@@ -151,9 +154,17 @@ INCLUDE_DIRECTORIES( ${CMAKE_BINARY_DIR} )
 add_executable(unittest.bin
     ${Source}/mains/launcher_tests.cc
     ${GMock}/gmock-gtest-all.cc
-    ${proTests}
+    ${src}
+    ${tests}
+    ${SAMPLE_MOC_SRCS} ${SAMPLE_RC_SRCS} ${SAMPLE_UI_HDRS}
+)
+
+add_executable(planner.bin
+    ${Source}/mains/main.cc
+    ${src}
     ${SAMPLE_MOC_SRCS} ${SAMPLE_RC_SRCS} ${SAMPLE_UI_HDRS}
 )
 
 TARGET_LINK_LIBRARIES( unittest.bin ${QT_LIBRARIES} )
+TARGET_LINK_LIBRARIES( planner.bin ${QT_LIBRARIES} )
 

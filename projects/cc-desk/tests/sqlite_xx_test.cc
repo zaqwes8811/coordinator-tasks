@@ -1,5 +1,5 @@
 
-#include "sqlite_xx.h"
+#include "sqlite_xx/sqlite_xx.h"
 
 #include <gtest/gtest.h>
 

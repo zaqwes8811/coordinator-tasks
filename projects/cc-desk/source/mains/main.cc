@@ -1,74 +1,63 @@
-// UI:
-// http://qt-project.org/doc/qt-4.8/qtablewidget.html#details
-//
-// Model:
-//
-// Store:
-#include "top/config.h"
+#include "heart/config.h"
 
 #include "view/mainwindow.h"
-#include "canary/model.h"
-#include "canary/pq_queries.h"
-#include "top/app_types.h"
-#include "canary/isolation.h"
+#include "model_layer/model.h"
+#include "data_access_layer/postgresql_queries.h"
+#include "common/app_types.h"
+#include "model_layer/isolation.h"
+#include "core/actor_ui.h"
+#include "core/scopes.h"
+#include "core/concepts.h"
 
 #include <QApplication>
 #include <QLabel>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QTableWidget>
-#include <boost/shared_ptr.hpp>
 #include <loki/ScopeGuard.h>
+#include <data_access_layer/sqlite_queries.h>
 #include <gtest/gtest.h>
+#include <actors_and_workers/concurent_queues.h>
 
 #include <memory>
 #include <cassert>
+#include <iostream>
 
-using namespace boost;
-using ::isolation::ModelListenerMediatorDynPolym;
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
 
-class ModelListenerMediator : public ModelListenerMediatorDynPolym {
-public:
-  explicit ModelListenerMediator(Engine* const view) : view_(view) {
-    // не должно быть нулем
+using isolation::ModelListener;
+
+namespace {
+// by value, not by type
+enum db_vars { DB_SQLITE, DB_POSTGRES };
+
+concepts::db_manager_concept_t build_database(const int selector) {
+  if (true) { //selector == DB_SQLITE) {
+    return concepts::db_manager_concept_t(sqlite_queries::SQLiteDataBase());
+  } else {
+    /*return
+        concepts::db_manager_concept_t(pq_dal::PostgreSQLDataBase(
+                                                models::kConnection, models::kTaskTableNameRef
+                                                ));*/
   }
-
-private:
-  void update_() {
-    assert(view_);
-    view_->redraw();
-  }
-
-  Engine* const view_;
-};
-
-int main(int argc, char** argv) {
-  // View
-  QApplication app(argc, argv);
-
-  shared_ptr<pq_dal::PQConnectionPool> pool(new pq_dal::PQConnectionPool(models::kConnection));
-  //shared_ptr
-  std::auto_ptr<models::Model> a(models::Model::createInHeap(pool));
-
-#ifndef G_I_WANT_USE_IT
-  // Пока очищаем хранилище
-  ScopeGuard _ = MakeObjGuard(*a, &models::Model::clear_store);
-#endif
-
-  Engine *window = new Engine(a.get());
-
-  //ModelListenerStaticPolym<QWidget> listener(window);
-  shared_ptr<ModelListenerMediatorDynPolym> listener(new ModelListenerMediator(window));
-  a->set_listener(listener);
-
-  window->show();
-
-  // Пакуем вид и передаем модели
-  // Patterns: Observer and Mediator
-
-  // FIXME: run event loop?
-  //return
-  return app.exec();
 }
+}
+
+//static
+auto gUIActor = std::make_shared<actors::UIActor>();  // dtor will call and app out
+//static
+auto gDBActor = std::make_shared<cc11::Actior>();
+
+int main() {
+  scopes::AppScope app;
+
+  // FIXME: put in actor?
+  auto db = build_database(DB_SQLITE);
+  auto f = gUIActor->connectUI(db);
+
+  return f.get();
+}
+
+
+
