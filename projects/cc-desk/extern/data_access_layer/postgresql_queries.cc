@@ -81,7 +81,7 @@ void TaskTableQueries::registerBeanClass() {
     "ID         SERIAL PRIMARY KEY NOT NULL," \
     "TASK_NAME  TEXT               NOT NULL, " \
     "PRIORITY   INT                NOT NULL, " \
-    "DONE BOOLEAN DEFAULT FALSE);");
+    "DONE       BOOLEAN            DEFAULT FALSE);");
 
   auto c = m_conn_ptr.lock();
 

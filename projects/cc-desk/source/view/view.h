@@ -29,8 +29,8 @@ public:
   void draw(entities::TaskEntities tasks);
 
   entities::Task getTask(const int row) const;
-  int getId(const int row) const;
-  bool isSaved(const int row) const;
+  size_t GetId(const int row) const;
+  bool IsSaved(const int row) const;
   void markDone(const int row);
   void markReopen(const int row);
 

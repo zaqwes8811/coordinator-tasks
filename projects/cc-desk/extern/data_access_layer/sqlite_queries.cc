@@ -14,6 +14,20 @@ using sqlite3_cc::sqlite3_exec;
 using std_own_ext::at;
 using entities::Tag;
 
+void TaskTableQueries::registerBeanClass() {
+  // http://stackoverflow.com/questions/19435160/how-to-update-a-boolean-field-in-oracle-table
+  std::string sql(
+    "CREATE TABLE IF NOT EXISTS \n"+
+    m_table_name +
+    "(" \
+    "ID         SERIAL PRIMARY KEY DEFAULT  1, \n" \
+    "TASK_NAME  TEXT               NOT      NULL, \n" \
+    "PRIORITY   INT                DEFAULT  0, \n" \
+    "DONE       BOOLEAN            DEFAULT  0);");  // troubles
+
+  exec(sql);
+}
+
 // http://stackoverflow.com/questions/27764486/java-sqlite-last-insert-rowid-return-0
 size_t get_last_id(const sqlite3_cc::Result& r) {
   // FIXME: Strange thing. Really return bunch identical rows.
@@ -51,15 +65,15 @@ Task TaskTableQueries::persist(const entities::Task& unsaved_task) {
 void TaskTableQueries::update(const entities::Task& saved_task) {
   DCHECK(saved_task.id != entities::EntityStates::kInactiveKey);
 
-  string done("false");
-  if (saved_task.done) done = "true";
+  string done("0");
+  if (saved_task.done) done = "1";
 
   string sql(
   "UPDATE "
         + m_table_name + " SET "
-        + "TASK_NAME = '" + saved_task.name
-        + "', PRIORITY = " + std_own_ext::to_string(saved_task.priority)
-        + ", DONE = " + done
+        + "TASK_NAME = '" + saved_task.name + "', "
+        + "PRIORITY = " + std_own_ext::to_string(saved_task.priority) + ", "
+        + "DONE = " + done
         + " WHERE ID = " + std_own_ext::to_string(saved_task.id) + ";");
 
   exec(sql);
@@ -87,19 +101,6 @@ TaskTableQueries::TaskTableQueries(gc::WeakPtr<sqlite3_cc::sqlite3> h
                                                , const std::string& tableName)
   : m_table_name(tableName), m_connPtr(h)
 { }
-
-void TaskTableQueries::registerBeanClass() {
-  std::string sql(
-    "CREATE TABLE IF NOT EXISTS "+
-    m_table_name +
-    "(" \
-    "ID         SERIAL PRIMARY KEY NOT NULL," \
-    "TASK_NAME  TEXT               NOT NULL, " \
-    "PRIORITY   INT                NOT NULL, " \
-    "DONE       BOOLEAN            DEFAULT FALSE);");
-
-  exec(sql);
-}
 
 void TaskTableQueries::drop() { exec("DROP TABLE " + m_table_name + ";"); }
 

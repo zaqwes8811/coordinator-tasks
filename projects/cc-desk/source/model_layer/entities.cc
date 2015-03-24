@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace entities {
-const size_t EntityStates::kInactiveKey = -1;
+const size_t EntityStates::kInactiveKey = 0;  // was -1
 const int EntityStates::kDefaultPriority = 0;
 const bool EntityStates::kDefaultDone = false;
 

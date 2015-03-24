@@ -41,9 +41,12 @@ TEST(SQLite, TagAndTaskTables) {
   tags.persist(Tag{EntityStates::kInactiveKey, "CUDA"});
   tags.persist(Tag{EntityStates::kInactiveKey, "V8"});
 
-  std::cout << tags;
+  {
+  using renders::operator <<;
+    std::cout << tags;
   std::cout << endl;
   cout << tasks;
+  }
 
   // Create tasks
 

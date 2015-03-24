@@ -120,7 +120,7 @@ UiEngine::UiEngine(//scopes::AppScope s,
     auto checkbox_layout = new QVBoxLayout;
     actions_layout->addLayout(checkbox_layout);
       auto non_done = new QCheckBox("Non done only", this);
-      connect(non_done, SIGNAL(stateChanged(int)), this, SLOT(onOnOffDone(int)));
+      connect(non_done, SIGNAL(stateChanged(int)), this, SLOT(OnOnOffDone(int)));
       checkbox_layout->addWidget(non_done);
 
       auto sort_dec = new QCheckBox("Sort dec priority", this);
@@ -174,7 +174,7 @@ void UiEngine::processFilter(filters::FilterPtr f, int state) {
   if (Qt::Checked == state) m_modelPtr->addFilter(f);
 }
 
-void UiEngine::onOnOffDone(int state) {
+void UiEngine::OnOnOffDone(int state) {
   filters::FilterPtr f(new filters::DoneFilter());
   processFilter(f, state);
 }
@@ -259,7 +259,7 @@ void UiEngine::onRowIsChanged(QTableWidgetItem* widget)
     if (m_taskTablePtr->isEdited()) {
       auto const row = widget->row();
       auto task = m_taskTablePtr->getTask(row);
-      if (m_taskTablePtr->isSaved(row)) {
+      if (m_taskTablePtr->IsSaved(row)) {
         // Cоздаем новую запись
         m_modelPtr->updateTask(task);
       } else {

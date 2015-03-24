@@ -22,6 +22,18 @@ using std::begin;
 using std::end;
 using std::cout;
 
+void lock(Model::TaskCell& r_cell) {
+  r_cell.first = true;
+}
+
+bool try_lock(Model::TaskCell& r_cell) {
+  return r_cell.first == false;
+}
+
+void unlock(Model::TaskCell& r_cell) {
+  r_cell.first = false;
+}
+
 namespace ext {
 void onNew(gc::SharedPtr<Model> m, TaskEntity task_ptr, Task saved_task) {
   *task_ptr = saved_task;
@@ -31,7 +43,7 @@ void onNew(gc::SharedPtr<Model> m, TaskEntity task_ptr, Task saved_task) {
 
   if (iter == end(m->m_task_cells)) return;
 
-  iter->first = true; // off lock
+  unlock(*iter);
   m->notifyObservers();
 }
 }  // space
@@ -82,42 +94,51 @@ Model::TaskCell Model::GetCachedTaskById(const size_t id) {
   return *iter;
 }
 
-void Model::updateTask(const entities::Task& e) {
-  auto cell_to_update = GetCachedTaskById(e.id);
+void Model::updateTask(const entities::Task& updated_task) {
+  auto old_cell = GetCachedTaskById(updated_task.id);
 
   // Is locked?
-  if (!cell_to_update.first) {
+  if (!try_lock(old_cell)) {
     return;
   } else {
-    auto on_update = std::bind(&Model::notifyObservers, shared_from_this());
+    lock(old_cell);
+
+    // FIXME: lock - disable other updates
+    auto on_update = [this, old_cell] (const entities::Task& task) mutable {
+      *(old_cell.second) = task;
+      unlock(old_cell);
+      notifyObservers();
+    };
 
     auto db = m_db;
-    gDBActor->post([on_update, db, cell_to_update] {
-      auto value = cell_to_update.second->toValue();
-      db->getTaskLifetimeQuery().update(value);
-      gUIActor->post(on_update);
+    gDBActor->post([on_update, db, updated_task] {
+      db->getTaskLifetimeQuery().update(updated_task);
+      gUIActor->post(std::bind(on_update, updated_task));
     });
   }
 }
 
 void Model::addFilter(filters::FilterPtr f)
-{ m_filtersChain.add(f); notifyObservers(); }
+{ m_filters_chain.add(f); notifyObservers(); }
 
 void Model::removeFilter(filters::FilterPtr f)
-{ m_filtersChain.remove(f); notifyObservers(); }
+{ m_filters_chain.remove(f); notifyObservers(); }
 
-// FIXME: may be not put in RAM? After persist view will be updated
-//} catch (...) {
-  // No way! Can add some task after
-  //auto rollback = [this]() {
-    //std::remove()
-    // FIXME: No can't. Lost user input!
-    //this->m_taskCells.pop_back();  // no way!
-  //};
-  //rollback();
-//}
-// FIXME: if somewhere failed after persist - then.. state is protect?
 void Model::appendNewTask(const Task& unsaved_task) {
+  /**
+  // FIXME: may be not put in RAM? After persist view will be updated
+  //} catch (...) {
+    // No way! Can add some task after
+    //auto rollback = [this]() {
+      //std::remove()
+      // FIXME: No can't. Lost user input!
+      //this->m_taskCells.pop_back();  // no way!
+    //};
+    //rollback();
+  //}
+  // FIXME: if somewhere failed after persist - then.. state is protect?
+  */
+
   using std::find_if;
   using namespace std::placeholders;
 
@@ -126,14 +147,16 @@ void Model::appendNewTask(const Task& unsaved_task) {
 
   // on lock
   auto unsaved_task_ptr = unsaved_task.share();
-  m_task_cells.push_back({false, unsaved_task_ptr});
+  auto cell = TaskCell{false, unsaved_task_ptr};
+  lock(cell);
+  m_task_cells.push_back(cell);
 
-  auto unlock = std::bind(&ext::onNew, shared_from_this(), unsaved_task_ptr, _1);
+  auto unlock_ = std::bind(&ext::onNew, shared_from_this(), unsaved_task_ptr, _1);
 
   auto db_ptr = m_db;
-  gDBActor->post([unsaved_task, unlock, db_ptr] () {
+  gDBActor->post([unsaved_task, unlock_, db_ptr] () {
     auto saved_task = db_ptr->getTaskLifetimeQuery().persist(unsaved_task);
-    gUIActor->post(std::bind(unlock, saved_task));
+    gUIActor->post(std::bind(unlock_, saved_task));
   });
 }
 
@@ -143,10 +166,11 @@ entities::TaskEntities Model::filterModelData() {
                  std::back_inserter(r),
                  [](TaskCell cell) -> entities::TaskEntity { return cell.second;});
 
-  return m_filtersChain(r);
+  return m_filters_chain(r);
 }
 
-Model::Model(concepts::db_manager_concept_t _pool) : m_db(std::make_shared<concepts::db_manager_concept_t>(_pool)) { }
+Model::Model(concepts::db_manager_concept_t _pool)
+  : m_db(std::make_shared<concepts::db_manager_concept_t>(_pool)) { }
 void Model::notifyObservers() { m_observersPtr->update(filterModelData()); }
 void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso) { m_observersPtr = iso; }
 

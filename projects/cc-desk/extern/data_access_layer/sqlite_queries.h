@@ -8,9 +8,9 @@
 #include <memory>
 #include <ostream>
 #include <string>
+#include <iostream>
 
-namespace sqlite_queries {
-
+namespace renders {
 template <typename T>
 std::ostream& operator<< (std::ostream &o, T &t) {
   using sqlite3_cc::operator<<;
@@ -22,6 +22,11 @@ std::ostream& operator<< (std::ostream &o, T &t) {
 
   return o;
 }
+}
+
+namespace sqlite_queries {
+
+
 
 class TaskTableQueries
 {
@@ -43,7 +48,7 @@ public:
 
 private:
   template <typename T>
-  friend std::ostream& operator<< (std::ostream &o, T &t);
+  friend std::ostream& renders::operator<< (std::ostream &o, T &t);
 
   std::string getTableName() const
   { return m_table_name; }
@@ -57,7 +62,10 @@ private:
     return c;
   }
 
+  // FIXME: Move to store. For monitoring SQL requests
   Result exec(const std::string& sql) const {
+    // ! trouble !
+    std::cout << sql << std::endl;
     return sqlite3_exec(*lock(), sql);
   }
 };
@@ -75,7 +83,7 @@ public:
 
 private:
   template <typename T>
-  friend std::ostream& operator<< (std::ostream &o, T &t);
+  friend std::ostream& renders::operator<< (std::ostream &o, T &t);
 
   const std::string m_table_name;
   gc::WeakPtr<sqlite3_cc::sqlite3> m_connPtr;

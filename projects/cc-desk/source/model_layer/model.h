@@ -72,9 +72,11 @@ public:
   void initialize(std::function<void(std::string)> errorHandler);
   void dropStore();
 
-private:
+public:  // lock troubles
   // typedefs
   using TaskCell = std::pair<bool, entities::TaskEntity>;
+
+private:
 
   template <typename U>
   friend void renders::render_task_store(std::ostream& o, const U& a);
@@ -105,7 +107,7 @@ private:
     \fixme DANGER!! при реализации фильтров сломает логику!!!
       Жесткая привязка к списку и к цепочке фильтров
   */
-  filters::ChainFilters m_filtersChain;
+  filters::ChainFilters m_filters_chain;
 
   /// Consistency Guards
   bool m_fsmNonConsistent{false};
@@ -114,8 +116,9 @@ private:
   //entities::TaskEntities m_tasksCache;
   // f/s is cons.?/handler
   // FIXME: trouble - extra space
-
   std::vector<TaskCell> m_task_cells;
+
+  void RaiseErrorMessage(const std::string& message);
 };
 }
 

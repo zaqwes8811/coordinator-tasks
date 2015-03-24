@@ -53,7 +53,7 @@ private slots:
 
   // filters chain:
   void onOnOffSortByDecPriority(int state);
-  void onOnOffDone(int state);
+  void OnOnOffDone(int state);
   void onOnOffSortByTaskName(int state);
 
   /** other actions:

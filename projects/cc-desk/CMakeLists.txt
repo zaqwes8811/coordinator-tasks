@@ -151,7 +151,7 @@ file( GLOB tests
 # works just like INCLUDEPATH from qmake)
 INCLUDE_DIRECTORIES( ${CMAKE_BINARY_DIR} )
 
-add_executable(unittest.bin
+add_executable(unittest
     ${Source}/mains/launcher_tests.cc
     ${GMock}/gmock-gtest-all.cc
     ${src}
@@ -159,12 +159,12 @@ add_executable(unittest.bin
     ${SAMPLE_MOC_SRCS} ${SAMPLE_RC_SRCS} ${SAMPLE_UI_HDRS}
 )
 
-add_executable(planner.bin
+add_executable(planner
     ${Source}/mains/main.cc
     ${src}
     ${SAMPLE_MOC_SRCS} ${SAMPLE_RC_SRCS} ${SAMPLE_UI_HDRS}
 )
 
-TARGET_LINK_LIBRARIES( unittest.bin ${QT_LIBRARIES} )
-TARGET_LINK_LIBRARIES( planner.bin ${QT_LIBRARIES} )
+TARGET_LINK_LIBRARIES( unittest ${QT_LIBRARIES} )
+TARGET_LINK_LIBRARIES( planner ${QT_LIBRARIES} )
 

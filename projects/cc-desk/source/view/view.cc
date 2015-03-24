@@ -30,8 +30,8 @@ QMyTableView::QMyTableView(QWidget *parent)
   setColumnCount(column_names.size());
   setHorizontalHeaderLabels(column_names);
 
-  setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
-  setColumnHidden(entities::TaskViewTableIdx::kDone, true);
+  //setColumnHidden(TaskViewTableIdx::kId, true);  // FIXME: id's пока так
+  //setColumnHidden(entities::TaskViewTableIdx::kDone, true);
 
   // Style
   QHeaderView *v = verticalHeader();
@@ -99,8 +99,9 @@ void QMyTableView::draw(entities::TaskEntities taskEntities) {
   insertBlankRows(row);
 }
 
-int QMyTableView::getId(const int row) const {
-  return item(row, entities::TaskViewTableIdx::kId)->text().toInt();
+size_t QMyTableView::GetId(const int row) const {
+  int val = item(row, entities::TaskViewTableIdx::kId)->text().toInt();
+  return size_t(val);
 }
 
 void QMyTableView::markDone(const int row) {
@@ -117,14 +118,14 @@ void QMyTableView::markReopen(const int row) {
   //item(row, values::TaskViewTableIdx::kTaskName)->setTextColor(kReopenColor);
 }
 
-bool QMyTableView::isSaved(const int row) const {
-  return getId(row) != entities::EntityStates::kInactiveKey;
+bool QMyTableView::IsSaved(const int row) const {
+  return GetId(row) != entities::EntityStates::kInactiveKey;
 }
 
 entities::Task QMyTableView::getTask(const int row) const {
   DCHECK(row < rowCount());
 
-  auto id = getId(row);
+  auto id = GetId(row);
   std::string name(item(row, entities::TaskViewTableIdx::kTaskName)->text().toUtf8().constData());
   int p(item(row, entities::TaskViewTableIdx::kPriority)->text().toInt());
   auto isDone = item(row, entities::TaskViewTableIdx::kDone)->text().toInt();

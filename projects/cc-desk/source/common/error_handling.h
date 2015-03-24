@@ -31,7 +31,7 @@ std::string toString(T const& value) {
 }
 
 #ifndef FROM_HERE
-#  define FROM_HERE (std::string(__FILE__) + ": " + toString(__LINE__))
+#  define FROM_HERE (std::string(__FILE__) + ": " + toString(__LINE__)) + " : "
 #endif
 
 
