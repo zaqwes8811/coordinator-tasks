@@ -1,0 +1,5 @@
+No raw loops - use STL R:
+Type erasure insteed inh. - R:
+Actor Models from Chromium R:
+Event-driven progr. - R:
+
