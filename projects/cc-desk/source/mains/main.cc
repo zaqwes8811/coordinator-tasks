@@ -47,7 +47,7 @@ concepts::db_manager_concept_t build_database(const int selector) {
 //static
 auto gUIActor = std::make_shared<actors::UIActor>();  // dtor will call and app out
 //static
-auto gDBActor = std::make_shared<cc11::Actior>();
+auto gDBActor = std::make_shared<cc11::Actor>();
 
 int main() {
   scopes::AppScope app;

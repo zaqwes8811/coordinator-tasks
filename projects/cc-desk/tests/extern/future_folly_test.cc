@@ -28,7 +28,7 @@ public:
   }
 
 private:
-  cc11::Actior a;
+  cc11::Actor a;
 };
 
 void foo(int x) {

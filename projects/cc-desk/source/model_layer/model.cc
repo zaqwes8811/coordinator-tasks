@@ -10,7 +10,7 @@
 #include <functional>
 
 extern gc::SharedPtr<actors::UIActor> gUIActor;  // dtor will call and app out
-extern gc::SharedPtr<cc11::Actior> gDBActor;
+extern gc::SharedPtr<cc11::Actor> gDBActor;
 
 namespace models {
 using namespace entities;
