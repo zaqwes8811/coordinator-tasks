@@ -16,7 +16,8 @@ using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
 using entities::Task;
 using std::bind;
-
+using std::find_if;
+using namespace std::placeholders;
 using std::begin;
 using std::end;
 using std::cout;
@@ -34,7 +35,8 @@ void unlock(Model::TaskCell& r_cell) {
 }
 
 namespace ext {
-void onNew(gc::SharedPtr<Model> m, TaskEntity task_ptr, Task saved_task) {
+void onNew(gc::SharedPtr<Model> m, TaskEntity task_ptr, Task saved_task)
+{
   *task_ptr = saved_task;
   auto iter =
       std::find_if(begin(m->m_task_cells), end(m->m_task_cells),
@@ -43,7 +45,7 @@ void onNew(gc::SharedPtr<Model> m, TaskEntity task_ptr, Task saved_task) {
   if (iter == end(m->m_task_cells)) return;
 
   unlock(*iter);
-  m->notifyObservers();
+  m->NotifyObservers();
 }
 }  // space
 
@@ -56,31 +58,34 @@ void Model::dropStore() {
   });
 }
 
-//template <typename T>
-
-void Model::initialize(std::function<void(std::string)> errorHandler) {
-
-  auto onLoaded = [this](entities::TaskEntities tasks) {
+void Model::initialize(std::function<void(std::string)>)
+{
+  // FIXME: to method or free function
+  auto on_loaded = [this](entities::TaskEntities tasks) {
     m_task_cells.clear();
     for (auto& task : tasks)
       m_task_cells.emplace_back(true, task);
-    notifyObservers();
+    NotifyObservers();
   };
 
   auto db = m_db;
 
-  Dispatcher::Post(Dispatcher::DB, [onLoaded, db] {
-    auto tables = std::vector<concepts::table_concept_t>{db->getTaskTableQuery(), db->getTagTableQuery()};
+  Dispatcher::Post(Dispatcher::DB, [on_loaded, db] {
+    auto tables = std::vector<concepts::table_concept_t>{
+        db->getTaskTableQuery(),
+        db->getTagTableQuery()};
+
     for (auto& table : tables)
       concepts::registerBeanClass(table);
 
     auto tasks = db->getTaskLifetimeQuery().loadAll();
 
-    Dispatcher::Post(Dispatcher::UI, std::bind(onLoaded, tasks));
+    Dispatcher::Post(Dispatcher::UI, std::bind(on_loaded, tasks));
   });
 }
 
-Model::TaskCell Model::GetCachedTaskById(const size_t id) {
+Model::TaskCell Model::GetCachedTaskById(const size_t id)
+{
   auto it = std::find_if(
         m_task_cells.begin(), m_task_cells.end(),
         [id] (const TaskCell& elem) -> bool { return filters::is_contained(id)(elem.second); });
@@ -90,20 +95,19 @@ Model::TaskCell Model::GetCachedTaskById(const size_t id) {
   return *it;
 }
 
-void Model::updateTask(const entities::Task& updated_task) {
+void Model::updateTask(const entities::Task& updated_task)
+{
   auto old_cell = GetCachedTaskById(updated_task.id);
 
-  // Is locked?
   if (!try_lock(old_cell)) {
     return;
   } else {
     lock(old_cell);
 
-    // FIXME: lock - disable other updates
     auto on_update = [this, old_cell] (const entities::Task& task) mutable {
       *(old_cell.second) = task;
       unlock(old_cell);
-      notifyObservers();
+      NotifyObservers();
     };
 
     auto db = m_db;
@@ -115,29 +119,13 @@ void Model::updateTask(const entities::Task& updated_task) {
 }
 
 void Model::addFilter(filters::FilterPtr f)
-{ m_filters_chain.add(f); notifyObservers(); }
+{ m_filters_chain.add(f); NotifyObservers(); }
 
 void Model::removeFilter(filters::FilterPtr f)
-{ m_filters_chain.remove(f); notifyObservers(); }
+{ m_filters_chain.remove(f); NotifyObservers(); }
 
-void Model::appendNewTask(const Task& unsaved_task) {
-  /**
-  // FIXME: may be not put in RAM? After persist view will be updated
-  //} catch (...) {
-    // No way! Can add some task after
-    //auto rollback = [this]() {
-      //std::remove()
-      // FIXME: No can't. Lost user input!
-      //this->m_taskCells.pop_back();  // no way!
-    //};
-    //rollback();
-  //}
-  // FIXME: if somewhere failed after persist - then.. state is protect?
-  */
-
-  using std::find_if;
-  using namespace std::placeholders;
-
+void Model::appendNewTask(const Task& unsaved_task)
+{
   // FIXME: show error message
   DCHECK(unsaved_task.id == EntityStates::kInactiveKey);
 
@@ -156,7 +144,8 @@ void Model::appendNewTask(const Task& unsaved_task) {
   });
 }
 
-entities::TaskEntities Model::filterModelData() {
+entities::TaskEntities Model::FilterModelData()
+{
   auto r = entities::TaskEntities();
   std::transform(begin(m_task_cells), end(m_task_cells),
                  std::back_inserter(r),
@@ -166,8 +155,20 @@ entities::TaskEntities Model::filterModelData() {
 }
 
 Model::Model(concepts::db_manager_concept_t _pool)
-  : m_db(std::make_shared<concepts::db_manager_concept_t>(_pool)) { }
-void Model::notifyObservers() { m_observers_ptr->update(filterModelData()); }
-void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso) { m_observers_ptr = iso; }
+  : m_db(std::make_shared<concepts::db_manager_concept_t>(_pool))
+{ }
 
+void Model::NotifyObservers()
+{ m_observer_ptr->update(FilterModelData()); }
+
+void Model::SetObserver(gc::SharedPtr<isolation::ModelListener> observer)
+{ m_observer_ptr = observer; }
+
+void Model::RaiseErrorMessage(const std::string& message)
+{
+  auto view = m_observer_ptr;  // FIXME: thread-safe but... don't like it
+  Dispatcher::Post(Dispatcher::UI,
+                   [view, message] { view->DrawErrorMessage(message); }
+  );
+}
 }

@@ -37,4 +37,18 @@ std::string toString(T const& value) {
 
 #define DCHECK(cond) do { if (!(cond)) throw std::runtime_error("Assert: " + FROM_HERE); } while(0);
 
+/**
+// FIXME: may be not put in RAM? After persist view will be updated
+//} catch (...) {
+  // No way! Can add some task after
+  //auto rollback = [this]() {
+    //std::remove()
+    // FIXME: No can't. Lost user input!
+    //this->m_taskCells.pop_back();  // no way!
+  //};
+  //rollback();
+//}
+// FIXME: if somewhere failed after persist - then.. state is protect?
+*/
+
 #endif

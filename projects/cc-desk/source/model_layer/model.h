@@ -87,12 +87,12 @@ private:
     FIXME: плохо что хендлы утекают, и из-за того что указатели
       shared объекты превращаются в глобальные переменные.
   */
-  entities::TaskEntities filterModelData();
+  entities::TaskEntities FilterModelData();
 
   /**
     Нужно было открыть для обновления при семене фильтров
   */
-  void notifyObservers();
+  void NotifyObservers();
 
   /**
     FIXME: кажется двойное лучше, или хранить фильтр?
@@ -118,6 +118,7 @@ private:
   // FIXME: trouble - extra space
   std::vector<TaskCell> m_task_cells;
 
+  // Thread safe. Redirect call to UI thread
   void RaiseErrorMessage(const std::string& message);
 };
 }

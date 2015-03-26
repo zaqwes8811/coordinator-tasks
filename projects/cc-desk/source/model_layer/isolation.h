@@ -31,6 +31,8 @@ public:
   virtual ~ModelListener() { }
   void update(entities::TaskEntities m) { do_update(m); }
 
+  virtual void DrawErrorMessage(const std::string& message) = 0;
+
 private:
   virtual void do_update(entities::TaskEntities m) = 0;
 };
