@@ -55,7 +55,7 @@ public:
   /**
     FIXME: да, лучше передать в конструкторе, но при конструировании возникает цикл.
   */
-  void setListener(isolation::ModelListenerPtr iso);
+  void SetObserver(isolation::ModelListenerPtr iso);
   void addFilter(filters::FilterPtr f);
   void removeFilter(filters::FilterPtr f);
 
@@ -99,7 +99,7 @@ private:
       и через него при прорисовке пропускать?
   */
   gc::SharedPtr<concepts::db_manager_concept_t> m_db;
-  isolation::ModelListenerPtr m_observers_ptr;
+  isolation::ModelListenerPtr m_observer_ptr;
 
   TaskCell GetCachedTaskById(const size_t id);
 
