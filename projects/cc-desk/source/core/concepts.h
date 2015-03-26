@@ -148,6 +148,9 @@ template <> struct holder_traits<int> {
 
   ORM thinks:
     https://msdn.microsoft.com/en-us/magazine/dd569757.aspx
+
+  \attention !!! How to know what thread delete it? Especialy if it's shared ptr!
+    Hm... But not races if std::shared_ptr, destruction under lock?
 */
 class db_manager_concept_t {
 public:
