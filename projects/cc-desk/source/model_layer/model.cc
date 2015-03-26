@@ -81,18 +81,13 @@ void Model::initialize(std::function<void(std::string)> errorHandler) {
 }
 
 Model::TaskCell Model::GetCachedTaskById(const size_t id) {
-  // Check contain
-  DCHECK(std::find_if(
-      begin(m_task_cells), end(m_task_cells),
-      [id, this] (const TaskCell& elem) -> bool { return filters::is_contained(id)(elem.second);})
-         != end(m_task_cells));
-
   auto it = std::find_if(
         m_task_cells.begin(), m_task_cells.end(),
         [id] (const TaskCell& elem) -> bool { return filters::is_contained(id)(elem.second); });
 
-  auto r = *it;
-  return r;
+  // FIXME: maybe make real check?
+  DCHECK(it != end(m_task_cells));
+  return *it;
 }
 
 void Model::updateTask(const entities::Task& updated_task) {
@@ -172,7 +167,7 @@ entities::TaskEntities Model::filterModelData() {
 
 Model::Model(concepts::db_manager_concept_t _pool)
   : m_db(std::make_shared<concepts::db_manager_concept_t>(_pool)) { }
-void Model::notifyObservers() { m_observersPtr->update(filterModelData()); }
-void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso) { m_observersPtr = iso; }
+void Model::notifyObservers() { m_observers_ptr->update(filterModelData()); }
+void Model::setListener(gc::SharedPtr<isolation::ModelListener> iso) { m_observers_ptr = iso; }
 
 }

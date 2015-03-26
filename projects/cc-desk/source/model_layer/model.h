@@ -99,7 +99,7 @@ private:
       и через него при прорисовке пропускать?
   */
   gc::SharedPtr<concepts::db_manager_concept_t> m_db;
-  isolation::ModelListenerPtr m_observersPtr;
+  isolation::ModelListenerPtr m_observers_ptr;
 
   TaskCell GetCachedTaskById(const size_t id);
 
