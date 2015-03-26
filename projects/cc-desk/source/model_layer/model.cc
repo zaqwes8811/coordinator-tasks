@@ -5,18 +5,17 @@
 #include "core/actor_ui.h"
 
 #include <loki/ScopeGuard.h>
+#include <actors_and_workers/arch.h>
 
 #include <iostream>
 #include <functional>
-
-extern gc::SharedPtr<actors::UIActor> gUIActor;  // dtor will call and app out
-extern gc::SharedPtr<cc11::Actor> gDBActor;
 
 namespace models {
 using namespace entities;
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
 using entities::Task;
+using std::bind;
 
 using std::begin;
 using std::end;
@@ -51,7 +50,7 @@ void onNew(gc::SharedPtr<Model> m, TaskEntity task_ptr, Task saved_task) {
 void Model::dropStore() {
   auto db = m_db;
 
-  gDBActor->post([db]() {
+  Dispatcher::Post(Dispatcher::DB, [db]() {
     auto q = db->getTaskTableQuery();
     concepts::drop(q);
   });
@@ -69,14 +68,15 @@ void Model::initialize(std::function<void(std::string)> errorHandler) {
   };
 
   auto db = m_db;
-  gDBActor->post([onLoaded, db] {
+
+  Dispatcher::Post(Dispatcher::DB, [onLoaded, db] {
     auto tables = std::vector<concepts::table_concept_t>{db->getTaskTableQuery(), db->getTagTableQuery()};
     for (auto& table : tables)
       concepts::registerBeanClass(table);
 
     auto tasks = db->getTaskLifetimeQuery().loadAll();
 
-    gUIActor->post(std::bind(onLoaded, tasks));
+    Dispatcher::Post(Dispatcher::UI, std::bind(onLoaded, tasks));
   });
 }
 
@@ -87,11 +87,12 @@ Model::TaskCell Model::GetCachedTaskById(const size_t id) {
       [id, this] (const TaskCell& elem) -> bool { return filters::is_contained(id)(elem.second);})
          != end(m_task_cells));
 
-  auto iter = std::find_if(
+  auto it = std::find_if(
         m_task_cells.begin(), m_task_cells.end(),
         [id] (const TaskCell& elem) -> bool { return filters::is_contained(id)(elem.second); });
 
-  return *iter;
+  auto r = *it;
+  return r;
 }
 
 void Model::updateTask(const entities::Task& updated_task) {
@@ -111,9 +112,9 @@ void Model::updateTask(const entities::Task& updated_task) {
     };
 
     auto db = m_db;
-    gDBActor->post([on_update, db, updated_task] {
+    Dispatcher::Post(Dispatcher::DB, [on_update, db, updated_task] {
       db->getTaskLifetimeQuery().update(updated_task);
-      gUIActor->post(std::bind(on_update, updated_task));
+      Dispatcher::Post(Dispatcher::UI, bind(on_update, updated_task));
     });
   }
 }
@@ -151,12 +152,12 @@ void Model::appendNewTask(const Task& unsaved_task) {
   lock(cell);
   m_task_cells.push_back(cell);
 
-  auto unlock_ = std::bind(&ext::onNew, shared_from_this(), unsaved_task_ptr, _1);
+  auto on_success = std::bind(&ext::onNew, shared_from_this(), unsaved_task_ptr, _1);
 
   auto db_ptr = m_db;
-  gDBActor->post([unsaved_task, unlock_, db_ptr] () {
+  Dispatcher::Post(Dispatcher::DB, [unsaved_task, on_success, db_ptr] () {
     auto saved_task = db_ptr->getTaskLifetimeQuery().persist(unsaved_task);
-    gUIActor->post(std::bind(unlock_, saved_task));
+    Dispatcher::Post(Dispatcher::UI, std::bind(on_success, saved_task));
   });
 }
 

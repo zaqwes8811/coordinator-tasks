@@ -54,7 +54,7 @@ int main() {
 
   // FIXME: put in actor?
   auto db = build_database(DB_SQLITE);
-  auto f = gUIActor->connectUI(db);
+  auto f = gUIActor->RunUI(db);
 
   return f.get();
 }

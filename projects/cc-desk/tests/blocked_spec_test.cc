@@ -15,14 +15,9 @@
 #include "core/scopes.h"
 #include "core/concepts.h"
 
-#include <QApplication>
-#include <QLabel>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QTableWidget>
-#include <loki/ScopeGuard.h>
 #include <data_access_layer/sqlite_queries.h>
 #include <gtest/gtest.h>
+#include <actors_and_workers/arch.h>
 #include <actors_and_workers/concurent_queues.h>
 
 #include <memory>
@@ -30,11 +25,6 @@
 #include <iostream>
 #include <thread>
 #include <atomic>
-
-using Loki::ScopeGuard;
-using Loki::MakeObjGuard;
-
-using isolation::ModelListener;
 
 namespace {
 // by value, not by type
@@ -52,17 +42,9 @@ concepts::db_manager_concept_t build_database(const int selector) {
 }
 }
 
-//static
-auto gUIActor = std::make_shared<actors::UIActor>();  // dtor will call and app out
-//static
-auto gDBActor = std::make_shared<cc11::Actor>();
-
 TEST(Blocked, UIActorTest) {
-  scopes::AppScope app;
-
-  // FIXME: put in actor?
   auto db = build_database(DB_SQLITE);
-  auto f = gUIActor->connectUI(db);
+  auto f = Dispatcher::ActivateUiEventLoop(db);
 
   f.get();
 }
