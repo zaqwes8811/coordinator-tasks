@@ -79,10 +79,19 @@ void TaskTableQueries::update(const entities::Task& saved_task) {
   exec(sql);
 }
 
+TaskTableQueries::Result TaskTableQueries::exec(const std::string& sql) const {
+  // ! trouble !
+  //std::cout << sql << std::endl;
+  return sqlite3_exec(*lock(), sql);
+}
+
 TaskEntities TaskTableQueries::loadAll() const {
   string sql("SELECT * FROM " + m_table_name + ";");
 
   auto r = exec(sql);
+
+  //using ::sqlite3_cc::operator <<;  // FIXME: must work without
+  //std::cout << r;
 
   TaskEntities tasks;
   for (auto& col : r) {

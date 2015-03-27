@@ -63,11 +63,7 @@ private:
   }
 
   // FIXME: Move to store. For monitoring SQL requests
-  Result exec(const std::string& sql) const {
-    // ! trouble !
-    //std::cout << sql << std::endl;
-    return sqlite3_exec(*lock(), sql);
-  }
+  Result exec(const std::string& sql) const;
 };
 
 class TagTableQuery

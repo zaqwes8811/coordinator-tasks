@@ -166,7 +166,7 @@ void UiEngine::onReopen() {
     m_taskTablePtr->markReopen(row);  // no throw
     entities::Task t = m_taskTablePtr->getTask(row);
 
-    m_modelPtr->updateTask(t);  // FIXME: may throw
+    m_modelPtr->UpdateTask(t);  // FIXME: may throw
   }
 }
 
@@ -248,7 +248,7 @@ void UiEngine::onMarkDone() {
     // Обновляем ячейку
     m_taskTablePtr->markDone(row);  // no throw
     auto task = m_taskTablePtr->getTask(row);
-    m_modelPtr->updateTask(task);  // FIXME: may throw
+    m_modelPtr->UpdateTask(task);  // FIXME: may throw
   }
 }
 
@@ -262,7 +262,7 @@ void UiEngine::onRowIsChanged(QTableWidgetItem* widget)
       auto task = m_taskTablePtr->getTask(row);
       if (m_taskTablePtr->IsSaved(row)) {
         // Cоздаем новую запись
-        m_modelPtr->updateTask(task);
+        m_modelPtr->UpdateTask(task);
       } else {
         // Одна из видимых ячеек была обновлена
         m_modelPtr->AppendNewTask(task);

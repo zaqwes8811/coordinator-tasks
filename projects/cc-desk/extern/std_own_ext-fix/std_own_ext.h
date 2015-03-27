@@ -1,6 +1,8 @@
 #ifndef STD_OWN_EXT_H_
 #define STD_OWN_EXT_H_
 
+#include <boost/lexical_cast.hpp>
+
 #include <map>
 #include <string>
 #include <sstream>
@@ -97,12 +99,14 @@ OutputIterator compact(InputIterator in_first, InputIterator in_last,
 template <typename T>
 T lexical_cast(const std::string& str)
 {
-    T var;
+    /*T var;
+      // FIXME: troubles if string with spaces
     std::istringstream iss;
     iss.str(str);
     iss >> var;
+    */
     // deal with any error bits that may have been set on the stream
-    return var;
+    return boost::lexical_cast<T>(str);
 }
 
 template <typename T>

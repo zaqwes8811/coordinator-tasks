@@ -68,7 +68,7 @@ public:
   /**
     \pre Element was persist
   */
-  void updateTask(const entities::Task& e);
+  void UpdateTask(const entities::Task& e);
   void initialize(std::function<void(std::string)> errorHandler);
   void dropStore();
 

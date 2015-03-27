@@ -75,8 +75,11 @@ void Model::dropStore() {
 // FIXME: to method or free function
 void Model::OnLoaded(entities::TaskEntities tasks) {
   m_task_cells.clear();
-  for (auto& task : tasks)
-    m_task_cells.emplace_back(true, task);
+  for (auto& task : tasks) {
+    auto cell = TaskCell{false, task};
+    unlock(cell);
+    m_task_cells.emplace_back(cell);
+  }
   NotifyObservers();
 }
 
@@ -109,18 +112,15 @@ Model::TaskCell Model::GetCachedTaskById(const size_t id)
   return *it;
 }
 
-void Model::updateTask(const entities::Task& updated_task)
+void Model::UpdateTask(const entities::Task& updated_task)
 {
   auto old_cell = GetCachedTaskById(updated_task.id);
 
   if (!try_lock(old_cell)) {
     return;
   } else {
-    lock(old_cell);
-
     auto on_update = [this, old_cell] (const entities::Task& task) mutable {
       *(old_cell.second) = task;
-      unlock(old_cell);
       NotifyObservers();
     };
 
@@ -158,9 +158,9 @@ void Model::AppendNewTask(const Task& unsaved_task)
   Dispatcher::Post(Dispatcher::DB, [unsaved_task, on_success, db_ptr, self] () {
     try {
       auto saved_task = db_ptr->getTaskLifetimeQuery().persist(unsaved_task);
-      throw std::runtime_error(FROM_HERE);
       Dispatcher::Post(Dispatcher::UI, std::bind(on_success, saved_task));
     } catch (...) {
+      // FIXME: Not unlocked! But I can unlock it?
       ExceptionToAppError(self);
     }
   });

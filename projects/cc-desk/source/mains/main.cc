@@ -24,6 +24,13 @@
 #include <cassert>
 #include <iostream>
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <limits.h>
+#include <stdio.h>
+
 using Loki::ScopeGuard;
 using Loki::MakeObjGuard;
 
@@ -45,13 +52,28 @@ concepts::db_manager_concept_t build_database(const int selector) {
 }
 }
 
-int main() {
-  scopes::AppScope app;
+// http://stackoverflow.com/questions/4025370/can-an-executable-discover-its-own-path-linux
+int main(int argc, char** argv) {
+  //for (int i = 0; i < argc; ++i)
+  //  std::cout << argv[i] << std::endl;
 
-  // FIXME: put in actor?
+  char dest[PATH_MAX];
+  char path[PATH_MAX];
+  sprintf(path, "/proc/self/exe");
+  DCHECK(readlink(path, dest, PATH_MAX) != -1);
+
+  auto bin_name = std::string(dest);//std::string(argv[0]);
+  auto found = bin_name.find_last_of("/");
+  auto work_dir = bin_name.substr(0, found);
+
+  system(std::string("cd " + work_dir).c_str());
+  DCHECK(chdir(work_dir.c_str()) != -1);
+
+  //std::cout << work_dir << std::endl;
+  //std::cout << get_current_dir_name() << std::endl;
+
   auto db = build_database(DB_SQLITE);
   auto f = Dispatcher::ActivateUiEventLoop(db);
-
   return f.get();
 }
 
