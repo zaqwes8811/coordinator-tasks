@@ -1,0 +1,15 @@
+su
+chmod 777 .
+
+su postgres
+psql
+
+# http://stackoverflow.com/questions/3788274/need-linux-equivalent-to-windows-echo-date-time-computername
+\! pg_dump mydb -f "./mydb_$(date '+%Y_%b_%d-%H:%m').sql"
+\! chmod 777 "./mydb_$(date '+%Y_%b_%d-%H:%m').sql"
+
+# Restore:
+psql dbname < infile
+
+http://www.postgresqltutorial.com/postgresql-restore-database/
+

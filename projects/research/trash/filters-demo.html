@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html data-ng-app="">
+<head>
+    <link type="text/css" rel="stylesheet" href="css/main.css" />
+    <script src="js/angular.min.js"></script>
+  </head>
+<body data-ng-init="customers=[{name:'John Smith', city:'Phoenix'},
+    {name:'Jane', city:'San'}, {name:'John D', city:'New Yourk'}]">
+Name:
+<br/>
+<input type="text" data-ng-model="name" /> {{ name }}
+<br/>
+<ul>
+    <li data-ng-repeat="cust in customers | filter:name"> {{ cust.name + ' - ' + cust.city}} </li>
+    </ul>
+
+</html>

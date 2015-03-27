@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="java_uno">
+    <CLASSES>
+      <root url="jar://C:/Program Files (x86)/OpenOffice.org 3/URE/java/java_uno.jar!/" />
+      <root url="jar://C:/Program Files (x86)/OpenOffice.org 3/URE/java/juh.jar!/" />
+      <root url="jar://C:/Program Files (x86)/OpenOffice.org 3/URE/java/jurt.jar!/" />
+      <root url="jar://C:/Program Files (x86)/OpenOffice.org 3/URE/java/ridl.jar!/" />
+      <root url="jar://C:/Program Files (x86)/OpenOffice.org 3/URE/java/unoloader.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
