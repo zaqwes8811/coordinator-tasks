@@ -92,7 +92,7 @@ TaskEntities TaskTableQueries::loadAll() const {
     saved_task.priority = as<int>(col["PRIORITY"]);
     saved_task.done = as<bool>(col["DONE"]);
 
-    tasks.emplace_back(saved_task.share());
+    tasks.emplace_back(saved_task.ToEntity());
   }
   return tasks;
 }

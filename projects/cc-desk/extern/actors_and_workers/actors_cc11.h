@@ -4,6 +4,7 @@
 #define S_ACTORS_CC11_H_
 
 #include "safe_queue_cc11.h"
+#include "common/error_handling.h"
 
 #include <thread>
 #include <memory>
@@ -26,7 +27,13 @@ public:
     }
 
     void post( Message m )
-    { mq.enqueue( m ); }
+    {
+      try {
+        mq.enqueue( m );
+      } catch (...) {
+        throw infrastructure_error(FROM_HERE);
+      }
+    }
 
 private:
 
@@ -39,8 +46,16 @@ private:
 
   void Run() {
     while( !done ) {
-      auto msg = mq.dequeue();
-      msg();            // execute message
+      try {
+        auto msg = mq.dequeue();
+        msg();            // execute message
+      } catch (fatal_error&) {
+        throw;
+      } catch (...) {
+        // FIXME: don't know what to do
+        throw;
+      }
+
     } // note: last message sets done to true
   }
 };

@@ -65,7 +65,7 @@ private:
   // FIXME: Move to store. For monitoring SQL requests
   Result exec(const std::string& sql) const {
     // ! trouble !
-    std::cout << sql << std::endl;
+    //std::cout << sql << std::endl;
     return sqlite3_exec(*lock(), sql);
   }
 };
@@ -96,7 +96,7 @@ private:
 
   Result exec(const std::string& sql) const {
     // ! trouble !
-    std::cout << sql << std::endl;
+    //std::cout << sql << std::endl;
     return sqlite3_exec(*lock(), sql);
   }
 

@@ -5,7 +5,6 @@
 #include "data_access_layer/postgresql_queries.h"
 #include "common/app_types.h"
 #include "model_layer/isolation.h"
-#include "core/actor_ui.h"
 #include "core/scopes.h"
 #include "core/concepts.h"
 
@@ -18,6 +17,8 @@
 #include <data_access_layer/sqlite_queries.h>
 #include <gtest/gtest.h>
 #include <actors_and_workers/concurent_queues.h>
+#include <actors_and_workers/actor_ui.h>
+#include <actors_and_workers/arch.h>
 
 #include <memory>
 #include <cassert>
@@ -44,17 +45,12 @@ concepts::db_manager_concept_t build_database(const int selector) {
 }
 }
 
-//static
-auto gUIActor = std::make_shared<actors::UIActor>();  // dtor will call and app out
-//static
-auto gDBActor = std::make_shared<cc11::Actor>();
-
 int main() {
   scopes::AppScope app;
 
   // FIXME: put in actor?
   auto db = build_database(DB_SQLITE);
-  auto f = gUIActor->RunUI(db);
+  auto f = Dispatcher::ActivateUiEventLoop(db);
 
   return f.get();
 }

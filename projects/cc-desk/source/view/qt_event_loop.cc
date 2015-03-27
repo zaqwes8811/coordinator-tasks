@@ -1,12 +1,12 @@
 #include "heart/config.h"
 
-#include "core/actor_ui.h"
 #include "common/app_types.h"
 #include "view/mainwindow.h"
 #include "model_layer/isolation.h"
 #include "qt_event_loop.h"
 
 #include <QApplication>
+#include <actors_and_workers/actor_ui.h>
 
 namespace actors {
 class ModelListenerMediator :
@@ -17,7 +17,9 @@ public:
     : m_viewPtr(view) { }
 
   void DrawErrorMessage(const std::string& message) OVERRIDE {
-    // FIXME: impl it
+    auto c = m_viewPtr.lock();
+    if (c)
+      c->DrawErrorMessage(message);
   }
 
 private:

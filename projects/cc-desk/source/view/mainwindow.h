@@ -49,6 +49,8 @@ public:
 
   bool isReadyToDestroy() const;
 
+  void DrawErrorMessage(const std::string& m);
+
 private slots:
 
   // filters chain:
@@ -80,8 +82,6 @@ private:
   void doTheThing();
 
   gc::SharedPtr<UiEngine> share();
-
-  void action();
 
   Row getSelectedRow() const;
 

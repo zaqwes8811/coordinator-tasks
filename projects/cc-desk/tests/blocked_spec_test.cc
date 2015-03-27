@@ -11,7 +11,6 @@
 #include "data_access_layer/postgresql_queries.h"
 #include "common/app_types.h"
 #include "model_layer/isolation.h"
-#include "core/actor_ui.h"
 #include "core/scopes.h"
 #include "core/concepts.h"
 
@@ -19,6 +18,7 @@
 #include <gtest/gtest.h>
 #include <actors_and_workers/arch.h>
 #include <actors_and_workers/concurent_queues.h>
+#include <actors_and_workers/actor_ui.h>
 
 #include <memory>
 #include <cassert>

@@ -21,13 +21,15 @@
 #include "ui_mainwindow.h"
 #include "data_access_layer/fake_store.h"
 #include "model_layer/entities.h"
-#include "core/actor_ui.h"
 
 #include <QPushButton>
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QDebug>
 #include <QCheckBox>
+#include <QMessageBox>
+#include <actors_and_workers/actor_ui.h>
+#include <actors_and_workers/arch.h>
 
 #include <string>
 #include <vector>
@@ -82,16 +84,15 @@ void UiEngine::onClose() {
   m_fsmToDestroy = true;
 }
 
-UiEngine::~UiEngine(){ delete m_uiRawPtr; }
-
-void UiEngine::action() {
-  auto self = share();
-  /*m_dbActor.post([uiActorPtr, self] () mutable {
-    uiActorPtr->post([=] {
-      self->doTheThing();
-    });
-  });*/
+void UiEngine::DrawErrorMessage(const std::string& m)
+{
+  // http://doc.qt.io/qt-4.8/qmessagebox.html
+  QMessageBox msgBox(this);
+  msgBox.setText(m.c_str());
+  msgBox.exec();
 }
+
+UiEngine::~UiEngine(){ delete m_uiRawPtr; }
 
 UiEngine::UiEngine(//scopes::AppScope s,
                    gc::SharedPtr<models::Model> model_ptr,
@@ -194,7 +195,7 @@ void UiEngine::onFillFake(bool) {
   TaskEntities mirror(fake_store::get_all());
 
   std::for_each(mirror.begin(), mirror.end()
-                , bind(&Model::appendNewTask, ref(*m_modelPtr),
+                , bind(&Model::AppendNewTask, ref(*m_modelPtr),
                                bind(&entities::Task::toValue, _1)));
 }
 
@@ -264,7 +265,7 @@ void UiEngine::onRowIsChanged(QTableWidgetItem* widget)
         m_modelPtr->updateTask(task);
       } else {
         // Одна из видимых ячеек была обновлена
-        m_modelPtr->appendNewTask(task);
+        m_modelPtr->AppendNewTask(task);
       }
     }
   } catch (...) {

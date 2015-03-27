@@ -2,8 +2,8 @@
 
 #include "model_layer/model.h"
 #include "model_layer/filters.h"
-#include "core/actor_ui.h"
 
+#include <actors_and_workers/actor_ui.h>
 #include <loki/ScopeGuard.h>
 #include <actors_and_workers/arch.h>
 
@@ -21,6 +21,20 @@ using namespace std::placeholders;
 using std::begin;
 using std::end;
 using std::cout;
+using namespace concepts;
+using std::vector;
+
+void ExceptionToAppError(gc::SharedPtr<Model> m) {
+  try {
+    throw;
+  } catch (fatal_error&) {
+    throw;
+  } catch (std::runtime_error& e) {
+    m->RaiseErrorMessage(FROM_HERE + "\n" + e.what());
+  } catch (...) {
+    throw unknown_error(FROM_HERE);
+  }
+}
 
 void lock(Model::TaskCell& r_cell) {
   r_cell.first = true;
@@ -58,29 +72,29 @@ void Model::dropStore() {
   });
 }
 
+// FIXME: to method or free function
+void Model::OnLoaded(entities::TaskEntities tasks) {
+  m_task_cells.clear();
+  for (auto& task : tasks)
+    m_task_cells.emplace_back(true, task);
+  NotifyObservers();
+}
+
 void Model::initialize(std::function<void(std::string)>)
 {
-  // FIXME: to method or free function
-  auto on_loaded = [this](entities::TaskEntities tasks) {
-    m_task_cells.clear();
-    for (auto& task : tasks)
-      m_task_cells.emplace_back(true, task);
-    NotifyObservers();
-  };
-
   auto db = m_db;
+  auto model = shared_from_this();
 
-  Dispatcher::Post(Dispatcher::DB, [on_loaded, db] {
-    auto tables = std::vector<concepts::table_concept_t>{
+  Dispatcher::Post(Dispatcher::DB, [model, db] () mutable {
+    auto tables = vector<table_concept_t>{
         db->getTaskTableQuery(),
         db->getTagTableQuery()};
 
     for (auto& table : tables)
-      concepts::registerBeanClass(table);
+      registerBeanClass(table);
 
     auto tasks = db->getTaskLifetimeQuery().loadAll();
-
-    Dispatcher::Post(Dispatcher::UI, std::bind(on_loaded, tasks));
+    Dispatcher::Post(Dispatcher::UI, bind(bind(&Model::OnLoaded, model, _1), tasks));
   });
 }
 
@@ -124,13 +138,15 @@ void Model::addFilter(filters::FilterPtr f)
 void Model::removeFilter(filters::FilterPtr f)
 { m_filters_chain.remove(f); NotifyObservers(); }
 
-void Model::appendNewTask(const Task& unsaved_task)
+// FIXME: What if can't save?
+//   Total fail - loose user data.
+//   Unlock only on success
+//   It's real error?
+void Model::AppendNewTask(const Task& unsaved_task)
 {
-  // FIXME: show error message
   DCHECK(unsaved_task.id == EntityStates::kInactiveKey);
 
-  // on lock
-  auto unsaved_task_ptr = unsaved_task.share();
+  auto unsaved_task_ptr = unsaved_task.ToEntity();
   auto cell = TaskCell{false, unsaved_task_ptr};
   lock(cell);
   m_task_cells.push_back(cell);
@@ -138,9 +154,15 @@ void Model::appendNewTask(const Task& unsaved_task)
   auto on_success = std::bind(&ext::onNew, shared_from_this(), unsaved_task_ptr, _1);
 
   auto db_ptr = m_db;
-  Dispatcher::Post(Dispatcher::DB, [unsaved_task, on_success, db_ptr] () {
-    auto saved_task = db_ptr->getTaskLifetimeQuery().persist(unsaved_task);
-    Dispatcher::Post(Dispatcher::UI, std::bind(on_success, saved_task));
+  auto self = shared_from_this();
+  Dispatcher::Post(Dispatcher::DB, [unsaved_task, on_success, db_ptr, self] () {
+    try {
+      auto saved_task = db_ptr->getTaskLifetimeQuery().persist(unsaved_task);
+      throw std::runtime_error(FROM_HERE);
+      Dispatcher::Post(Dispatcher::UI, std::bind(on_success, saved_task));
+    } catch (...) {
+      ExceptionToAppError(self);
+    }
   });
 }
 

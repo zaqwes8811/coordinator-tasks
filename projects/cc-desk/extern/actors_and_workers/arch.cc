@@ -7,7 +7,10 @@
 // http://www.cplusplusdevelop.com/829_19589028/
 
 std::shared_ptr<SingleWorker> Dispatcher::s_dbWorker(new SingleWorker);
-gc::SharedPtr<actors::UIActor> Dispatcher::s_ui_actor = std::make_shared<actors::UIActor>();
+//gc::SharedPtr
+std::shared_ptr
+<actors::UIActor> Dispatcher::s_ui_actor(new actors::UIActor);
+//= std::make_shared<actors::UIActor>();
 
 void Dispatcher::Post(Ids id, SingleWorker::Callable fun) {
   if (DB == id) {

@@ -63,7 +63,7 @@ public:
   /**
     \design наверное лучше сразу сохранить, добавлять все равно буду скорее всего по-одному
   */
-  void appendNewTask(const entities::Task& e);
+  void AppendNewTask(const entities::Task& e);
 
   /**
     \pre Element was persist
@@ -71,6 +71,8 @@ public:
   void updateTask(const entities::Task& e);
   void initialize(std::function<void(std::string)> errorHandler);
   void dropStore();
+
+  void OnLoaded(entities::TaskEntities tasks);
 
 public:  // lock troubles
   // typedefs
@@ -118,6 +120,7 @@ private:
   // FIXME: trouble - extra space
   std::vector<TaskCell> m_task_cells;
 
+public:
   // Thread safe. Redirect call to UI thread
   void RaiseErrorMessage(const std::string& message);
 };

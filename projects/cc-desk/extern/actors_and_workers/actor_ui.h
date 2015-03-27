@@ -2,6 +2,7 @@
 #define VIEW_UI_ACTOR_H_
 
 #include "core/concepts.h"
+#include "common/error_handling.h"
 
 #include <actors_and_workers/concurent_queues.h>
 
@@ -22,9 +23,10 @@ class UiObject;
 
   \bug On off application ASan SIGSEGV detect. Think trouble in off thread
   \fixme check by TSan.
+
+  template <typename T>  // can't
+  http://stackoverflow.com/questions/17853212/using-shared-from-this-in-templated-classes
 */
-//template <typename T>  // can't
-// http://stackoverflow.com/questions/17853212/using-shared-from-this-in-templated-classes
 class UIActor : public std::enable_shared_from_this<UIActor>
 {
 public:
@@ -36,7 +38,15 @@ public:
   ~UIActor();
 
   void post( Message m )
-  { auto r = mq.try_push( m ); }
+  {
+    try {
+      auto r = mq.try_push( m );
+      if (!r)
+        throw infrastructure_error(FROM_HERE);
+    } catch (...) {
+      throw infrastructure_error(FROM_HERE);
+    }
+  }
 
   std::future<int> RunUI(concepts::db_manager_concept_t db);
 
