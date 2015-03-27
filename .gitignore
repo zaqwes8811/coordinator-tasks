@@ -4,7 +4,7 @@ bin
 *.class
 out
 tests-medium/node_modules
-*~*
+*~* 
 *.o
 *.autosave
 *.app
@@ -12,3 +12,4 @@ tests-medium/node_modules
 /version-qt-desk/build/
 *.user
 *.db
+*~
