@@ -23,8 +23,8 @@ INCLUDE( ${QT_USE_FILE} )
 
 # FIXME: use TSan
 # Keys is exclude other
-set( LCB_USE_ASAN Y)
-#set( LCB_USE_TSAN Y)
+#set( LCB_USE_ASAN Y)
+set( LCB_USE_TSAN Y)
 
 set(Extern "../../extern/")
 set(ExternLocal "./extern/")
@@ -45,6 +45,7 @@ include_directories(${ExternLocal})
 include_directories(${Source}/../../std_own_ext)
 include_directories(${BigExtern}/boost_1_57_0)
 include_directories(/opt/folly/include)
+include_directories(/opt/tsan/libpqxx/include)
 
 # ASan,TSan and MSan
 IF(LCB_USE_ASAN)
@@ -93,13 +94,17 @@ elseif (UNIX)
         link_libraries(
             pthread rt)  # !! pthread and rt last!!
     else()
-        link_directories(${BigExtern}/boost_1_57_0/stage_x64/lib)
         link_directories(${BigExtern}/../folly/lib)
-        link_libraries(
-            pqxx pq
-            sqlite3
-            folly glog boost_system boost_thread  # FIXME: it's bad! Just try interface. Watch Sean Parent
-            pthread rt)  # !! pthread and rt last!!
+        link_directories(/opt/tsan/libpqxx/lib)
+    if(LCB_USE_TSAN)
+        link_libraries(tsan)
+        link_directories(${BigExtern}/boost_1_57_0/gcc_tsan_lib64/lib)
+    else()
+        link_directories(${BigExtern}/boost_1_57_0/stage_x64/lib)
+    endif()
+        link_libraries(pqxx pq sqlite3)
+        link_libraries(folly glog boost_system boost_thread)  # FIXME: it's bad! Just try interface. Watch Sean Parent
+        link_libraries(pthread rt)  # !! pthread and rt last!!
     endif()
 endif()
 

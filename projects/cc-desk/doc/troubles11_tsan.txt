@@ -1,0 +1,1 @@
+http://stackoverflow.com/questions/629961/how-can-i-set-ccshared-fpic-while-executing-configure
