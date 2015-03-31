@@ -1,0 +1,3 @@
+values - immutable
+change - recreation
+Плохо сделано
