@@ -5,6 +5,7 @@
 - Filtered event-loop - http://www.infoq.com/presentations/Death-by-Accidental-Complexity R: 
 - "await" - http://channel9.msdn.com/Events/Build/2012/3-011
 - Ref and Values
+- Repo. pattern -> separate queries
 
 Forge:
 - "Многопоточность в браузере. Модель акторов"
