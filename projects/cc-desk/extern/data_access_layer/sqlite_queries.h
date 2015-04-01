@@ -99,9 +99,9 @@ private:
   bool checkUnique(const std::string& name);
 };
 
-class SQLiteDataBase {
+class SQLiteQueriesGenerator {
 public:
-  SQLiteDataBase()
+  SQLiteQueriesGenerator()
     : m_connPtr(std::make_shared<sqlite3_cc::sqlite3>("test.db"))
       , m_taskTableName(models::kTaskTableNameRef)
   { }

@@ -46,7 +46,7 @@ using entities::EntityStates;
 using entities::Task;
 
 
-PostgreSQLDataBase::PostgreSQLDataBase(const std::string& conn_info
+PostgreSQLQueriesGenerator::PostgreSQLQueriesGenerator(const std::string& conn_info
                                      , const std::string& table_name)
   : m_conn_ptr(new pqxx::connection(conn_info))
   , m_table_name(table_name)
@@ -55,7 +55,7 @@ PostgreSQLDataBase::PostgreSQLDataBase(const std::string& conn_info
   DCHECK(m_conn_ptr->is_open());
 }
 
-PostgreSQLDataBase::~PostgreSQLDataBase() {
+PostgreSQLQueriesGenerator::~PostgreSQLQueriesGenerator() {
   try {
     m_conn_ptr->disconnect();
   } catch (...) {
@@ -63,11 +63,11 @@ PostgreSQLDataBase::~PostgreSQLDataBase() {
   }
 }
 
-TaskTableQueries PostgreSQLDataBase::getTaskTableQuery() {
+TaskTableQueries PostgreSQLQueriesGenerator::getTaskTableQuery() {
   return TaskTableQueries(m_table_name, m_conn_ptr);
 }
 
-TaskLifetimeQueries PostgreSQLDataBase::getTaskLifetimeQuery() {
+TaskLifetimeQueries PostgreSQLQueriesGenerator::getTaskLifetimeQuery() {
   return TaskLifetimeQueries(m_table_name, m_conn_ptr);
 }
 

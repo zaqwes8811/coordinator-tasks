@@ -48,12 +48,12 @@ private:
 /**
 
 */
-class PostgreSQLDataBase
+class PostgreSQLQueriesGenerator
     //: public storages::DataBase
 {
 public:
-  PostgreSQLDataBase(const std::string& conn_info, const std::string& taskTableName);
-  ~PostgreSQLDataBase();
+  PostgreSQLQueriesGenerator(const std::string& conn_info, const std::string& taskTableName);
+  ~PostgreSQLQueriesGenerator();
 
   TaskTableQueries getTaskTableQuery();
   TaskLifetimeQueries getTaskLifetimeQuery();

@@ -54,7 +54,9 @@ UIActor::UIActor() : m_done(false), mq(100), uiPtr{nullptr}
 
 UIActor::~UIActor() {
   post( [&]{ m_done = true; } );
+  std::cout << "dtor" << std::endl;
   thd->join();
+  std::cout << "joined" << std::endl;
 }
 
 }  // space

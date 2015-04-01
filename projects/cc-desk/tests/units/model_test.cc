@@ -19,7 +19,7 @@ namespace {
 using std::ref;
 using Loki::MakeObjGuard;
 using Loki::ScopeGuard;
-using pq_dal::PostgreSQLDataBase;
+using pq_dal::PostgreSQLQueriesGenerator;
 using models::Model;
 using entities::TaskEntities;
 using std::cout;
@@ -27,7 +27,7 @@ using renders::render_task_store;
 
 TEST(AppCore, Create) {
   // make_shared получает по копии - проблема с некопируемыми объектами
-  auto pool = concepts::db_manager_concept_t(sqlite_queries::SQLiteDataBase());
+  auto pool = concepts::db_manager_concept_t(sqlite_queries::SQLiteQueriesGenerator());
   {
     Model app_ptr(pool);
 
@@ -52,7 +52,7 @@ TEST(AppCore, Create) {
 }
 
 TEST(AppCore, UpdatePriority) {
-  auto db = concepts::db_manager_concept_t(sqlite_queries::SQLiteDataBase());
+  auto db = concepts::db_manager_concept_t(sqlite_queries::SQLiteQueriesGenerator());
 
   {
     Model app_ptr(db);
