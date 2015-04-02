@@ -37,19 +37,43 @@ void UIActor::Run() {
       throw;  // bad
     }
   } // note: last message sets done to true
+}
 
-  std::cout << "out ui thread: " << std::this_thread::get_id() << std::endl;
+void UIActor::Post( Message m )
+{
+  try {
+    auto r = mq.try_push( m );
+    if (!r)
+      throw infrastructure_error(FROM_HERE);
+  } catch (...) {
+    throw infrastructure_error(FROM_HERE);
+  }
+}
+
+void UIActor::Fork() {
+  auto self = shared_from_this();
+  thd = std::unique_ptr<std::thread>(new std::thread( [self]{ self->Run(); } ) );
+}
+
+void UIActor::Join() {
+  if (thd) {
+    Post( [&]{
+      m_done = true;
+    } );
+    thd->join();
+    //thd = nullptr;
+    DCHECK(!thd->joinable());
+  }
 }
 
 std::future<int> UIActor::RunUI(concepts::db_queries_generator_concept_t db) {
   auto pr = std::make_shared<std::promise<int>>();
   auto f = pr->get_future();
-  auto self = shared_from_this();
 
   // FIXME: some here is bug
-  post([db, self, pr]() {
+  Post([db, this, pr]() {
     // TSan mention here
-    self->m_ui_ptr = std::unique_ptr<actors::UiObject>(new actors::UiObject(db, pr));
+    m_ui_ptr = std::unique_ptr<actors::UiObject>(new actors::UiObject(db, pr));
   });
   return f;
 }
@@ -57,15 +81,7 @@ std::future<int> UIActor::RunUI(concepts::db_queries_generator_concept_t db) {
 UIActor::UIActor() : m_done(false), mq(100), m_ui_ptr{nullptr}
 {
   // FIXME: it's bad - expose unconstuctored object
-  thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(); } ) );
+  //
 }
-
-UIActor::~UIActor() {
-  post( [&]{
-    m_done = true;
-  } );
-  thd->join();
-}
-
 }  // space
 

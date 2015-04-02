@@ -28,29 +28,24 @@ class UiObject;
   http://stackoverflow.com/questions/17853212/using-shared-from-this-in-templated-classes
 
   \bug TSan: Thread leak - coupled - fut+prom+connect UI
+  https://groups.google.com/forum/#!topic/thread-sanitizer/EN0Per-G3Ow
+
+  TSAN_OPTIONS=report_thread_leaks=0 - may be false positive
 */
 class UIActor : public std::enable_shared_from_this<UIActor>
 {
 public:
   typedef std::function<void()> Message;
 
-  // FIXME: trouble is not non-arg ctor
-  explicit UIActor();
+  UIActor();
 
-  ~UIActor();
-
-  void post( Message m )
-  {
-    try {
-      auto r = mq.try_push( m );
-      if (!r)
-        throw infrastructure_error(FROM_HERE);
-    } catch (...) {
-      throw infrastructure_error(FROM_HERE);
-    }
-  }
+  void Post( Message m );
 
   std::future<int> RunUI(concepts::db_queries_generator_concept_t db);
+
+  void Fork();
+
+  void Join();
 
 private:
   UIActor( const UIActor& );           // no copying
@@ -62,7 +57,7 @@ private:
 
   void Run();
 
-public:  // FIXME: bad!
+//public:  // FIXME: bad!
   std::unique_ptr<UiObject> m_ui_ptr;
 };
 }

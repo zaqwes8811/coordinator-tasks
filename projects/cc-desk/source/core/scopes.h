@@ -6,13 +6,12 @@
 namespace scopes {
 class AppScope {
 public:
-  AppScope() { s_isDone = false; }
-
-  void setToDone() { s_isDone = true; }
-
-  bool isClosed() { return s_isDone; }
+  AppScope();
+  ~AppScope();
 
 private:
+  void setToDone() { s_isDone = true; }
+  bool isClosed() { return s_isDone; }
   static std::atomic_bool s_isDone;
 };
 }

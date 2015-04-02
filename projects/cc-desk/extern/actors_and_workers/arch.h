@@ -70,8 +70,11 @@ public:
   */
   static std::future<int> ActivateUiEventLoop(concepts::db_queries_generator_concept_t db);
 
-  // FIXME: to think
-  static void ActivateThreading();
+  /**
+    \brief No hope to static vars - make explict
+  */
+  static void ForkAll();
+  static void JoinAll();
 
 private:
   Dispatcher();

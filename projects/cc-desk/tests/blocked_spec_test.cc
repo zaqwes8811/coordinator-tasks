@@ -13,6 +13,7 @@
 #include "model_layer/isolation.h"
 #include "core/scopes.h"
 #include "core/concepts.h"
+#include "view/qt_event_loop.h"
 
 #include <data_access_layer/sqlite_queries.h>
 #include <gtest/gtest.h>

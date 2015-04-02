@@ -1,6 +1,7 @@
 #include "heart/config.h"
 
 #include "arch.h"
+#include "view/qt_event_loop.h"
 
 #include <boost/lexical_cast.hpp>
 
@@ -22,8 +23,22 @@ void Dispatcher::Post(Ids id, SingleWorker::Callable fun) {
     auto p = get_ui().lock();
     if (!p)
       throw std::runtime_error(FROM_HERE);
-    p->post(fun);
+    p->Post(fun);
   } else { }
+}
+
+void Dispatcher::ForkAll() {
+  auto p = get_ui().lock();
+  if (!p)
+    throw std::runtime_error(FROM_HERE);
+  p->Fork();
+}
+
+void Dispatcher::JoinAll() {
+  auto p = get_ui().lock();
+  if (!p)
+    throw std::runtime_error(FROM_HERE);
+  p->Join();
 }
 
 std::string SingleWorker::getCurrentThreadId() {

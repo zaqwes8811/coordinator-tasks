@@ -54,6 +54,7 @@ concepts::db_queries_generator_concept_t build_database(const int selector) {
 
 // http://stackoverflow.com/questions/4025370/can-an-executable-discover-its-own-path-linux
 int main(int argc, char** argv) {
+  scopes::AppScope _;
   //for (int i = 0; i < argc; ++i)
   //  std::cout << argv[i] << std::endl;
 
@@ -75,7 +76,6 @@ int main(int argc, char** argv) {
   auto db = build_database(DB_SQLITE);
   auto f = Dispatcher::ActivateUiEventLoop(db);
   auto r = f.get();
-  std::cout << "end main: " << std::this_thread::get_id() << std::endl;
   return r;
   //return 0;
 }
