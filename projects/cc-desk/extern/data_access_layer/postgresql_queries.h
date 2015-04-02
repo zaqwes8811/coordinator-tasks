@@ -46,7 +46,7 @@ private:
 };
 
 /**
-
+  \fixme Disconnect and queries lifetime. Disconnect on. Need think about it
 */
 class PostgreSQLQueriesGenerator
     //: public storages::DataBase
