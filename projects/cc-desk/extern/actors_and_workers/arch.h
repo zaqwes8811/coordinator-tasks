@@ -52,6 +52,8 @@ private:
   Static and global - lifetime troubles
 
   \attention Real trouble with checking current thread, not dispatch
+
+  \attention TSan think - UI thread is leak if UI was connected
 */
 class Dispatcher {
 public:
@@ -66,7 +68,10 @@ public:
     \fixme Bad. Coupled with particular application. Make
       Promise of Packaged Task
   */
-  static std::future<int> ActivateUiEventLoop(concepts::db_manager_concept_t db);
+  static std::future<int> ActivateUiEventLoop(concepts::db_queries_generator_concept_t db);
+
+  // FIXME: to think
+  static void ActivateThreading();
 
 private:
   Dispatcher();

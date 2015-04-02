@@ -15,9 +15,9 @@ using std::string;
 // by value, not by type
 enum db_vars { DB_SQLITE, DB_POSTGRES };
 
-concepts::db_manager_concept_t build_database(const int selector) {
+concepts::db_queries_generator_concept_t build_database(const int selector) {
   if (true) { //selector == DB_SQLITE) {
-    return concepts::db_manager_concept_t(sqlite_queries::SQLiteQueriesGenerator());
+    return concepts::db_queries_generator_concept_t(sqlite_queries::SQLiteQueriesGenerator());
   } else {
     /*
     return concepts::db_manager_concept_t(

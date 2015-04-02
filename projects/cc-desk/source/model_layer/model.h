@@ -49,7 +49,7 @@ class Model //: public boost::noncopyable
 {
 public:
   /// create/destory
-  explicit Model(concepts::db_manager_concept_t _pool);
+  explicit Model(concepts::db_queries_generator_concept_t _pool);
 
   /// other
   /**
@@ -100,7 +100,7 @@ private:
     FIXME: кажется двойное лучше, или хранить фильтр?
       и через него при прорисовке пропускать?
   */
-  gc::SharedPtr<concepts::db_manager_concept_t> m_db;
+  gc::SharedPtr<concepts::db_queries_generator_concept_t> m_db;
   isolation::ModelListenerPtr m_observer_ptr;
 
   TaskCell GetCachedTaskById(const size_t id);

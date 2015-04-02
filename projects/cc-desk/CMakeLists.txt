@@ -24,7 +24,7 @@ INCLUDE( ${QT_USE_FILE} )
 # FIXME: use TSan
 # Keys is exclude other
 #set( LCB_USE_ASAN Y)
-set( LCB_USE_TSAN Y)
+set( LCB_USE_TSAN Y)  # FIXME: debug troubles
 
 set(Extern "../../extern/")
 set(ExternLocal "./extern/")

@@ -176,8 +176,8 @@ entities::TaskEntities Model::FilterModelData()
   return m_filters_chain(r);
 }
 
-Model::Model(concepts::db_manager_concept_t _pool)
-  : m_db(std::make_shared<concepts::db_manager_concept_t>(_pool))
+Model::Model(concepts::db_queries_generator_concept_t _pool)
+  : m_db(std::make_shared<concepts::db_queries_generator_concept_t>(_pool))
 { }
 
 void Model::NotifyObservers()

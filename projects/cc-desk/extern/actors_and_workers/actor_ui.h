@@ -26,6 +26,8 @@ class UiObject;
 
   template <typename T>  // can't
   http://stackoverflow.com/questions/17853212/using-shared-from-this-in-templated-classes
+
+  \bug TSan: Thread leak - coupled - fut+prom+connect UI
 */
 class UIActor : public std::enable_shared_from_this<UIActor>
 {
@@ -48,7 +50,7 @@ public:
     }
   }
 
-  std::future<int> RunUI(concepts::db_manager_concept_t db);
+  std::future<int> RunUI(concepts::db_queries_generator_concept_t db);
 
 private:
   UIActor( const UIActor& );           // no copying
@@ -60,7 +62,8 @@ private:
 
   void Run();
 
-  std::unique_ptr<UiObject> uiPtr;
+public:  // FIXME: bad!
+  std::unique_ptr<UiObject> m_ui_ptr;
 };
 }
 

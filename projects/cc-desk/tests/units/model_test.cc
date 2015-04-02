@@ -27,7 +27,7 @@ using renders::render_task_store;
 
 TEST(AppCore, Create) {
   // make_shared получает по копии - проблема с некопируемыми объектами
-  auto pool = concepts::db_manager_concept_t(sqlite_queries::SQLiteQueriesGenerator());
+  auto pool = concepts::db_queries_generator_concept_t(sqlite_queries::SQLiteQueriesGenerator());
   {
     Model app_ptr(pool);
 
@@ -52,7 +52,7 @@ TEST(AppCore, Create) {
 }
 
 TEST(AppCore, UpdatePriority) {
-  auto db = concepts::db_manager_concept_t(sqlite_queries::SQLiteQueriesGenerator());
+  auto db = concepts::db_queries_generator_concept_t(sqlite_queries::SQLiteQueriesGenerator());
 
   {
     Model app_ptr(db);

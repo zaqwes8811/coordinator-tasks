@@ -152,10 +152,10 @@ template <> struct holder_traits<int> {
   \attention !!! How to know what thread delete it? Especialy if it's shared ptr!
     Hm... But not races if std::shared_ptr, destruction under lock?
 */
-class db_manager_concept_t {
+class db_queries_generator_concept_t {
 public:
   template<typename T>
-  db_manager_concept_t(const T& x) : self_(std::make_shared<model<T>>(std::move(x)))
+  db_queries_generator_concept_t(const T& x) : self_(std::make_shared<model<T>>(std::move(x)))
   { }
 
   //template <typename Q>

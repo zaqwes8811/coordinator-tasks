@@ -36,7 +36,7 @@ static int argc = 1;
 static //const // not compile
 char* argv[1] = { "none" };
 
-UiObject::UiObject(concepts::db_manager_concept_t db
+UiObject::UiObject(concepts::db_queries_generator_concept_t db
                    , gc::SharedPtr<std::promise<int>> pr)
   : appLoop(argc, argv), m_pr(pr) {
   // Objects

@@ -10,15 +10,17 @@ void UIActor::Run() {
   while( !m_done ) {
     try {
       {
-        if (uiPtr) {
-          auto pr = uiPtr->off();
-          if (!uiPtr->poll()) {
-             auto p = uiPtr.release();
-             delete p;
-          }
+        if (m_ui_ptr) {
+          auto pr = m_ui_ptr->off();
+          if (!m_ui_ptr->poll()) {
+            //std::auto_ptr<UiObject> _(m_ui_ptr.release());
+            //auto p = std::unique_ptr<UiObject>();
 
-          if (!uiPtr)
+            auto p = m_ui_ptr.release();
+            delete p;
+
             pr->set_value(0);
+          }
         }
       }
 
@@ -35,28 +37,34 @@ void UIActor::Run() {
       throw;  // bad
     }
   } // note: last message sets done to true
+
+  std::cout << "out ui thread: " << std::this_thread::get_id() << std::endl;
 }
 
-std::future<int> UIActor::RunUI(concepts::db_manager_concept_t db) {
+std::future<int> UIActor::RunUI(concepts::db_queries_generator_concept_t db) {
   auto pr = std::make_shared<std::promise<int>>();
   auto f = pr->get_future();
+  auto self = shared_from_this();
 
-  post([db, this, pr]() {
-    uiPtr = std::unique_ptr<actors::UiObject>(new actors::UiObject(db, pr));
+  // FIXME: some here is bug
+  post([db, self, pr]() {
+    // TSan mention here
+    self->m_ui_ptr = std::unique_ptr<actors::UiObject>(new actors::UiObject(db, pr));
   });
   return f;
 }
 
-UIActor::UIActor() : m_done(false), mq(100), uiPtr{nullptr}
+UIActor::UIActor() : m_done(false), mq(100), m_ui_ptr{nullptr}
 {
+  // FIXME: it's bad - expose unconstuctored object
   thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(); } ) );
 }
 
 UIActor::~UIActor() {
-  post( [&]{ m_done = true; } );
-  std::cout << "dtor" << std::endl;
+  post( [&]{
+    m_done = true;
+  } );
   thd->join();
-  std::cout << "joined" << std::endl;
 }
 
 }  // space

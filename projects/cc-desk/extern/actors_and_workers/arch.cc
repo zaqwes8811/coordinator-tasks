@@ -52,7 +52,7 @@ std::string Dispatcher::decodeId(Ids id) {
   return m[id];
 }
 
-std::future<int> Dispatcher::ActivateUiEventLoop(concepts::db_manager_concept_t db) {
+std::future<int> Dispatcher::ActivateUiEventLoop(concepts::db_queries_generator_concept_t db) {
   auto p = get_ui().lock();
   if (!p)
     throw std::runtime_error(FROM_HERE);

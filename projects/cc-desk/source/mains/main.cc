@@ -40,9 +40,9 @@ namespace {
 // by value, not by type
 enum db_vars { DB_SQLITE, DB_POSTGRES };
 
-concepts::db_manager_concept_t build_database(const int selector) {
+concepts::db_queries_generator_concept_t build_database(const int selector) {
   if (true) { //selector == DB_SQLITE) {
-    return concepts::db_manager_concept_t(sqlite_queries::SQLiteQueriesGenerator());
+    return concepts::db_queries_generator_concept_t(sqlite_queries::SQLiteQueriesGenerator());
   } else {
     /*return
         concepts::db_manager_concept_t(pq_dal::PostgreSQLDataBase(
@@ -75,7 +75,9 @@ int main(int argc, char** argv) {
   auto db = build_database(DB_SQLITE);
   auto f = Dispatcher::ActivateUiEventLoop(db);
   auto r = f.get();
-  std::cout << "work_dir" << std::endl;
+  std::cout << "end main: " << std::this_thread::get_id() << std::endl;
+  return r;
+  //return 0;
 }
 
 

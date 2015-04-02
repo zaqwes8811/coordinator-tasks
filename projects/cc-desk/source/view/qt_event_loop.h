@@ -32,7 +32,7 @@
 namespace actors {
 class UiObject {
 public:
-  UiObject(concepts::db_manager_concept_t db, gc::SharedPtr<std::promise<int>> pr);
+  UiObject(concepts::db_queries_generator_concept_t db, gc::SharedPtr<std::promise<int>> pr);
   bool poll();
 
   gc::SharedPtr<std::promise<int>> off() { return m_pr; }
