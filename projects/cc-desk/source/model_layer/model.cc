@@ -24,7 +24,8 @@ using std::cout;
 using namespace concepts;
 using std::vector;
 
-void ExceptionToAppError(gc::SharedPtr<Model> m) {
+void ExceptionToAppError(gc::SharedPtr<Model> m)
+{
   try {
     throw;
   } catch (fatal_error&) {
@@ -36,15 +37,18 @@ void ExceptionToAppError(gc::SharedPtr<Model> m) {
   }
 }
 
-void lock(Model::TaskCell& r_cell) {
+void lock(Model::TaskCell& r_cell)
+{
   r_cell.first = true;
 }
 
-bool try_lock(Model::TaskCell& r_cell) {
+bool try_lock(Model::TaskCell& r_cell)
+{
   return r_cell.first == false;
 }
 
-void unlock(Model::TaskCell& r_cell) {
+void unlock(Model::TaskCell& r_cell)
+{
   r_cell.first = false;
 }
 
@@ -63,7 +67,8 @@ void onNew(gc::SharedPtr<Model> m, TaskEntity task_ptr, Task saved_task)
 }
 }  // space
 
-void Model::dropStore() {
+void Model::dropStore()
+{
   auto db = m_db;
 
   Dispatcher::Post(Dispatcher::DB, [db]() {
@@ -73,7 +78,8 @@ void Model::dropStore() {
 }
 
 // FIXME: to method or free function
-void Model::OnLoaded(entities::TaskEntities tasks) {
+void Model::OnLoaded(entities::TaskEntities tasks)
+{
   m_task_cells.clear();
   for (auto& task : tasks) {
     auto cell = TaskCell{false, task};
@@ -133,10 +139,15 @@ void Model::UpdateTask(const entities::Task& updated_task)
 }
 
 void Model::addFilter(filters::FilterPtr f)
-{ m_filters_chain.add(f); NotifyObservers(); }
+{
+  m_filters_chain.add(f); NotifyObservers();
+}
 
 void Model::removeFilter(filters::FilterPtr f)
-{ m_filters_chain.remove(f); NotifyObservers(); }
+{
+  m_filters_chain.remove(f);
+  NotifyObservers();
+}
 
 // FIXME: What if can't save?
 //   Total fail - loose user data.
@@ -181,16 +192,18 @@ Model::Model(concepts::db_queries_generator_concept_t _pool)
 { }
 
 void Model::NotifyObservers()
-{ m_observer_ptr->update(FilterModelData()); }
+{
+  m_observer_ptr->update(FilterModelData());
+}
 
 void Model::SetObserver(gc::SharedPtr<isolation::ModelListener> observer)
-{ m_observer_ptr = observer; }
+{
+  m_observer_ptr = observer;
+}
 
 void Model::RaiseErrorMessage(const std::string& message)
 {
   auto view = m_observer_ptr;  // FIXME: thread-safe but... don't like it
-  Dispatcher::Post(Dispatcher::UI,
-                   [view, message] { view->DrawErrorMessage(message); }
-  );
+  Dispatcher::Post(Dispatcher::UI, [view, message] { view->DrawErrorMessage(message); });
 }
 }
