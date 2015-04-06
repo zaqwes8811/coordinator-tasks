@@ -71,7 +71,7 @@ void Model::dropStore()
 {
   auto db = m_db;
 
-  Dispatcher::Post(Dispatcher::DB, [db]() {
+  ExecutionContexts::Post(ExecutionContexts::DB, [db]() {
     auto q = db->getTaskTableQuery();
     concepts::drop(q);
   });
@@ -94,7 +94,7 @@ void Model::initialize(std::function<void(std::string)>)
   auto db = m_db;
   auto model = shared_from_this();
 
-  Dispatcher::Post(Dispatcher::DB, [model, db] () mutable {
+  ExecutionContexts::Post(ExecutionContexts::DB, [model, db] () mutable {
     auto tables = vector<table_concept_t>{
         db->getTaskTableQuery(),
         db->getTagTableQuery()};
@@ -103,7 +103,7 @@ void Model::initialize(std::function<void(std::string)>)
       registerBeanClass(table);
 
     auto tasks = db->getTaskLifetimeQuery().loadAll();
-    Dispatcher::Post(Dispatcher::UI, bind(bind(&Model::OnLoaded, model, _1), tasks));
+    ExecutionContexts::Post(ExecutionContexts::UI, bind(bind(&Model::OnLoaded, model, _1), tasks));
   });
 }
 
@@ -131,9 +131,9 @@ void Model::UpdateTask(const entities::Task& updated_task)
     };
 
     auto db = m_db;
-    Dispatcher::Post(Dispatcher::DB, [on_update, db, updated_task] {
+    ExecutionContexts::Post(ExecutionContexts::DB, [on_update, db, updated_task] {
       db->getTaskLifetimeQuery().update(updated_task);
-      Dispatcher::Post(Dispatcher::UI, bind(on_update, updated_task));
+      ExecutionContexts::Post(ExecutionContexts::UI, bind(on_update, updated_task));
     });
   }
 }
@@ -166,10 +166,10 @@ void Model::AppendNewTask(const Task& unsaved_task)
 
   auto db_ptr = m_db;
   auto self = shared_from_this();
-  Dispatcher::Post(Dispatcher::DB, [unsaved_task, on_success, db_ptr, self] () {
+  ExecutionContexts::Post(ExecutionContexts::DB, [unsaved_task, on_success, db_ptr, self] () {
     try {
       auto saved_task = db_ptr->getTaskLifetimeQuery().persist(unsaved_task);
-      Dispatcher::Post(Dispatcher::UI, std::bind(on_success, saved_task));
+      ExecutionContexts::Post(ExecutionContexts::UI, std::bind(on_success, saved_task));
     } catch (...) {
       // FIXME: Not unlocked! But I can unlock it?
       ExceptionToAppError(self);
@@ -204,6 +204,6 @@ void Model::SetObserver(gc::SharedPtr<isolation::ModelListener> observer)
 void Model::RaiseErrorMessage(const std::string& message)
 {
   auto view = m_observer_ptr;  // FIXME: thread-safe but... don't like it
-  Dispatcher::Post(Dispatcher::UI, [view, message] { view->DrawErrorMessage(message); });
+  ExecutionContexts::Post(ExecutionContexts::UI, [view, message] { view->DrawErrorMessage(message); });
 }
 }

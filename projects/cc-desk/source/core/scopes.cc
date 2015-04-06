@@ -9,10 +9,10 @@ std::atomic_bool scopes::AppScope::s_isDone{false};
 
 AppScope::AppScope() {
   s_isDone = false;
-  Dispatcher::ForkAll();
+  ExecutionContexts::ForkAll();
 }
 
 AppScope::~AppScope() {
-  Dispatcher::JoinAll();
+  ExecutionContexts::JoinAll();
 }
 }

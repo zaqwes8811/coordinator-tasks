@@ -45,7 +45,7 @@ concepts::db_queries_generator_concept_t build_database(const int selector) {
 
 TEST(Blocked, UIActorTest) {
   auto db = build_database(DB_SQLITE);
-  auto f = Dispatcher::ActivateUiEventLoop(db);
+  auto f = ExecutionContexts::ActivateUiEventLoop(db);
 
   f.get();
 }

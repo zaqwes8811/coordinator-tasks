@@ -7,13 +7,13 @@
 
 // http://www.cplusplusdevelop.com/829_19589028/
 
-std::shared_ptr<SingleWorker> Dispatcher::s_dbWorker(new SingleWorker);
+std::shared_ptr<SingleWorker> ExecutionContexts::s_dbWorker(new SingleWorker);
 //gc::SharedPtr
 std::shared_ptr
-<actors::UIActor> Dispatcher::s_ui_actor(new actors::UIActor);
+<actors::UIActor> ExecutionContexts::s_ui_actor(new actors::UIActor);
 //= std::make_shared<actors::UIActor>();
 
-void Dispatcher::Post(Ids id, SingleWorker::Callable fun) {
+void ExecutionContexts::Post(Ids id, SingleWorker::Callable fun) {
   if (DB == id) {
     auto p = get_db().lock();
     if (!p)
@@ -27,14 +27,14 @@ void Dispatcher::Post(Ids id, SingleWorker::Callable fun) {
   } else { }
 }
 
-void Dispatcher::ForkAll() {
+void ExecutionContexts::ForkAll() {
   auto p = get_ui().lock();
   if (!p)
     throw std::runtime_error(FROM_HERE);
   p->Fork();
 }
 
-void Dispatcher::JoinAll() {
+void ExecutionContexts::JoinAll() {
   auto p = get_ui().lock();
   if (!p)
     throw std::runtime_error(FROM_HERE);
@@ -57,7 +57,7 @@ std::string SingleWorker::GetId() {
   return f.get();
 }
 
-std::string Dispatcher::decodeId(Ids id) {
+std::string ExecutionContexts::decodeId(Ids id) {
   std::map<int, std::string> m;
   m[DB] = dbId();
 
@@ -67,14 +67,14 @@ std::string Dispatcher::decodeId(Ids id) {
   return m[id];
 }
 
-std::future<int> Dispatcher::ActivateUiEventLoop(concepts::db_queries_generator_concept_t db) {
+std::future<int> ExecutionContexts::ActivateUiEventLoop(concepts::db_queries_generator_concept_t db) {
   auto p = get_ui().lock();
   if (!p)
     throw std::runtime_error(FROM_HERE);
   return p->RunUI(db);
 }
 
-std::string Dispatcher::dbId() {
+std::string ExecutionContexts::dbId() {
   auto p = get_db().lock();
   if (!p)
     throw std::runtime_error(FROM_HERE);

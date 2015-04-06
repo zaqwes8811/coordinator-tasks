@@ -55,7 +55,7 @@ private:
 
   \attention TSan think - UI thread is leak if UI was connected
 */
-class Dispatcher {
+class ExecutionContexts {
 public:
   enum Ids
   { DB, UI };
@@ -77,7 +77,7 @@ public:
   static void JoinAll();
 
 private:
-  Dispatcher();
+  ExecutionContexts();
 
   static std::string decodeId(Ids id);
 
