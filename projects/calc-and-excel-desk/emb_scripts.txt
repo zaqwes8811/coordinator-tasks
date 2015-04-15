@@ -1,0 +1,1 @@
+https://wiki.openoffice.org/wiki/Python_as_a_macro_language
