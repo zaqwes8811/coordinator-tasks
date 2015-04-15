@@ -13,3 +13,6 @@ psql dbname < infile
 
 http://www.postgresqltutorial.com/postgresql-restore-database/
 
+psql -U postgres -d mydb -f mydb_2014_Nov_12-17:11.sql
+
+
