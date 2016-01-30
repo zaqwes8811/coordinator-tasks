@@ -4,7 +4,7 @@
 #define S_ACTORS_CC11_H_
 
 #include "safe_queue_cc11.h"
-#include "common/error_handling.h"
+#include "error_handling.h"
 
 #include <thread>
 #include <memory>

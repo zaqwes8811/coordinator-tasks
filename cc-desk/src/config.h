@@ -4,7 +4,7 @@
 //#define G_I_WANT_USE_IT  // external
 #define G_USE_PSQL
 
-#include "common/error_handling.h"
+#include "error_handling.h"
 
 #include <stddef.h>
 

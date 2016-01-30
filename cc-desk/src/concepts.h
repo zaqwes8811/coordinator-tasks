@@ -1,7 +1,7 @@
 #ifndef CORE_CONCEPTS_H_
 #define CORE_CONCEPTS_H_
 
-#include "model_layer/entities.h"
+#include "entities.h"
 
 #include <memory>
 #include <string>

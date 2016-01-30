@@ -2,8 +2,7 @@
 #define AAW_ARCH_H_
 
 #include "actors_cc11.h"
-
-#include <actors_and_workers/actor_ui.h>
+#include "actor_ui.h"
 
 #include <algorithm>
 #include <map>

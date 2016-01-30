@@ -1,8 +1,8 @@
 #ifndef VIEW_UI_ACTOR_H_
 #define VIEW_UI_ACTOR_H_
 
-#include "core/concepts.h"
-#include "common/error_handling.h"
+#include "concepts.h"
+#include "error_handling.h"
 
 #include <actors_and_workers/concurent_queues.h>
 
@@ -12,7 +12,10 @@
 #include <future>
 
 namespace actors {
-class UiObject;
+class UiObject
+{
+
+};
 
 /**
   \attention Dark place
@@ -60,7 +63,7 @@ private:
 
   void Run();
 
-  std::unique_ptr<UiObject> uiPtr;
+  std::unique_ptr<UiObject> ui;
 };
 }
 

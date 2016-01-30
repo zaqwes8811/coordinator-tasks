@@ -1,7 +1,7 @@
 #ifndef ISOLATION_H
 #define ISOLATION_H
 
-#include "model_layer/entities.h"
+#include "entities.h"
 
 namespace isolation {
 //typedef

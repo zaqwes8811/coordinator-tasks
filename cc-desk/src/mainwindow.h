@@ -1,11 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "heart/config.h"  // BAD, but Qt generate some files
+#include "config.h"  // BAD, but Qt generate some files
 
-#include "model_layer/model.h"
-#include "view/view.h"
-#include "model_layer/filters.h"
+#include "model.h"
+#include "view.h"
+#include "filters.h"
 
 #include <QMainWindow>
 #include <QTableWidget>

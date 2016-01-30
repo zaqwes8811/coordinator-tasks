@@ -1,13 +1,13 @@
 #ifndef CORE_QT_EVENT_LOOP_H_
 #define CORE_QT_EVENT_LOOP_H_
 
-#include "core/concepts.h"
-#include "common/app_types.h"
-#include "common/app_types.h"
-#include "core/concepts.h"
-#include "model_layer/model.h"
-#include "core/scopes.h"
-#include "view/mainwindow.h"
+#include "concepts.h"
+#include "app_types.h"
+#include "app_types.h"
+#include "concepts.h"
+#include "model.h"
+#include "scopes.h"
+#include "mainwindow.h"
 
 #include <QApplication>
 

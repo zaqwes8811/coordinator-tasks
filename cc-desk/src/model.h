@@ -1,10 +1,10 @@
 #ifndef BUSI_H
 #define BUSI_H
 
-#include "model_layer/entities.h"
-#include "view/renders.h"
-#include "model_layer/isolation.h"
-#include "core/concepts.h"
+#include "entities.h"
+#include "renders.h"
+#include "isolation.h"
+#include "concepts.h"
 #include "filters.h"
 
 #include <actors_and_workers/actors_cc11.h>

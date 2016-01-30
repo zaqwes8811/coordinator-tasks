@@ -1,24 +1,24 @@
-#include "heart/config.h"
+#include "config.h"
 
-#include "common/app_types.h"
-#include "view/qt_event_loop.h"
+#include "app_types.h"
+//#include "qt_event_loop.h"
 
-#include <actors_and_workers/actor_ui.h>
+#include <actor_ui.h>
 
 namespace actors {
 void UIActor::Run() {
   while( !m_done ) {
     try {
       {
-        if (uiPtr) {
-          auto pr = uiPtr->off();
-          if (!uiPtr->poll()) {
-             auto p = uiPtr.release();
-             delete p;
-          }
+        if (ui) {
+//          auto pr = ui->off();
+//          if (!ui->poll()) {
+//             auto p = ui.release();
+//             delete p;
+//          }
 
-          if (!uiPtr)
-            pr->set_value(0);
+//          if (!ui)
+//            pr->set_value(0);
         }
       }
 
@@ -37,17 +37,18 @@ void UIActor::Run() {
   } // note: last message sets done to true
 }
 
-std::future<int> UIActor::RunUI(concepts::db_manager_concept_t db) {
+std::future<int> UIActor::RunUI(concepts::db_manager_concept_t db)
+{
   auto pr = std::make_shared<std::promise<int>>();
   auto f = pr->get_future();
 
   post([db, this, pr]() {
-    uiPtr = std::unique_ptr<actors::UiObject>(new actors::UiObject(db, pr));
+    ui = std::unique_ptr<actors::UiObject>(new actors::UiObject());//db, pr));
   });
   return f;
 }
 
-UIActor::UIActor() : m_done(false), mq(100), uiPtr{nullptr}
+UIActor::UIActor() : m_done(false), mq(100), ui{nullptr}
 {
   thd = std::unique_ptr<std::thread>(new std::thread( [=]{ this->Run(); } ) );
 }

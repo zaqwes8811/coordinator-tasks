@@ -1,4 +1,4 @@
-#include "heart/config.h"
+#include "config.h"
 
 #include "arch.h"
 
@@ -7,9 +7,8 @@
 // http://www.cplusplusdevelop.com/829_19589028/
 
 std::shared_ptr<SingleWorker> Dispatcher::s_dbWorker(new SingleWorker);
-//gc::SharedPtr
-std::shared_ptr
-<actors::UIActor> Dispatcher::s_ui_actor(new actors::UIActor);
+std::shared_ptr <actors::UIActor> Dispatcher::s_ui_actor(new actors::UIActor);
+
 //= std::make_shared<actors::UIActor>();
 
 void Dispatcher::Post(Ids id, SingleWorker::Callable fun) {
