@@ -7,5 +7,10 @@ all:
 
 	$(CC) test_glob_dispatcher.o threading.o -lstdc++ -lQt5Widgets -lQt5Core -o app
 
+
+folly:
+	# не смог собрать
+	echo "folly"
+
 clean:
 	rm *.o app

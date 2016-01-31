@@ -1,12 +1,11 @@
-#include "heart/config.h"
+#include "config.h"
 
-#include "common/app_types.h"
-#include "view/mainwindow.h"
-#include "model_layer/isolation.h"
+#include "app_types.h"
+#include "mainwindow.h"
+#include "isolation.h"
 #include "qt_event_loop.h"
 
 #include <QApplication>
-#include <actors_and_workers/actor_ui.h>
 
 namespace actors {
 class ModelListenerMediator :
