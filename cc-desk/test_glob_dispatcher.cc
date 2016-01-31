@@ -1,6 +1,6 @@
 #include "config.h"
 
-#include <actors_and_workers/arch.h>
+#include "threading.h"
 
 #include <QtWidgets/QApplication>
 #include <QtCore/QEvent>
@@ -13,29 +13,26 @@
 
 using namespace std;
 
-typedef function<void()> Callable;
-static const auto callable_type = QEvent::Type(1001);
-
-class JobEvent : public QEvent
+// fixme: поймать сигналы
+class Scope
 {
 public:
-	JobEvent( Callable job ) : QEvent( callable_type )
+	Scope( QObject* obj )
 	{
-		this->job = job;
+		Dispatcher::setQObject( obj );
+		Dispatcher::create();
 	}
 
-	void execute()
+	~Scope()
 	{
-		job();
+		Dispatcher::destroy();  // как это согласуется с сигналами?
 	}
-private:
-	Callable job;
 };
 
-class ExecutorQApplication : public QApplication
+class QtExecutor : public QApplication
 {
 public:
-	ExecutorQApplication( int argc, char **argv ) :
+	QtExecutor( int argc, char **argv ) :
 		QApplication( argc, argv )
 	{
 
@@ -51,21 +48,35 @@ private:
 	};
 };
 
-void thread_fn( ExecutorQApplication* app )
-{
-	this_thread::sleep_for( chrono::seconds( 2 ) );
-	JobEvent *e = new JobEvent([] {
-		cout << "hello" << endl;
-	});
+void job();
 
-	QApplication::postEvent( app, e );
+class Window
+{
+public:
+	void done( int val )
+	{
+		DCHECKTHREAD( Dispatcher::UI );
+		Dispatcher::PostTask( Dispatcher::DB, job );
+	}
+};
+
+Window gw;
+
+void job( )
+{
+	DCHECKTHREAD( Dispatcher::DB );
+
+	this_thread::sleep_for( chrono::seconds( 1 ) );
+	int val = 10;
+	Dispatcher::PostTask( Dispatcher::UI, bind( &Window::done, gw, val ) );
 }
 
 int main(int argc, char **argv)
 {
-	ExecutorQApplication app (argc, argv);
+	QtExecutor app( argc, argv );
+	Scope scope( &app );
 
-	thread t( [&app] { thread_fn( &app ); } );
+	Dispatcher::PostTask( Dispatcher::DB, job );
 
 	return app.exec();
 }

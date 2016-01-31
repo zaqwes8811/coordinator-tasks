@@ -38,36 +38,6 @@ void foo(int x) {
 
 MyExecutor ge;
 
-TEST(FollyTest, My) {
-  //auto e = MyExecutor();
-  MyExecutor e;
-
-  cout << "making Promise" << endl;
-  shared_ptr<Promise<int> > p = make_shared<Promise<int> >();
-  Future<int> f = p->getFuture();
-
-  // http://rsdn.ru/article/funcprog/monad.xml
-  auto work = [](Try<int>&& t) {
-    foo(t.value());
-  };
-
-  // continue
-  // work, but trouble. put in queue but destruct
-  f.via(&ge).then(work);
-
-  cout << "Future chain made" << endl;
-
-  // launch
-  e.add([p] {
-    cout << "fulfilling Promise" << endl;
-    p->setValue(42);
-    cout << "Promise fulfilled" << endl;
-  });
-
-  //while(true);
-  //boost::thread::(boost::chrono::seconds(2));
-}
-
 namespace mc {
 // Async api:
 //   Error handling
@@ -96,6 +66,37 @@ class MemcacheClient {
   // "This is slightly more useful than a synchronous API, but it's not yet ideal"
   Future<GetReply> async_get(std::string key);
 };
+}
+
+int main( )
+{
+  //auto e = MyExecutor();
+  MyExecutor e;
+
+  cout << "making Promise" << endl;
+  shared_ptr<Promise<int> > p = make_shared<Promise<int> >();
+  Future<int> f = p->getFuture();
+
+  // http://rsdn.ru/article/funcprog/monad.xml
+  auto work = [](Try<int>&& t) {
+    foo(t.value());
+  };
+
+  // continue
+  // work, but trouble. put in queue but destruct
+  f.via(&ge).then(work);
+
+  cout << "Future chain made" << endl;
+
+  // launch
+  e.add([p] {
+    cout << "fulfilling Promise" << endl;
+    p->setValue(42);
+    cout << "Promise fulfilled" << endl;
+  });
+
+  //while(true);
+  //boost::thread::(boost::chrono::seconds(2));
 }
 
 

@@ -12,3 +12,4 @@ tests-medium/node_modules
 /version-qt-desk/build/
 *.user
 *.db
+*~
