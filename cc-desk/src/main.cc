@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
   //std::cout << get_current_dir_name() << std::endl;
 
   auto db = build_database(DB_SQLITE);
-  auto f = Dispatcher::ActivateUiEventLoop(db);
+  auto f = Workers::ActivateUiEventLoop(db);
   return f.get();
 }
 
