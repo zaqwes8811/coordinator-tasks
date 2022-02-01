@@ -1,0 +1,10 @@
+java/workspace/.metadata/
+*.class
+*.obj
+*.exe
+*.idb
+*.pdb
+*.suo
+*.dep
+*.ncb
+*.user

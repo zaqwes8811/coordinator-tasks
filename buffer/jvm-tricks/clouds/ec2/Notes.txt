@@ -1,0 +1,34 @@
+﻿
+FIRST:Tomcat + Maven
+http://www.ibm.com/developerworks/library/os-eclipse-tomcat/
+http://www.coreservlets.com/Apache-Tomcat-Tutorial/eclipse.html#More-Info
+http://bigleap.co.in/corp/2013/06/running-maven-project-within-eclipse-on-tomcat/
+
+Elastic
+http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_Java.sdlc.html
+http://docs.aws.amazon.com/gettingstarted/latest/deploy/overview.html
+
+maven and spring
+http://java.awsblog.com/post/TxBQSY5CJQNVSN/AWS-SDK-for-Java-Maven-Archetype
+http://rodrigothescientist.wordpress.com/2012/08/08/deploying-a-java-web-application-to-a-linux-ec2-server-running-apache/
+
+https://help.ubuntu.com/community/EC2StartersGuide
+
+Apps
+http://java.awsblog.com/post/Tx27CIB2TYBWT3K/Eclipse-Deployment-Part-1-AWS-Java-Web-Applications
+http://blog.rajithdelantha.com/2011/10/complete-guide-to-deploy-java-web.html
+не получается добавить AWS Runtime
+
+DynamoDB
+http://aws.amazon.com/ru/blogs/aws/dynamodb-transaction-library/
+http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html
+400kb!!!!
+http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html
++ maven + local
+http://www.yegor256.com/2014/05/01/dynamodb-local-maven-plugin.html
+http://dynamodb.jcabi.com/
+
+Amazon SimpleDB 
+http://docs.aws.amazon.com/AmazonSimpleDB/latest/GettingStartedGuide/Welcome.html
+
+

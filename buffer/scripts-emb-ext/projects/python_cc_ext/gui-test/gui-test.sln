@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gui-test", "gui-test\gui-test.vcproj", "{5FF93677-A746-40B0-87AC-FF6C1AC75F5B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "console-clr", "console-clr\console-clr.vcproj", "{34BE4639-6BBD-4CF4-AB45-8CD6A0C24E1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5FF93677-A746-40B0-87AC-FF6C1AC75F5B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5FF93677-A746-40B0-87AC-FF6C1AC75F5B}.Debug|Win32.Build.0 = Debug|Win32
+		{5FF93677-A746-40B0-87AC-FF6C1AC75F5B}.Release|Win32.ActiveCfg = Release|Win32
+		{5FF93677-A746-40B0-87AC-FF6C1AC75F5B}.Release|Win32.Build.0 = Release|Win32
+		{34BE4639-6BBD-4CF4-AB45-8CD6A0C24E1C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{34BE4639-6BBD-4CF4-AB45-8CD6A0C24E1C}.Debug|Win32.Build.0 = Debug|Win32
+		{34BE4639-6BBD-4CF4-AB45-8CD6A0C24E1C}.Release|Win32.ActiveCfg = Release|Win32
+		{34BE4639-6BBD-4CF4-AB45-8CD6A0C24E1C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

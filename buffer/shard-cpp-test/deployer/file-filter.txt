@@ -1,0 +1,4 @@
+.pyc
+\.idea\
+\test-small\
+\test-medium\

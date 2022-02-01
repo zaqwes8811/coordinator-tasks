@@ -1,0 +1,39 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="app.css">
+
+<!-- jQuery -->
+  <script src="js/jquery-1.11.1.min.js" charset="UTF-8"></script>
+  <script src="engine.js" charset="UTF-8"></script>
+</head>
+
+<body onload="load()">
+<!--div>Empty</div-->
+<form class="form-inline" role="form">
+  <div class="form-group">
+    <!--input type="email" class="form-control" id="exampleInputEmail2" placeholder="1000 Вт"-->
+    <!--span class="label label-info">Info</span-->
+    <!--p style="font-size:25px"-->
+    <!--span class="ind-big">Мощность: </span><span class="label label-success ind-big">356 Вт</span-->
+    <!--/p-->
+    <!--a href="#">Мощность <span class="badge">590 Вт</span></a-->
+    <div class="btn-group">
+    <button type="button" class="btn btn-default btn-own-size">
+	<span class="ind-big">Мощность 1000 Вт</span>
+      </button>
+      <button type="button" class="btn btn-danger btn-own-size" onclick="up_power()">
+	<span class="glyphicon glyphicon-arrow-up"></span>
+      </button>
+      <button type="button" class="btn btn-danger btn-own-size" onclick="down_power()">
+	<span class="glyphicon glyphicon-arrow-down"></span>
+      </button>
+    </div>
+  </div>
+</form>
+
+ 
+<!-- поле ввода, и две кнопки - поднять и опустить -->
+</body>
+</html>

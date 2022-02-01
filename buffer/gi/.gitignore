@@ -1,0 +1,14 @@
+*.exe
+*.ncb
+*.obj
+*.o
+*.manifest
+*.ilk
+*.pch
+*.pdb
+*.htm
+*.res
+*.dep
+*.idb
+gi
+bare-forge/Trash

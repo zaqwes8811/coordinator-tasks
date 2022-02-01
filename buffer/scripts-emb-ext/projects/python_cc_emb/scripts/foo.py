@@ -1,0 +1,1 @@
+a_foo = Nonedef setup(a_foo_from_cxx):  print 'setup called with', a_foo_from_cxx  global a_foo  a_foo = a_foo_from_cxxdef run():  a_foo.doSomething()print 'main module loaded'

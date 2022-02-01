@@ -1,0 +1,11 @@
+https://github.com/zaqwes8811/gi.git
+
+$ git remote
+origin
+$ git remote add pb git://github.com/paulboone/ticgit.git
+$ git remote -v
+origin  git://github.com/schacon/ticgit.git
+pb  git://github.com/paulboone/ticgit.git
+And to push the data from the local repo to github, use
+
+$ git push origin master

@@ -1,0 +1,492 @@
+
+[Sat Dec 01 16:38:47 2012] [error] [client 127.0.0.1] Premature end of script headers: index.php
+[Sat Dec 01 16:38:48 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:39:15 2012] [error] [client 127.0.0.1] Premature end of script headers: index.php
+[Sat Dec 01 16:39:16 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:39:18 2012] [error] [client 127.0.0.1] Premature end of script headers: index.php
+[Sat Dec 01 16:39:19 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:40:26 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:40:51 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:41:21 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:41:24 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:42:00 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:42:12 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/index-up.html
+[Sat Dec 01 16:47:10 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:47:18 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/
+[Sat Dec 01 16:47:39 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/
+[Sat Dec 01 16:48:15 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:48:18 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/, referer: http://localhost/
+[Sat Dec 01 16:49:10 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:49:13 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/logs/, referer: http://localhost/
+[Sat Dec 01 16:49:24 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:49:26 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/, referer: http://localhost/
+[Sat Dec 01 16:50:52 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/, referer: http://localhost/
+[Sat Dec 01 16:51:04 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/, referer: http://localhost/
+[Sat Dec 01 16:52:31 2012] [notice] Parent: Received restart signal -- Restarting the server.
+[Sat Dec 01 16:52:31 2012] [notice] Child 520: Exit event signaled. Child process is ending.
+[Sat Dec 01 16:52:31 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 01 16:52:31 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 01 16:52:31 2012] [notice] Parent: Created child process 1188
+[Sat Dec 01 16:52:32 2012] [notice] Child 520: Released the start mutex
+[Sat Dec 01 16:52:33 2012] [notice] Child 1188: Child process is running
+[Sat Dec 01 16:52:33 2012] [notice] Child 1188: Acquired the start mutex.
+[Sat Dec 01 16:52:33 2012] [notice] Child 1188: Starting 64 worker threads.
+[Sat Dec 01 16:52:33 2012] [notice] Child 1188: Starting thread to listen on port 80.
+[Sat Dec 01 16:52:33 2012] [notice] Child 520: All worker threads have exited.
+[Sat Dec 01 16:52:33 2012] [notice] Child 520: Child process is exiting
+[Sat Dec 01 16:52:38 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:52:41 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/, referer: http://localhost/
+[Sat Dec 01 16:53:48 2012] [notice] Parent: Received restart signal -- Restarting the server.
+[Sat Dec 01 16:53:48 2012] [notice] Child 1188: Exit event signaled. Child process is ending.
+[Sat Dec 01 16:53:49 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 01 16:53:49 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 01 16:53:49 2012] [notice] Parent: Created child process 268
+[Sat Dec 01 16:53:49 2012] [notice] Child 268: Child process is running
+[Sat Dec 01 16:53:49 2012] [notice] Child 1188: Released the start mutex
+[Sat Dec 01 16:53:49 2012] [notice] Child 268: Acquired the start mutex.
+[Sat Dec 01 16:53:49 2012] [notice] Child 268: Starting 64 worker threads.
+[Sat Dec 01 16:53:49 2012] [notice] Child 268: Starting thread to listen on port 80.
+[Sat Dec 01 16:53:50 2012] [notice] Child 1188: All worker threads have exited.
+[Sat Dec 01 16:53:50 2012] [notice] Child 1188: Child process is exiting
+[Sat Dec 01 16:53:56 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/
+[Sat Dec 01 16:53:57 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:54:02 2012] [notice] Parent: Received restart signal -- Restarting the server.
+[Sat Dec 01 16:54:02 2012] [notice] Child 268: Exit event signaled. Child process is ending.
+[Sat Dec 01 16:54:02 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 01 16:54:02 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 01 16:54:02 2012] [notice] Parent: Created child process 2264
+[Sat Dec 01 16:54:03 2012] [notice] Child 2264: Child process is running
+[Sat Dec 01 16:54:03 2012] [notice] Child 268: Released the start mutex
+[Sat Dec 01 16:54:03 2012] [notice] Child 2264: Acquired the start mutex.
+[Sat Dec 01 16:54:03 2012] [notice] Child 2264: Starting 64 worker threads.
+[Sat Dec 01 16:54:04 2012] [notice] Child 2264: Starting thread to listen on port 80.
+[Sat Dec 01 16:54:04 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/
+[Sat Dec 01 16:54:05 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:54:08 2012] [notice] Child 268: All worker threads have exited.
+[Sat Dec 01 16:54:08 2012] [notice] Child 268: Child process is exiting
+[Sat Dec 01 16:54:52 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/
+[Sat Dec 01 16:54:53 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:54:54 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/
+[Sat Dec 01 16:54:55 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:56:11 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:57:02 2012] [notice] Parent: Received restart signal -- Restarting the server.
+[Sat Dec 01 16:57:02 2012] [notice] Child 2264: Exit event signaled. Child process is ending.
+[Sat Dec 01 16:57:02 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 01 16:57:02 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 01 16:57:02 2012] [notice] Parent: Created child process 972
+[Sat Dec 01 16:57:03 2012] [notice] Child 2264: Released the start mutex
+[Sat Dec 01 16:57:03 2012] [notice] Child 972: Child process is running
+[Sat Dec 01 16:57:03 2012] [notice] Child 972: Acquired the start mutex.
+[Sat Dec 01 16:57:03 2012] [notice] Child 972: Starting 64 worker threads.
+[Sat Dec 01 16:57:03 2012] [notice] Child 972: Starting thread to listen on port 80.
+[Sat Dec 01 16:57:04 2012] [notice] Child 2264: All worker threads have exited.
+[Sat Dec 01 16:57:04 2012] [notice] Child 2264: Child process is exiting
+[Sat Dec 01 16:57:09 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:57:15 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 16:57:17 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/upload/, referer: http://localhost/
+[Sat Dec 01 17:00:17 2012] [error] [client 127.0.0.1] Premature end of script headers: index.php
+[Sat Dec 01 17:00:18 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:00:34 2012] [error] [client 127.0.0.1] Premature end of script headers: index.php
+[Sat Dec 01 17:00:34 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:01:01 2012] [error] [client 127.0.0.1] Premature end of script headers: index.php
+[Sat Dec 01 17:01:01 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:01:20 2012] [error] [client 127.0.0.1] Premature end of script headers: index.php
+[Sat Dec 01 17:01:21 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:01:36 2012] [error] [client 127.0.0.1] Premature end of script headers: index.php
+[Sat Dec 01 17:01:37 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:01:37 2012] [error] [client 127.0.0.1] Premature end of script headers: index.php
+[Sat Dec 01 17:01:38 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:01:50 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:02:04 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:02:07 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:02:13 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:02:34 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:03:18 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:03:20 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/upload/, referer: http://localhost/
+[Sat Dec 01 17:03:47 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:03:49 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/upload/, referer: http://localhost/
+[Sat Dec 01 17:05:26 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:05:28 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/upload/, referer: http://localhost/
+[Sat Dec 01 17:05:49 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:06:06 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/index-up.html
+[Sat Dec 01 17:09:17 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:09:28 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:09:38 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/index-up.html
+[Sat Dec 01 17:11:03 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:11:08 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/index-up.html
+[Sat Dec 01 17:13:14 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:13:16 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/upload/, referer: http://localhost/
+[Sat Dec 01 17:13:38 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:13:40 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/
+[Sat Dec 01 17:13:47 2012] [notice] Parent: Received restart signal -- Restarting the server.
+[Sat Dec 01 17:13:47 2012] [notice] Child 972: Exit event signaled. Child process is ending.
+[Sat Dec 01 17:13:48 2012] [notice] Child 972: Released the start mutex
+[Sat Dec 01 17:13:49 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 01 17:13:49 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 01 17:13:49 2012] [notice] Parent: Created child process 2332
+[Sat Dec 01 17:13:50 2012] [notice] Child 2332: Child process is running
+[Sat Dec 01 17:13:50 2012] [notice] Child 2332: Acquired the start mutex.
+[Sat Dec 01 17:13:50 2012] [notice] Child 2332: Starting 64 worker threads.
+[Sat Dec 01 17:13:50 2012] [notice] Child 2332: Starting thread to listen on port 80.
+[Sat Dec 01 17:13:52 2012] [notice] Child 972: All worker threads have exited.
+[Sat Dec 01 17:13:52 2012] [notice] Child 972: Child process is exiting
+[Sat Dec 01 17:13:52 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:14:23 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/
+[Sat Dec 01 17:16:46 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:16:49 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/, referer: http://localhost/
+[Sat Dec 01 17:17:40 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:17:42 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/, referer: http://localhost/
+[Sat Dec 01 17:18:33 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:19:41 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:19:53 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:20:39 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:20:44 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/index-up.html
+[Sat Dec 01 17:21:13 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:21:23 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:22:03 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:22:25 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/index-up.html
+[Sat Dec 01 17:24:51 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:25:21 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:25:24 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/
+[Sat Dec 01 17:29:29 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:29:32 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/
+[Sat Dec 01 17:29:47 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:29:50 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/
+[Sat Dec 01 17:34:59 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:35:05 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/
+[Sat Dec 01 17:36:45 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:36:48 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/
+[Sat Dec 01 17:36:55 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:37:03 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/index-up.html
+[Sat Dec 01 17:38:48 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:38:52 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/index-up.html
+[Sat Dec 01 17:39:30 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:39:35 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/server/php/, referer: http://localhost/index-up.html
+[Sat Dec 01 17:41:26 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:41:29 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/logs/, referer: http://localhost/
+[Sat Dec 01 17:41:41 2012] [error] [client 127.0.0.1] Attempt to serve directory: D:/github/sbox-web/test-page/logs/, referer: http://localhost/
+[Sat Dec 01 17:41:49 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:41:51 2012] [error] [client 127.0.0.1] attempt to invoke directory as script: D:/github/sbox-web/test-page/cgi-bin/, referer: http://localhost/
+[Sat Dec 01 17:42:53 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a***R>http://www.google.ru/url failed, referer: http://habrahabr.ru/post/140400/
+[Sat Dec 01 17:43:07 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_ru/ru/CP1251/tmsec=soloway_total/827438710 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&372729&0&0&0&827438710&0&16019156692&iframe
+[Sat Dec 01 17:43:10 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_new/ru/CP1251/tmsec=soloway_13/827438710 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&372729&0&0&0&827438710&0&16019156692&iframe
+[Sat Dec 01 17:43:30 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_ru/ru/CP1251/tmsec=soloway_total/589520033 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373386&0&0&0&589520033&0&16019156692&html
+[Sat Dec 01 17:43:34 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_new/ru/CP1251/tmsec=soloway_11/589520033 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373386&0&0&0&589520033&0&16019156692&html
+[Sat Dec 01 17:43:36 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_ru/ru/CP1251/tmsec=soloway_total/51890587 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?1&323343&0&0&0&51890587&0&16019156692&html
+[Sat Dec 01 17:43:37 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_new/ru/CP1251/tmsec=soloway_11/51890587 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?1&323343&0&0&0&51890587&0&16019156692&html
+[Sat Dec 01 17:47:38 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:47:41 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:51:05 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:53:09 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:53:32 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 17:55:58 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a***R>http://www.google.ru/url failed, referer: http://habrahabr.ru/post/75420/
+[Sat Dec 01 17:56:01 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_ru/ru/CP1251/tmsec=soloway_total/672985713 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&372729&0&0&0&672985713&0&16019156692&iframe
+[Sat Dec 01 17:56:02 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_new/ru/CP1251/tmsec=soloway_11/672985713 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&372729&0&0&0&672985713&0&16019156692&iframe
+[Sat Dec 01 17:56:03 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_ru/ru/CP1251/tmsec=soloway_total/887673179 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373386&0&0&0&887673179&0&16019156692&html
+[Sat Dec 01 17:56:04 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_new/ru/CP1251/tmsec=soloway_11/887673179 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373386&0&0&0&887673179&0&16019156692&html
+[Sat Dec 01 17:57:16 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_new/ru/CP1251/tmsec=soloway_1/672985713 failed
+[Sat Dec 01 17:57:17 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid16019156692**soloway_new/ru/CP1251/tmsec=soloway_1/887673179 failed
+[Sat Dec 01 18:00:27 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 18:01:47 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 18:02:04 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/favicon.ico
+[Sat Dec 01 21:41:20 2012] [warn] pid file C:/opt/Apache Software Foundation/Apache2.2/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sat Dec 01 21:41:21 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 01 21:41:21 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 01 21:41:21 2012] [notice] Parent: Created child process 1200
+[Sat Dec 01 21:41:25 2012] [notice] Child 1200: Child process is running
+[Sat Dec 01 21:41:25 2012] [notice] Child 1200: Acquired the start mutex.
+[Sat Dec 01 21:41:25 2012] [notice] Child 1200: Starting 64 worker threads.
+[Sat Dec 01 21:41:25 2012] [notice] Child 1200: Starting thread to listen on port 80.
+[Sat Dec 01 21:47:21 2012] [warn] pid file C:/opt/Apache Software Foundation/Apache2.2/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sat Dec 01 21:47:22 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 01 21:47:22 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 01 21:47:22 2012] [notice] Parent: Created child process 2056
+[Sat Dec 01 21:47:24 2012] [notice] Child 2056: Child process is running
+[Sat Dec 01 21:47:24 2012] [notice] Child 2056: Acquired the start mutex.
+[Sat Dec 01 21:47:24 2012] [notice] Child 2056: Starting 64 worker threads.
+[Sat Dec 01 21:47:24 2012] [notice] Child 2056: Starting thread to listen on port 80.
+[Sat Dec 01 21:55:51 2012] [warn] pid file C:/opt/Apache Software Foundation/Apache2.2/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sat Dec 01 21:55:52 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 01 21:55:52 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 01 21:55:52 2012] [notice] Parent: Created child process 280
+[Sat Dec 01 21:55:53 2012] [notice] Child 280: Child process is running
+[Sat Dec 01 21:55:53 2012] [notice] Child 280: Acquired the start mutex.
+[Sat Dec 01 21:55:53 2012] [notice] Child 280: Starting 64 worker threads.
+[Sat Dec 01 21:55:53 2012] [notice] Child 280: Starting thread to listen on port 80.
+[Sat Dec 01 22:07:03 2012] [warn] pid file C:/opt/Apache Software Foundation/Apache2.2/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sat Dec 01 22:07:04 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 01 22:07:04 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 01 22:07:20 2012] [notice] Parent: Created child process 2412
+[Sat Dec 01 22:08:27 2012] [notice] Child 2412: Child process is running
+[Sat Dec 01 22:08:27 2012] [notice] Child 2412: Acquired the start mutex.
+[Sat Dec 01 22:08:27 2012] [notice] Child 2412: Starting 64 worker threads.
+[Sat Dec 01 22:08:27 2012] [notice] Child 2412: Starting thread to listen on port 80.
+[Sat Dec 01 22:26:44 2012] [warn] pid file C:/opt/Apache Software Foundation/Apache2.2/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sat Dec 01 22:26:45 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 01 22:26:45 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 01 22:26:49 2012] [notice] Parent: Created child process 3116
+[Sat Dec 01 22:26:59 2012] [notice] Child 3116: Child process is running
+[Sat Dec 01 22:26:59 2012] [notice] Child 3116: Acquired the start mutex.
+[Sat Dec 01 22:26:59 2012] [notice] Child 3116: Starting 64 worker threads.
+[Sat Dec 01 22:26:59 2012] [notice] Child 3116: Starting thread to listen on port 80.
+[Sat Dec 01 22:42:39 2012] [warn] pid file C:/opt/Apache Software Foundation/Apache2.2/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sat Dec 01 22:42:40 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 01 22:42:40 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 01 22:42:40 2012] [notice] Parent: Created child process 796
+[Sat Dec 01 22:42:41 2012] [notice] Child 796: Child process is running
+[Sat Dec 01 22:42:41 2012] [notice] Child 796: Acquired the start mutex.
+[Sat Dec 01 22:42:41 2012] [notice] Child 796: Starting 64 worker threads.
+[Sat Dec 01 22:42:41 2012] [notice] Child 796: Starting thread to listen on port 80.
+[Sat Dec 01 23:09:07 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/43123343 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?1&323343&0&0&0&43123343&0&17964953854&html
+[Sat Dec 01 23:09:07 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/922137489 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&372729&0&0&0&922137489&0&17964953854&iframe
+[Sat Dec 01 23:09:07 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/772663859 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373386&0&0&0&772663859&0&17964953854&html
+[Sun Dec 02 10:24:14 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/249316741 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373386&0&0&0&249316741&0&17964953854&html
+[Sun Dec 02 10:24:14 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/145558870 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&372729&0&0&0&145558870&0&17964953854&iframe
+[Sun Dec 02 11:49:35 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/980105269 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373386&0&0&0&980105269&0&17964953854&html
+[Sun Dec 02 11:49:35 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/811859279 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&372729&0&0&0&811859279&0&17964953854&iframe
+[Sun Dec 02 11:51:03 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/842230522 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&372729&0&0&0&842230522&0&17964953854&iframe
+[Sun Dec 02 11:51:12 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/356864884 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&367999&0&0&0&356864884&0&17964953854&html
+[Sun Dec 02 22:12:59 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/crossdomain.xml, referer: http://videomore.ru/player.swf?skin_id=2
+[Sun Dec 02 22:13:52 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/crossdomain.xml, referer: http://videomore.ru/player.swf?skin_id=2
+[Sun Dec 02 22:17:18 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/400822006 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?187281&350173&0&0&0&400822006&0&17964953854&html
+[Sun Dec 02 22:17:23 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/170386510 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?185357&352445&0&0&0&170386510&1&17964953854&javascript
+[Sun Dec 02 22:17:24 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_3/956940397 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?185062&360598&0&0&0&956940397&0&17964953854&html
+[Tue Dec 04 19:23:48 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/610146918 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&374586&0&0&0&610146918&0&17964953854&iframe
+[Tue Dec 04 19:23:48 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/79298640 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?1&323343&0&0&0&79298640&0&17964953854&html
+[Tue Dec 04 19:23:48 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/523665957 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373670&0&0&0&523665957&0&17964953854&html
+[Tue Dec 04 19:26:23 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/215672946 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&374586&0&0&0&215672946&0&17964953854&iframe
+[Tue Dec 04 19:26:26 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/670004365 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373641&0&0&0&670004365&0&17964953854&html
+[Tue Dec 04 20:12:38 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/597826074 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&374586&0&0&0&597826074&0&17964953854&iframe
+[Tue Dec 04 20:12:38 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/483386894 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373670&0&0&0&483386894&0&17964953854&html
+[Tue Dec 04 20:13:07 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_ru/ru/CP1251/tmsec=soloway_total/597826074 failed
+[Tue Dec 04 20:13:08 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_ru/ru/CP1251/tmsec=soloway_total/483386894 failed
+[Tue Dec 04 20:13:09 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/597826074 failed
+[Tue Dec 04 20:13:09 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/483386894 failed
+[Tue Dec 04 20:43:23 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/433550725 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&374586&0&0&0&433550725&0&17964953854&iframe
+[Tue Dec 04 20:43:24 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/141573340 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373641&0&0&0&141573340&0&17964953854&html
+[Tue Dec 04 22:24:33 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/511039468 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&373641&0&0&0&511039468&0&17964953854&html
+[Tue Dec 04 22:24:33 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/825182173 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&374586&0&0&0&825182173&0&17964953854&iframe
+[Tue Dec 04 22:24:49 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_ru/ru/CP1251/tmsec=soloway_total/825182173 failed
+[Tue Dec 04 22:24:49 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_ru/ru/CP1251/tmsec=soloway_total/511039468 failed
+[Tue Dec 04 22:24:50 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/511039468 failed
+[Tue Dec 04 22:24:50 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/825182173 failed
+[Wed Dec 05 19:56:46 2012] [warn] pid file C:/opt/Apache Software Foundation/Apache2.2/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Wed Dec 05 19:56:47 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Wed Dec 05 19:56:47 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Wed Dec 05 19:56:47 2012] [notice] Parent: Created child process 1484
+[Wed Dec 05 19:56:49 2012] [notice] Child 1484: Child process is running
+[Wed Dec 05 19:56:49 2012] [notice] Child 1484: Acquired the start mutex.
+[Wed Dec 05 19:56:49 2012] [notice] Child 1484: Starting 64 worker threads.
+[Wed Dec 05 19:56:49 2012] [notice] Child 1484: Starting thread to listen on port 80.
+[Fri Dec 07 18:54:01 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835654&text=walle&lr=2
+[Fri Dec 07 18:56:44 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835654&text=%D0%92+%D0%BF%D0%BE%CC%81%D0%B8%D1%81%D0%BA%D0%B0%D1%85+%D0%9D%D0%B5%CC%81%D0%BC%D0%BE&lr=2
+[Fri Dec 07 19:07:19 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835654&text=%D0%B2+%D0%BF%D0%BE%D0%B8%D1%81%D0%BA%D0%B0%D1%85+%D0%BD%D0%B5%D0%BC%D0%BE&lr=2
+[Fri Dec 07 21:04:03 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/65687169 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?1&323343&0&0&0&65687169&0&17964953854&html
+[Fri Dec 07 21:05:30 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****rbc_ru/ru/UTF-8/tmsec=smotri_flash/ failed, referer: http://pics.smotri.com/player.swf?file=v21947540b6c&bufferTime=3&autoStart=true&str_lang=rus&xmlsource=http%3A%2F%2Fpics.smotri.com%2Fcskins%2Fblue%2Fskin_color_grayaqua.xml&xmldatasource=http%3A%2F%2Fpics.smotri.com%2Fskin_ng.xml
+[Fri Dec 07 21:05:34 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a***R>http://yandex.ru/yandsearch failed, referer: http://pics.smotri.com/player.swf?file=v21947540b6c&bufferTime=3&autoStart=true&str_lang=rus&xmlsource=http%3A%2F%2Fpics.smotri.com%2Fcskins%2Fblue%2Fskin_color_grayaqua.xml&xmldatasource=http%3A%2F%2Fpics.smotri.com%2Fskin_ng.xml
+[Fri Dec 07 21:05:46 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a***R>http://video.yandex.ru/*myvi_ru/ru/UTF-8/tmsec=myvi_playerload/ failed, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:05:48 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a***R>http://video.yandex.ru/*myvi_ru/ru/UTF-8/tmsec=myvi_playerstart/ failed, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:05:51 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:08:33 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:12:02 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:12:15 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:12:22 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:15:39 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:17:47 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:17:49 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:21:54 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:23:58 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:27:23 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:37:37 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:42:11 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:48:14 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:49:50 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:52:47 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 21:53:01 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:11:36 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:18:48 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:18:49 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:19:48 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:24:12 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:25:45 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a***R>http://video.yandex.ru/*myvi_ru/ru/UTF-8/tmsec=myvi_playerload/ failed, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:25:46 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a***R>http://video.yandex.ru/*myvi_ru/ru/UTF-8/tmsec=myvi_playerstart/ failed, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:25:47 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:25:55 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:26:00 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:26:06 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:26:11 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:26:17 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:26:22 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:26:27 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:26:33 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:26:38 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:26:43 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:26:49 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:26:54 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:00 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:05 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:10 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:16 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:21 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:25 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:30 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:36 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:41 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:46 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:52 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:27:57 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:28:02 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:28:08 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:28:13 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:28:19 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:28:24 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:28:29 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:28:35 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:28:40 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:28:45 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:28:51 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:28:56 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:29:02 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:29:07 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:29:12 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:29:18 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:29:23 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:29:28 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:29:34 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:29:39 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:29:44 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:29:50 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:29:55 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:30:01 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:30:06 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:30:11 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:30:17 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:30:22 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:30:27 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:30:33 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:30:38 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:30:44 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:30:49 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:30:54 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:00 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:05 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:10 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:16 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:21 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:27 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:32 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:37 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:43 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:48 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:53 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:31:59 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:32:04 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:32:10 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:32:15 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:32:20 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:32:26 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:32:31 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:32:36 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:32:42 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:32:47 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:32:52 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:32:58 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:33:03 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:33:09 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:33:14 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:33:19 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:33:25 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:33:30 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:33:35 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:33:41 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:33:46 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:33:51 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:33:57 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:34:02 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:34:08 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:34:13 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:34:18 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:34:24 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:34:30 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:34:35 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:34:41 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:34:46 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:34:53 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:34:58 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:35:04 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:35:09 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:35:14 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:35:18 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:35:24 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:35:29 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:35:35 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:35:40 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:35:46 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:35:49 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:35:52 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:36:05 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:36:10 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:36:11 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:36:17 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:36:22 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:36:27 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:36:33 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:36:39 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:36:45 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Fri Dec 07 22:36:50 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Sat Dec 08 10:26:59 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Sat Dec 08 10:27:05 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Sat Dec 08 10:27:11 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Sat Dec 08 10:27:17 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Sat Dec 08 10:27:22 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Sat Dec 08 10:27:28 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Sat Dec 08 10:27:33 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Sat Dec 08 10:27:47 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/blockcounter, referer: http://myvi.ru/ru/flash/player/ozUo6apYV6G10WgbgOKZmoeYKKgBKxsGQ0?ap=1
+[Sat Dec 08 14:08:44 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835654&text=%D0%BA%D0%BE%D1%80%D0%BE%D0%BB%D0%B5%D0%B2%D1%81%D0%B5%D1%82%D0%B2%D0%BE+%D0%BF%D0%BE%D0%BB%D0%BD%D0%BE%D0%B9+%D0%BB%D1%83%D0%BD%D1%8B&lr=2
+[Sat Dec 08 14:09:01 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/221121875 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?172888&0&0&0&0&221121875&1&17964953854&javascript
+[Sat Dec 08 14:09:08 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/599493110 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?172888&292347&0&0&0&599493110&1&17964953854&javascript
+[Sat Dec 08 14:13:33 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835654&text=python+%D1%81%D0%BC%D0%B5%D0%BD%D0%B8%D1%82%D1%8C+%D1%80%D0%B0%D0%B1%D0%BE%D1%87%D1%83%D1%8E+%D0%B4%D0%B8%D1%80%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%B8%D1%8E&lr=2
+[Sat Dec 08 14:13:37 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?text=%D0%BA%D0%BE%D1%80%D0%BE%D0%BB%D0%B5%D0%B2%D1%81%D1%82%D0%B2%D0%BE+%D0%BF%D0%BE%D0%BB%D0%BD%D0%BE%D0%B9+%D0%BB%D1%83%D0%BD%D1%8B+%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C+%D0%BE%D0%BD%D0%BB%D0%B0%D0%B9%D0%BD&clid=1835654&lr=2
+[Sat Dec 08 17:21:34 2012] [warn] pid file C:/opt/Apache Software Foundation/Apache2.2/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Sat Dec 08 17:21:35 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Sat Dec 08 17:21:35 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Sat Dec 08 17:21:35 2012] [notice] Parent: Created child process 1076
+[Sat Dec 08 17:21:36 2012] [notice] Child 1076: Child process is running
+[Sat Dec 08 17:21:36 2012] [notice] Child 1076: Acquired the start mutex.
+[Sat Dec 08 17:21:36 2012] [notice] Child 1076: Starting 64 worker threads.
+[Sat Dec 08 17:21:36 2012] [notice] Child 1076: Starting thread to listen on port 80.
+[Sat Dec 08 21:10:56 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_5/28635686 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?1&323343&0&0&0&28635686&0&17964953854&html
+[Sun Dec 09 10:23:23 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835654&text=cpplint.py
+[Sun Dec 09 12:34:03 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835654&text=gtest+in+vs
+[Sun Dec 09 13:53:40 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?text=gtest+in+visual+s&clid=1835654&lr=2
+[Sun Dec 09 22:25:13 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_4/50121137 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?1&323343&0&0&0&50121137&0&17964953854&html
+[Sun Dec 09 22:44:50 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/crossdomain.xml, referer: http://img.mail.ru/r/video2/uvpv3.swf
+[Mon Dec 10 19:11:13 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835654&text=%D0%B2+%D0%BF%D0%BE%D0%B8%D1%81%D0%BA%D0%B0%D1%85+%D0%BD%D0%B5%D0%BC%D0%BE&lr=2
+[Mon Dec 10 19:14:51 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?text=%D0%B2+%D0%BF%D0%BE%D0%B8%D1%81%D0%BA%D0%B0%D1%85+%D0%BD%D0%B5%D0%BC%D0%BE+english&clid=1835654&lr=2
+[Mon Dec 10 20:37:53 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835654&text=%D1%85%D1%8D%D1%88+%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D1%8F+%D1%81%D1%82%D1%80%D0%BE%D0%BA%D0%B8
+[Tue Dec 11 20:05:07 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835657&text=youtobe&lr=2
+[Tue Dec 11 20:42:33 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835654&text=JBM+%E2%80%93+Friends+For+Fireworks+&lr=2
+[Tue Dec 11 20:43:04 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?text=JBM+%E2%80%93+Friends+For+Fireworks+%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4&clid=1835654&lr=2
+[Wed Dec 12 19:23:46 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?win=34&clid=1835657&text=c%2B%2B+configuratuon+library
+[Wed Dec 12 19:24:03 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_4/450356196 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&375969&0&0&0&450356196&0&17964953854&html
+[Wed Dec 12 19:24:04 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_4/788444178 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&375503&0&0&0&788444178&0&17964953854&iframe
+[Wed Dec 12 19:24:07 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_4/94063033 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?1&323343&0&0&0&94063033&0&17964953854&html
+[Wed Dec 12 19:29:54 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?text=yaml&clid=1835657&lr=2
+[Wed Dec 12 19:31:18 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a****advert_ru/ru/CP1251/tmsec=mobyandexnavigator_yandex-poisk/random failed, referer: http://yandex.ru/yandsearch?text=yaml+vs+libconfig&clid=1835657&lr=2
+[Wed Dec 12 20:45:12 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_4/771631390 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&375969&0&0&0&771631390&0&17964953854&html
+[Wed Dec 12 20:45:12 2012] [error] [client 127.0.0.1] (20025)The given path contained wildcard characters: access to /V13a**aid17964953854**soloway_new/ru/CP1251/tmsec=soloway_4/36969545 failed, referer: http://content.adriver.ru/banners/0001781/0001781109/0/0.html?176776&375503&0&0&0&36969545&0&17964953854&iframe
+[Thu Dec 13 20:49:38 2012] [error] [client 127.0.0.1] File does not exist: D:/github/sbox-web/test-page/crossdomain.xml, referer: http://img.mail.ru/r/video2/uvpv3.swf
+[Fri Dec 14 18:30:50 2012] [warn] pid file C:/opt/Apache Software Foundation/Apache2.2/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Fri Dec 14 18:30:51 2012] [notice] Apache/2.2.22 (Win32) configured -- resuming normal operations
+[Fri Dec 14 18:30:51 2012] [notice] Server built: Jan 28 2012 11:16:39
+[Fri Dec 14 18:30:51 2012] [notice] Parent: Created child process 1348
+[Fri Dec 14 18:32:04 2012] [notice] Child 1348: Child process is running
+[Fri Dec 14 18:32:04 2012] [notice] Child 1348: Acquired the start mutex.
+[Fri Dec 14 18:32:04 2012] [notice] Child 1348: Starting 64 worker threads.
+[Fri Dec 14 18:32:04 2012] [notice] Child 1348: Starting thread to listen on port 80.
+[Fri Dec 14 21:57:58 2012] [notice] Parent: Received shutdown signal -- Shutting down the server.
+[Fri Dec 14 21:57:58 2012] [notice] Child 1348: Exit event signaled. Child process is ending.
+[Fri Dec 14 21:58:00 2012] [notice] Child 1348: Released the start mutex
+[Fri Dec 14 21:58:01 2012] [notice] Child 1348: All worker threads have exited.
+[Fri Dec 14 21:58:01 2012] [notice] Child 1348: Child process is exiting
+[Fri Dec 14 21:58:01 2012] [notice] Parent: Child process exited successfully.

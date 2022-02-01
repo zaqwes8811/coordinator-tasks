@@ -1,0 +1,8 @@
+v8_base.ia32.lib;WSock32.Lib;v8_snapshot.lib;icuuc.lib;icui18n.lib;WINMM.LIB;%(AdditionalDependencies)
+
+$(VCInstallDir)bin;$(WindowsSdkDir)bin\NETFX 4.0 Tools;$(WindowsSdkDir)bin;$(VSInstallDir)Common7\Tools\bin;$(VSInstallDir)Common7\tools;$(VSInstallDir)Common7\ide;$(ProgramFiles)\HTML Help Workshop;$(FrameworkSDKDir)\bin;$(MSBuildToolsPath32);$(VSInstallDir);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH);
+D:\home\work-libs\v8\include;..\..\..\..\third_party\fused-src;$(IncludePath)
+$(VCInstallDir)atlmfc\lib;$(VCInstallDir)lib
+D:\home\work-libs\v8\build\Debug\lib;$(LibraryPath)
+$(VCInstallDir)atlmfc\src\mfc;$(VCInstallDir)atlmfc\src\mfcm;$(VCInstallDir)atlmfc\src\atl;$(VCInstallDir)crt\src;
+$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;$(MSBuildToolsPath32);$(VCInstallDir)atlmfc\lib;$(VCInstallDir)lib;

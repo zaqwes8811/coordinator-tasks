@@ -1,0 +1,19 @@
+Mismatch:
+Granularity - Sometimes you will have an object model which has more classes than the number of corresponding tables in the database. 
+//FIXME: а как это сделать? классов больше чем таблиц?!
+
+Inheritance - no in RDBMS
+
+Identity - id vd equal or ==
+
+Associations - ref vs foreign key
+
+Navigation - diff very
+
+// crud
+
+// opt. - smart fetching strategies
+dirty checking - 
+http://java.dzone.com/articles/anatomy-hibernate-dirty
+
+lazy association fetching - 

@@ -1,0 +1,9 @@
+# Notes about cluster
+cluster:
+  count_core_roughly: 6
+  
+  # Can't run two MapReduce without relaxation
+  delay_after_estimate: 1.0  
+  
+  # Wait sec.
+  how_much_wait_result: 2.0

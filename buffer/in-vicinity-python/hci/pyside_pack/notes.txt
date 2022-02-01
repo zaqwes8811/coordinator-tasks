@@ -1,0 +1,1 @@
+http://wiki.qt.io/Packaging_PySide_applications_on_Windows

@@ -1,0 +1,1 @@
+# http://stackoverflow.com/questions/1732438/run-all-unit-test-in-python-directory

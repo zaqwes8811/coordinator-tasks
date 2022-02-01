@@ -1,0 +1,2 @@
+# Wait result sec. Need to protection from deadlock, but affected if many tests.
+how_much_wait_result: 7.0

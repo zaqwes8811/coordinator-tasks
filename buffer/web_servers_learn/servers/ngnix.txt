@@ -1,0 +1,17 @@
+# Info
+http://blog.martinfjordvald.com/2010/07/nginx-primer/
+http://webcrunch.ru/library/development/system-architecture/nginx-what-for/
+
+kill -HUP `cat /usr/local/nginx/logs/nginx.pid`
+
+/var/run/nginx.pid
+
+/usr/local/nginx/sbin/nginx -s stop
+
+# config
+/usr/bin/nginx -t -c ~/mynginx.conf
+
+/usr/local/nginx/conf/nginx.conf
+
+
+/usr/local/nginx/sbin/nginx -t -c /home/zaqwes/job/tmp_remote_control/ngnix.conf 

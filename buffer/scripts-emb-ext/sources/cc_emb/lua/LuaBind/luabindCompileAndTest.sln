@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lbindBuild", "lbindBuild\lbindBuild.vcproj", "{80DD6222-6765-445C-8843-C3A17DD10FFC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testLuaBind", "testLuaBind\testLuaBind.vcproj", "{C7C16004-128C-43EA-9F06-F1CFE757CBCA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80DD6222-6765-445C-8843-C3A17DD10FFC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{80DD6222-6765-445C-8843-C3A17DD10FFC}.Debug|Win32.Build.0 = Debug|Win32
+		{80DD6222-6765-445C-8843-C3A17DD10FFC}.Release|Win32.ActiveCfg = Release|Win32
+		{80DD6222-6765-445C-8843-C3A17DD10FFC}.Release|Win32.Build.0 = Release|Win32
+		{C7C16004-128C-43EA-9F06-F1CFE757CBCA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C7C16004-128C-43EA-9F06-F1CFE757CBCA}.Debug|Win32.Build.0 = Debug|Win32
+		{C7C16004-128C-43EA-9F06-F1CFE757CBCA}.Release|Win32.ActiveCfg = Release|Win32
+		{C7C16004-128C-43EA-9F06-F1CFE757CBCA}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

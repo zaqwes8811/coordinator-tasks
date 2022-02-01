@@ -1,0 +1,2 @@
+﻿http://java-performance.info/jmh/
+Не ясно какие вообще данные можно извлеч

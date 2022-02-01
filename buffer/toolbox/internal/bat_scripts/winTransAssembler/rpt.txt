@@ -1,0 +1,39 @@
+D:\Projects
+D:\
+'dir /s/b *pdf.txt'
+D:\Projects\Speech\books\main\2005_CELP_Presentation\Design_of_a_CELP_coder_and_analysis_of_various_quantization_techniques.pdf.txt
+Скопировано файлов:         1.
+Скопировано файлов:         1.
+D:\Projects\Speech\books\main\2005_CELP_Presentation\CELPPresentation.pdf.txt
+Скопировано файлов:         1.
+Скопировано файлов:         1.
+D:\Projects\Speech\books\main\2003_wai_c_chu_speech_coding_algorithms_foundation_and_evolution\558917_27D47_wai_c_chu_speech_coding_algorithms_foundation_and_evolution.pdf.txt
+Скопировано файлов:         1.
+Скопировано файлов:         1.
+D:\Projects\Speech\books\main\CELP_Presentation\Design_of_a_CELP_coder_and_analysis_of_various_quantization_techniques.pdf.txt
+Скопировано файлов:         1.
+Скопировано файлов:         1.
+D:\Projects\Speech\books\main\CELP_Presentation\CELP_Presentation.pdf.txt
+Скопировано файлов:         1.
+Скопировано файлов:         1.
+D:\Projects\Speech\books\main\wai_c_chu_speech_coding_algorithms_foundation_and_evolution\558917_27D47_wai_c_chu_speech_coding_algorithms_foundation_and_evolution.pdf.txt
+Скопировано файлов:         1.
+Скопировано файлов:         1.
+D:\Projects\Speech\books\for_offo\Shel\Шелухин_О.И.,_Лукьянцев_Н.Ф._Цифровая_обработка_и_передача_речи._-_М.,_Радио_и_связь,_2000._-_456с._ил.pdf.txt
+Не удается найти указанный файл.
+Не удается найти указанный файл.
+D:\Projects\sleep\hard\ip_reed_solomon\repo_svn\ddfaf\subblocks\arch_examples\Year2010Volume10_03_04.pdf.txt
+Скопировано файлов:         1.
+Скопировано файлов:         1.
+D:\Core\hard_soxc_emb\opt\active\10.1.1.138.3024.pdf.txt
+Скопировано файлов:         1.
+Скопировано файлов:         1.
+D:\Core\hard_soxc_emb\opt\active\10.1.1.163.449.pdf.txt
+Скопировано файлов:         1.
+Скопировано файлов:         1.
+D:\Core\hard_soxc_emb\opt\active\C2_ICC06.pdf.txt
+Скопировано файлов:         1.
+Скопировано файлов:         1.
+D:\Core\hard_soxc_emb\opt\active\iolts07.pdf.txt
+Скопировано файлов:         1.
+Скопировано файлов:         1.

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<application xmlns="http://ns.adobe.com/air/application/2.7"> 
+    <id>examples.html.Planthi</id> 
+    <versionNumber>0.1</versionNumber> 
+    <filename>Planthi</filename> 
+    <initialWindow> 
+	<!--<systemChrome>none</systemChrome>-->
+	<systemChrome>none</systemChrome>
+	<transparent>true</transparent>
+        <content>test.html</content> 
+        <visible>true</visible> 
+        <width>320</width> 
+        <height>400</height> 
+    </initialWindow> 
+</application>

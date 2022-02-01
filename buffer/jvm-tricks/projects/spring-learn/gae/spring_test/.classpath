@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/zaqwes/opt/java-spring/mvc/spring-webmvc-3.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/zaqwes/opt/java-spring/mvc/spring-web-3.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/zaqwes/opt/java-spring/mvc/spring-expression-3.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/zaqwes/opt/java-spring/mvc/spring-core-3.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/zaqwes/opt/java-spring/mvc/spring-context-support-3.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/zaqwes/opt/java-spring/mvc/spring-context-3.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/zaqwes/opt/java-spring/mvc/spring-beans-3.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/zaqwes/opt/java-spring/mvc/spring-asm-3.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/zaqwes/opt/java-spring/mvc/spring-aop-3.1.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/zaqwes/opt/java-spring/mvc/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/zaqwes/opt/java-spring/mvc/aopalliance-1.0.jar"/>
+	<classpathentry kind="output" path="war/WEB-INF/classes"/>
+</classpath>

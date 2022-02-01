@@ -1,0 +1,1 @@
+http://stackoverflow.com/questions/6414788/how-can-i-add-a-custom-command-to-visual-studio

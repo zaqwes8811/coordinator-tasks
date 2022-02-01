@@ -1,0 +1,2 @@
+http://clang-analyzer.llvm.org/checker_dev_manual.html
+http://www.youtube.com/watch?v=JSjoCisIHcM&index=3&list=LLORkb6XxvxHXaX9Kb9DB_iw

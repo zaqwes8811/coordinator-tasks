@@ -1,0 +1,22 @@
+# http://stackoverflow.com/questions/1250608/passing-a-gcc-flag-through-makefile
+#
+# Symbolizer
+#   http://llvm.org/docs/CommandGuide/llvm-symbolizer.html
+
+CC=g++
+
+CFLAGS_l=$(CFLAGS) -m32 -fsanitize=address -O1 -fno-omit-frame-pointer -g
+LDFLAGS_l=$(LDFLAGS) -m32 -lasan -fsanitize=address
+
+all:  prog 
+
+prog: hx64_tx86
+
+hx64_tx86: working_asan_bench.o
+	$(CC) $(LDFLAGS_l) working_asan_bench.o -o  $@
+
+working_asan_bench.o: tests/working_asan_bench.cc
+	$(CC) -c $(CFLAGS_l) tests/working_asan_bench.cc -o $@
+
+clean:
+	rm hx64_tx86 *.o

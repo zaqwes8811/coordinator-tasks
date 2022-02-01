@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sourceRoot": "",
+  "sources": ["../lib/_internal/lib/collection_dev_patch.dart","../lib/core/print.dart","learn_dart.dart"],
+  "names": ["printToConsole","print","tmp"],
+  "mappings": "A;A,yC;A,kE;A,6D;A,sE;A,8D;A,uE;A,qD;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;;A;A;;A,kB;A;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;E;A,yB,wB,A,E,C,E;A,c,C,CAgBM;;;AAIF;;;;AAOA;;;AAKA;;;AAMA;;;CAOJ,A,C;A,c,a,A,E,C,E;A,K,C,CCvCA;EAGIA;CAIJ,A;;A,M,C,E,C,C,S,C;;A,Q,C,E,C,C,G,C,C;A,K,mB,A,E,C,E;A,I,C,CCLA;EAOEC,mBADWC;CAIb,A;;A,Y,C,E,C,C,uB,C,C;C;A;A;A;;A,0B;A,uB;A,yB;A,C,C,W,C,C,C,I;A;A,I,C,e,C,C,C,C,C,C;A;iB;A;A;A;A;;;;A;;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A;A,uB;A;;;;;;;;;;;;;;;;;;;;;;;;;;;;;A,qB;A;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;A"
+}

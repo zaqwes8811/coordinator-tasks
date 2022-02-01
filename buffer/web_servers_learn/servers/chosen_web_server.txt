@@ -1,0 +1,3 @@
+http://unix.stackexchange.com/questions/39578/webserver-for-embedded-linux
+http://hostingfu.com/article/nginx-vs-lighttpd-for-a-small-vps
+  Nginx, Lig..

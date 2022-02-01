@@ -1,0 +1,10 @@
+JSON пресеры
+- gson
+- jackson - может даже лучше gson
+http://stackoverflow.com/questions/2378402/jackson-vs-gson
+
+Spring MVC Gae
+https://cloud.google.com/appengine/articles/spring_optimization
+
+Sping MVC - http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html
+Spring Secure

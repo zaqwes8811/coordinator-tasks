@@ -1,0 +1,3 @@
+Learn:
+http://levelup.lishman.com/hibernate/getting-started/index.php
+http://www.tutorialspoint.com/hibernate/hibernate_criteria_queries.htm

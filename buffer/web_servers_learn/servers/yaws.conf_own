@@ -1,0 +1,13 @@
+# stop deamon
+# /etc/init.d/yaws   ls -l /etc/init.d/yaws
+#
+# #kate /etc/yaws/yaws.conf &
+
+logdir = /var/log/yaws
+<server localhost>
+	port = 8081
+	listen = 0.0.0.0
+	# Если демон, то не видит стили
+	docroot = /home/zaqwes/work/human-computer-interaction-space/web_servers_learn
+	allowed_scripts = cgi py  # разрешаем cgi. на py что-то не отреагировал
+</server>

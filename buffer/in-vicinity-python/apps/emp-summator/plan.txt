@@ -1,0 +1,17 @@
+Модели вычислений: 
+- http://www.youtube.com/watch?v=Zc54gFhdpLA&list=PLUl4u3cNGP61Oq3tWYp6V_F-5jb5L2iHb
+
+Algorithms primitives:
+- memory models - stack, static, heap
+- serial, if, for, subprogramm, input/output
+- data stream
+- map, transpose, gather, scatter, stentil, - https://www.udacity.com/course/cs344
+- reduce, scan, histogramm, sort, filter
+- divide and conquer
+
+States:
+- state
+- key-value
+- fsm, getters and setters
+- List, Map, Set etc.
+
