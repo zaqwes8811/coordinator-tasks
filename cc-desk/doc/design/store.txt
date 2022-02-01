@@ -1,6 +1,0 @@
-PostgreSQL - pqxx
-SQLite - C lib
-
-# ORM
-ODB - GPL...
-https://github.com/paulftw/hiberlite - SQLite only

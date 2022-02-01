@@ -1,1 +1,0 @@
-"Easy Asynchrony with C#: No More Callbacks!"
