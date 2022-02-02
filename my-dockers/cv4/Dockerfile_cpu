@@ -1,0 +1,228 @@
+# 0. install nvidia-docker2
+
+# 1. ...
+
+# https://elitedatascience.com/keras-tutorial-deep-learning-in-python
+# sudo docker build -t cv4:latest -f `pwd`/Dockerfile_cpu `pwd`
+
+# sudo docker start cv4_00
+# sudo docker exec -it cv4_00 bash
+
+# Stopped...
+# https://hub.docker.com/r/eipdev/alpine-jupyter-notebook/~/dockerfile/
+#FROM alpine:latest
+# https://stackoverflow.com/questions/43840365/does-alpine-apk-have-an-ubuntu-apt-no-install-recommends-equivalent
+# RUN apk update && apk add wget && rm -rf /var/cache/apk/*
+
+# now Ubuntu
+# https://blog.ubuntu.com/2018/07/09/minimal-ubuntu-released
+# https://www.zdnet.com/article/minimal-ubuntu-for-containers-and-clouds/
+# 18 now minimal
+# https://github.com/tianon/docker-brew-ubuntu-core/tree/c7e9f7353aa24d1c35f501e06382aed1b540e85f
+#FROM ubuntu:16.04  # нужна cuda
+# Понадобилась cuda runtime
+#FROM ubuntu:18.04
+#FROM nvidia/cuda:7.5-devel
+# FROM nvidia/cuda:7.5-cudnn5-runtime
+#FROM nvidia/cuda:8.0-cudnn5-runtime
+# но потом почему-то cudnn 7 доставляется
+# не хочется тащить все
+# FROM nvidia/cuda:7.5-cudnn5-devel
+
+FROM nvidia/cuda:8.0-devel
+
+LABEL authors="Igor Lugansky <igor.a.lugansky@gmail.com>"
+
+RUN apt-get update && apt-get install -y \
+	build-essential \
+    git-core wget \
+    nano \
+    curl \
+    libtbb-dev \
+    libblas-dev liblapack-dev gfortran \
+	libatlas-base-dev libopenblas-dev \
+ 	&& rm -rf /var/lib/apt/lists/* 
+
+# Attention!! Проблемманая вещь если нужно доставить пакетов
+#
+# http://pythonwise.blogspot.com/2015/04/docker-miniconda-perfect-match.html
+# wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
+# задает вопросы
+RUN curl -LO https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh \
+	&& bash Miniconda2-latest-Linux-x86_64.sh -p /root/miniconda2 -b \
+	&& rm Miniconda2-latest-Linux-x86_64.sh
+
+# Split
+# matplotlib jupyterlab ipywidgets
+RUN /root/miniconda2/bin/pip install cython \
+	&& /root/miniconda2/bin/conda update -y conda \
+	&& /root/miniconda2/bin/conda install scipy nose sphinx pydot-ng mkl numpy \
+	&& /root/miniconda2/bin/conda clean -tisy
+
+#
+#
+#
+#
+# no mkl support really
+# (!!!) https://www.elliottforney.com/blog/npspmkl/ - numpy + mkl
+# http://lqdc.github.io/compiling-numpy-and-scipy-with-intel-mkl.html
+# http://markus-beuckelmann.de/blog/boosting-numpy-blas.html
+#
+#RUN /root/miniconda2/bin/python -c "import numpy; numpy.show_config();"
+
+
+# https://github.com/conda/conda/issues/6948 !!!
+# CPU only
+# !!! https://github.com/SciTools/cartopy/issues/853
+# --no-update-dependencies
+# https://stackoverflow.com/questions/23974217/how-do-i-revert-to-a-previous-package-in-anaconda
+# перезаливает либы
+# https://stackoverflow.com/questions/31498447/why-does-conda-update-downgrade-some-libraries/31501035
+# RUN /root/miniconda2/bin/conda config --show
+
+# http://www.damian.oquanta.info/posts/how-to-pin-conda.html
+# --no-update-dependencies
+# https://stackoverflow.com/questions/48726621/is-it-possible-to-lock-versions-of-packages-in-anaconda
+#
+# RUN touch /root/miniconda2/conda-meta/pinned
+# RUN /root/miniconda2/bin/conda config --set auto_update_conda False
+# RUN /root/miniconda2/bin/conda config --add pinned_packages 'mkl-2019.1-144'
+# RUN echo "mkl ==2019.1-144" >> /root/miniconda2/conda-meta/pinned
+# RUN ls /root/miniconda2/conda-meta | grep pin && cat /root/miniconda2/conda-meta/pinned
+RUN /root/miniconda2/bin/pip install tensorflow==1.10.0
+RUN find /root | grep mkl
+
+# http://lqdc.github.io/compiling-numpy-and-scipy-with-intel-mkl.html
+#RUN /root/miniconda2/bin/python -c "import numpy; numpy.show_config(); import mkl"
+RUN /root/miniconda2/bin/pip install --upgrade pip
+
+
+# RUN /root/miniconda2/bin/conda install -c defaults -c conda-forge \
+# 	tensorflow==1.10.0 --dry-run
+ # \
+ 	# && /root/miniconda2/bin/conda clean -tisy
+
+# RUN /root/miniconda2/bin/conda install --no-update-dependencies keras=2.0.2 \
+# 	&& /root/miniconda2/bin/conda clean -tisy
+# RUN /root/miniconda2/bin/conda install --no-update-dependencies scikit-learn \
+# 	&& /root/miniconda2/bin/conda clean -tisy
+
+
+# https://github.com/opencv/opencv_contrib/issues/1131
+RUN apt-get update && apt-get install -y \
+	libcurl4-openssl-dev \
+	libleptonica-dev libtesseract-dev \
+	zlib1g-dev \
+ 	&& rm -rf /var/lib/apt/lists/* 
+
+RUN wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz \
+	&& tar -xvf cmake-3.10.0.tar.gz \
+	&& cd cmake-3.10.0 && ./bootstrap --system-curl && make -j9 && make install && cd ..
+
+# opencvmake
+# for slow inet and debug
+RUN cd / \
+	&& wget https://github.com/opencv/opencv/archive/4.0.0.tar.gz \
+	&& wget https://github.com/opencv/opencv_contrib/archive/4.0.0.tar.gz -O opencv_contrib-4.0.0.tar.gz
+
+# https://www.webuildinternet.com/2016/06/28/installing-opencv-with-tesseract-text-module-on-ubuntu/
+# python is special here
+# https://github.com/opencv/opencv_contrib/issues/1301
+# fatal error: boostdesc_bgm.i: No such file or directory
+# Checking for modules 'tesseract;lept'
+#
+# Cuda old
+# nvcc fatal   : Unsupported gpu architecture 'compute_60'
+#
+# re.c:68:21: note: #pragma message: Atomic operations are not supported by this compiler. 
+
+RUN cd / \
+	&& tar -xvf 4.0.0.tar.gz \
+	&& tar -xvf opencv_contrib-4.0.0.tar.gz \
+	&& cd opencv-4.0.0 && mkdir build && cd build \
+	&& cmake \
+		-DOPENCV_EXTRA_MODULES_PATH="/opencv_contrib-4.0.0/modules" \
+		-DCMAKE_INSTALL_PREFIX="/opt/opencv-4.0.0" \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DBUILD_SHARED_LIBS=ON \
+		-DBUILD_WITH_STATIC_CRT=OFF \
+		-DBUILD_DOCS=OFF \
+		-DBUILD_EXAMPLES=OFF \
+		-DBUILD_PACKAGE=OFF \
+		-DBUILD_TESTS=OFF \
+		-DBUILD_PERF_TESTS=OFF \
+		-DBUILD_WITH_DEBUG_INFO=OFF \
+		-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \
+		-DCMAKE_SKIP_RPATH=OFF \
+		-DCMAKE_USE_RELATIVE_PATHS=OFF \
+		-DENABLE_FAST_MATH=ON \
+		-DENABLE_NOISY_WARNINGS=OFF \
+		-DENABLE_OMIT_FRAME_POINTER=ON \
+		-DENABLE_PRECOMPILED_HEADERS=OFF \
+		-DENABLE_PROFILING=OFF \
+		-DENABLE_SOLUTION_FOLDERS=OFF \
+		-DOPENCV_CAN_BREAK_BINARY_COMPATIBILITY=ON \
+		-DBUILD_opencv_core=ON \
+		-DBUILD_opencv_highgui=ON \
+		-DBUILD_opencv_imgproc=ON \
+		-DBUILD_opencv_ml=ON \
+		-DBUILD_opencv_python=ON \
+		-DPYTHON_EXECUTABLE=/root/miniconda2/bin/python \
+		-DPYTHON_INCLUDE_DIR=/root/miniconda2/include/python2.7 \
+		-DENABLE_POWERPC=OFF \
+		-DBUILD_JASPER=OFF \
+		-DBUILD_JPEG=OFF \
+		-DBUILD_PNG=OFF \
+		-DBUILD_TIFF=OFF \
+		-DBUILD_ZLIB=OFF \
+		-DBUILD_ANDROID_CAMERA_WRAPPER=OFF \
+		-DBUILD_ANDROID_EXAMPLES=OFF \
+		-DBUILD_FAT_JAVA_LIB=OFF \
+		-DBUILD_JAVA_SUPPORT=OFF \
+		-DBUILD_NEW_PYTHON_SUPPORT=ON \
+		-DBUILD_PYTHON_SUPPORT=ON \
+		-DINSTALL_ANDROID_EXAMPLES=OFF \
+		-DINSTALL_C_EXAMPLES=OFF \
+		-DINSTALL_PYTHON_EXAMPLES=OFF \
+		-DINSTALL_TO_MANGLED_PATHS=OFF \
+		-DWITH_1394=OFF \
+		-DWITH_ANDROID_CAMERA=OFF \
+		-DWITH_AVFOUNDATION=OFF \
+		-DWITH_CARBON=OFF \
+		\
+		-DWITH_CUBLAS=ON \
+		-DWITH_CUDA=ON \
+		-DWITH_CUFFT=ON \
+		\
+		-DWITH_EIGEN=ON \
+		-DWITH_IMAGEIO=OFF \
+		-DWITH_IPP=ON \
+		-DWITH_JASPER=OFF \
+		-DWITH_OPENEXR=OFF \
+		-DWITH_OPENGL=OFF \
+		-DWITH_OPENNI=OFF \
+		-DWITH_PVAPI=OFF \
+		-DWITH_QUICKTIME=OFF \
+		-DWITH_TBB=ON \
+		-DWITH_UNICAP=OFF \
+		-DWITH_VIDEOINPUT=OFF \
+		-DWITH_XIMEA=OFF \
+		-DWITH_XINE=OFF \
+		-DWITH_FFMPEG=OFF \
+		-DWITH_GSTREAMER=OFF \
+		-DWITH_GTK=OFF \
+		-DWITH_JPEG=ON \
+		-DWITH_PNG=ON \
+		-DWITH_QT=OFF \
+		-DWITH_GTK_2_X=ON \
+		-DWITH_TIFF=OFF \
+		-DWITH_V4L=OFF \
+		.. \
+		&& make -j9 && make install \
+		&& rm *.tar.gz
+
+# launch
+# here will be jypiter
+COPY main.sh /sbin
+RUN chmod +x /sbin/main.sh
+CMD ["/sbin/main.sh"]

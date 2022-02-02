@@ -1,0 +1,4 @@
+#http://deeplearning.net/software/theano/troubleshooting.html
+[blas]
+#ldflags = -lmkl -lguide -lpthread -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lguide -liomp5 -lmkl_mc -lpthread
+ldflags = -lf77blas -latlas -lgfortran

@@ -1,0 +1,103 @@
+# gpu не ниже Kepler - 3.0
+
+# sudo docker build -t ml_keras_tf_gpu:latest -f Dockerfile_tf_gpu .
+
+# sudo docker start ml_keras_tf_gpu_0
+# sudo docker exec -it ml_keras_tf_gpu_0 bash
+
+###################################
+#
+# tf
+# From sources:
+# https://gist.github.com/jorgemf/d2f3d85fadeb6e9d88ab00a06fbca0a2
+#
+# https://anaconda.org/anaconda/tensorflow-gpu/files
+# /root/miniconda2/bin/conda install tensorflow-gpu==1.0.1
+# need cuDNN + runtime(врядли буду кодить для куды) + tf а не теано
+# FIXME: не отработана работа с runtime образами
+# Compotibility:
+# https://stackoverflow.com/questions/50622525/which-tensorflow-and-cuda-version-combinations-are-compatible
+
+# !!! https://www.tensorflow.org/install/source
+# Troubles: https://github.com/tensorflow/tensorflow/issues/18906
+# https://github.com/tensorflow/tensorflow/issues/12388
+# FIXME: как проверить что на gpu Запускаем?
+# check:
+# https://stackoverflow.com/questions/38009682/how-to-tell-if-tensorflow-is-using-gpu-acceleration-from-inside-python-shell
+#
+#
+
+# CPU
+# I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX
+# 2018-11-01 09:14:16.068667: I tensorflow/core/common_runtime/process_util.cc:69] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
+# Device mapping: no known devices.
+
+# если ставить tf - начинает качать новье  
+# нет смысла ставить днн если ставить тензор, даже брать базовый образ как nvidia смысла нет
+# там ставиться не совсем то, там нет cudatoolkit/nvcc and headers
+#totalMemory: 963.31MiB freeMemory: 624.25MiB
+#2018-11-01 08:47:38.489691: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1455] Ignoring visible gpu device (device: 0, name: GeForce GTX 560, pci bus id: 0000:01:00.0, compute capability: 2.1) 
+# with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
+# https://stackoverflow.com/questions/38542763/how-can-i-make-tensorflow-run-on-a-gpu-with-capability-2-0 - NO WAY
+# CPU only
+
+###################################
+
+# не ясно зачем качать сборки куды если анаконда все переставит?
+#FROM nvidia/cuda:9.0-cudnn7-devel
+FROM nvidia/cuda:8.0-devel
+# FROM nvidia/cuda:9.0-devel # полная закачка снова
+# FROM ubuntu:18.04
+# FIXME: а что с миникондой то делать? еще N gb
+#FROM tensorflow/tensorflow:latest-gpu
+
+
+LABEL authors="Igor Lugansky <igor.a.lugansky@gmail.com>"
+
+RUN apt-get update && apt-get install -y \
+	build-essential \
+    git-core wget \
+    nano \
+    curl \
+    python-dev \
+    libtbb-dev \
+ 	&& rm -rf /var/lib/apt/lists/* 
+
+ # opencv
+RUN wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz \
+	&& tar -xvf cmake-3.10.0.tar.gz \
+	&& cd cmake-3.10.0 && ./configure && make -j4 && make install && cd ..
+
+# http://pythonwise.blogspot.com/2015/04/docker-miniconda-perfect-match.html
+# wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
+# задает вопросы
+RUN curl -LO https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh \
+	&& bash Miniconda2-latest-Linux-x86_64.sh -p /root/miniconda2 -b \
+	&& rm Miniconda2-latest-Linux-x86_64.sh
+
+# UNSTABLE PART
+RUN /root/miniconda2/bin/conda install \
+	matplotlib jupyterlab ipywidgets numpy scikit-learn \
+	&& /root/miniconda2/bin/conda clean -tisy
+
+# => downgrade
+# tensorflow-gpu==1.10.0
+RUN /root/miniconda2/bin/conda install keras tensorflow-gpu==1.7.0 \
+	&& /root/miniconda2/bin/conda clean -tisy
+
+# launch
+# here will be jypiter
+COPY main.sh /sbin
+RUN chmod +x /sbin/main.sh
+CMD ["/sbin/main.sh"]
+
+# https://stackoverflow.com/questions/41409842/ubuntu-16-04-cuda-8-cuda-driver-version-is-insufficient-for-cuda-runtime-vers
+# InternalError: cudaGetDevice() failed. Status: CUDA driver version is insufficient for CUDA runtime version
+# https://devtalk.nvidia.com/default/topic/1028320/cuda-driver-version-is-insufficient-for-cuda-runtime-version/
+# host: nvidia-container-cli info
+# 0  GeForce GT 740      Off
+# https://devtalk.nvidia.com/default/topic/823166/what-does-off-mean-in-the-output-of-nvidia-smi-/
+# https://docs.nvidia.com/deploy/driver-persistence/index.html
+# sudo nvidia-smi -pm 1
+# https://github.com/tensorflow/tensorflow/issues/21832
+# => downgrade
