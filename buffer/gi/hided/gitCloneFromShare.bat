@@ -1,1 +1,0 @@
-git clone file://\\\\172.16.100.88\xxx.git

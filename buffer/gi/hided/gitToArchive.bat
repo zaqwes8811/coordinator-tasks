@@ -1,1 +1,0 @@
-git archive -o bitvolution.zip HEAD
