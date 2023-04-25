@@ -1,7 +1,0 @@
-sudo docker run -d \
-   --runtime=nvidia \
-   --restart=always --memory=2g \
-   -v /mnt:/mnt \
-   --hostname cv4-00 \
-   --tmpfs /tmp \
-   -it --name cv4_00 simicon/cv4:latest
